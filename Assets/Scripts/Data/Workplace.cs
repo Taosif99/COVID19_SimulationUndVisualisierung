@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KLASSEN_INF21
+namespace Data
 {
     [Serializable]
     class Workplace : Venue
