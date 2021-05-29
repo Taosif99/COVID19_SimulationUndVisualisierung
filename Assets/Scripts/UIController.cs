@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Script to implement UI related functions/behaviour.
-/// Currently this class assigns listeners to the buttons.
+/// Currently this class assigns listeners to the buttons and manages
+/// enabling and disabling of UI elements.
 /// </summary>
 public class UIController : MonoBehaviour
 {
@@ -16,6 +17,13 @@ public class UIController : MonoBehaviour
 
     //Probably can be replaced with actions later
     public GridManager SimulationGridManager;
+    //Converning Graph in UI
+    public GraphEnabler SimulationGraphEnabler;
+    public Toggle BarChartToggle;
+    public Toggle LineChartToggle;
+    //Needed to implement clear up logic
+    private Button _lastClickedButton;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +45,8 @@ public class UIController : MonoBehaviour
             DisableButtonOutlineColors();
             ModifyOutlineColor(placeVenueButton);
             SimulationGridManager.SetCurrentPrefab("Venue");
+            _lastClickedButton = placeVenueButton;
+            DeactivateOldSettingsElements();
 
         });
 
@@ -45,6 +55,8 @@ public class UIController : MonoBehaviour
             DisableButtonOutlineColors();
             ModifyOutlineColor(placeWorkplaceButton);
             SimulationGridManager.SetCurrentPrefab("Workplace");
+            _lastClickedButton = placeWorkplaceButton;
+            DeactivateOldSettingsElements();
 
         });
 
@@ -53,6 +65,8 @@ public class UIController : MonoBehaviour
             DisableButtonOutlineColors();
             ModifyOutlineColor(placeHospitalButton);
             SimulationGridManager.SetCurrentPrefab("Hospital");
+            _lastClickedButton = placeHospitalButton;
+            DeactivateOldSettingsElements();
 
         });
 
@@ -61,6 +75,8 @@ public class UIController : MonoBehaviour
             DisableButtonOutlineColors();
             ModifyOutlineColor(placeHouseholdButton);
             SimulationGridManager.SetCurrentPrefab("Household");
+            _lastClickedButton = placeHouseholdButton;
+            DeactivateOldSettingsElements();
 
         });
 
@@ -68,10 +84,20 @@ public class UIController : MonoBehaviour
         {
             DisableButtonOutlineColors();
             ModifyOutlineColor(placeGraphButton);
-            SimulationGridManager.SetCurrentPrefab("Graph");
             //Here a Graph must be activated in the UI...
+            SimulationGraphEnabler.EnableGraphSettings();
+            _lastClickedButton = placeGraphButton;
+            DeactivateOldSettingsElements();
+        });
 
 
+        //Assign listeners Chart Toggles
+        BarChartToggle.onValueChanged.AddListener(delegate {
+            SimulationGraphEnabler.SetBarChartActive(BarChartToggle.isOn);
+        });
+
+        LineChartToggle.onValueChanged.AddListener(delegate {
+            SimulationGraphEnabler.SetLineChartActive(LineChartToggle.isOn);
         });
 
     }
@@ -98,4 +124,16 @@ public class UIController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Has to be replaced later with an Settings Handler or something similar
+    /// </summary>
+    private void DeactivateOldSettingsElements()
+    { 
+        
+        //Handle not graph button clean up
+        if(_lastClickedButton != placeGraphButton)
+        {
+            SimulationGraphEnabler.DisableGraphSettings();
+        }
+    }
 }

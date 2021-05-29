@@ -16,6 +16,7 @@ using UnityEngine.EventSystems;
 /// Add graph compatibility
 /// 
 /// Nice to have / Maybe needed later:
+/// Dynamic plane scalling
 /// Place prefab on multiple grid cells
 /// Pathfinding/GridSystem as data Structure
 /// 
@@ -36,10 +37,10 @@ public class GridManager : MonoBehaviour
 
 
     //To Check if we clicked the correct layer
-    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private LayerMask _groundMask;
 
     //To scale the used prefabs
-    [SerializeField] private float scaleDiv = 2f;
+    [SerializeField] private float _scaleDiv = 2f;
 
 
     [SerializeField] private int _height = 10;
@@ -67,7 +68,6 @@ public class GridManager : MonoBehaviour
     {
         _placedPositions = new HashSet<Vector3>();
         _grid = FindObjectOfType<EndlessGrid>();
-        //OriginPosition = transform.position;
         _cellSize = _grid.GapSize;
         if(_drawGrid)
         DebugDrawGrid();
@@ -85,7 +85,7 @@ public class GridManager : MonoBehaviour
             RaycastHit hitInfo;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             //Check if we hit something
-            if (Physics.Raycast(ray, out hitInfo,Mathf.Infinity,groundMask))
+            if (Physics.Raycast(ray, out hitInfo,Mathf.Infinity,_groundMask))
             {
                 PlacePrefabNear(hitInfo.point);
                 Debug.Log("Relative Position On Grid: " + ConvertToRelativePosition(hitInfo.point));
@@ -106,7 +106,7 @@ public class GridManager : MonoBehaviour
 
             //TODO: Quick fix we need appropiate models or implement a system
             gameObject.transform.rotation = Quaternion.Euler(0,180,0);
-            gameObject.transform.localScale /= scaleDiv;
+            gameObject.transform.localScale /= _scaleDiv;
 
             _placedPositions.Add(spawnPosition);
         }
@@ -121,15 +121,13 @@ public class GridManager : MonoBehaviour
     public void SetCurrentPrefab(String prefabName)
     {
 
-        Debug.Log("Setting current prefab!");
-
         foreach (NamedPrefab namedPrefab in Prefabs)
         {
 
             if (prefabName.Equals(namedPrefab.name))
             {
                 CurrentPrefabToSpawn = namedPrefab.prefab;
-                Debug.Log("Prefab Name:" + namedPrefab.name);
+                Debug.Log("Set Prefab Name:" + namedPrefab.name);
                 return;
             }
         }
@@ -241,8 +239,5 @@ public class GridManager : MonoBehaviour
         return textMesh;
     }
 
-
     #endregion
-
-
 }

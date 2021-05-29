@@ -93,7 +93,7 @@ public class GraphChartExample : MonoBehaviour
                     valStr += val;
                     valStr += ", ";
                 }
-                Debug.Log(valStr);
+                //Debug.Log(valStr);
                 yield return new WaitForSeconds(2f);
             }
         }
