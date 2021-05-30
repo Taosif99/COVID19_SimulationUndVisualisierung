@@ -2313,7 +2313,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainCamera: {fileID: 0}
-  cameraMovementSpeed: 5
+  cameraMovementSpeed: 8
+  _smoothFactor: 0.5
 --- !u!1 &975727877
 GameObject:
   m_ObjectHideFlags: 0
