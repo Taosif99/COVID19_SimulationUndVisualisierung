@@ -11,7 +11,6 @@ public class CameraMovement : MonoBehaviour
 
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private float cameraMovementSpeed = 5;
-
     //Lower = smoother, Factor used for interpolation
     [SerializeField] private float _smoothFactor = 0.5f;
 

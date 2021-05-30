@@ -5963,7 +5963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274d743739c22894a884388f22543888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gapSize: 2.53
+  _gapSize: 2.5
   _drawGizmos: 0
   _amountDebugGizmoPoints: 30
 --- !u!4 &8052080946548574548
@@ -6153,15 +6153,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentPrefabToSpawn: {fileID: 0}
-  _planeWorldTransform: {fileID: 8052080947544201979}
+  _planeWorldTransform: {fileID: 8052080947404100264}
   _groundMask:
     serializedVersion: 2
     m_Bits: 64
   _scaleDiv: 2
-  _height: 10
-  _width: 10
-  _cellSize: 2.53
-  _drawGrid: 0
   OriginPosition: {x: 0, y: 0, z: 0}
   Prefabs:
   - name: Venue
@@ -6172,6 +6168,10 @@ MonoBehaviour:
     prefab: {fileID: 1763038635241144, guid: b6adf14e248ee014597da88e5b5cb4b8, type: 3}
   - name: Household
     prefab: {fileID: 1237205094868938, guid: 2909343e8fc65984b82bff9fab8cf5d1, type: 3}
+  _height: 10
+  _width: 10
+  _cellSize: 2.5
+  _drawGrid: 0
 --- !u!1 &8052080947632427718
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,7 +22,8 @@ public class EndlessGrid : MonoBehaviour
 
   
     /// <summary>
-    /// Method to get the nearest position in the grid the user clicked to.
+    /// Method to get the nearest position in the grid point system the user clicked to.
+    /// The Grid offset is its own transform.position.
     /// </summary>
     /// <param name="position">The position the user clicked to.</param>
     /// <returns></returns>

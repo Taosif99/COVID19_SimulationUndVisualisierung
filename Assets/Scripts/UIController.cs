@@ -13,7 +13,12 @@ public class UIController : MonoBehaviour
     //References to buttons
     public Button placeVenueButton, placeWorkplaceButton, placeHospitalButton,placeHouseholdButton,placeGraphButton;
     public Color outlineColor; //To indicate which button is clicked
-    List<Button> buttonList; //To reset all buttons later
+
+    //To reset all buttons 
+    private List<Button> buttonList; 
+    //later and invoke placement related functions functions, since they methods can be abstracted
+    private Dictionary<string, Button> _placementButtonDictionary;
+
 
     //Probably can be replaced with actions later
     public GridManager SimulationGridManager;
@@ -28,6 +33,8 @@ public class UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+       
         buttonList = new List<Button>
         {
             placeVenueButton,
@@ -36,49 +43,26 @@ public class UIController : MonoBehaviour
             placeHouseholdButton,
             placeGraphButton
         };
+        _placementButtonDictionary = new Dictionary<string, Button>();
+        _placementButtonDictionary.Add("Venue",placeVenueButton);
+        _placementButtonDictionary.Add("Workplace", placeWorkplaceButton);
+        _placementButtonDictionary.Add("Hospital", placeHospitalButton);
+        _placementButtonDictionary.Add("Household", placeHouseholdButton);
 
 
-
-        //Adding listeners to each button
-        placeVenueButton.onClick.AddListener(() =>
+        foreach (string key in _placementButtonDictionary.Keys)
         {
-            DisableButtonOutlineColors();
-            ModifyOutlineColor(placeVenueButton);
-            SimulationGridManager.SetCurrentPrefab("Venue");
-            _lastClickedButton = placeVenueButton;
-            DeactivateOldSettingsElements();
+            Button button = _placementButtonDictionary[key];
+            button.onClick.AddListener(() =>
+            {
+                DisableButtonOutlineColors();
+                ModifyOutlineColor(button);
+                SimulationGridManager.SetCurrentPrefab(key);
+                _lastClickedButton = button;
+                DeactivateOldSettingsElements();
 
-        });
-
-        placeWorkplaceButton.onClick.AddListener(() =>
-        {
-            DisableButtonOutlineColors();
-            ModifyOutlineColor(placeWorkplaceButton);
-            SimulationGridManager.SetCurrentPrefab("Workplace");
-            _lastClickedButton = placeWorkplaceButton;
-            DeactivateOldSettingsElements();
-
-        });
-
-        placeHospitalButton.onClick.AddListener(() =>
-        {
-            DisableButtonOutlineColors();
-            ModifyOutlineColor(placeHospitalButton);
-            SimulationGridManager.SetCurrentPrefab("Hospital");
-            _lastClickedButton = placeHospitalButton;
-            DeactivateOldSettingsElements();
-
-        });
-
-        placeHouseholdButton.onClick.AddListener(() =>
-        {
-            DisableButtonOutlineColors();
-            ModifyOutlineColor(placeHouseholdButton);
-            SimulationGridManager.SetCurrentPrefab("Household");
-            _lastClickedButton = placeHouseholdButton;
-            DeactivateOldSettingsElements();
-
-        });
+            });
+        }
 
         placeGraphButton.onClick.AddListener(() =>
         {

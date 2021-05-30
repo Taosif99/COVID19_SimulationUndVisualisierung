@@ -9,16 +9,17 @@ using UnityEngine.EventSystems;
 /// Class which places objects to the grid.
 ///This class maintains the objects in the customized world.
 ///
+/// The Grid is currently a 10 * 10 Grid, place for 100 Objects, works perfect with a plane with a 2.5 scale
 /// 
 /// TODOS:
 /// Management of differerent Prefabs -Done
 /// Automatic calculation of originPoition and width and height using the plane transform
-/// Add graph compatibility
+/// Add graph compatibility - Done
 /// 
 /// Nice to have / Maybe needed later:
-/// Dynamic plane scalling
-/// Place prefab on multiple grid cells
-/// Pathfinding/GridSystem as data Structure
+/// Dynamic plane scalling  - still buggy at some values
+/// Place prefab on multiple grid cells and check if it can be placed
+/// Pathfinding/GridSystem as data Structure -> I think using navmesh would be a possibility without own grid system
 /// 
 /// 
 /// </summary>
@@ -27,33 +28,16 @@ public class GridManager : MonoBehaviour
     //The GameObject prefab to spawn
     [SerializeField] private GameObject _currentPrefabToSpawn;
     public GameObject CurrentPrefabToSpawn { get => _currentPrefabToSpawn; set => _currentPrefabToSpawn = value; }
-
     private EndlessGrid _grid;
-
     //We use this hashset to make sure that a a object is placed only once
     private HashSet<Vector3> _placedPositions;
-
     [SerializeField] private Transform _planeWorldTransform;
-
-
     //To Check if we clicked the correct layer
     [SerializeField] private LayerMask _groundMask;
-
-    //To scale the used prefabs
+    //To scale the used prefabs, temporarily
     [SerializeField] private float _scaleDiv = 2f;
-
-
-    [SerializeField] private int _height = 10;
-    [SerializeField] private int _width = 10;
-    [SerializeField] private float _cellSize = 1f;
-
-
-    [SerializeField] private bool _drawGrid= true;
-
     //In this position we start to spawn our grid
     public Vector3 OriginPosition;
-
-
     //Struct to see prefabs with Name in the Inspector
     [Serializable]
     public struct NamedPrefab
@@ -64,11 +48,20 @@ public class GridManager : MonoBehaviour
     public NamedPrefab[] Prefabs;
 
 
+    #region Debug Grid System variables
+    [SerializeField] private int _height = 10;
+    [SerializeField] private int _width = 10;
+    [SerializeField] private float _cellSize = 1f;
+    [SerializeField] private bool _drawGrid= true;
+    #endregion
+
     private void Start()
     {
         _placedPositions = new HashSet<Vector3>();
         _grid = FindObjectOfType<EndlessGrid>();
-        _cellSize = _grid.GapSize;
+        if (_planeWorldTransform.localScale.x != _planeWorldTransform.localScale.z) Debug.LogWarning("Plane must be a square !");
+        _cellSize = _planeWorldTransform.localScale.x;
+        _grid.GapSize = _cellSize;
         if(_drawGrid)
         DebugDrawGrid();
     }
@@ -77,9 +70,7 @@ public class GridManager : MonoBehaviour
     private void Update()
     {
         //Check if left mouse button clicked and UI not clicked
-        //Use this condition if we have an event system (If we have an UI !)
          if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject() == false && _currentPrefabToSpawn !=null)
-        //if (Input.GetMouseButtonDown(0))
         {
             //Raycast into the scene
             RaycastHit hitInfo;
@@ -120,10 +111,8 @@ public class GridManager : MonoBehaviour
     /// <param name="prefabName">The name of the prefab. </param>
     public void SetCurrentPrefab(String prefabName)
     {
-
         foreach (NamedPrefab namedPrefab in Prefabs)
         {
-
             if (prefabName.Equals(namedPrefab.name))
             {
                 CurrentPrefabToSpawn = namedPrefab.prefab;
@@ -132,9 +121,7 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-
-
-    #region GridSystem
+    #region GridSystem For Debug purposes
 
     /// <summary>
     /// Method to convert a relative position to an approximated world position.
