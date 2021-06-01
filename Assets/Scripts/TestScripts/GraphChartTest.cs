@@ -8,7 +8,7 @@ namespace GraphChart
     /// <summary>
     /// Examples how the GraphChart Class can be used (Barchart,Linegraph and Multilinegraph)
     /// </summary>
-    public class GraphChartExample : MonoBehaviour
+    public class GraphChartTest : MonoBehaviour
     {
 
         [SerializeField] private GraphChart _graphChart;

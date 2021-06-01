@@ -3,7 +3,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Simulation.Edit;
 using Event = Simulation.Edit.Event;
 
-class Test
+class SerializationTest
 {
     static void Main(string[] args)
     {
