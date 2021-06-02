@@ -1,6 +1,6 @@
 ﻿namespace Simulation.Runtime
 {
-    class Workplace : Venue
+    public class Workplace : Venue
     {
         private Type _type;
         private int _workerCapacity;

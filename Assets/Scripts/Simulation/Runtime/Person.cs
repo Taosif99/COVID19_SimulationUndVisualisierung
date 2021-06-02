@@ -3,7 +3,7 @@
 namespace Simulation.Runtime
 {
     // TODO: Separate statistical fields
-    class Person
+    public class Person
     {
         private InfectionStates _infectionStates;
         private PhysicalCondition _physicalCondition;

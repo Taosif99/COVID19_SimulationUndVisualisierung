@@ -1,6 +1,6 @@
 ﻿namespace Simulation.Runtime
 {
-    class Hospital : Workplace
+    public class Hospital : Workplace
     {
         private Scale _scale;
         private WorkerAvailability _workerAvailability;

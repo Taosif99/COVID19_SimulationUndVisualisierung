@@ -1,6 +1,6 @@
 ﻿namespace Simulation.Runtime
 {
-    class Household : Venue
+    public class Household : Venue
     {
         private Person[] _members;
 

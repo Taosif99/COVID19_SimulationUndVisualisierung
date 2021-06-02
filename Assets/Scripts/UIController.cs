@@ -1,12 +1,18 @@
 using System.Collections.Generic;
-using Grid;
 using UnityEngine;
 using UnityEngine.UI;
+using EditorObjects;
+using Grid;
+
 
 /// <summary>
 /// Script to implement UI related functions/behaviour.
 /// Currently this class assigns listeners to the buttons and manages
 /// enabling and disabling of UI elements.
+/// 
+/// 
+/// TODO IMPROVE SINGLETON
+/// 
 /// </summary>
 public class UIController : MonoBehaviour
 {
@@ -18,7 +24,7 @@ public class UIController : MonoBehaviour
     //To reset all buttons 
     private List<Button> buttonList; 
     //later and invoke placement related functions functions, since they methods can be abstracted
-    private Dictionary<string, Button> _placementButtonDictionary;
+    private Dictionary<PrefabName, Button> _placementButtonDictionary;
 
 
     //Probably can be replaced with actions later
@@ -29,7 +35,14 @@ public class UIController : MonoBehaviour
     public Toggle LineChartToggle;
     //Needed to implement clear up logic
     private Button _lastClickedButton;
-    
+
+    public UIController Instance;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,14 +57,14 @@ public class UIController : MonoBehaviour
             placeHouseholdButton,
             placeGraphButton
         };
-        _placementButtonDictionary = new Dictionary<string, Button>();
-        _placementButtonDictionary.Add("Venue",placeVenueButton);
-        _placementButtonDictionary.Add("Workplace", placeWorkplaceButton);
-        _placementButtonDictionary.Add("Hospital", placeHospitalButton);
-        _placementButtonDictionary.Add("Household", placeHouseholdButton);
+        _placementButtonDictionary = new Dictionary<PrefabName, Button>();
+        _placementButtonDictionary.Add(PrefabName.Venue,placeVenueButton);
+        _placementButtonDictionary.Add(PrefabName.Workplace, placeWorkplaceButton);
+        _placementButtonDictionary.Add(PrefabName.Hospital, placeHospitalButton);
+        _placementButtonDictionary.Add(PrefabName.Household, placeHouseholdButton);
 
 
-        foreach (string key in _placementButtonDictionary.Keys)
+        foreach (PrefabName key in _placementButtonDictionary.Keys)
         {
             Button button = _placementButtonDictionary[key];
             button.onClick.AddListener(() =>

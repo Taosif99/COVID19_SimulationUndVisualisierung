@@ -1,6 +1,6 @@
 ﻿namespace Simulation.Runtime
 {
-    class Entity
+    public class Entity //Changed to public 
     {
     }
 }

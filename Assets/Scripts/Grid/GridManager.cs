@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using EditorObjects;
 
 namespace Grid
 {
@@ -28,6 +29,19 @@ namespace Grid
         //The GameObject prefab to spawn
         [SerializeField] private GameObject _currentPrefabToSpawn;
         public GameObject CurrentPrefabToSpawn { get => _currentPrefabToSpawn; set => _currentPrefabToSpawn = value; }
+
+        //In this position we start to spawn our grid
+        public Vector3 OriginPosition;
+        //Struct to see prefabs with Name in the Inspector
+        [Serializable]
+        public struct NamedPrefab
+        {
+            //public string name;
+            public PrefabName prefabName;
+            public GameObject prefab;
+        }
+        public NamedPrefab[] Prefabs;
+
         private EndlessGrid _grid;
         //We use this hashset to make sure that a a object is placed only once
         private HashSet<Vector3> _placedPositions;
@@ -36,17 +50,8 @@ namespace Grid
         [SerializeField] private LayerMask _groundMask;
         //To scale the used prefabs, temporarily
         [SerializeField] private float _scaleDiv = 2f;
-        //In this position we start to spawn our grid
-        public Vector3 OriginPosition;
-        //Struct to see prefabs with Name in the Inspector
-        [Serializable]
-        public struct NamedPrefab
-        {
-            public string name;
-            public GameObject prefab;
-        }
-        public NamedPrefab[] Prefabs;
 
+        private PrefabName _currentPrefabName = PrefabName.None;
 
         #region Debug Grid System variables
         [SerializeField] private int _height = 10;
@@ -90,15 +95,51 @@ namespace Grid
         {
             Vector3 spawnPosition = _grid.GetNearestPointOnGrid(clickPoint);
             if (!_placedPositions.Contains(spawnPosition))
-            {            
+            {
+
+
+                //Here we must use the Editor Object Factory
+
                 // Instantiate at finalPosition and zero rotation.
-                GameObject gameObject = Instantiate(_currentPrefabToSpawn, spawnPosition, Quaternion.identity);
-                gameObject.transform.parent = _planeWorldTransform;
+                //GameObject gameObject = Instantiate(_currentPrefabToSpawn, spawnPosition, Quaternion.identity);
+                //gameObject.transform.parent = _planeWorldTransform;
+                GameObject gameObject = null;
+
+                //Rethink strucutre here
+                Vector3 relativePosition = ConvertToRelativePosition(spawnPosition);
+                Vector3Int relativePositionInt = new Vector3Int((int)relativePosition.x,(int)relativePosition.y,(int)relativePosition.z);
+
+                //Here we may add the editor objects to an corresponding controller / manager
+                switch (_currentPrefabName)
+                {
+
+                    case PrefabName.Venue:
+                        gameObject = EditorObjectFactory.CreateVenueEditorObject(_currentPrefabToSpawn, spawnPosition, relativePositionInt, _planeWorldTransform).EditorGameObject;
+                        break;
+
+                    case PrefabName.Workplace:
+                        gameObject = EditorObjectFactory.CreateWorkplaceEditorObject(_currentPrefabToSpawn, spawnPosition, relativePositionInt, _planeWorldTransform).EditorGameObject;
+                        break;
+
+                    case PrefabName.Hospital:
+                        gameObject = EditorObjectFactory.CreateHospitalEditorObject(_currentPrefabToSpawn, spawnPosition, relativePositionInt, _planeWorldTransform).EditorGameObject;
+                        break;
+
+                    case PrefabName.Household:
+                        gameObject = EditorObjectFactory.CreateHouseholdEditorObject(_currentPrefabToSpawn, spawnPosition, relativePositionInt, _planeWorldTransform).EditorGameObject;
+                        break;
+                    
+                    default:
+                        Debug.LogError("Unknown prefab name");
+                        break;
+                }
 
                 //TODO: Quick fix we need appropiate models or implement a system
-                gameObject.transform.rotation = Quaternion.Euler(0,180,0);
-                gameObject.transform.localScale /= _scaleDiv;
-
+                if (gameObject != null)
+                {
+                    gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    gameObject.transform.localScale /= _scaleDiv;
+                }
                 _placedPositions.Add(spawnPosition);
             }
             else Debug.Log("Position already used !");
@@ -109,18 +150,22 @@ namespace Grid
         /// Method to set the current prefab outside this class.
         /// </summary>
         /// <param name="prefabName">The name of the prefab. </param>
-        public void SetCurrentPrefab(String prefabName)
+        public void SetCurrentPrefab(PrefabName prefabName)
         {
             foreach (NamedPrefab namedPrefab in Prefabs)
             {
-                if (prefabName.Equals(namedPrefab.name))
+                if (prefabName.Equals(namedPrefab.prefabName))
                 {
                     CurrentPrefabToSpawn = namedPrefab.prefab;
-                    Debug.Log("Set Prefab Name:" + namedPrefab.name);
+                    Debug.Log("Set Prefab Name:" + namedPrefab.prefabName);
+                    _currentPrefabName = namedPrefab.prefabName;
                     return;
                 }
             }
         }
+
+
+
         #region GridSystem For Debug purposes
 
         /// <summary>

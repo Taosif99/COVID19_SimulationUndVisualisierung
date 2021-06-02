@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Simulation.Runtime
 {
-    class Venue : Entity
+    public class Venue : Entity
     {
         private float _infectionRisk;
         private HashSet<Person> _currentPeopleAtVenue = new HashSet<Person>();
