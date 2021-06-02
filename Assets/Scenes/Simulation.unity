@@ -6632,7 +6632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89385d44f8d704b47abedb25c833382d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EditObjectsManager: {fileID: 0}
+  EditObjectsManager: {fileID: 807507761}
   _currentPrefabToSpawn:
     prefabName: 0
     prefab: {fileID: 0}
