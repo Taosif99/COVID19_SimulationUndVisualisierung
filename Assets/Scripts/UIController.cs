@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using EditorObjects;
 using Grid;
-
+using System;
 
 /// <summary>
 /// Script to implement UI related functions/behaviour.
@@ -36,7 +36,9 @@ public class UIController : MonoBehaviour
     //Needed to implement clear up logic
     private Button _lastClickedButton;
 
-    public UIController Instance;
+    public static UIController Instance;
+
+  
 
     private void Awake()
     {

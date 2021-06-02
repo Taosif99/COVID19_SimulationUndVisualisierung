@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace EditorObjects
 {
+    
     public class VenueEditorObject : IEditorObject
     {
 

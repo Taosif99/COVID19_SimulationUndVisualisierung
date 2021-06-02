@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace EditorObjects
 {
+ 
     public class HouseholdEditorObject : IEditorObject
     {
         private GameObject _gameObject;

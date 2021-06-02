@@ -21,7 +21,7 @@ namespace EditorObjects
         {
             //must be get by the RuntimeObject Factory or some manager/controller
             Venue runtimeVenue = null;
-            //Must be get from the UI Controller
+            //Must be get from the UI Controller / or use first default name
             string venueUIName = "venue placeholder name";
             // Instantiate at finalPosition and zero rotation.
             GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
@@ -74,7 +74,7 @@ namespace EditorObjects
             //must be get by the RuntimeObject Factory
             Hospital runtimeHospital = null;
             //Must be get from the UI Controller
-            string householdUIName = "household placeholder name";
+            string householdUIName = "hospital placeholder name";
             // Instantiate at finalPosition and zero rotation.
             GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
             gameObject.name = PrefabName.Hospital.ToString();

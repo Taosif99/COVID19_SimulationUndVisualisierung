@@ -6,6 +6,7 @@ using System;
 
 namespace EditorObjects
 {
+   
     public class HospitalEditorObject : IEditorObject
     {
         private GameObject _gameObject;

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace EditorObjects
 {
+    
     public class GraphEditorObject : IEditorObject
     {
         public GameObject EditorGameObject { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }

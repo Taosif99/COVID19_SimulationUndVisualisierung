@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace EditorObjects
 {
+   
     public class WorkplaceEditorObject : IEditorObject
     {
 
