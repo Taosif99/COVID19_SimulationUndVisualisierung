@@ -3379,8 +3379,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 181, y: 379}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 141, y: 379}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1350262543
 MonoBehaviour:
@@ -5029,7 +5029,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2037222935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a885245e792d8b4aa5481797988acd4, type: 3}
+  m_Script: {fileID: 11500000, guid: aea5894ba8ff6aa4980144adf5b7c310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _graphChart: {fileID: 2037222938}
@@ -5045,10 +5045,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2037222935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1d0de66fe3e73f48b82a8b624f4635f, type: 3}
+  m_Script: {fileID: 11500000, guid: 255c81eb60af10e418aeedad18796b0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dotSprite: {fileID: 21300000, guid: ef275adbab99ec841b5fb0dbc14a043d, type: 3}
+  _dotSprite: {fileID: 0}
   _startYScaleAtZero: 1
   _useFixedMaxYValue: 1
   _maxYValue: 100
@@ -5340,7 +5340,7 @@ MonoBehaviour:
   placeHouseholdButton: {fileID: 1950030102}
   placeGraphButton: {fileID: 523681690}
   outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  SimulationGridManager: {fileID: 8052080947632427717}
+  SimulationGridManager: {fileID: 8052080947632427719}
   SimulationGraphEnabler: {fileID: 412718097}
   BarChartToggle: {fileID: 1672415282}
   LineChartToggle: {fileID: 1290578917}
@@ -5567,8 +5567,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6710811103308160232}
-  - component: {fileID: 6710811103308160247}
-  - component: {fileID: 6710811103308160246}
+  - component: {fileID: 6710811103308160235}
+  - component: {fileID: 6710811103308160234}
   m_Layer: 5
   m_Name: WindowGraphLineGraph
   m_TagString: Untagged
@@ -5576,7 +5576,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &6710811103308160246
+--- !u!114 &6710811103308160234
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5585,14 +5585,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6710811103308160233}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a885245e792d8b4aa5481797988acd4, type: 3}
+  m_Script: {fileID: 11500000, guid: aea5894ba8ff6aa4980144adf5b7c310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _graphChart: {fileID: 6710811103308160247}
+  _graphChart: {fileID: 6710811103308160235}
   valueList: 
   startExample: 1
   UsedGraphTestType: 2
---- !u!114 &6710811103308160247
+--- !u!114 &6710811103308160235
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5601,15 +5601,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6710811103308160233}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1d0de66fe3e73f48b82a8b624f4635f, type: 3}
+  m_Script: {fileID: 11500000, guid: 255c81eb60af10e418aeedad18796b0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dotSprite: {fileID: 21300000, guid: ef275adbab99ec841b5fb0dbc14a043d, type: 3}
+  _dotSprite: {fileID: 0}
   _startYScaleAtZero: 1
   _useFixedMaxYValue: 1
   _maxYValue: 100
   _amountHorizontalLines: 11
-  _typeOfGraph: 0
+  _typeOfGraph: 1
 --- !u!114 &6710811104034391624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5951,21 +5951,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6710811104799517186}
   m_CullTransparentMesh: 1
---- !u!114 &8052080946548574539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8052080946548574549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 274d743739c22894a884388f22543888, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gapSize: 2.5
-  _drawGizmos: 0
-  _amountDebugGizmoPoints: 30
 --- !u!4 &8052080946548574548
 Transform:
   m_ObjectHideFlags: 0
@@ -5989,7 +5974,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8052080946548574548}
-  - component: {fileID: 8052080946548574539}
+  - component: {fileID: 8052080946548574550}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -5997,6 +5982,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8052080946548574550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8052080946548574549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdd9cba5785b4ff46ad2ce61863293b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gapSize: 2.5
+  _drawGizmos: 0
+  _amountDebugGizmoPoints: 20
 --- !u!4 &8052080947404100264
 Transform:
   m_ObjectHideFlags: 0
@@ -6140,7 +6140,24 @@ Transform:
   m_Father: {fileID: 8052080947544201979}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8052080947632427717
+--- !u!1 &8052080947632427718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8052080947632427716}
+  - component: {fileID: 8052080947632427719}
+  m_Layer: 0
+  m_Name: ObjectPlacer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &8052080947632427719
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6149,7 +6166,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8052080947632427718}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e8cd735b129a7b4ea52b57d5d9feb2c, type: 3}
+  m_Script: {fileID: 11500000, guid: 89385d44f8d704b47abedb25c833382d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _currentPrefabToSpawn: {fileID: 0}
@@ -6172,20 +6189,3 @@ MonoBehaviour:
   _width: 10
   _cellSize: 2.5
   _drawGrid: 0
---- !u!1 &8052080947632427718
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8052080947632427716}
-  - component: {fileID: 8052080947632427717}
-  m_Layer: 0
-  m_Name: ObjectPlacer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1

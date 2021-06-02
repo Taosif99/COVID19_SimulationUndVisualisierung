@@ -88,8 +88,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6710811103422116315}
-  - component: {fileID: 6710811103422116292}
-  - component: {fileID: 6710811103422116293}
+  - component: {fileID: 983832504779546230}
+  - component: {fileID: 900242853817492218}
   m_Layer: 5
   m_Name: WindowGraph
   m_TagString: Untagged
@@ -118,7 +118,7 @@ RectTransform:
   m_AnchoredPosition: {x: -49.040134, y: 18.0435}
   m_SizeDelta: {x: 1114.7654, y: 595.9869}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6710811103422116292
+--- !u!114 &983832504779546230
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,16 +127,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 6710811103422116314}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1d0de66fe3e73f48b82a8b624f4635f, type: 3}
+  m_Script: {fileID: 11500000, guid: 255c81eb60af10e418aeedad18796b0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dotSprite: {fileID: 21300000, guid: ef275adbab99ec841b5fb0dbc14a043d, type: 3}
+  _dotSprite: {fileID: 0}
   _startYScaleAtZero: 1
   _useFixedMaxYValue: 1
   _maxYValue: 100
   _amountHorizontalLines: 11
   _typeOfGraph: 0
---- !u!114 &6710811103422116293
+--- !u!114 &900242853817492218
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,13 +145,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6710811103422116314}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a885245e792d8b4aa5481797988acd4, type: 3}
+  m_Script: {fileID: 11500000, guid: aea5894ba8ff6aa4980144adf5b7c310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _graphChart: {fileID: 6710811103422116292}
+  _graphChart: {fileID: 983832504779546230}
   valueList: 
-  startExample: 1
-  UsedGraphTestType: 2
+  startExample: 0
+  UsedGraphTestType: 0
 --- !u!1 &6710811103580456622
 GameObject:
   m_ObjectHideFlags: 0
