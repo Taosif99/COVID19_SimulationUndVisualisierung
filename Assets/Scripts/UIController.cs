@@ -38,7 +38,15 @@ public class UIController : MonoBehaviour
 
     public static UIController Instance;
 
-  
+
+
+    //GameObject groups of editor object UI elements
+    public GameObject VenueUI;
+    public GameObject WorkplaceUI;
+    public GameObject HospitalUI;
+
+    // All texts field which must be resettet will be cached in this list
+    public List<InputField> InputFieldsToReset = new List<InputField>(); 
 
     private void Awake()
     {
@@ -125,15 +133,65 @@ public class UIController : MonoBehaviour
     }
 
     /// <summary>
-    /// Has to be replaced later with an Settings Handler or something similar
+    /// Has to be replaced later with an Settings Handler or something similar, TODO reset old settings
     /// </summary>
-    private void DeactivateOldSettingsElements()
-    { 
-        
-        //Handle not graph button clean up
-        if(_lastClickedButton != placeGraphButton)
+    private void DeactivateOldSettingsElements() //Houshold wie venue...
+    {
+
+
+        ClearInputFields();
+
+
+        if (_lastClickedButton == placeVenueButton || _lastClickedButton == placeHouseholdButton)
+        {
+            VenueUI.SetActive(true);
+            WorkplaceUI.SetActive(false);
+            HospitalUI.SetActive(false);
+        }
+
+        if (_lastClickedButton == placeWorkplaceButton)
+        {
+            VenueUI.SetActive(true);
+            WorkplaceUI.SetActive(true);
+            HospitalUI.SetActive(false);
+
+        }
+
+        if (_lastClickedButton == placeHospitalButton)
+        {
+            VenueUI.SetActive(true);
+            WorkplaceUI.SetActive(true);
+            HospitalUI.SetActive(true);
+        }
+
+
+        //Handle GraphButton
+
+        if (_lastClickedButton != placeGraphButton)
         {
             SimulationGraphEnabler.DisableGraphSettings();
         }
+        else 
+        {
+            VenueUI.SetActive(false);
+            WorkplaceUI.SetActive(false);
+            HospitalUI.SetActive(false);
+
+        }
+
+
+
+    }
+
+
+    private void ClearInputFields()
+    {
+
+        foreach  (InputField inputField in InputFieldsToReset)
+
+        {
+            inputField.text = "";
+        }
+    
     }
 }
