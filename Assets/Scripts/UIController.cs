@@ -42,8 +42,10 @@ public class UIController : MonoBehaviour
 
     //GameObject groups of editor object UI elements
     public GameObject VenueUI;
+    public GameObject HouseholdUI;
     public GameObject WorkplaceUI;
     public GameObject HospitalUI;
+    
 
     // All texts field which must be resettet will be cached in this list
     public List<InputField> InputFieldsToReset = new List<InputField>(); 
@@ -145,6 +147,7 @@ public class UIController : MonoBehaviour
         if (_lastClickedButton == placeVenueButton || _lastClickedButton == placeHouseholdButton)
         {
             VenueUI.SetActive(true);
+            HouseholdUI.SetActive(false);
             WorkplaceUI.SetActive(false);
             HospitalUI.SetActive(false);
         }
@@ -152,6 +155,7 @@ public class UIController : MonoBehaviour
         if (_lastClickedButton == placeWorkplaceButton)
         {
             VenueUI.SetActive(true);
+            HouseholdUI.SetActive(false);
             WorkplaceUI.SetActive(true);
             HospitalUI.SetActive(false);
 
@@ -160,6 +164,7 @@ public class UIController : MonoBehaviour
         if (_lastClickedButton == placeHospitalButton)
         {
             VenueUI.SetActive(true);
+            HouseholdUI.SetActive(false);
             WorkplaceUI.SetActive(true);
             HospitalUI.SetActive(true);
         }
@@ -174,11 +179,20 @@ public class UIController : MonoBehaviour
         else 
         {
             VenueUI.SetActive(false);
+            HouseholdUI.SetActive(false);
             WorkplaceUI.SetActive(false);
             HospitalUI.SetActive(false);
 
         }
 
+        if (_lastClickedButton == placeHouseholdButton)
+        {
+            VenueUI.SetActive(true);
+            HouseholdUI.SetActive(true);
+            WorkplaceUI.SetActive(false);
+            HospitalUI.SetActive(false);
+
+        }
 
 
     }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Simple Script which implements scene camera 
@@ -33,9 +34,17 @@ public class CameraMovement : MonoBehaviour
     private void MoveCamera()
     {
         //Better later implement an inputHandler / manager
-        Vector3 inputVector = new Vector3(Input.GetAxis("Horizontal"), 0,
-                                            Input.GetAxis("Vertical"));
-        Vector3 targetPosition = _mainCamera.transform.position + inputVector * Time.deltaTime * cameraMovementSpeed;
-        _mainCamera.transform.position = Vector3.Lerp(transform.position, targetPosition, _smoothFactor);
-    }
+
+        if (EventSystem.current.IsPointerOverGameObject() == false)
+        {
+
+            Vector3 inputVector = new Vector3(Input.GetAxis("Horizontal"), 0,
+                                                Input.GetAxis("Vertical"));
+            Vector3 targetPosition = _mainCamera.transform.position + inputVector * Time.deltaTime * cameraMovementSpeed;
+            _mainCamera.transform.position = Vector3.Lerp(transform.position, targetPosition, _smoothFactor);
+
+        }
+        
+        }
+
 }
