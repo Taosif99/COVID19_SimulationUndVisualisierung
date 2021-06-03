@@ -6,9 +6,12 @@ using Grid;
 using UnityEngine.UI;
 using Simulation.Runtime;
 using System.Linq;
+using System;
 /// <summary>
 /// This class maintains the editor Objects during the Runtime
 /// I think it would be better to implement a "gameMaster" class to remove Monobehaviour inheritance
+/// 
+/// Currently working wick mock runtime objects
 /// </summary>
 public class EditorObjectsManager : MonoBehaviour
 {
@@ -19,11 +22,12 @@ public class EditorObjectsManager : MonoBehaviour
     public List<IEditorObject> editorObjects = new List<IEditorObject>();
 
     //This lists are currently NOT used
+    /*
     public List<VenueEditorObject> venueEditorObjects = new List<VenueEditorObject>();
     public List<WorkplaceEditorObject> workplaceEditorObjects = new List<WorkplaceEditorObject>();
     public List<HospitalEditorObject> hospitalEditorObjects = new List<HospitalEditorObject>();
     public List<HouseholdEditorObject> householdEditorObjects = new List<HouseholdEditorObject>();
-
+    */
 
     private Entity _currentSelectedEntity;
 
@@ -69,22 +73,22 @@ public class EditorObjectsManager : MonoBehaviour
 
             case PrefabName.Venue:
                 editorObject = EditorObjectFactory.CreateVenueEditorObject(currentPrefabToSpawn, spawnPosition, relativePositionInt, planeWorldTransform);
-                venueEditorObjects.Add((VenueEditorObject)editorObject);
+                //venueEditorObjects.Add((VenueEditorObject)editorObject);
                 break;
 
             case PrefabName.Workplace:
                 editorObject = EditorObjectFactory.CreateWorkplaceEditorObject(currentPrefabToSpawn, spawnPosition, relativePositionInt, planeWorldTransform);
-                workplaceEditorObjects.Add((WorkplaceEditorObject)editorObject);
+                //workplaceEditorObjects.Add((WorkplaceEditorObject)editorObject);
                 break;
 
             case PrefabName.Hospital:
                 editorObject = EditorObjectFactory.CreateHospitalEditorObject(currentPrefabToSpawn, spawnPosition, relativePositionInt, planeWorldTransform);
-                hospitalEditorObjects.Add((HospitalEditorObject)editorObject);
+                //hospitalEditorObjects.Add((HospitalEditorObject)editorObject);
                 break;
 
             case PrefabName.Household:
                 editorObject = EditorObjectFactory.CreateHouseholdEditorObject(currentPrefabToSpawn, spawnPosition, relativePositionInt, planeWorldTransform);
-                householdEditorObjects.Add((HouseholdEditorObject)editorObject);
+                //householdEditorObjects.Add((HouseholdEditorObject)editorObject);
                 break;
 
             default:
@@ -92,7 +96,13 @@ public class EditorObjectsManager : MonoBehaviour
                 break;
         }
 
+    
+
         editorObjects.Add(editorObject);
+        //Load the new object in the ui, TODO MAKE OVERLOADED METHOD TO DIFFERETIATE BETWEEN UI CLICK WHERE SEARCH IS NEEDED AND THESE ONE
+        LoadEditorObjectUI(spawnPosition);
+
+
         return editorObject.EditorGameObject;
     }
 
@@ -112,6 +122,7 @@ public class EditorObjectsManager : MonoBehaviour
         {
             if (editorObject.EditorGameObject.transform.position == spawnPosition)
             {
+                UIController.Instance.IsEntitySelectedUI(true);
                 ObjectNameInputField.text = editorObject.UIName;
                 Entity entity = editorObject.RuntimeEntity;
                 if (entity != null) //Can be removed later
@@ -162,37 +173,100 @@ public class EditorObjectsManager : MonoBehaviour
 
     }
 
-    //Is added to the save button
-    
+    //TODO CATCH INPUT ERRORS
+
     /// <summary>
+    /// 
+    /// Method which saves changes (currently) to runtime
+    /// objects and Editor objects
+    /// 
     /// TODO Load save values to runtime entity
+    /// Enum parsing looks ugly
     /// </summary>
     public void SaveToEntity()
     {
         if (_currentSelectedEntity != null)
         {
 
+            //Get the edito object to save the UI name
+            foreach (IEditorObject editorObject in editorObjects)
+            {
+                if (editorObject.RuntimeEntity == _currentSelectedEntity) 
+                {
+                    editorObject.UIName = ObjectNameInputField.text;
+                    break; 
+                }
+           }
             if (_currentSelectedEntity is Venue)
             {
 
+                Venue venue = (Venue)_currentSelectedEntity;
+                venue.InfectionRisk = float.Parse(InfectionRiskInputField.text); 
                 if (_currentSelectedEntity is Workplace)
                 {
+                    Workplace workplace = (Workplace)_currentSelectedEntity;
                     
+                    Workplace.Type workplaceType = (Workplace.Type) Enum.Parse(typeof(Workplace.Type), WorkplaceTypeDropdown.options[WorkplaceTypeDropdown.value].text);
+                    int capacity = int.Parse(CapacityInputField.text);
+                    workplace.WorkerCapacity = capacity;
+                    workplace.WorkType = workplaceType;
 
                     if (_currentSelectedEntity is Hospital)
                     {
-                        
+                        Hospital hospital = (Hospital)_currentSelectedEntity;
+                        Hospital.Scale hospitalScale = (Hospital.Scale)Enum.Parse(typeof(Hospital.Scale), HospitalScaleDropdown.options[HospitalScaleDropdown.value].text);
+                        Hospital.WorkerAvailability workerAvailability = (Hospital.WorkerAvailability)Enum.Parse(typeof(Hospital.WorkerAvailability), WorkerAvailabilityDropdown.options[WorkerAvailabilityDropdown.value].text);
+
+                        hospital.HospitalScale = hospitalScale;
+                        hospital.HospitalWorkerAvailability = workerAvailability;
                     }
 
                 }
                 else if (_currentSelectedEntity is Household)
                 {
-                    
+                    Household household = (Household)_currentSelectedEntity;
+                    //Must be get from saved object...
                 }
             }
 
 
         }
+    }
+
+    /// <summary>
+    /// Method which deletes the current selected entities
+    /// </summary>
+    public void DeleteCurrentEntity() 
+    {
+        IEditorObject currentEditorObject = null;
+
+        if (_currentSelectedEntity != null)
+        {
+
+            //Get current editor object
+            //Get the edito object to save the UI name
+            foreach (IEditorObject editorObject in editorObjects)
+            {
+                if (editorObject.RuntimeEntity == _currentSelectedEntity)
+                {
+                    currentEditorObject = editorObject;
+                    break;
+                }
+            }
+
+            if (currentEditorObject != null) 
+            {
+
+                //Destroy the gameObject in the scene
+                GameObject gameObject = currentEditorObject.EditorGameObject;
+                Destroy(gameObject);
+                editorObjects.Remove(currentEditorObject);
+                _currentSelectedEntity = null;
+                //TODO disable save button and UI
+                UIController.Instance.IsEntitySelectedUI(false);
+            }
+        }
+ 
     }
 
     // Start is called before the first frame update

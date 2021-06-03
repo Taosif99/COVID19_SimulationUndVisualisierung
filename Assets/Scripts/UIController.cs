@@ -18,12 +18,12 @@ public class UIController : MonoBehaviour
 {
 
     //References to buttons
-    public Button placeVenueButton, placeWorkplaceButton, placeHospitalButton,placeHouseholdButton,placeGraphButton;
+    public Button placeVenueButton, placeWorkplaceButton, placeHospitalButton, placeHouseholdButton, placeGraphButton;
     //To indicate which button is clicked
-    public Color outlineColor; 
+    public Color outlineColor;
 
     //To reset all buttons 
-    private List<Button> buttonList; 
+    private List<Button> buttonList;
     //later and invoke placement related functions functions, since they methods can be abstracted
     private Dictionary<PrefabName, Button> _placementButtonDictionary;
 
@@ -46,10 +46,10 @@ public class UIController : MonoBehaviour
     public GameObject HouseholdUI;
     public GameObject WorkplaceUI;
     public GameObject HospitalUI;
-    
+    public GameObject SaveAndDeleteUI;
 
     // All texts field which must be resettet will be cached in this list
-    public List<InputField> InputFieldsToReset = new List<InputField>(); 
+    public List<InputField> InputFieldsToReset = new List<InputField>();
 
     private void Awake()
     {
@@ -61,7 +61,7 @@ public class UIController : MonoBehaviour
     void Start()
     {
 
-       
+
         buttonList = new List<Button>
         {
             placeVenueButton,
@@ -71,7 +71,7 @@ public class UIController : MonoBehaviour
             placeGraphButton
         };
         _placementButtonDictionary = new Dictionary<PrefabName, Button>();
-        _placementButtonDictionary.Add(PrefabName.Venue,placeVenueButton);
+        _placementButtonDictionary.Add(PrefabName.Venue, placeVenueButton);
         _placementButtonDictionary.Add(PrefabName.Workplace, placeWorkplaceButton);
         _placementButtonDictionary.Add(PrefabName.Hospital, placeHospitalButton);
         _placementButtonDictionary.Add(PrefabName.Household, placeHouseholdButton);
@@ -103,11 +103,13 @@ public class UIController : MonoBehaviour
 
 
         //Assign listeners Chart Toggles
-        BarChartToggle.onValueChanged.AddListener(delegate {
+        BarChartToggle.onValueChanged.AddListener(delegate
+        {
             SimulationGraphEnabler.SetBarChartActive(BarChartToggle.isOn);
         });
 
-        LineChartToggle.onValueChanged.AddListener(delegate {
+        LineChartToggle.onValueChanged.AddListener(delegate
+        {
             SimulationGraphEnabler.SetLineChartActive(LineChartToggle.isOn);
         });
 
@@ -161,7 +163,7 @@ public class UIController : MonoBehaviour
         {
             SimulationGraphEnabler.DisableGraphSettings();
         }
-        else 
+        else
         {
             VenueUI.SetActive(false);
             HouseholdUI.SetActive(false);
@@ -179,7 +181,7 @@ public class UIController : MonoBehaviour
 
     private void ClearInputFields()
     {
-        foreach  (InputField inputField in InputFieldsToReset)
+        foreach (InputField inputField in InputFieldsToReset)
         {
             inputField.text = "";
         }
@@ -189,10 +191,10 @@ public class UIController : MonoBehaviour
     //Methods for loading right properties
     public void LoadVenueUI()
     {
-            VenueUI.SetActive(true);
-            HouseholdUI.SetActive(false);
-            WorkplaceUI.SetActive(false);
-            HospitalUI.SetActive(false);
+        VenueUI.SetActive(true);
+        HouseholdUI.SetActive(false);
+        WorkplaceUI.SetActive(false);
+        HospitalUI.SetActive(false);
     }
 
 
@@ -226,7 +228,28 @@ public class UIController : MonoBehaviour
         DisableButtonOutlineColors();
         SimulationGridManager.CurrentPrefabName = PrefabName.None;
         _lastClickedButton = null;
-    
+
     }
+
+
+    /// <summary>
+    ///Method which disables UI elements when no entity is selected 
+    /// </summary>
+    /// <param name="isSelected"></param>
+    public void IsEntitySelectedUI(bool isSelected)
+    {
+
+        SaveAndDeleteUI.SetActive(isSelected);
+        if (!isSelected)
+        {
+            VenueUI.SetActive(false);
+            HouseholdUI.SetActive(false);
+            WorkplaceUI.SetActive(false);
+            HospitalUI.SetActive(false);
+        }
+
+    }
+
+
 
 }
