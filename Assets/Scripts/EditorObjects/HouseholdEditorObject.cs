@@ -13,6 +13,10 @@ namespace EditorObjects
         private Household _runtimeHousehold;
         private Vector3Int _relativePosition;
         private string _name;
+        //The household also needs a reference to a saved object
+        //???
+
+
 
         public GameObject EditorGameObject { get => _gameObject; set => _gameObject = value; }
         public Vector3Int RelativePosition { get => _relativePosition; set => _relativePosition = value; }

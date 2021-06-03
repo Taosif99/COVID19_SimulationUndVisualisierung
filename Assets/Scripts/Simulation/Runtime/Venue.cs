@@ -10,8 +10,11 @@ namespace Simulation.Runtime
 
         public Venue(float infectionRisk)
         {
-            _infectionRisk = infectionRisk;
+            InfectionRisk = infectionRisk;
         }
+
+        public float InfectionRisk { get => _infectionRisk; set => _infectionRisk = value; }
+        
 
         public void SimulateEncounters()
         {

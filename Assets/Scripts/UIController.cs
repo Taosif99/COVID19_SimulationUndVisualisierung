@@ -19,7 +19,8 @@ public class UIController : MonoBehaviour
 
     //References to buttons
     public Button placeVenueButton, placeWorkplaceButton, placeHospitalButton,placeHouseholdButton,placeGraphButton;
-    public Color outlineColor; //To indicate which button is clicked
+    //To indicate which button is clicked
+    public Color outlineColor; 
 
     //To reset all buttons 
     private List<Button> buttonList; 
@@ -29,7 +30,7 @@ public class UIController : MonoBehaviour
 
     //Probably can be replaced with actions later
     public GridManager SimulationGridManager;
-    //Converning Graph in UI
+    //Concerning Graph in UI
     public GraphEnabler SimulationGraphEnabler;
     public Toggle BarChartToggle;
     public Toggle LineChartToggle;
@@ -139,39 +140,23 @@ public class UIController : MonoBehaviour
     /// </summary>
     private void DeactivateOldSettingsElements() //Houshold wie venue...
     {
-
-
         ClearInputFields();
-
-
-        if (_lastClickedButton == placeVenueButton || _lastClickedButton == placeHouseholdButton)
+        if (_lastClickedButton == placeVenueButton)
         {
-            VenueUI.SetActive(true);
-            HouseholdUI.SetActive(false);
-            WorkplaceUI.SetActive(false);
-            HospitalUI.SetActive(false);
+            LoadVenueUI();
         }
-
         if (_lastClickedButton == placeWorkplaceButton)
         {
-            VenueUI.SetActive(true);
-            HouseholdUI.SetActive(false);
-            WorkplaceUI.SetActive(true);
-            HospitalUI.SetActive(false);
+            LoadWorkplaceUI();
 
         }
 
         if (_lastClickedButton == placeHospitalButton)
         {
-            VenueUI.SetActive(true);
-            HouseholdUI.SetActive(false);
-            WorkplaceUI.SetActive(true);
-            HospitalUI.SetActive(true);
+            LoadHospitalUI();
+
         }
-
-
-        //Handle GraphButton
-
+        //Handle Graph related UI components
         if (_lastClickedButton != placeGraphButton)
         {
             SimulationGraphEnabler.DisableGraphSettings();
@@ -187,25 +172,61 @@ public class UIController : MonoBehaviour
 
         if (_lastClickedButton == placeHouseholdButton)
         {
-            VenueUI.SetActive(true);
-            HouseholdUI.SetActive(true);
-            WorkplaceUI.SetActive(false);
-            HospitalUI.SetActive(false);
-
+            LoadHouseholdUI();
         }
-
-
     }
 
 
     private void ClearInputFields()
     {
-
         foreach  (InputField inputField in InputFieldsToReset)
-
         {
             inputField.text = "";
         }
+    }
+
+
+    //Methods for loading right properties
+    public void LoadVenueUI()
+    {
+            VenueUI.SetActive(true);
+            HouseholdUI.SetActive(false);
+            WorkplaceUI.SetActive(false);
+            HospitalUI.SetActive(false);
+    }
+
+
+    public void LoadWorkplaceUI()
+    {
+        VenueUI.SetActive(true);
+        HouseholdUI.SetActive(false);
+        WorkplaceUI.SetActive(true);
+        HospitalUI.SetActive(false);
+    }
+
+    public void LoadHospitalUI()
+    {
+        VenueUI.SetActive(true);
+        HouseholdUI.SetActive(false);
+        WorkplaceUI.SetActive(true);
+        HospitalUI.SetActive(true);
+    }
+
+
+    public void LoadHouseholdUI()
+    {
+        VenueUI.SetActive(true);
+        HouseholdUI.SetActive(true);
+        WorkplaceUI.SetActive(false);
+        HospitalUI.SetActive(false);
+    }
+
+    public void UnselectSelectedButton()
+    {
+        DisableButtonOutlineColors();
+        SimulationGridManager.CurrentPrefabName = PrefabName.None;
+        _lastClickedButton = null;
     
     }
+
 }

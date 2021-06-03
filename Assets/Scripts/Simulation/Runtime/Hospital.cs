@@ -8,9 +8,12 @@
         public Hospital(Scale scale, WorkerAvailability workerAvailability, int workerCapacity, float infectionRisk)
             : base(Type.Hospital, workerCapacity, infectionRisk)
         {
-            _scale = scale;
-            _workerAvailability = workerAvailability;
+            HospitalScale = scale;
+            HospitalWorkerAvailability = workerAvailability;
         }
+
+        public Scale HospitalScale { get => _scale; set => _scale = value; }
+        public WorkerAvailability HospitalWorkerAvailability { get => _workerAvailability; set => _workerAvailability = value; }
 
         public enum Scale
         {

@@ -7,9 +7,12 @@
 
         public Workplace(Type type, int workerCapacity, float infectionRisk) : base(infectionRisk)
         {
-            _type = type;
-            _workerCapacity = workerCapacity;
+            WorkType = type;
+            WorkerCapacity = workerCapacity;
         }
+
+        public Type WorkType { get => _type; set => _type = value; }
+        public int WorkerCapacity { get => _workerCapacity; set => _workerCapacity = value; }
 
         public enum Type
         {

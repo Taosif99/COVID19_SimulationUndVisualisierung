@@ -33,6 +33,7 @@ namespace Grid
         //The GameObject prefab to spawn
         [SerializeField] private NamedPrefab _currentPrefabToSpawn;
         public NamedPrefab CurrentPrefabToSpawn { get => _currentPrefabToSpawn; set => _currentPrefabToSpawn = value; }
+        public PrefabName CurrentPrefabName { get => _currentPrefabName; set => _currentPrefabName = value; }
 
         //In this position we start to spawn our grid
         public Vector3 OriginPosition;
@@ -83,7 +84,7 @@ namespace Grid
         private void Update()
         {
             //Check if left mouse button clicked and UI not clicked
-            if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject() == false && _currentPrefabName != PrefabName.None)
+            if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject() == false && CurrentPrefabName != PrefabName.None)
             {
                 //Raycast into the scene
                 RaycastHit hitInfo;
@@ -145,7 +146,7 @@ namespace Grid
                 {
                     CurrentPrefabToSpawn = namedPrefab;
                     Debug.Log("Set Prefab Name:" + namedPrefab.prefabName);
-                    _currentPrefabName = namedPrefab.prefabName;
+                    CurrentPrefabName = namedPrefab.prefabName;
                     return;
                 }
             }

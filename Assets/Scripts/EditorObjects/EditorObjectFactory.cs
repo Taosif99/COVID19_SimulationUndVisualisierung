@@ -16,13 +16,19 @@ namespace EditorObjects
     {
 
 
+        //Some mock runtime Objects for testing, will be removed Later
+        private static Venue venueMock = new Venue(0.5f);
+        private static Workplace workplaceMock = new Workplace(Workplace.Type.Store, 20, 0.3f);
+        private static Household householdMock = new Household(null, 0.4f);
+        private static Hospital hospitalMock = new Hospital(Hospital.Scale.Medium, Hospital.WorkerAvailability.Low,3000 ,0.19f);
+
 
         public static VenueEditorObject CreateVenueEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)
         {
             //must be get by the RuntimeObject Factory or some manager/controller
-            Venue runtimeVenue = null;
+            Venue runtimeVenue = venueMock;
             //Must be get from the UI Controller / or use first default name
-            string venueUIName = "venue placeholder name";
+            string venueUIName = "venue mock name";
             // Instantiate at finalPosition and zero rotation.
             GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
             gameObject.name = PrefabName.Venue.ToString();
@@ -39,9 +45,9 @@ namespace EditorObjects
         public static WorkplaceEditorObject CreateWorkplaceEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)
         {
             //must be get by the RuntimeObject Factory
-            Workplace runtimeWorkplace = null;
+            Workplace runtimeWorkplace = workplaceMock;
             //Must be get from the UI Controller
-            string workplaceUIName = "workplace placeholder name";
+            string workplaceUIName = "workplace mock name";
             // Instantiate at finalPosition and zero rotation.
             GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
             gameObject.name = PrefabName.Workplace.ToString();
@@ -55,9 +61,9 @@ namespace EditorObjects
         public static HouseholdEditorObject CreateHouseholdEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)
         {
             //must be get by the RuntimeObject Factory
-            Household runtimeHousehold = null;
+            Household runtimeHousehold = householdMock;
             //Must be get from the UI Controller
-            string householdUIName = "household placeholder name";
+            string householdUIName = "household mock name";
             // Instantiate at finalPosition and zero rotation.
             GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
             gameObject.name = PrefabName.Household.ToString();
@@ -72,9 +78,9 @@ namespace EditorObjects
         public static HospitalEditorObject CreateHospitalEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)
         {
             //must be get by the RuntimeObject Factory
-            Hospital runtimeHospital = null;
+            Hospital runtimeHospital = hospitalMock;
             //Must be get from the UI Controller
-            string householdUIName = "hospital placeholder name";
+            string householdUIName = "hospital mock name";
             // Instantiate at finalPosition and zero rotation.
             GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
             gameObject.name = PrefabName.Hospital.ToString();
