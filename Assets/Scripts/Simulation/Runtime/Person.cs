@@ -37,5 +37,12 @@ namespace Simulation.Runtime
             Sick,
             VerySick
         }
+
+        public void UpdateInfectionState()
+        { 
+        
+        //TODO REZA UND TAOSIF
+        }
+
     }
 }
