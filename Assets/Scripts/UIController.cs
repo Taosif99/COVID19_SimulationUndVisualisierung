@@ -18,7 +18,7 @@ public class UIController : MonoBehaviour
 {
 
     //References to buttons
-    public Button placeVenueButton, placeWorkplaceButton, placeHospitalButton, placeHouseholdButton, placeGraphButton;
+    public Button placeWorkplaceButton, placeHospitalButton, placeHouseholdButton, placeGraphButton;
     //To indicate which button is clicked
     public Color outlineColor;
 
@@ -29,7 +29,7 @@ public class UIController : MonoBehaviour
 
 
     //Probably can be replaced with actions later
-    public GridManager SimulationGridManager;
+    public GridManager2 SimulationGridManager;
     //Concerning Graph in UI
     public GraphEnabler SimulationGraphEnabler;
     public Toggle BarChartToggle;
@@ -64,14 +64,12 @@ public class UIController : MonoBehaviour
 
         buttonList = new List<Button>
         {
-            placeVenueButton,
             placeWorkplaceButton,
             placeHospitalButton,
             placeHouseholdButton,
             placeGraphButton
         };
         _placementButtonDictionary = new Dictionary<PrefabName, Button>();
-        _placementButtonDictionary.Add(PrefabName.Venue, placeVenueButton);
         _placementButtonDictionary.Add(PrefabName.Workplace, placeWorkplaceButton);
         _placementButtonDictionary.Add(PrefabName.Hospital, placeHospitalButton);
         _placementButtonDictionary.Add(PrefabName.Household, placeHouseholdButton);
@@ -143,10 +141,8 @@ public class UIController : MonoBehaviour
     private void DeactivateOldSettingsElements() //Houshold wie venue...
     {
         ClearInputFields();
-        if (_lastClickedButton == placeVenueButton)
-        {
-            LoadVenueUI();
-        }
+
+
         if (_lastClickedButton == placeWorkplaceButton)
         {
             LoadWorkplaceUI();
@@ -189,15 +185,6 @@ public class UIController : MonoBehaviour
 
 
     //Methods for loading right properties
-    public void LoadVenueUI()
-    {
-        VenueUI.SetActive(true);
-        HouseholdUI.SetActive(false);
-        WorkplaceUI.SetActive(false);
-        HospitalUI.SetActive(false);
-    }
-
-
     public void LoadWorkplaceUI()
     {
         VenueUI.SetActive(true);

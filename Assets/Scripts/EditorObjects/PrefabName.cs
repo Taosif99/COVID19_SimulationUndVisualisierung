@@ -4,7 +4,7 @@ namespace EditorObjects
 {
     public enum PrefabName
     {
-        Venue, Graph, Workplace, Household, Hospital,None
+        Graph, Workplace, Household, Hospital,None
     };
 
 }

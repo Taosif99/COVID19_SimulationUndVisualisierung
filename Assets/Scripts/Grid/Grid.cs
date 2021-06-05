@@ -3,7 +3,11 @@ using UnityEngine;
 
 namespace Grid
 {
-    class Grid
+    /// <summary>
+    /// This class implements the methods to map a two dimensional square object (like a
+    /// plane with same x-scale und y-scale) to grid cell points.
+    /// </summary>
+    public class Grid
     {
         public float CellSize { get; set; } = 1f;
 
@@ -15,6 +19,11 @@ namespace Grid
             );
         }
 
+        /// <summary>
+        /// Method to get the world position of the grid cell center.
+        /// </summary>
+        /// <param name="gridCell"></param>
+        /// <returns>The center point of a grid cell</returns>
         public Vector2 GetRelativeWorldPosition(Vector2Int gridCell)
         {
             return new Vector2(gridCell.x * CellSize + CellSize / 2, gridCell.y * CellSize + CellSize / 2);

@@ -12,5 +12,6 @@ namespace Simulation.Edit
             _x = x;
             _y = y;
         }
+
     }
 }

@@ -11,12 +11,14 @@ using Simulation;
 /// This class maintains the editor Objects during the Runtime
 /// I think it would be better to implement a "gameMaster" class to remove Monobehaviour inheritance
 /// 
+/// TODO: Do not use linear search
+/// 
 /// Currently working wick mock runtime objects
 /// </summary>
 public class EditorObjectsManager : MonoBehaviour
 {
 
-    public GridManager SimulationGridManager;
+    public GridManager2 SimulationGridManager;
 
 
     public List<IEditorObject> editorObjects = new List<IEditorObject>();
@@ -53,14 +55,16 @@ public class EditorObjectsManager : MonoBehaviour
     //////////////////////////////////////////////////////////////////////////////////
 
     /// <summary>
-    /// Method which adds an Editor object.
+    /// Method which adds an Editor object. TODO REMOVE OLD
     /// </summary>
     /// <param name="namedPrefab"></param>
     /// <param name="spawnPosition"></param>
-    /// <param name="relativePositionInt"></param>
+    /// <param name="gridCellPosition"></param>
     /// <param name="planeWorldTransform"></param>
     /// <returns></returns>
-    public GameObject AddEditorObject(GridManager.NamedPrefab namedPrefab, Vector3 spawnPosition, Vector3Int relativePositionInt, Transform planeWorldTransform)
+    
+    /*
+    public GameObject AddEditorObject(NamedPrefab namedPrefab, Vector3 spawnPosition, Vector2Int gridCellPosition, Transform planeWorldTransform)
     {
 
         PrefabName currentPrefabName = namedPrefab.prefabName;
@@ -71,23 +75,18 @@ public class EditorObjectsManager : MonoBehaviour
         switch (currentPrefabName)
         {
 
-          /*  case PrefabName.Venue:
-                editorObject = EditorObjectFactory.CreateVenueEditorObject(currentPrefabToSpawn, spawnPosition, relativePositionInt, planeWorldTransform);
-                //venueEditorObjects.Add((VenueEditorObject)editorObject);
-                break;*/
-
             case PrefabName.Workplace:
-                editorObject = EditorObjectFactory.CreateWorkplaceEditorObject(currentPrefabToSpawn, spawnPosition, relativePositionInt, planeWorldTransform);
+                //editorObject = EditorObjectFactory.CreateWorkplaceEditorObject(currentPrefabToSpawn, spawnPosition, gridCellPosition, planeWorldTransform);
                 //workplaceEditorObjects.Add((WorkplaceEditorObject)editorObject);
                 break;
 
             case PrefabName.Hospital:
-                editorObject = EditorObjectFactory.CreateHospitalEditorObject(currentPrefabToSpawn, spawnPosition, relativePositionInt, planeWorldTransform);
+                //editorObject = EditorObjectFactory.CreateHospitalEditorObject(currentPrefabToSpawn, spawnPosition, gridCellPosition, planeWorldTransform);
                 //hospitalEditorObjects.Add((HospitalEditorObject)editorObject);
                 break;
 
             case PrefabName.Household:
-                editorObject = EditorObjectFactory.CreateHouseholdEditorObject(currentPrefabToSpawn, spawnPosition, relativePositionInt, planeWorldTransform);
+                //editorObject = EditorObjectFactory.CreateHouseholdEditorObject(currentPrefabToSpawn, spawnPosition, gridCellPosition, planeWorldTransform);
                 //householdEditorObjects.Add((HouseholdEditorObject)editorObject);
                 break;
 
@@ -98,17 +97,63 @@ public class EditorObjectsManager : MonoBehaviour
 
     
 
-        editorObjects.Add(editorObject);
+        editorObjects.Add(editorObject); 
+        
+
         //Load the new object in the ui, TODO MAKE OVERLOADED METHOD TO DIFFERETIATE BETWEEN UI CLICK WHERE SEARCH IS NEEDED AND THESE ONE
-        LoadEditorObjectUI(spawnPosition);
+        //LoadEditorObjectUI(spawnPosition);
+
+
+        return editorObject.EditorGameObject;
+    }*/
+
+
+
+    public GameObject AddEditorObject2(NamedPrefab namedPrefab, Vector2Int gridCellPosition, Transform planeWorldTransform)
+    {
+
+        PrefabName currentPrefabName = namedPrefab.prefabName;
+        GameObject currentPrefabToSpawn = namedPrefab.prefab;
+        IEditorObject editorObject = null;
+
+        //TODO DEFINE DEFAULT CONSTRUCTOR
+        switch (currentPrefabName)
+        {
+
+            case PrefabName.Workplace:
+                Workplace workplace = new Workplace(new GridCell((uint)gridCellPosition.x, (uint)gridCellPosition.y), 0.2f, WorkplaceType.Other, 200);
+                editorObject = EditorObjectFactory.Create(workplace, "Workplace Mock", currentPrefabToSpawn);
+                break;
+            case PrefabName.Hospital:
+                Hospital hospital = new Hospital(new GridCell((uint)gridCellPosition.x, (uint)gridCellPosition.y), 0.1f, WorkplaceType.Hospital, 299,HospitalScale.Large, WorkerAvailability.Low);
+                editorObject = EditorObjectFactory.Create(hospital, "Hospital Mock", currentPrefabToSpawn);
+                break;
+            case PrefabName.Household:
+                Household household = new Household(new GridCell((uint)gridCellPosition.x, (uint)gridCellPosition.y), 0.6f, 12, 0.7f, 0.5f, 0.3f, 2, 5);
+                editorObject = EditorObjectFactory.Create(household, "Household Mock", currentPrefabToSpawn);
+                break;
+
+            default:
+                Debug.LogError("Unknown prefab name");
+                break;
+        }
+
+
+
+        editorObjects.Add(editorObject);
+
+
+        //Load the new object in the ui, TODO MAKE OVERLOADED METHOD TO DIFFERETIATE BETWEEN UI CLICK WHERE SEARCH IS NEEDED AND THESE ONE
+        //LoadEditorObjectUI(spawnPosition);
 
 
         return editorObject.EditorGameObject;
     }
 
 
+
     //We may handle different venues according the properties what can be set
-    
+
     /// <summary>
     /// Method which loads Values from the UI according the correspoding Clicked Venue Object Object
     /// </summary>
@@ -132,7 +177,6 @@ public class EditorObjectsManager : MonoBehaviour
                     //Check if Graph....TODO WHEN GRAPH IS UI ELEMENT IN WORLD
                     if (entity is Venue)
                     {
-                        UIController.Instance.LoadVenueUI();
                         Venue venue = (Venue)entity;
                         InfectionRiskInputField.text = venue.InfectionRisk.ToString(); //TODO ROUND VALUES
                         if (entity is Workplace)
@@ -159,7 +203,6 @@ public class EditorObjectsManager : MonoBehaviour
                         {
                             UIController.Instance.LoadHouseholdUI();
                             Household household = (Household)entity;
-                            //I need the saved Objects for that...
                             NumberOfPeopleInputField.text = household.NumberOfPeople.ToString();
                             CarefulnessInputField.text = household.CarefulnessTendency.ToString();
                             PercantageOfWorkersInputField.text = household.PercentageOfWorkers.ToString();
@@ -174,7 +217,7 @@ public class EditorObjectsManager : MonoBehaviour
 
     }
 
-    //TODO CATCH INPUT ERRORS
+    //TODO CATCH INPUT ERRORS, use tryparse
 
     /// <summary>
     /// 

@@ -7,15 +7,13 @@ namespace EditorObjects
     {
 
         public GameObject EditorGameObject { get; set; }
-        public Vector3Int GridPosition { get; set; }
         public string UIName { get; set; }
         public Entity EditorEntity { get; set; }
 
-        public WorkplaceEditorObject(GameObject gameObject, Workplace editorWorkplace, Vector3Int gridPosition, string name)
+        public WorkplaceEditorObject(GameObject gameObject, Workplace editorWorkplace, string name)
         {
            EditorGameObject = gameObject;
            EditorEntity = editorWorkplace;
-           GridPosition= gridPosition;
            UIName = name;
         }
 

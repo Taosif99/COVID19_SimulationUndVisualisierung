@@ -3,6 +3,9 @@ using UnityEngine.EventSystems;
 
 namespace Grid
 {
+    /// <summary>
+    /// Class which implements debugging functions for our grid implementation.
+    /// </summary>
     [RequireComponent(typeof(GridManager2))]
     class GridManagerDebugger : MonoBehaviour
     {
@@ -18,18 +21,7 @@ namespace Grid
 
         private void Update()
         {
-            //Check if left mouse button clicked and UI not clicked
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-            {
-                //Raycast into the scene
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                //Check if we hit something
-                if (Physics.Raycast(ray, out RaycastHit hitInfo,Mathf.Infinity, LayerMask.GetMask("Ground")))
-                {
-                    Vector3 point = hitInfo.point;
-                    Debug.Log($"Relative Position On Grid: {new Vector2(point.x, point.z)} -> {_grid.GetGridCell(new Vector2(point.x, point.z))}");
-                } 
-            }
+
         }
 
         private void OnDrawGizmos()

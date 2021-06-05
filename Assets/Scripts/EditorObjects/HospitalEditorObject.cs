@@ -10,14 +10,12 @@ namespace EditorObjects
 
 
         public GameObject EditorGameObject { get; set; } 
-        public Vector3Int GridPosition { get; set; }
         public string UIName { get; set; }
         public Entity EditorEntity { get; set; }
-        public HospitalEditorObject(GameObject gameObject, Hospital editorHospital, Vector3Int gridPosition, string name)
+        public HospitalEditorObject(GameObject gameObject, Hospital editorHospital, string name)
         {
             EditorGameObject = gameObject;
             EditorEntity = editorHospital;
-            GridPosition = gridPosition;
             UIName = name;
         }
 
