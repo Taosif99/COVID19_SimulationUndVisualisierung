@@ -13,11 +13,13 @@ namespace Simulation.Runtime
         private int _amountOfPeopleInfected;
         private bool _isVaccinated;
         private DateTime _infectionDate;
+        private bool _isWorker;
 
-        public Person(float carefulnessFactor, float risk)
+        public Person(float carefulnessFactor, float risk, bool isWorker)
         {
             _carefulnessFactor = carefulnessFactor;
             _risk = risk;
+            _isWorker = isWorker;
         }
 
         [Flags]

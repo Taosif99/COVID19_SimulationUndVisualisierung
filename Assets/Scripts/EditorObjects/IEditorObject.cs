@@ -5,7 +5,7 @@ using Simulation.Edit;
 namespace EditorObjects
 {
     /// <summary>
-    /// This Interface shall define all Methods/Properties an EditoObject must fulfill.
+    /// This Interface shall define all Methods/Properties an EditorObject must fulfill.
     /// </summary>
     ///
 

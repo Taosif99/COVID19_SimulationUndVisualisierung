@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Simulation.Edit;
 using System.Linq;
 using System;
+using Simulation;
 /// <summary>
 /// This class maintains the editor Objects during the Runtime
 /// I think it would be better to implement a "gameMaster" class to remove Monobehaviour inheritance
@@ -70,10 +71,10 @@ public class EditorObjectsManager : MonoBehaviour
         switch (currentPrefabName)
         {
 
-            case PrefabName.Venue:
+          /*  case PrefabName.Venue:
                 editorObject = EditorObjectFactory.CreateVenueEditorObject(currentPrefabToSpawn, spawnPosition, relativePositionInt, planeWorldTransform);
                 //venueEditorObjects.Add((VenueEditorObject)editorObject);
-                break;
+                break;*/
 
             case PrefabName.Workplace:
                 editorObject = EditorObjectFactory.CreateWorkplaceEditorObject(currentPrefabToSpawn, spawnPosition, relativePositionInt, planeWorldTransform);

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Simulation.Edit;
-
+using Simulation;
 
 namespace EditorObjects
 {
@@ -17,16 +17,16 @@ namespace EditorObjects
 
 
         //Some mock runtime Objects for testing, will be removed Later, todo uniform constructors
-        private static Venue venueMock = new Venue(null,0.5f);
+        //private static Venue venueMock = new Venue(null,0.5f);
         private static Workplace workplaceMock = new Workplace(null,0.3f,WorkplaceType.Store, 20); //Check type definition
         private static Household householdMock = new Household(null, 0.4f,10,0.5f,0.7f,0.4f,10,6);
         private static Hospital hospitalMock = new Hospital(null,0.2f,WorkplaceType.Hospital, 3000,HospitalScale.Medium,WorkerAvailability.Low);
 
 
-        public static VenueEditorObject CreateVenueEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)
+        /*public static VenueEditorObject CreateVenueEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)
         {
    
-            Venue runtimeVenue = venueMock;
+            //Venue runtimeVenue = venueMock;
             //Must be get from the UI Controller / or use first default name
             string venueUIName = "venue mock name";
             // Instantiate at finalPosition and zero rotation.
@@ -39,7 +39,7 @@ namespace EditorObjects
             VenueEditorObject venueEditorObject = new VenueEditorObject(gameObject, runtimeVenue, relativePosition, venueUIName);
 
             return venueEditorObject;
-        }
+        }*/
 
 
         public static WorkplaceEditorObject CreateWorkplaceEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)

@@ -9,7 +9,7 @@ namespace Simulation.Runtime
 
         protected Venue(Edit.Venue editorEntity) : base(editorEntity)
         {
-            throw new NotImplementedException();
+            InfectionRisk = editorEntity.InfectionRisk;
         }
 
         public float InfectionRisk { get; }
