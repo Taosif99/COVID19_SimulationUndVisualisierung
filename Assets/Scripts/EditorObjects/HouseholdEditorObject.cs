@@ -1,7 +1,4 @@
-using Simulation.Runtime;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Simulation.Edit;
 using UnityEngine;
 
 namespace EditorObjects
@@ -9,31 +6,21 @@ namespace EditorObjects
  
     public class HouseholdEditorObject : IEditorObject
     {
-        private GameObject _gameObject;
-        private Household _runtimeHousehold;
-        private Vector3Int _relativePosition;
-        private string _name;
-        //The household also needs a reference to a saved object
-        //???
 
 
 
-        public GameObject EditorGameObject { get => _gameObject; set => _gameObject = value; }
-        public Vector3Int RelativePosition { get => _relativePosition; set => _relativePosition = value; }
-        public string UIName { get => _name; set => _name = value; }
-        public Entity RuntimeEntity { get => _runtimeHousehold; set => _runtimeHousehold = (Household)value; }
+        public GameObject EditorGameObject { get; set; }
+        public Vector3Int GridPosition { get; set; }
+        public string UIName { get; set; }
+        public Entity EditorEntity { get; set; }
 
-        public HouseholdEditorObject(GameObject gameObject, Household runtimeHousehold, Vector3Int relativePosition, string name)
+        public HouseholdEditorObject(GameObject gameObject, Household editorHousehold, Vector3Int gridPosition, string name)
         {
-            _gameObject = gameObject;
-            _runtimeHousehold = runtimeHousehold;
-            _relativePosition = relativePosition;
-            _name = name;
+            EditorGameObject = gameObject;
+            EditorEntity = editorHousehold;
+            GridPosition = gridPosition;
+            UIName = name;
         }
 
-        public void LoadUI()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

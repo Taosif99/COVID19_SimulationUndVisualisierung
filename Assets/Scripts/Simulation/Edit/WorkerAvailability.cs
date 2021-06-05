@@ -3,7 +3,7 @@
 namespace Simulation.Edit
 {
     [Serializable]
-    enum WorkerAvailability
+   public enum WorkerAvailability
     {
         Low,
         Medium,

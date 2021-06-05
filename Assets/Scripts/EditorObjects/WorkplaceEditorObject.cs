@@ -1,5 +1,4 @@
-using Simulation.Runtime;
-using System;
+using Simulation.Edit;
 using UnityEngine;
 namespace EditorObjects
 {
@@ -7,28 +6,18 @@ namespace EditorObjects
     public class WorkplaceEditorObject : IEditorObject
     {
 
-        private GameObject _gameObject;
-        private Workplace _runtimeWorkplace;
-        private Vector3Int _relativePosition;
-        private string _name;
+        public GameObject EditorGameObject { get; set; }
+        public Vector3Int GridPosition { get; set; }
+        public string UIName { get; set; }
+        public Entity EditorEntity { get; set; }
 
-        public GameObject EditorGameObject { get => _gameObject; set => _gameObject = value; }
-        public Vector3Int RelativePosition { get => _relativePosition; set => _relativePosition = value; }
-        public string UIName { get => _name; set => _name = value; }
-        public Entity RuntimeEntity { get => _runtimeWorkplace; set => _runtimeWorkplace = (Workplace)value; }
-
-        public WorkplaceEditorObject(GameObject gameObject, Workplace runtimeWorkplace, Vector3Int relativePosition, string name)
+        public WorkplaceEditorObject(GameObject gameObject, Workplace editorWorkplace, Vector3Int gridPosition, string name)
         {
-            _gameObject = gameObject;
-            _runtimeWorkplace = runtimeWorkplace;
-            _relativePosition = relativePosition;
-            _name = name;
+           EditorGameObject = gameObject;
+           EditorEntity = editorWorkplace;
+           GridPosition= gridPosition;
+           UIName = name;
         }
 
-        public void LoadUI()
-        {
-
-            throw new NotImplementedException();
-        }
     }
 }

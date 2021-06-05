@@ -6,7 +6,7 @@ namespace Simulation.Edit
     /// Represents a household.
     /// </summary>
     [Serializable]
-    class Household : Venue
+   public class Household : Venue
     {
         private byte _numberOfPeople;
         private float _percentageOfWorkers;

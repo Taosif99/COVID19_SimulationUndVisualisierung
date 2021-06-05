@@ -1,7 +1,4 @@
-using Simulation.Runtime;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Simulation.Edit;
 using UnityEngine;
 
 namespace EditorObjects
@@ -10,30 +7,19 @@ namespace EditorObjects
     public class VenueEditorObject : IEditorObject
     {
 
-        private GameObject _gameObject;
-        private Venue _runtimeVenue;
-        private Vector3Int _relativePosition;
-        private string _name;
+        public GameObject EditorGameObject { get; set; }
+        public Vector3Int GridPosition { get; set; }
+        public string UIName { get; set; }
+        public Entity EditorEntity { get; set; }
 
-
-
-        public GameObject EditorGameObject { get => _gameObject; set => _gameObject = value; }
-        public Vector3Int RelativePosition { get => _relativePosition; set => _relativePosition = value; }
-        public string UIName { get => _name; set => _name = value; }
-        public Entity RuntimeEntity { get => _runtimeVenue; set => _runtimeVenue = (Venue)value; }
-
-        public VenueEditorObject(GameObject gameObject, Venue runtimeVenue, Vector3Int relativePosition, string name)
+        public VenueEditorObject(GameObject gameObject, Venue editorVenue, Vector3Int gridPosition, string name)
         {
-            _gameObject = gameObject;
-            _runtimeVenue = runtimeVenue;
-            _relativePosition = relativePosition;
-            _name = name;
+            EditorGameObject = gameObject;
+            EditorEntity = editorVenue;
+            GridPosition = gridPosition;
+            UIName = name;
         }
 
-        public void LoadUI()
-        {
-            throw new NotImplementedException();
-        }
 
     }
 

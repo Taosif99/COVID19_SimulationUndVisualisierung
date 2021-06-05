@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Simulation.Runtime;
+using Simulation.Edit;
 
 
 namespace EditorObjects
@@ -16,11 +16,11 @@ namespace EditorObjects
     {
 
 
-        //Some mock runtime Objects for testing, will be removed Later
-        private static Venue venueMock = new Venue(0.5f);
-        private static Workplace workplaceMock = new Workplace(Workplace.Type.Store, 20, 0.3f);
-        private static Household householdMock = new Household(null, 0.4f);
-        private static Hospital hospitalMock = new Hospital(Hospital.Scale.Medium, Hospital.WorkerAvailability.Low,3000 ,0.19f);
+        //Some mock runtime Objects for testing, will be removed Later, todo uniform constructors
+        private static Venue venueMock = new Venue(null,0.5f);
+        private static Workplace workplaceMock = new Workplace(null,0.3f,WorkplaceType.Store, 20); //Check type definition
+        private static Household householdMock = new Household(null, 0.4f,10,0.5f,0.7f,0.4f,10,6);
+        private static Hospital hospitalMock = new Hospital(null,0.2f,WorkplaceType.Hospital, 3000,HospitalScale.Medium,WorkerAvailability.Low);
 
 
         public static VenueEditorObject CreateVenueEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)

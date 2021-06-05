@@ -3,7 +3,7 @@
 namespace Simulation.Edit
 {
     [Serializable]
-    enum WorkplaceType
+    public enum WorkplaceType
     {
         Other,
         Store,

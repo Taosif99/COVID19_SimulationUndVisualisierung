@@ -3,7 +3,7 @@
 namespace Simulation.Edit
 {
     [Serializable]
-    enum HospitalScale
+   public enum HospitalScale
     {
         Small,
         Medium,

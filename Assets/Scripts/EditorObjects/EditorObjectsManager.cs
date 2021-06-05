@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EditorObjects;
 using Grid;
 using UnityEngine.UI;
-using Simulation.Runtime;
+using Simulation.Edit;
 using System.Linq;
 using System;
 /// <summary>
@@ -124,7 +123,7 @@ public class EditorObjectsManager : MonoBehaviour
             {
                 UIController.Instance.IsEntitySelectedUI(true);
                 ObjectNameInputField.text = editorObject.UIName;
-                Entity entity = editorObject.RuntimeEntity;
+                Entity entity = editorObject.EditorEntity;
                 if (entity != null) //Can be removed later
                 {
                     _currentSelectedEntity = entity; //Must be set null when no object is clicked
@@ -140,7 +139,7 @@ public class EditorObjectsManager : MonoBehaviour
                             UIController.Instance.LoadWorkplaceUI();
                             Workplace workplace = (Workplace)entity;
                             List<string> availableWorkplaceOptions = WorkplaceTypeDropdown.options.Select(option => option.text).ToList();
-                            WorkplaceTypeDropdown.value = availableWorkplaceOptions.IndexOf(workplace.WorkType.ToString());
+                            WorkplaceTypeDropdown.value = availableWorkplaceOptions.IndexOf(workplace.Type.ToString());
                             CapacityInputField.text = workplace.WorkerCapacity.ToString();
 
                             if (entity is Hospital)
@@ -150,8 +149,8 @@ public class EditorObjectsManager : MonoBehaviour
                                 Hospital hospital = (Hospital)entity;
                                 List<string> availableHospitalScaleOptions = HospitalScaleDropdown.options.Select(option => option.text).ToList();
                                 List<string> availableWorkerAvailabilityOptions = WorkerAvailabilityDropdown.options.Select(option => option.text).ToList();
-                                HospitalScaleDropdown.value = availableHospitalScaleOptions.IndexOf(hospital.HospitalScale.ToString());
-                                WorkerAvailabilityDropdown.value = availableWorkerAvailabilityOptions.IndexOf(hospital.HospitalWorkerAvailability.ToString());
+                                HospitalScaleDropdown.value = availableHospitalScaleOptions.IndexOf(hospital.Scale.ToString());
+                                WorkerAvailabilityDropdown.value = availableWorkerAvailabilityOptions.IndexOf(hospital.WorkerAvailability.ToString());
                             }
 
                         }
@@ -191,7 +190,7 @@ public class EditorObjectsManager : MonoBehaviour
             //Get the edito object to save the UI name
             foreach (IEditorObject editorObject in editorObjects)
             {
-                if (editorObject.RuntimeEntity == _currentSelectedEntity) 
+                if (editorObject.EditorEntity== _currentSelectedEntity) 
                 {
                     editorObject.UIName = ObjectNameInputField.text;
                     break; 
@@ -206,19 +205,19 @@ public class EditorObjectsManager : MonoBehaviour
                 {
                     Workplace workplace = (Workplace)_currentSelectedEntity;
                     
-                    Workplace.Type workplaceType = (Workplace.Type) Enum.Parse(typeof(Workplace.Type), WorkplaceTypeDropdown.options[WorkplaceTypeDropdown.value].text);
+                    WorkplaceType workplaceType = (WorkplaceType) Enum.Parse(typeof(WorkplaceType), WorkplaceTypeDropdown.options[WorkplaceTypeDropdown.value].text);
                     int capacity = int.Parse(CapacityInputField.text);
                     workplace.WorkerCapacity = capacity;
-                    workplace.WorkType = workplaceType;
+                    workplace.Type = workplaceType;
 
                     if (_currentSelectedEntity is Hospital)
                     {
                         Hospital hospital = (Hospital)_currentSelectedEntity;
-                        Hospital.Scale hospitalScale = (Hospital.Scale)Enum.Parse(typeof(Hospital.Scale), HospitalScaleDropdown.options[HospitalScaleDropdown.value].text);
-                        Hospital.WorkerAvailability workerAvailability = (Hospital.WorkerAvailability)Enum.Parse(typeof(Hospital.WorkerAvailability), WorkerAvailabilityDropdown.options[WorkerAvailabilityDropdown.value].text);
+                        HospitalScale hospitalScale = (HospitalScale)Enum.Parse(typeof(HospitalScale), HospitalScaleDropdown.options[HospitalScaleDropdown.value].text);
+                        WorkerAvailability workerAvailability = (WorkerAvailability)Enum.Parse(typeof(WorkerAvailability), WorkerAvailabilityDropdown.options[WorkerAvailabilityDropdown.value].text);
 
-                        hospital.HospitalScale = hospitalScale;
-                        hospital.HospitalWorkerAvailability = workerAvailability;
+                        hospital.Scale = hospitalScale;
+                        hospital.WorkerAvailability = workerAvailability;
                     }
 
                 }
@@ -247,7 +246,7 @@ public class EditorObjectsManager : MonoBehaviour
             //Get the edito object to save the UI name
             foreach (IEditorObject editorObject in editorObjects)
             {
-                if (editorObject.RuntimeEntity == _currentSelectedEntity)
+                if (editorObject.EditorEntity == _currentSelectedEntity)
                 {
                     currentEditorObject = editorObject;
                     break;
