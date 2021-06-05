@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Simulation.Edit
+namespace Simulation
 {
     [Serializable]
     public enum WorkplaceType
