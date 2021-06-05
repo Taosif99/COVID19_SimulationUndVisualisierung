@@ -29,7 +29,7 @@ namespace TestScripts
 
                 float randomCarefulnessFactor = UnityEngine.Random.Range(0f, 1f);
                 float randomRisk = UnityEngine.Random.Range(0f, 1f);
-                Person person = new Person(randomCarefulnessFactor, randomRisk);
+                Person person = new Person(randomCarefulnessFactor, randomRisk, true);
 
                 //assign random dateTime since infection
                 // eg. days of current mounth
