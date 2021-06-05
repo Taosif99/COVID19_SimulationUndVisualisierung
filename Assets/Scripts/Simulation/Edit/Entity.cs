@@ -3,10 +3,10 @@
 namespace Simulation.Edit
 {
     [Serializable]
-    public class Entity
+    public abstract class Entity
     {
         private GridCell _position;
-        public Entity(GridCell position)
+        protected Entity(GridCell position)
         {
             _position = position;
         }

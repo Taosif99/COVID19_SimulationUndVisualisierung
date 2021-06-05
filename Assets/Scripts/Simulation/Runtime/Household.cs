@@ -1,12 +1,14 @@
-﻿namespace Simulation.Runtime
+﻿using System;
+
+namespace Simulation.Runtime
 {
-    public class Household : Venue
+    class Household : Venue
     {
         private Person[] _members;
 
-        public Household(Person[] members, float infectionRisk) : base(infectionRisk)
+        public Household(Edit.Household editorEntity) : base(editorEntity)
         {
-            _members = members;
+            throw new NotImplementedException();
         }
     }
 }

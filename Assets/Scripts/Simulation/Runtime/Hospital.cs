@@ -1,19 +1,16 @@
-﻿namespace Simulation.Runtime
-{
-    public class Hospital : Workplace
-    {
-        private Scale _scale;
-        private WorkerAvailability _workerAvailability;
+﻿using System;
 
-        public Hospital(Scale scale, WorkerAvailability workerAvailability, int workerCapacity, float infectionRisk)
-            : base(Type.Hospital, workerCapacity, infectionRisk)
+namespace Simulation.Runtime
+{
+    class Hospital : Workplace
+    {
+        public Hospital(Edit.Hospital editorEntity) : base(editorEntity)
         {
-            HospitalScale = scale;
-            HospitalWorkerAvailability = workerAvailability;
+            throw new NotImplementedException();
         }
 
-        public Scale HospitalScale { get => _scale; set => _scale = value; }
-        public WorkerAvailability HospitalWorkerAvailability { get => _workerAvailability; set => _workerAvailability = value; }
+        public Scale HospitalScale { get; }
+        public WorkerAvailability HospitalWorkerAvailability { get; }
 
         public enum Scale
         {

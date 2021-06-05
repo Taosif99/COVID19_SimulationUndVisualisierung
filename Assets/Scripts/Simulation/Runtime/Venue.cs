@@ -3,19 +3,17 @@ using System.Collections.Generic;
 
 namespace Simulation.Runtime
 {
-    public class Venue : Entity
+    abstract class Venue : Entity
     {
-        private float _infectionRisk;
         private HashSet<Person> _currentPeopleAtVenue = new HashSet<Person>();
 
-        public Venue(float infectionRisk)
+        protected Venue(Edit.Venue editorEntity) : base(editorEntity)
         {
-            InfectionRisk = infectionRisk;
+            throw new NotImplementedException();
         }
 
-        public float InfectionRisk { get => _infectionRisk; set => _infectionRisk = value; }
+        public float InfectionRisk { get; }
         
-
         public void SimulateEncounters()
         {
             throw new NotImplementedException();

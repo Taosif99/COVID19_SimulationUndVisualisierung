@@ -2,6 +2,8 @@
 {
     class Graph : Entity
     {
-
+        public Graph(Edit.Entity editorEntity) : base(editorEntity)
+        {
+        }
     }
 }

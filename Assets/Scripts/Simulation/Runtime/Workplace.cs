@@ -1,24 +1,15 @@
-﻿namespace Simulation.Runtime
+﻿using System;
+
+namespace Simulation.Runtime
 {
-    public class Workplace : Venue
+    class Workplace : Venue
     {
-        private Type _type;
-        private int _workerCapacity;
-
-        public Workplace(Type type, int workerCapacity, float infectionRisk) : base(infectionRisk)
+        public Workplace(Edit.Workplace editorEntity) : base(editorEntity)
         {
-            WorkType = type;
-            WorkerCapacity = workerCapacity;
+            throw new NotImplementedException();
         }
 
-        public Type WorkType { get => _type; set => _type = value; }
-        public int WorkerCapacity { get => _workerCapacity; set => _workerCapacity = value; }
-
-        public enum Type
-        {
-            Other,
-            Store,
-            Hospital
-        }
+        public WorkplaceType Type { get; }
+        public int WorkerCapacity { get; }
     }
 }
