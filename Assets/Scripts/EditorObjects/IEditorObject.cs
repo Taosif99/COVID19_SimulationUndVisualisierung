@@ -14,7 +14,7 @@ namespace EditorObjects
         //The GameObject of the Editor object
         GameObject EditorGameObject { get; set; }
 
-        //Reference to the runtime Entity
+        //Reference to the editor Entity
         Entity EditorEntity { get; set; }
 
         //Saving the position on the Grid

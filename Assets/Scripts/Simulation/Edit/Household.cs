@@ -8,21 +8,24 @@ namespace Simulation.Edit
     [Serializable]
    public class Household : Venue
     {
-        private byte _numberOfPeople;
-        private float _percentageOfWorkers;
-        private float _carefulnessTendency;
-        private float _riskTendency;
-        private int _numberOfShoppingRuns;
-        private int _numberOfShoppers;
+
+        public byte NumberOfPeople { get; set; }
+        public float PercentageOfWorkers { get; set; }
+        public float CarefulnessTendency { get; set; }
+        public float RiskTendency { get; set; }
+        public int NumberOfShoppingRuns { get; set; }
+        public int NumberOfShoppers { get; set; }
 
         public Household(GridCell position, float infectionRisk, byte numberOfPeople, float percentageOfWorkers, float carefulnessTendency, float riskTendency, int numberOfShoppingRuns, int numberOfShoppers) : base(position, infectionRisk)
         {
-            _numberOfPeople = numberOfPeople;
-            _percentageOfWorkers = percentageOfWorkers;
-            _carefulnessTendency = carefulnessTendency;
-            _riskTendency = riskTendency;
-            _numberOfShoppingRuns = numberOfShoppingRuns;
-            _numberOfShoppers = numberOfShoppers;
+            NumberOfPeople = numberOfPeople;
+            PercentageOfWorkers = percentageOfWorkers;
+            CarefulnessTendency = carefulnessTendency;
+            RiskTendency = riskTendency;
+            NumberOfShoppingRuns = numberOfShoppingRuns;
+            NumberOfShoppers = numberOfShoppers;
         }
+
+
     }
 }

@@ -159,8 +159,9 @@ public class EditorObjectsManager : MonoBehaviour
                             UIController.Instance.LoadHouseholdUI();
                             Household household = (Household)entity;
                             //I need the saved Objects for that...
-                            //NumberOfPeopleInputField
-                            //CarefulnessInputField
+                            NumberOfPeopleInputField.text = household.NumberOfPeople.ToString();
+                            CarefulnessInputField.text = household.CarefulnessTendency.ToString();
+                            PercantageOfWorkersInputField.text = household.PercentageOfWorkers.ToString();
                         }
                     }
 
@@ -224,7 +225,9 @@ public class EditorObjectsManager : MonoBehaviour
                 else if (_currentSelectedEntity is Household)
                 {
                     Household household = (Household)_currentSelectedEntity;
-                    //Must be get from saved object...
+                    household.NumberOfPeople = byte.Parse(NumberOfPeopleInputField.text);
+                    household.CarefulnessTendency = float.Parse(CarefulnessInputField.text);
+                    household.PercentageOfWorkers = float.Parse(PercantageOfWorkersInputField.text);
                 }
             }
 

@@ -25,7 +25,7 @@ namespace EditorObjects
 
         public static VenueEditorObject CreateVenueEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)
         {
-            //must be get by the RuntimeObject Factory or some manager/controller
+   
             Venue runtimeVenue = venueMock;
             //Must be get from the UI Controller / or use first default name
             string venueUIName = "venue mock name";
@@ -44,7 +44,7 @@ namespace EditorObjects
 
         public static WorkplaceEditorObject CreateWorkplaceEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)
         {
-            //must be get by the RuntimeObject Factory
+
             Workplace runtimeWorkplace = workplaceMock;
             //Must be get from the UI Controller
             string workplaceUIName = "workplace mock name";
@@ -60,7 +60,7 @@ namespace EditorObjects
 
         public static HouseholdEditorObject CreateHouseholdEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)
         {
-            //must be get by the RuntimeObject Factory
+
             Household runtimeHousehold = householdMock;
             //Must be get from the UI Controller
             string householdUIName = "household mock name";
@@ -77,7 +77,7 @@ namespace EditorObjects
 
         public static HospitalEditorObject CreateHospitalEditorObject(GameObject prefabToSpawn, Vector3 spawnPosition, Vector3Int relativePosition, Transform parent = null)
         {
-            //must be get by the RuntimeObject Factory
+
             Hospital runtimeHospital = hospitalMock;
             //Must be get from the UI Controller
             string householdUIName = "hospital mock name";
