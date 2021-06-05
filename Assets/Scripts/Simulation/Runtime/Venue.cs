@@ -18,5 +18,31 @@ namespace Simulation.Runtime
         {
             throw new NotImplementedException();
         }
+
+        public bool HasPersonHere(Person person) => _currentPeopleAtVenue.Contains(person);
+
+        public void RemovePerson(Person person)
+        {
+            if (!HasPersonHere(person))
+            {
+                throw new InvalidOperationException("Person is not at this venue.");
+            }
+
+            person.CurrentLocation = null;
+            _currentPeopleAtVenue.Remove(person);
+        }
+
+        public void MovePersonHere(Person person)
+        {
+            if (HasPersonHere(person))
+            {
+                return;
+            }
+
+            person.CurrentLocation?.RemovePerson(person);
+
+            person.CurrentLocation = this;
+            _currentPeopleAtVenue.Add(person);
+        }
     }
 }
