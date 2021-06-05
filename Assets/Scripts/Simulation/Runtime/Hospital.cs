@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Simulation.Runtime
 {
@@ -6,7 +7,8 @@ namespace Simulation.Runtime
     {
         public Hospital(Edit.Hospital editorEntity) : base(editorEntity)
         {
-            throw new NotImplementedException();
+            HospitalScale = (Scale)editorEntity.Scale;
+            HospitalWorkerAvailability = (WorkerAvailability)editorEntity.WorkerAvailability;
         }
 
         public Scale HospitalScale { get; }

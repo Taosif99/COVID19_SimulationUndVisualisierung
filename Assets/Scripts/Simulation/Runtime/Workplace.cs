@@ -6,7 +6,8 @@ namespace Simulation.Runtime
     {
         public Workplace(Edit.Workplace editorEntity) : base(editorEntity)
         {
-            throw new NotImplementedException();
+            Type = editorEntity.Type;
+            WorkerCapacity = editorEntity.WorkerCapacity;
         }
 
         public WorkplaceType Type { get; }
