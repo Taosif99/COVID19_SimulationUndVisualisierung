@@ -6,16 +6,16 @@ namespace Grid
     /// <summary>
     /// Class which implements debugging functions for our grid implementation.
     /// </summary>
-    [RequireComponent(typeof(GridManager2))]
+    [RequireComponent(typeof(GridManager))]
     class GridManagerDebugger : MonoBehaviour
     {
 #if UNITY_EDITOR
-        private GridManager2 _gridManager;
+        private GridManager _gridManager;
         private Grid _grid;
 
         private void Start()
         {
-            _gridManager = GetComponent<GridManager2>();
+            _gridManager = GetComponent<GridManager>();
             _grid = _gridManager.Grid;
         }
 

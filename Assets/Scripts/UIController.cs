@@ -29,7 +29,7 @@ public class UIController : MonoBehaviour
 
 
     //Probably can be replaced with actions later
-    public GridManager2 SimulationGridManager;
+   // public GridManager2 SimulationGridManager;
     //Concerning Graph in UI
     public GraphEnabler SimulationGraphEnabler;
     public Toggle BarChartToggle;
@@ -82,7 +82,7 @@ public class UIController : MonoBehaviour
             {
                 DisableButtonOutlineColors();
                 ModifyOutlineColor(button);
-                SimulationGridManager.SetCurrentPrefab(key);
+                ModelSelector.Instance.SetCurrentPrefab(key);
                 _lastClickedButton = button;
                 DeactivateOldSettingsElements();
 
@@ -97,6 +97,7 @@ public class UIController : MonoBehaviour
             SimulationGraphEnabler.EnableGraphSettings();
             _lastClickedButton = placeGraphButton;
             DeactivateOldSettingsElements();
+            ModelSelector.Instance.CurrentPrefabName = PrefabName.None;
         });
 
 
@@ -210,13 +211,7 @@ public class UIController : MonoBehaviour
         HospitalUI.SetActive(false);
     }
 
-    public void UnselectSelectedButton()
-    {
-        DisableButtonOutlineColors();
-        SimulationGridManager.CurrentPrefabName = PrefabName.None;
-        _lastClickedButton = null;
-
-    }
+ 
 
 
     /// <summary>

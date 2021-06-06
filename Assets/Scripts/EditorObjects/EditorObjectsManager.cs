@@ -18,19 +18,8 @@ using Simulation;
 public class EditorObjectsManager : MonoBehaviour
 {
 
-    public GridManager2 SimulationGridManager;
-
-
+    public GridManager SimulationGridManager;
     public List<IEditorObject> editorObjects = new List<IEditorObject>();
-
-    //This lists are currently NOT used
-    /*
-    public List<VenueEditorObject> venueEditorObjects = new List<VenueEditorObject>();
-    public List<WorkplaceEditorObject> workplaceEditorObjects = new List<WorkplaceEditorObject>();
-    public List<HospitalEditorObject> hospitalEditorObjects = new List<HospitalEditorObject>();
-    public List<HouseholdEditorObject> householdEditorObjects = new List<HouseholdEditorObject>();
-    */
-
     private Entity _currentSelectedEntity;
 
 
@@ -55,98 +44,39 @@ public class EditorObjectsManager : MonoBehaviour
     //////////////////////////////////////////////////////////////////////////////////
 
     /// <summary>
-    /// Method which adds an Editor object. TODO REMOVE OLD
+    /// Method to add an EditorObject to our system.
     /// </summary>
-    /// <param name="namedPrefab"></param>
-    /// <param name="spawnPosition"></param>
     /// <param name="gridCellPosition"></param>
-    /// <param name="planeWorldTransform"></param>
-    /// <returns></returns>
-    
-    /*
-    public GameObject AddEditorObject(NamedPrefab namedPrefab, Vector3 spawnPosition, Vector2Int gridCellPosition, Transform planeWorldTransform)
+    /// <returns>The created GameObject which can be place in the scene.</returns>
+    public GameObject AddEditorObject( Vector2Int gridCellPosition)
     {
 
-        PrefabName currentPrefabName = namedPrefab.prefabName;
-        GameObject currentPrefabToSpawn = namedPrefab.prefab;
+        PrefabName currentPrefabName = ModelSelector.Instance.CurrentPrefabName;
         IEditorObject editorObject = null;
-
-
-        switch (currentPrefabName)
-        {
-
-            case PrefabName.Workplace:
-                //editorObject = EditorObjectFactory.CreateWorkplaceEditorObject(currentPrefabToSpawn, spawnPosition, gridCellPosition, planeWorldTransform);
-                //workplaceEditorObjects.Add((WorkplaceEditorObject)editorObject);
-                break;
-
-            case PrefabName.Hospital:
-                //editorObject = EditorObjectFactory.CreateHospitalEditorObject(currentPrefabToSpawn, spawnPosition, gridCellPosition, planeWorldTransform);
-                //hospitalEditorObjects.Add((HospitalEditorObject)editorObject);
-                break;
-
-            case PrefabName.Household:
-                //editorObject = EditorObjectFactory.CreateHouseholdEditorObject(currentPrefabToSpawn, spawnPosition, gridCellPosition, planeWorldTransform);
-                //householdEditorObjects.Add((HouseholdEditorObject)editorObject);
-                break;
-
-            default:
-                Debug.LogError("Unknown prefab name");
-                break;
-        }
-
-    
-
-        editorObjects.Add(editorObject); 
-        
-
-        //Load the new object in the ui, TODO MAKE OVERLOADED METHOD TO DIFFERETIATE BETWEEN UI CLICK WHERE SEARCH IS NEEDED AND THESE ONE
-        //LoadEditorObjectUI(spawnPosition);
-
-
-        return editorObject.EditorGameObject;
-    }*/
-
-
-
-    public GameObject AddEditorObject2(NamedPrefab namedPrefab, Vector2Int gridCellPosition, Transform planeWorldTransform)
-    {
-
-        PrefabName currentPrefabName = namedPrefab.prefabName;
-        GameObject currentPrefabToSpawn = namedPrefab.prefab;
-        IEditorObject editorObject = null;
+        GridCell gridCell = new GridCell((uint)gridCellPosition.x, (uint)gridCellPosition.y);
 
         //TODO DEFINE DEFAULT CONSTRUCTOR
         switch (currentPrefabName)
         {
 
             case PrefabName.Workplace:
-                Workplace workplace = new Workplace(new GridCell((uint)gridCellPosition.x, (uint)gridCellPosition.y), 0.2f, WorkplaceType.Other, 200);
-                editorObject = EditorObjectFactory.Create(workplace, "Workplace Mock", currentPrefabToSpawn);
+                Workplace workplace = new Workplace(gridCell, 0.2f, WorkplaceType.Other, 200);
+                editorObject = EditorObjectFactory.Create(workplace, "Workplace Mock");
                 break;
             case PrefabName.Hospital:
-                Hospital hospital = new Hospital(new GridCell((uint)gridCellPosition.x, (uint)gridCellPosition.y), 0.1f, WorkplaceType.Hospital, 299,HospitalScale.Large, WorkerAvailability.Low);
-                editorObject = EditorObjectFactory.Create(hospital, "Hospital Mock", currentPrefabToSpawn);
+                Hospital hospital = new Hospital(gridCell, 0.1f, WorkplaceType.Hospital, 299,HospitalScale.Large, WorkerAvailability.Low);
+                editorObject = EditorObjectFactory.Create(hospital, "Hospital Mock");
                 break;
             case PrefabName.Household:
-                Household household = new Household(new GridCell((uint)gridCellPosition.x, (uint)gridCellPosition.y), 0.6f, 12, 0.7f, 0.5f, 0.3f, 2, 5);
-                editorObject = EditorObjectFactory.Create(household, "Household Mock", currentPrefabToSpawn);
+                Household household = new Household(gridCell, 0.6f, 12, 0.7f, 0.5f, 0.3f, 2, 5);
+                editorObject = EditorObjectFactory.Create(household, "Household Mock");
                 break;
 
             default:
                 Debug.LogError("Unknown prefab name");
                 break;
         }
-
-
-
         editorObjects.Add(editorObject);
-
-
-        //Load the new object in the ui, TODO MAKE OVERLOADED METHOD TO DIFFERETIATE BETWEEN UI CLICK WHERE SEARCH IS NEEDED AND THESE ONE
-        //LoadEditorObjectUI(spawnPosition);
-
-
         return editorObject.EditorGameObject;
     }
 
@@ -172,7 +102,7 @@ public class EditorObjectsManager : MonoBehaviour
                 Entity entity = editorObject.EditorEntity;
                 if (entity != null) //Can be removed later
                 {
-                    _currentSelectedEntity = entity; //Must be set null when no object is clicked
+                    _currentSelectedEntity = entity;
 
                     //Check if Graph....TODO WHEN GRAPH IS UI ELEMENT IN WORLD
                     if (entity is Venue)
@@ -209,7 +139,6 @@ public class EditorObjectsManager : MonoBehaviour
                         }
                     }
 
-                    UIController.Instance.UnselectSelectedButton();
                 }
                 return;
             }
@@ -308,7 +237,6 @@ public class EditorObjectsManager : MonoBehaviour
                 Destroy(gameObject);
                 editorObjects.Remove(currentEditorObject);
                 _currentSelectedEntity = null;
-                //TODO disable save button and UI
                 UIController.Instance.IsEntitySelectedUI(false);
             }
         }

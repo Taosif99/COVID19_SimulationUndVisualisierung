@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Simulation.Edit;
-using Simulation;
+using Grid;
 
 namespace EditorObjects
 {
@@ -12,33 +10,41 @@ namespace EditorObjects
     /// This class implements a Factory for the editor objects
     /// which can be seen in the scene.
     /// </summary>
-    public class EditorObjectFactory
+    public static class EditorObjectFactory
     {
         
-        public static IEditorObject Create(Entity entity,string UIName, GameObject prefabToSpawn) 
+        public static IEditorObject Create(Entity entity,string UIName) 
         {
+            GameObject prefabToSpawn = ModelSelector.Instance.CurrentPrefabToSpawn.prefab;
+            IEditorObject editorObject = null;
+           
             switch (entity)
             {
 
                 case Hospital obj:
-                   return CreateHospitalEditorObject(obj,UIName,prefabToSpawn);
+                   editorObject = CreateHospitalEditorObject(obj,UIName,prefabToSpawn);
+                    break;
                 case  Household obj:
-                    return CreateHouseholdEditorObject(obj,UIName,prefabToSpawn);
+                  editorObject =  CreateHouseholdEditorObject(obj,UIName,prefabToSpawn);
+                    break;
                 case Workplace obj:
-                    return CreateWorkplaceEditorObject(obj,UIName,prefabToSpawn);
-              
-
+                    editorObject =  CreateWorkplaceEditorObject(obj,UIName,prefabToSpawn);
+                    break;
+                default:
+                    throw new NotSupportedException($"Unsupported Editor Entity object type: " + entity.GetType());
+                    
             }
+            //Setting up the parent of the gameObject 
+            editorObject.EditorGameObject.transform.parent = ModelSelector.Instance.ModelParentTransform;
 
-            throw new NotSupportedException($"Unsupported Editor Entity object type: " + entity.GetType());
-
+            return editorObject;
         }
 
 
 
         public static WorkplaceEditorObject CreateWorkplaceEditorObject(Workplace workplace,string UIName, GameObject prefabToSpawn)
         {
-            // Instantiate at finalPosition and zero rotation.
+            // Instantiate at zero point and zero rotation.
             GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn,Vector3.zero ,Quaternion.identity);
             gameObject.name = PrefabName.Workplace.ToString();
             WorkplaceEditorObject workplaceEditorObject = new WorkplaceEditorObject(gameObject, workplace, UIName);
@@ -48,7 +54,7 @@ namespace EditorObjects
 
         public static HouseholdEditorObject CreateHouseholdEditorObject(Household household, string UIName, GameObject prefabToSpawn)
         {
-            // Instantiate at finalPosition and zero rotation.
+            // Instantiate at zero point and zero rotation.
             GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn, Vector3.zero, Quaternion.identity);
             gameObject.name = PrefabName.Household.ToString();
             HouseholdEditorObject householdEditorObject = new HouseholdEditorObject(gameObject, household, UIName);
@@ -58,7 +64,7 @@ namespace EditorObjects
 
         public static HospitalEditorObject CreateHospitalEditorObject(Hospital hospital, string UIName, GameObject prefabToSpawn)
         {
-            // Instantiate at finalPosition and zero rotation.
+            // Instantiate at zero point and zero rotation.
             GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn, Vector3.zero, Quaternion.identity);
             gameObject.name = PrefabName.Hospital.ToString();
             HospitalEditorObject houpitalEditorObject = new HospitalEditorObject(gameObject, hospital, UIName);

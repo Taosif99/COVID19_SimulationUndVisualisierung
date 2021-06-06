@@ -11850,7 +11850,6 @@ MonoBehaviour:
   placeHouseholdButton: {fileID: 1950030102}
   placeGraphButton: {fileID: 523681690}
   outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  SimulationGridManager: {fileID: 8052080947404100266}
   SimulationGraphEnabler: {fileID: 412718097}
   BarChartToggle: {fileID: 1672415282}
   LineChartToggle: {fileID: 1290578917}
@@ -12500,6 +12499,7 @@ GameObject:
   - component: {fileID: 8052080947404100271}
   - component: {fileID: 8052080947404100266}
   - component: {fileID: 8052080947404100267}
+  - component: {fileID: 8052080947404100268}
   m_Layer: 6
   m_Name: WorldPlane
   m_TagString: Untagged
@@ -12521,14 +12521,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cellExtent: 10
   EditObjectsManager: {fileID: 807507761}
-  CurrentPrefabName: 5
-  Prefabs:
-  - prefabName: 1
-    prefab: {fileID: 1143307919750216, guid: 3dff328fdba649c44a1d608ec75217d7, type: 3}
-  - prefabName: 2
-    prefab: {fileID: 1237205094868938, guid: 2909343e8fc65984b82bff9fab8cf5d1, type: 3}
-  - prefabName: 3
-    prefab: {fileID: 1763038635241144, guid: b6adf14e248ee014597da88e5b5cb4b8, type: 3}
   _groundMask:
     serializedVersion: 2
     m_Bits: 64
@@ -12545,6 +12537,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a55554a3f3c5c4c82041bc95fe89a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8052080947404100268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8052080947404100265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a75c03ff8d8a64aa32f18ae4c85499, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentPrefabName: 4
+  Prefabs:
+  - prefabName: 1
+    prefab: {fileID: 100000, guid: 3eedb57cbe6114a488fee637e97b46d6, type: 3}
+  - prefabName: 3
+    prefab: {fileID: 100000, guid: c129f22187ea2494384ee89fedf8bcd4, type: 3}
+  - prefabName: 2
+    prefab: {fileID: 100000, guid: b53f68fe839b7af4b9e50bdc68a2e20a, type: 3}
+  - prefabName: 0
+    prefab: {fileID: 0}
+  ModelParentTransform: {fileID: 8052080947404100264}
 --- !u!33 &8052080947404100269
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ namespace Grid
     ///  Class which places objects to the grid.
     /// </summary>
     [RequireComponent(typeof(MeshFilter))]
-    public class GridManager2 : MonoBehaviour
+    public class GridManager : MonoBehaviour
     {
         [SerializeField] private int _cellExtent = 10;
         private Mesh _plane;
@@ -21,13 +21,6 @@ namespace Grid
 
         //Manager which is responsible for maintainaing the editor objects
         public EditorObjectsManager EditObjectsManager;
-
-        //The GameObject prefab to spawn with its name
-        public NamedPrefab CurrentPrefabToSpawn { get; set; }
-        public PrefabName CurrentPrefabName = PrefabName.None;
-
-        //The used models
-        public NamedPrefab[] Prefabs;
 
         //We use this hashset to make sure that a a object is placed only once
         private HashSet<Vector2> _placedPositions = new HashSet<Vector2>();
@@ -49,14 +42,14 @@ namespace Grid
             {
                 CellSize = _plane.bounds.extents.x * transform.localScale.x / CellExtent
             };
-
+            Debug.Log("Plane bounds: " + _plane.bounds.extents.x);
             Debug.Log("Using cell size " + Grid.CellSize);
         }
 
         private void Update()
         {
             //Check if left mouse button clicked and UI not clicked
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && ModelSelector.Instance.CurrentPrefabName != PrefabName.None)
             {
                 //Raycast into the scene
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -80,12 +73,8 @@ namespace Grid
             if (!_placedPositions.Contains(gridCellPosition)) 
             {
 
-                //Create a venue and add to editor objects
-
-                //GameObject gameObject = EditObjectsManager.AddEditorObject(CurrentPrefabToSpawn, new Vector3(spawnPosition.x,0,spawnPosition.y), gridCellPosition,this.transform) ;
-
-
-                GameObject gameObject = EditObjectsManager.AddEditorObject2(CurrentPrefabToSpawn, gridCellPosition, this.transform);
+                //Create a venue and add to editor objects will be done by EditorObjectsManager
+                GameObject gameObject = EditObjectsManager.AddEditorObject(gridCellPosition);
                 gameObject.transform.position = new Vector3(spawnPosition.x, 0, spawnPosition.y);
                 
                 //TODO: Quick fix we need appropiate models or implement a system
@@ -104,29 +93,5 @@ namespace Grid
 
             }
         }
-
-
-        /// <summary>
-        /// Method to set the current prefab outside this class.
-        /// </summary>
-        /// <param name="prefabName">The name of the prefab. </param>
-        public void SetCurrentPrefab(PrefabName prefabName)
-        {
-            foreach (NamedPrefab namedPrefab in Prefabs)
-            {
-                if (prefabName.Equals(namedPrefab.prefabName))
-                {
-                    CurrentPrefabToSpawn = namedPrefab;
-                    Debug.Log("Set Prefab Name:" + namedPrefab.prefabName);
-                    CurrentPrefabName = namedPrefab.prefabName;
-                    return;
-                }
-            }
-        }
-
-
-        
-
-
     }
 }
