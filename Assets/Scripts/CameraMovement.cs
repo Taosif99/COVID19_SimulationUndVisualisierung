@@ -10,10 +10,14 @@ using UnityEngine.EventSystems;
 public class CameraMovement : MonoBehaviour
 {
 
+    //TODO FIX 3D CANVAS STOPPING, since a canvas cannot be raycasted currently
+
+
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private float cameraMovementSpeed = 5;
     //Lower = smoother, Factor used for interpolation
     [SerializeField] private float _smoothFactor = 0.5f;
+    [SerializeField] private LayerMask _worldUIMask;
 
     // Start is called before the first frame update
     private void Start()
@@ -35,7 +39,10 @@ public class CameraMovement : MonoBehaviour
     {
         //Better later implement an inputHandler / manager
 
-        if (EventSystem.current.IsPointerOverGameObject() == false)
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        bool hits3DUI = Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _worldUIMask);
+        Debug.Log("Hits 3d ui ?" + hits3DUI);
+        if (EventSystem.current.IsPointerOverGameObject() == false || hits3DUI)
         {
 
             Vector3 inputVector = new Vector3(Input.GetAxis("Horizontal"), 0,

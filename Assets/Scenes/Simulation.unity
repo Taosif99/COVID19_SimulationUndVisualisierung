@@ -5260,6 +5260,9 @@ MonoBehaviour:
   _mainCamera: {fileID: 0}
   cameraMovementSpeed: 8
   _smoothFactor: 0.5
+  _worldUIMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &975727877
 GameObject:
   m_ObjectHideFlags: 0
@@ -12563,7 +12566,7 @@ MonoBehaviour:
   - prefabName: 0
     prefab: {fileID: 0}
   ModelParentTransform: {fileID: 8052080947404100264}
-  CounterPrefab: {fileID: 6409905077212315674, guid: ad7406786b93aba4ba22276647b83e12, type: 3}
+  CounterPrefab: {fileID: 1616271807994632656, guid: ad7406786b93aba4ba22276647b83e12, type: 3}
 --- !u!33 &8052080947404100269
 MeshFilter:
   m_ObjectHideFlags: 0
