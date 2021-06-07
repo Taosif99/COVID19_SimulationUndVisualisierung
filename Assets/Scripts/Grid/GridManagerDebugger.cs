@@ -12,7 +12,7 @@ namespace Grid
 #if UNITY_EDITOR
         private GridManager _gridManager;
         private Grid _grid;
-
+        public LayerMask GroundMask;
         private void Start()
         {
             _gridManager = GetComponent<GridManager>();
@@ -21,7 +21,19 @@ namespace Grid
 
         private void Update()
         {
-
+            //Check if left mouse button clicked and UI not clicked
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                //Raycast into the scene
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                //Check if we hit something
+                if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, GroundMask))
+                {
+                    Vector3 point = hitInfo.point;
+                    Debug.Log($"Relative Position On Grid: {new Vector2(point.x, point.z)} -> {_grid.GetGridCell(new Vector2(point.x, point.z))}");
+                
+                }
+            }
         }
 
         private void OnDrawGizmos()

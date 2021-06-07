@@ -12,27 +12,26 @@ namespace EditorObjects
     /// </summary>
     public static class EditorObjectFactory
     {
-        
-        public static IEditorObject Create(Entity entity,string UIName) 
+
+        public static IEditorObject Create(Entity entity, string UIName)
         {
             GameObject prefabToSpawn = ModelSelector.Instance.CurrentPrefabToSpawn.prefab;
             IEditorObject editorObject = null;
-           
+
             switch (entity)
             {
-
                 case Hospital obj:
-                   editorObject = CreateHospitalEditorObject(obj,UIName,prefabToSpawn);
+                    editorObject = CreateHospitalEditorObject(obj, UIName, prefabToSpawn);
                     break;
-                case  Household obj:
-                  editorObject =  CreateHouseholdEditorObject(obj,UIName,prefabToSpawn);
+                case Household obj:
+                    editorObject = CreateHouseholdEditorObject(obj, UIName, prefabToSpawn);
                     break;
                 case Workplace obj:
-                    editorObject =  CreateWorkplaceEditorObject(obj,UIName,prefabToSpawn);
+                    editorObject = CreateWorkplaceEditorObject(obj, UIName, prefabToSpawn);
                     break;
                 default:
                     throw new NotSupportedException($"Unsupported Editor Entity object type: " + entity.GetType());
-                    
+
             }
             //Setting up the parent of the gameObject 
             editorObject.EditorGameObject.transform.parent = ModelSelector.Instance.ModelParentTransform;
@@ -42,10 +41,10 @@ namespace EditorObjects
 
 
 
-        public static WorkplaceEditorObject CreateWorkplaceEditorObject(Workplace workplace,string UIName, GameObject prefabToSpawn)
+        public static WorkplaceEditorObject CreateWorkplaceEditorObject(Workplace workplace, string UIName, GameObject prefabToSpawn)
         {
             // Instantiate at zero point and zero rotation.
-            GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn,Vector3.zero ,Quaternion.identity);
+            GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn, Vector3.zero, Quaternion.identity);
             gameObject.name = PrefabName.Workplace.ToString();
             WorkplaceEditorObject workplaceEditorObject = new WorkplaceEditorObject(gameObject, workplace, UIName);
             return workplaceEditorObject;

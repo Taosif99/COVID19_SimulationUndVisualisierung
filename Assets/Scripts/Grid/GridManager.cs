@@ -32,8 +32,7 @@ namespace Grid
 
         //Here methods can listen which need to know
         //if we clicked on an already existing object
-        public Action<Vector3> OnEditorObjectClicked;
-
+        public Action<Vector2Int> OnEditorObjectClicked;
 
         private void Awake()
         {
@@ -56,8 +55,6 @@ namespace Grid
                 //Check if we hit something
                 if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _groundMask))
                 {
-                    //Vector3 point = hitInfo.point;
-                    //Debug.Log($"Relative Position On Grid: {new Vector2(point.x, point.z)} -> {Grid.GetGridCell(new Vector2(point.x, point.z))}");
                     PlacePrefab(hitInfo.point);
                 }
             }
@@ -67,16 +64,16 @@ namespace Grid
         private void PlacePrefab(Vector3 clickPoint)
         {
 
-            Vector2Int gridCellPosition = Grid.GetGridCell(new Vector2(clickPoint.x,clickPoint.z));
-            Vector2 spawnPosition =  Grid.GetRelativeWorldPosition(gridCellPosition);
+            Vector2Int gridCellPosition = Grid.GetGridCell(new Vector2(clickPoint.x, clickPoint.z));
+            Vector2 spawnPosition = Grid.GetRelativeWorldPosition(gridCellPosition);
 
-            if (!_placedPositions.Contains(gridCellPosition)) 
+            if (!_placedPositions.Contains(gridCellPosition))
             {
 
                 //Create a venue and add to editor objects will be done by EditorObjectsManager
                 GameObject gameObject = EditObjectsManager.AddEditorObject(gridCellPosition);
                 gameObject.transform.position = new Vector3(spawnPosition.x, 0, spawnPosition.y);
-                
+
                 //TODO: Quick fix we need appropiate models or implement a system
                 if (gameObject != null)
                 {
@@ -89,7 +86,7 @@ namespace Grid
             else
             {
                 Debug.Log("Position already used !");
-                OnEditorObjectClicked?.Invoke(new Vector3(spawnPosition.x, 0, spawnPosition.y));
+                OnEditorObjectClicked?.Invoke(gridCellPosition);
 
             }
         }
