@@ -21,6 +21,10 @@ namespace Grid
         //Will be set in the inspector
         public Transform ModelParentTransform;
 
+
+        //Prefab of the counter of the Models
+        public GameObject CounterPrefab;
+
         private void Awake()
         {
             if (Instance == null)

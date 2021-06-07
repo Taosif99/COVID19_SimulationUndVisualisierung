@@ -35,7 +35,8 @@ namespace EditorObjects
             }
             //Setting up the parent of the gameObject 
             editorObject.EditorGameObject.transform.parent = ModelSelector.Instance.ModelParentTransform;
-
+            //Adding the counter as monobehaviour
+           editorObject.EditorGameObject.AddComponent<Counter>();
             return editorObject;
         }
 

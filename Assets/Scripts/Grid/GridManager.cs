@@ -12,6 +12,7 @@ namespace Grid
     [RequireComponent(typeof(MeshFilter))]
     public class GridManager : MonoBehaviour
     {
+
         [SerializeField] private int _cellExtent = 10;
         private Mesh _plane;
 
@@ -74,15 +75,25 @@ namespace Grid
                 GameObject gameObject = EditObjectsManager.AddEditorObject(gridCellPosition);
                 gameObject.transform.position = new Vector3(spawnPosition.x, 0, spawnPosition.y);
 
+          
+
                 //TODO: Quick fix we need appropiate models or implement a system
                 if (gameObject != null)
                 {
                     gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
                     gameObject.transform.localScale /= _scaleDiv;
+                    //update counter position
+                    Counter counter = gameObject.GetComponent<Counter>();
+                    counter.InstantiateCounter();
+
                 }
                 _placedPositions.Add(gridCellPosition);
 
-            }
+
+
+
+
+    }
             else
             {
                 Debug.Log("Position already used !");
