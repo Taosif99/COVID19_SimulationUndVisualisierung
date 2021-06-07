@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Simulation;
 
 namespace Simulation.Runtime
 {
@@ -7,25 +8,12 @@ namespace Simulation.Runtime
     {
         public Hospital(Edit.Hospital editorEntity) : base(editorEntity)
         {
-            HospitalScale = (Scale)editorEntity.Scale;
+            HospitalScale = (HospitalScale)editorEntity.Scale;
             HospitalWorkerAvailability = (WorkerAvailability)editorEntity.WorkerAvailability;
         }
 
-        public Scale HospitalScale { get; }
+        public HospitalScale HospitalScale { get; }
         public WorkerAvailability HospitalWorkerAvailability { get; }
 
-        public enum Scale
-        {
-            Small,
-            Medium,
-            Large
-        }
-
-        public enum WorkerAvailability
-        {
-            Low,
-            Medium,
-            High
-        }
     }
 }
