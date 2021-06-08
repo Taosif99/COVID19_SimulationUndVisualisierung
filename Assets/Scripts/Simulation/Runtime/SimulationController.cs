@@ -21,6 +21,12 @@ namespace Simulation.Runtime
                 Entity entity = RuntimeObjectFactory.Create(editorObject);
                 _entities.Add(entity);
             }
+            
+            List<WorkShift> workShifts = _entities.OfType<Workplace>()
+                .SelectMany(w => w.GetWorkShifts())
+                .ToList();
+
+            int workShiftIndex = 0;
 
             foreach (var household in _entities.OfType<Household>())
             {
@@ -31,7 +37,16 @@ namespace Simulation.Runtime
                         continue;
                     }
 
-                    // TODO: Assign workplace, round-robin, bla bla
+                    WorkShift shift = workShifts[workShiftIndex];
+
+                    member.Activities.Add(new Activity(
+                        shift.Days,
+                        shift.StartTime,
+                        shift.StartTime + shift.Duration,
+                        shift.Workplace
+                    ));
+
+                    workShiftIndex = (workShiftIndex + 1) % workShifts.Count;
                 }
 
                 var editorHousehold = household.GetEditorEntity<Edit.Household>();
