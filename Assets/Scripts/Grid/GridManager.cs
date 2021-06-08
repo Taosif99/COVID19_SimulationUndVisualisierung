@@ -20,11 +20,16 @@ namespace Grid
         public int CellExtent => _cellExtent;
 
 
+
+        //For access of loading object
+        public HashSet<Vector2Int> PlacedPositions { get => _placedPositions; set => _placedPositions = value; }
+
+
         //Manager which is responsible for maintainaing the editor objects
         public EditorObjectsManager EditObjectsManager;
 
         //We use this hashset to make sure that a a object is placed only once
-        private HashSet<Vector2> _placedPositions = new HashSet<Vector2>();
+        private HashSet<Vector2Int> _placedPositions = new HashSet<Vector2Int>();
 
         //To Check if we clicked the correct layer
         [SerializeField] private LayerMask _groundMask;
@@ -51,7 +56,7 @@ namespace Grid
 
         private void Update()
         {
-            //Check if left mouse button clicked and UI not clicked
+            //Check if left mouse button clicked and UI not clicked, rethink prefab.None for UI logic
             if (Input.GetMouseButtonDown(0) && !CameraController.IsMouseOverUi && ModelSelector.Instance.CurrentPrefabName != PrefabName.None)
             {
                 //Raycast into the scene
@@ -69,47 +74,31 @@ namespace Grid
         {
 
             Vector2Int gridCellPosition = Grid.GetGridCell(new Vector2(clickPoint.x, clickPoint.z));
-            Vector2 spawnPosition = Grid.GetRelativeWorldPosition(gridCellPosition);
-
-            if (!_placedPositions.Contains(gridCellPosition))
+            if (!PlacedPositions.Contains(gridCellPosition))
             {
 
                 //Create a venue and add to editor objects will be done by EditorObjectsManager
                 GameObject gameObject = EditObjectsManager.AddEditorObject(gridCellPosition);
-
-
-
-
-                //TODO: Quick fix we need appropiate models or implement a system
-                if (gameObject != null)
-                {
-                    gameObject.transform.position = new Vector3(spawnPosition.x, 0, spawnPosition.y);
-                    gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
-                    gameObject.transform.localScale /= _scaleDiv;
-                    //update counter position
-                    StateCounter counter = gameObject.GetComponent<StateCounter>();
-                    counter.InstantiateCounter(spawnPosition);
-
-                }
-                _placedPositions.Add(gridCellPosition);
-
-
-
-
+                PositionObjectInGrid(gameObject,  gridCellPosition);
 
             }
             else
             {
                 Debug.Log("Position already used !");
                 OnEditorObjectClicked?.Invoke(gridCellPosition);
-
             }
         }
 
+        //Implement Placement Handler eventually later
 
-        public void PositionObjectInGrid(GameObject gameObject, Vector3 spawnPosition)
+        /// <summary>
+        /// Method to place an concrete GameObject to a grid cell position in the world map.
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="gridCellPosition"></param>
+        public void PositionObjectInGrid(GameObject gameObject, Vector2Int gridCellPosition)
         {
-            /*
+            Vector3 spawnPosition = Grid.GetRelativeWorldPosition(gridCellPosition);
             //TODO: Quick fix we need appropiate models or implement a system
             if (gameObject != null)
             {
@@ -119,8 +108,9 @@ namespace Grid
                 //update counter position
                 StateCounter counter = gameObject.GetComponent<StateCounter>();
                 counter.InstantiateCounter(spawnPosition);
+                PlacedPositions.Add(gridCellPosition);
 
-            }*/
+            } //Todo else exception
 
         }
     }

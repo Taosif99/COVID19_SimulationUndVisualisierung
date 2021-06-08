@@ -27,17 +27,14 @@ public static class SerializationExecutor
 
     public static Simulation.Edit.Simulation LoadData()
     {
-
         string path = Application.persistentDataPath + "/covidSim.simulation";
-
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
-
             Simulation.Edit.Simulation data = formatter.Deserialize(stream) as Simulation.Edit.Simulation;
             stream.Close();
-            Debug.Log("Data loaded successfully! ");
+            Debug.Log("Data loaded successfully!");
             return data;
         }
         else

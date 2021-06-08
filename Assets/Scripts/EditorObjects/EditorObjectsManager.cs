@@ -113,7 +113,7 @@ public class EditorObjectsManager : MonoBehaviour
     /// <param name="spawnPosition"></param>
     public void LoadEditorObjectUI(Vector2Int gridCellPosition)
     {
-
+        
         GridCell gridCell = new GridCell(gridCellPosition.x, gridCellPosition.y);
         IEditorObject editorObject = _editorObjectsDic[gridCell];
         if (editorObject != null)
@@ -282,9 +282,7 @@ public class EditorObjectsManager : MonoBehaviour
 
             foreach (Entity entity in entities)
             {
-                //TODO LOAD UI Name
-
-                //
+                
                 if (entity is Workplace)
                 {
                     ModelSelector.Instance.SetCurrentPrefab(PrefabName.Workplace);
@@ -304,29 +302,23 @@ public class EditorObjectsManager : MonoBehaviour
 
                 IEditorObject editorObject = EditorObjectFactory.Create(entity, "serialized mock text");
                 _editorObjectsDic.Add(entity.Position, editorObject);
-
+                Vector2Int gridCellPosition = new Vector2Int(entity.Position.X, entity.Position.Y);
                 //Spawn in position-> spawn handler or manager
                 GameObject gameObject = editorObject.EditorGameObject;
-
-                //TODO USE GRID MANAGER method to avoid repitition
-                Vector3 spawnPosition = SimulationGridManager.Grid.GetRelativeWorldPosition(new Vector2Int(entity.Position.X, entity.Position.Y));
-                gameObject.transform.position = new Vector3(spawnPosition.x, 0, spawnPosition.y);
-                gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
-                gameObject.transform.localScale /= 2;
-                //update counter position
-                StateCounter counter = gameObject.GetComponent<StateCounter>();
-                counter.InstantiateCounter(spawnPosition);
-
-                ModelSelector.Instance.SetCurrentPrefab(PrefabName.None);
+                SimulationGridManager.PositionObjectInGrid(gameObject, gridCellPosition);
+            
 
             }
+            ModelSelector.Instance.SetCurrentPrefab(PrefabName.None);
+            UIController.Instance.IsEntitySelectedUI(false);
+
         }
         else Debug.LogWarning("Keine Entities !");
     }
 
     public void SaveToFile()
     {
-    
+        //////////////////////////////////////////////////////////////////////////////////////
         //Temporary Mocks for serialization
         Policies policiesMock = new Policies(MaskType.None);
         Simulation.Edit.Event[] eventsMock = null;
@@ -345,11 +337,8 @@ public class EditorObjectsManager : MonoBehaviour
             entities[index] = entity;
             index++;
         }
-
         Simulation.Edit.Simulation simulation = new Simulation.Edit.Simulation(simulationOptions, entities);
         SerializationExecutor.SaveData(simulation);
-    
-    
     }
 
 
