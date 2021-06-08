@@ -53,14 +53,6 @@ public class EditorObjectsManager : MonoBehaviour
 
 
 
-
-
-  
-
-
-
-
-
     /// <summary>
     /// Method to add an EditorObject to our system.
     /// </summary>
@@ -274,46 +266,50 @@ public class EditorObjectsManager : MonoBehaviour
 
 
         //Todo disable UI
-        Simulation.Edit.Simulation simulation = SerializationExecutor.LoadData();
-        Entity[] entities = simulation.Entities;
-        
-        if (entities != null)
+        Simulation.Edit.Simulation simulation = SerializationExecutor.LoadData("simulation");
+       
+        if (simulation != null)
         {
+            Entity[] entities = simulation.Entities;
 
-            foreach (Entity entity in entities)
+            if (entities != null)
             {
-                
-                if (entity is Workplace)
-                {
-                    ModelSelector.Instance.SetCurrentPrefab(PrefabName.Workplace);
 
-                    if (entity is Hospital)
+                foreach (Entity entity in entities)
+                {
+
+                    if (entity is Workplace)
                     {
-                        ModelSelector.Instance.SetCurrentPrefab(PrefabName.Hospital);
+                        ModelSelector.Instance.SetCurrentPrefab(PrefabName.Workplace);
+
+                        if (entity is Hospital)
+                        {
+                            ModelSelector.Instance.SetCurrentPrefab(PrefabName.Hospital);
+                        }
                     }
-                } 
-                else if (entity is Household)
-                {
-                    ModelSelector.Instance.SetCurrentPrefab(PrefabName.Household);
+                    else if (entity is Household)
+                    {
+                        ModelSelector.Instance.SetCurrentPrefab(PrefabName.Household);
+                    }
+
+
+
+
+                    IEditorObject editorObject = EditorObjectFactory.Create(entity, "serialized mock text");
+                    _editorObjectsDic.Add(entity.Position, editorObject);
+                    Vector2Int gridCellPosition = new Vector2Int(entity.Position.X, entity.Position.Y);
+                    //Spawn in position-> spawn handler or manager
+                    GameObject gameObject = editorObject.EditorGameObject;
+                    SimulationGridManager.PositionObjectInGrid(gameObject, gridCellPosition);
+
+
                 }
-
-
-
-
-                IEditorObject editorObject = EditorObjectFactory.Create(entity, "serialized mock text");
-                _editorObjectsDic.Add(entity.Position, editorObject);
-                Vector2Int gridCellPosition = new Vector2Int(entity.Position.X, entity.Position.Y);
-                //Spawn in position-> spawn handler or manager
-                GameObject gameObject = editorObject.EditorGameObject;
-                SimulationGridManager.PositionObjectInGrid(gameObject, gridCellPosition);
-            
-
+                ModelSelector.Instance.SetCurrentPrefab(PrefabName.None);
+                UIController.Instance.IsEntitySelectedUI(false);
             }
-            ModelSelector.Instance.SetCurrentPrefab(PrefabName.None);
-            UIController.Instance.IsEntitySelectedUI(false);
-
+            else Debug.Log("No entities !");
         }
-        else Debug.LogWarning("Keine Entities !");
+        else Debug.LogWarning("Something went wrong !");
     }
 
     public void SaveToFile()
@@ -338,7 +334,7 @@ public class EditorObjectsManager : MonoBehaviour
             index++;
         }
         Simulation.Edit.Simulation simulation = new Simulation.Edit.Simulation(simulationOptions, entities);
-        SerializationExecutor.SaveData(simulation);
+        SerializationExecutor.SaveData(simulation,"simulation");
     }
 
 

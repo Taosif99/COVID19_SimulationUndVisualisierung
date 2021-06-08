@@ -14,10 +14,10 @@ public static class SerializationExecutor
 {
 
     //TODO CATCH  UnauthorizedAccessException
-    public static void SaveData(Simulation.Edit.Simulation simulation)
+    public static void SaveData(Simulation.Edit.Simulation simulation, string simulationName)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/covidSim.simulation";
+        string path = Application.persistentDataPath + "/"+ simulationName + ".covidSim" ;
         FileStream stream = new FileStream(path, FileMode.Create);
         formatter.Serialize(stream, simulation);
         stream.Close();
@@ -25,9 +25,9 @@ public static class SerializationExecutor
     }
 
 
-    public static Simulation.Edit.Simulation LoadData()
+    public static Simulation.Edit.Simulation LoadData(string simulationName)
     {
-        string path = Application.persistentDataPath + "/covidSim.simulation";
+        string path = Application.persistentDataPath + "/" + simulationName + ".covidSim";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
