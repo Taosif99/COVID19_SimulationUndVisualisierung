@@ -55,7 +55,7 @@ namespace Simulation.Runtime
             {
                 venue.SimulateEncounters();
 
-                if (venue is not Household household)
+                if (!(venue is Household household))
                 {
                     continue;
                 }
