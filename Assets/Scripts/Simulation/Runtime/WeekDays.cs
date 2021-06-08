@@ -11,6 +11,9 @@ namespace Simulation.Runtime
         Thursday  = 1 << 3,
         Friday    = 1 << 4,
         Saturday  = 1 << 5,
-        Sunday    = 1 << 6
+        Sunday    = 1 << 6,
+        
+        All      = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday,
+        WorkDays = Monday | Tuesday | Wednesday | Thursday | Friday
     }
 }
