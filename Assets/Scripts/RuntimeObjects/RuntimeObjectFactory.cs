@@ -1,5 +1,6 @@
 ﻿using System;
 using EditorObjects;
+using Grid;
 using Simulation.Edit;
 using UnityEngine;
 
@@ -52,7 +53,8 @@ namespace RuntimeObjects
             //...gameObject.AddComponent
 
             Simulation.Runtime.Hospital hospital = new Simulation.Runtime.Hospital((Hospital)hospitalEditorObject.EditorEntity);
-
+            AddCounterToVenue(hospitalRuntimeGameObject, hospital);
+            
             return hospital;
         }
 
@@ -65,7 +67,8 @@ namespace RuntimeObjects
             //...gameObject.AddComponent
 
             Simulation.Runtime.Household household = new Simulation.Runtime.Household((Household)householdEditorObject.EditorEntity);
-
+            AddCounterToVenue(householdRuntimeGameObject, household);
+            
             return household;
         }
 
@@ -78,8 +81,17 @@ namespace RuntimeObjects
             //...gameObject.AddComponent
 
             Simulation.Runtime.Workplace workplace = new Simulation.Runtime.Workplace((Workplace)workplaceEditorObject.EditorEntity);
-
+            AddCounterToVenue(workplaceRuntimeGameObject, workplace);
+            
             return workplace;
+        }
+
+        private static void AddCounterToVenue(GameObject gameObject, Simulation.Runtime.Venue runtimeEntity)
+        {
+            //Adding the counter as monobehaviour
+            StateCounter counter = gameObject.AddComponent<StateCounter>();
+            counter.Venue = runtimeEntity;
+            counter.InstantiateCounter();
         }
     }
 }

@@ -106,8 +106,8 @@ namespace Grid
                 gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
                 gameObject.transform.localScale /= _scaleDiv;
                 //update counter position
-                StateCounter counter = gameObject.GetComponent<StateCounter>();
-                counter.InstantiateCounter(spawnPosition);
+                /*StateCounter counter = gameObject.GetComponent<StateCounter>();
+                counter.InstantiateCounter(spawnPosition);*/
                 PlacedPositions.Add(gridCellPosition);
 
             } //Todo else exception

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Simulation.Runtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ namespace Grid
     /// <summary>
     /// Class which implements a Counter which shows the amount of infected persons and not infected persons at a venue.
     /// </summary>
-    public class StateCounter : MonoBehaviour
+    class StateCounter : MonoBehaviour
     {
 
         private float _height = 4f;
@@ -21,6 +22,7 @@ namespace Grid
         private int _amountNotInfected;
 
         public GameObject CounterGameObject { get => _counterGameObject; set => _counterGameObject = value; }
+        public Venue Venue { get; set; }
 
         // Start is called before the first frame update
         void Start()
@@ -33,22 +35,36 @@ namespace Grid
         void Update()
         {
             //TODO Getting values from Simulation Controller add modify text element of counter
+
+            _amountInfected = 0;
+            _amountNotInfected = 0;
             
-              
+            foreach (var person in Venue.GetPeopleAtVenue())
+            {
+                if (person.InfectionState.HasFlag(Person.InfectionStates.Infected))
+                {
+                    _amountInfected++;
+                }
+                else
+                {
+                    _amountNotInfected++;
+                }
+            }
+            
+            UpdateText();
         }
 
         /// <summary>
         /// Method to instinatiate the counter prefab above a venue model after its creation.
         /// </summary>
         /// <param name="VenueSpawnPosition"></param>
-        public void InstantiateCounter(Vector3 VenueSpawnPosition)
+        public void InstantiateCounter()
         {
-                GameObject counterPrefab = ModelSelector.Instance.CounterPrefab;
-                CounterGameObject = Instantiate(counterPrefab, new Vector3(VenueSpawnPosition.x, _height, VenueSpawnPosition.y), Quaternion.Euler(_eulerAngleX, 0, 0));
-                CounterGameObject.name = "CounterCanvas";
-                _counterText = CounterGameObject.GetComponentInChildren<TextMeshProUGUI>();   
+            GameObject counterPrefab = ModelSelector.Instance.CounterPrefab;
+            CounterGameObject = Instantiate(counterPrefab, new Vector3(0, _height, 0), Quaternion.Euler(_eulerAngleX, 0, 0), gameObject.transform);
+            CounterGameObject.name = "CounterCanvas";
+            _counterText = CounterGameObject.GetComponentInChildren<TextMeshProUGUI>();   
         }
-
 
         //Testing counter with random values every four seconds
         private IEnumerator Test()
@@ -59,12 +75,17 @@ namespace Grid
                 {
                     _amountInfected = Random.Range(0, 100);
                     _amountNotInfected = Random.Range(0, 100);
-                    string text = $"<color=green>{_amountNotInfected}</color>/<color=red>{_amountInfected}</color>";
-                    //Debug.Log(text);
-                    _counterText.SetText(text);
+                    UpdateText();
                     yield return new WaitForSeconds(4f);
                 }
             }
+        }
+
+        private void UpdateText()
+        {
+            string text = $"<color=green>{_amountNotInfected}</color>/<color=red>{_amountInfected}</color>";
+            //Debug.Log(text);
+            _counterText.SetText(text);
         }
 
     }

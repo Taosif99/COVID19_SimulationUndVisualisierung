@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Simulation.Runtime
 {
@@ -25,7 +26,7 @@ namespace Simulation.Runtime
         {
             if (!HasPersonHere(person))
             {
-                throw new InvalidOperationException("Person is not at this venue.");
+                return;
             }
 
             person.CurrentLocation = null;
@@ -43,6 +44,11 @@ namespace Simulation.Runtime
 
             person.CurrentLocation = this;
             _currentPeopleAtVenue.Add(person);
+        }
+
+        public HashSet<Person> GetPeopleAtVenue()
+        {
+            return _currentPeopleAtVenue;
         }
     }
 }

@@ -9,14 +9,21 @@ namespace Simulation.Runtime
         {
             Type = editorEntity.Type;
             WorkerCapacity = editorEntity.WorkerCapacity;
+
+            WorkShifts = CreateWorkShifts();
         }
 
         public WorkplaceType Type { get; }
         public int WorkerCapacity { get; }
+        public List<WorkShift> WorkShifts { get; }
 
-        public List<WorkShift> GetWorkShifts()
+        private List<WorkShift> CreateWorkShifts()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new List<WorkShift>
+            {
+                new WorkShift(this, WeekDays.WorkDays, 9, 8)
+            };
         }
     }
 }

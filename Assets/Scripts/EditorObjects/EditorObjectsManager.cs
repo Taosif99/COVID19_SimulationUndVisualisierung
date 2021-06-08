@@ -55,11 +55,18 @@ public class EditorObjectsManager : MonoBehaviour
 
 
 
-  
 
 
 
 
+    /// <summary>
+    /// Get all editor objects which are currently placed.
+    /// </summary>
+    /// <returns>A list of all currently placed editor objects</returns>
+    public List<IEditorObject> GetAllEditorObjects()
+    {
+        return _editorObjectsDic.Values.ToList();
+    }
 
     /// <summary>
     /// Method to add an EditorObject to our system.

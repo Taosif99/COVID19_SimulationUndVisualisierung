@@ -10,7 +10,6 @@ namespace Simulation.Runtime
     {
         private Venue _currentLocation;
 
-        private InfectionStates _infectionStates;
         private PhysicalCondition _physicalCondition;
         private float _carefulnessFactor;
         private float _risk;
@@ -26,6 +25,7 @@ namespace Simulation.Runtime
             IsWorker = isWorker;
         }
 
+        public InfectionStates InfectionState { get; private set; }
         public bool IsWorker { get; }
         public List<Activity> Activities { get; } = new List<Activity>();
 
@@ -39,8 +39,8 @@ namespace Simulation.Runtime
                     return;
                 }
 
-                value?.MovePersonHere(this);
                 _currentLocation = value;
+                value?.MovePersonHere(this);
             }
         }
 
@@ -83,7 +83,7 @@ namespace Simulation.Runtime
             double _daysSinceInfection = _daysSinceInfection = (currentDate - _infectionDate).TotalDays;
             //Debug.Log(_daysSinceInfection);
 
-            switch (_infectionStates)
+            switch (InfectionState)
             {
                 case InfectionStates.Phase_0:
                     break;
@@ -92,11 +92,11 @@ namespace Simulation.Runtime
                     int InfectedDay = UnityEngine.Random.Range(InfectionStateDays.IncubationMinDay, InfectionStateDays.IncubationMaxDay);
                     if (_daysSinceInfection <= InfectedDay)
                     {
-                        _infectionStates = InfectionStates.Phase_0;
+                        InfectionState = InfectionStates.Phase_0;
                     }
                     else
                     {
-                        _infectionStates = InfectionStates.Phase_1;
+                        InfectionState = InfectionStates.Phase_1;
                     }
                     
                     break;
@@ -105,11 +105,11 @@ namespace Simulation.Runtime
                     int InfectiousDay = UnityEngine.Random.Range(InfectionStateDays.InfectiousMinDay, InfectionStateDays.InfectiousMaxDay);
                     if (_daysSinceInfection <= InfectiousDay)
                     {
-                        _infectionStates = InfectionStates.Phase_1;
+                        InfectionState = InfectionStates.Phase_1;
                     }
                     else
                     {
-                        _infectionStates = InfectionStates.Phase_2;
+                        InfectionState = InfectionStates.Phase_2;
                     }
                     
                     break;
@@ -118,11 +118,11 @@ namespace Simulation.Runtime
                     int SymptomsDay = UnityEngine.Random.Range(InfectionStateDays.SymptomsMinDay, InfectionStateDays.SymptomsMaxDay);
                     if (_daysSinceInfection <= SymptomsDay)
                     {
-                        _infectionStates = InfectionStates.Phase_2;
+                        InfectionState = InfectionStates.Phase_2;
                     }
                     else
                     {
-                        _infectionStates = InfectionStates.Phase_3;
+                        InfectionState = InfectionStates.Phase_3;
                     }
                     
                     break;
@@ -132,11 +132,11 @@ namespace Simulation.Runtime
                     int RecoveringDay = UnityEngine.Random.Range(InfectionStateDays.RecoveringMinDay, InfectionStateDays.RecoveringMaxDay);
                     if (_daysSinceInfection <= RecoveringDay)
                     {
-                        _infectionStates = InfectionStates.Phase_3;
+                        InfectionState = InfectionStates.Phase_3;
                     }
                     else
                     {
-                        _infectionStates = InfectionStates.Phase_4;
+                        InfectionState = InfectionStates.Phase_4;
                     }
                     
                     break;
@@ -173,6 +173,11 @@ namespace Simulation.Runtime
             }
 
             return null;
+        }
+
+        public void UpdateHealthState(DateTime simulationDate)
+        {
+            throw new NotImplementedException();
         }
     }
 }
