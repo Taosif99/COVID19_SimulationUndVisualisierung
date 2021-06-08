@@ -2,15 +2,18 @@
 {
     class WorkShift
     {
-        private WeekDays _weekDays;
-        private int _startTime;
-        private int _duration;
-
-        public WorkShift(WeekDays weekDays, int startTime, int duration)
+        public WorkShift(Workplace workplace, WeekDays weekDays, int startTime, int duration, )
         {
-            _weekDays = weekDays;
-            _startTime = startTime;
-            _duration = duration;
+            Workplace = workplace;
+            Days = weekDays;
+            StartTime = startTime;
+            Duration = duration;
         }
+
+        public Workplace Workplace { get; }
+
+        public WeekDays Days { get; }
+        public int StartTime { get; }
+        public int Duration { get; }
     }
 }

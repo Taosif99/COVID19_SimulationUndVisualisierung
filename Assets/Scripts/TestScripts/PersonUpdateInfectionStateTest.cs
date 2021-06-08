@@ -11,7 +11,7 @@ namespace TestScripts
     public class PersonUpdateInfectionStateTest : MonoBehaviour
     {
 
-        public List<Person> TestPopulation = new List<Person>();
+        private List<Person> _testPopulation = new List<Person>();
 
         DateTime today = DateTime.Today;
         // Start is called before the first frame update

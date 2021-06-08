@@ -2,17 +2,17 @@
 {
     class Activity
     {
-        private WeekDays _weekDays;
-        private int _startTime;
-        private int _endTime;
-        private Venue _location;
-
         public Activity(WeekDays weekDays, int startTime, int endTime, Venue location)
         {
-            _weekDays = weekDays;
-            _startTime = startTime;
-            _endTime = endTime;
-            _location = location;
+            Days = weekDays;
+            StartTime = startTime;
+            EndTime = endTime;
+            Location = location;
         }
+
+        public WeekDays Days { get; }
+        public int StartTime { get; }
+        public int EndTime { get; }
+        public Venue Location { get; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Simulation.Runtime
 {
@@ -12,5 +13,10 @@ namespace Simulation.Runtime
 
         public WorkplaceType Type { get; }
         public int WorkerCapacity { get; }
+
+        public List<WorkShift> GetWorkShifts()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
