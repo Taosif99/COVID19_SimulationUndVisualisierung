@@ -11,7 +11,7 @@ namespace TestScripts
     public class PersonUpdateInfectionStateTest : MonoBehaviour
     {
 
-        public List<Person> TestPopulation = new List<Person>();
+        private List<Person> _testPopulation = new List<Person>();
 
         //https://docs.microsoft.com/de-de/dotnet/api/system.datetime?view=net-5.0
         //Tag heute
@@ -35,12 +35,12 @@ namespace TestScripts
                 // eg. days of current mounth
 
 
-                TestPopulation.Add(person);
+                _testPopulation.Add(person);
             }
 
             //Todo implement 
 
-            foreach (Person person in TestPopulation)
+            foreach (Person person in _testPopulation)
             {
                 person.UpdateInfectionState();
             }
