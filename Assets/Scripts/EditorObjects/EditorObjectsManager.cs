@@ -41,7 +41,7 @@ public class EditorObjectsManager : MonoBehaviour
     //Hospital elements
     public Dropdown HospitalScaleDropdown;
     public Dropdown WorkerAvailabilityDropdown;
-    private HashSet<string> _usedUiNames = new HashSet<string>(); //TODO DIALOG BOX WHEN NAME USED TWICE
+    //private HashSet<string> _usedUiNames = new HashSet<string>(); //TODO DIALOG BOX WHEN NAME USED TWICE
     private string _currentEditorObjectUIName = "";
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -88,7 +88,7 @@ public class EditorObjectsManager : MonoBehaviour
                 Debug.LogError("Unknown prefab name");
                 break;
         }
-        _usedUiNames.Add(uiName);
+       // _usedUiNames.Add(uiName);
         _editorObjectsDic.Add(gridCell, editorObject);
         LoadEditorObjectUI(gridCellPosition);
         return editorObject.EditorGameObject;
@@ -174,8 +174,8 @@ public class EditorObjectsManager : MonoBehaviour
          
                 //Remove old and add new one
                 editorObject.UIName = ObjectNameInputField.text;
-                _usedUiNames.Remove(_currentEditorObjectUIName);
-                _usedUiNames.Add(editorObject.UIName);
+                //_usedUiNames.Remove(_currentEditorObjectUIName);
+                //_usedUiNames.Add(editorObject.UIName);
                 _currentEditorObjectUIName = editorObject.UIName;
 
 
@@ -227,8 +227,11 @@ public class EditorObjectsManager : MonoBehaviour
             {
                 //Destroy the gameObject in the scene
                 GameObject gameObject = editorObject.EditorGameObject;
+                StateCounter counter = gameObject.GetComponent<StateCounter>();
+                GameObject counterGameObject = counter.CounterGameObject;
+                Destroy(counterGameObject);
                 Destroy(gameObject);
-                _usedUiNames.Remove(editorObject.UIName);
+                //_usedUiNames.Remove(editorObject.UIName);
                 _editorObjectsDic.Remove(_currentSelectedEntity.Position);
                 _currentSelectedEntity = null;
                 UIController.Instance.IsEntitySelectedUI(false);
@@ -239,6 +242,13 @@ public class EditorObjectsManager : MonoBehaviour
 
     //TODO
     public void LoadFromFile()
+    { 
+    
+    
+    }
+
+
+    public void SaveToFile()
     { 
     
     

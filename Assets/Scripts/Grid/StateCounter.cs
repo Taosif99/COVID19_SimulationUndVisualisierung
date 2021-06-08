@@ -18,7 +18,9 @@ namespace Grid
         private GameObject _counterGameObject;
         private TextMeshProUGUI _counterText;
         private int _amountInfected;
-        private int _amountNotInfected; 
+        private int _amountNotInfected;
+
+        public GameObject CounterGameObject { get => _counterGameObject; set => _counterGameObject = value; }
 
         // Start is called before the first frame update
         void Start()
@@ -42,9 +44,9 @@ namespace Grid
         public void InstantiateCounter(Vector3 VenueSpawnPosition)
         {
                 GameObject counterPrefab = ModelSelector.Instance.CounterPrefab;
-                _counterGameObject = Instantiate(counterPrefab, new Vector3(VenueSpawnPosition.x, _height, VenueSpawnPosition.y), Quaternion.Euler(_eulerAngleX, 0, 0));
-                _counterGameObject.name = "CounterCanvas";
-                _counterText = _counterGameObject.GetComponentInChildren<TextMeshProUGUI>();   
+                CounterGameObject = Instantiate(counterPrefab, new Vector3(VenueSpawnPosition.x, _height, VenueSpawnPosition.y), Quaternion.Euler(_eulerAngleX, 0, 0));
+                CounterGameObject.name = "CounterCanvas";
+                _counterText = CounterGameObject.GetComponentInChildren<TextMeshProUGUI>();   
         }
 
 
@@ -53,7 +55,7 @@ namespace Grid
         {
             for (; ; )
             {
-                if (_counterGameObject != null && _counterText != null)
+                if (CounterGameObject != null && _counterText != null)
                 {
                     _amountInfected = Random.Range(0, 100);
                     _amountNotInfected = Random.Range(0, 100);

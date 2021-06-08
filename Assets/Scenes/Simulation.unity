@@ -5260,9 +5260,6 @@ MonoBehaviour:
   _mainCamera: {fileID: 0}
   cameraMovementSpeed: 8
   _smoothFactor: 0.5
-  _worldUIMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &975727877
 GameObject:
   m_ObjectHideFlags: 0
@@ -12528,6 +12525,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _scaleDiv: 2
+  CameraController: {fileID: 963194229}
 --- !u!114 &8052080947404100267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12535,7 +12533,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8052080947404100265}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 22a55554a3f3c5c4c82041bc95fe89a0, type: 3}
   m_Name: 

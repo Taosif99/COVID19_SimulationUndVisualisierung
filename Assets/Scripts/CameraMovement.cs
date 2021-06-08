@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,15 +10,14 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class CameraMovement : MonoBehaviour
 {
-
-    //TODO FIX 3D CANVAS STOPPING, since a canvas cannot be raycasted currently
-
-
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private float cameraMovementSpeed = 5;
     //Lower = smoother, Factor used for interpolation
     [SerializeField] private float _smoothFactor = 0.5f;
-    [SerializeField] private LayerMask _worldUIMask;
+    private bool _isMouseOverUi;
+    public bool IsMouseOverUi { get => _isMouseOverUi; set => _isMouseOverUi = value; }
+
+
 
     // Start is called before the first frame update
     private void Start()
@@ -29,6 +29,7 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        IsMouseOverUi = IsMousePointerOverUIElement();
         MoveCamera();
     }
 
@@ -37,12 +38,8 @@ public class CameraMovement : MonoBehaviour
     /// </summary>
     private void MoveCamera()
     {
-        //Better later implement an inputHandler / manager
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        bool hits3DUI = Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _worldUIMask);
-        Debug.Log("Hits 3d ui ?" + hits3DUI);
-        if (EventSystem.current.IsPointerOverGameObject() == false || hits3DUI)
+        //Check if 2D UI is not hit by the mouse
+       if(!_isMouseOverUi)
         {
 
             Vector3 inputVector = new Vector3(Input.GetAxis("Horizontal"), 0,
@@ -50,8 +47,29 @@ public class CameraMovement : MonoBehaviour
             Vector3 targetPosition = _mainCamera.transform.position + inputVector * Time.deltaTime * cameraMovementSpeed;
             _mainCamera.transform.position = Vector3.Lerp(transform.position, targetPosition, _smoothFactor);
 
-        }
-        
-        }
+        }   
+    }
 
+
+ 
+    /// <summary>
+    /// Method to check if mouse points to main UI elements.
+    /// </summary>
+    /// <returns>true if main UI elements are hit, else false.</returns>
+    private static bool IsMousePointerOverUIElement()
+    {
+        //Getting event system raycast results
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+        pointerEventData.position = Input.mousePosition;
+        List<RaycastResult> raysastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerEventData, raysastResults);
+        //Checking if UI Element hit
+        for (int i = 0; i < raysastResults.Count; i++)
+        {
+            RaycastResult curRaysastResult = raysastResults[i];
+            if (curRaysastResult.gameObject.layer == LayerMask.NameToLayer("UI"))
+                return true;
+        }
+        return false;
+    }
 }

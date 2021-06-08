@@ -22,7 +22,7 @@ namespace Grid
         private void Update()
         {
             //Check if left mouse button clicked and UI not clicked
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButtonDown(0) && ! _gridManager.CameraController.IsMouseOverUi)
             {
                 //Raycast into the scene
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

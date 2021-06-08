@@ -35,6 +35,9 @@ namespace Grid
         //if we clicked on an already existing object
         public Action<Vector2Int> OnEditorObjectClicked;
 
+
+        public CameraMovement CameraController;
+
         private void Awake()
         {
             _plane = GetComponent<MeshFilter>().mesh;
@@ -49,7 +52,7 @@ namespace Grid
         private void Update()
         {
             //Check if left mouse button clicked and UI not clicked
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && ModelSelector.Instance.CurrentPrefabName != PrefabName.None)
+            if (Input.GetMouseButtonDown(0) && !CameraController.IsMouseOverUi && ModelSelector.Instance.CurrentPrefabName != PrefabName.None)
             {
                 //Raycast into the scene
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
