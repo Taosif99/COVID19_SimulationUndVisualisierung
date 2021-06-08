@@ -3,15 +3,18 @@
 namespace Simulation.Edit
 {
     [Serializable]
-    class Simulation
+    public class Simulation
     {
         private SimulationOptions _simulationOptions;
-        private Entity [] _entity;
+        private Entity [] _entities;
 
+        public Entity[] Entities { get => _entities; set => _entities = value; }
         public Simulation(SimulationOptions simulationOptions, Entity[] entity)
         {
             _simulationOptions = simulationOptions;
-            _entity = entity;
+            Entities = entity;
         }
+
+      
     }
 }

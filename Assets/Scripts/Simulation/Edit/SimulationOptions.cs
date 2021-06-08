@@ -3,7 +3,7 @@
 namespace Simulation.Edit
 {
     [Serializable]
-    class SimulationOptions
+    public class SimulationOptions
     {
         private Policies _policies;
         private Event [] _event;

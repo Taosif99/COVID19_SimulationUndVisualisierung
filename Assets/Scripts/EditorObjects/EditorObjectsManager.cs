@@ -42,7 +42,7 @@ public class EditorObjectsManager : MonoBehaviour
     public Dropdown HospitalScaleDropdown;
     public Dropdown WorkerAvailabilityDropdown;
     //private HashSet<string> _usedUiNames = new HashSet<string>(); //TODO DIALOG BOX WHEN NAME USED TWICE
-    private string _currentEditorObjectUIName = "";
+    //private string _currentEditorObjectUIName = "";
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -50,6 +50,15 @@ public class EditorObjectsManager : MonoBehaviour
     private int _workPlaceCounter = 1;
     private int _hospitalCounter = 1;
     private int _householdCounter = 1;
+
+
+
+
+
+  
+
+
+
 
 
     /// <summary>
@@ -116,7 +125,7 @@ public class EditorObjectsManager : MonoBehaviour
             Entity entity = editorObject.EditorEntity;
 
             _currentSelectedEntity = entity;
-            _currentEditorObjectUIName = editorObject.UIName;
+           // _currentEditorObjectUIName = editorObject.UIName;
             //Check if Graph....TODO WHEN GRAPH IS UI ELEMENT IN WORLD
             if (entity is Venue)
             {
@@ -176,7 +185,7 @@ public class EditorObjectsManager : MonoBehaviour
                 editorObject.UIName = ObjectNameInputField.text;
                 //_usedUiNames.Remove(_currentEditorObjectUIName);
                 //_usedUiNames.Add(editorObject.UIName);
-                _currentEditorObjectUIName = editorObject.UIName;
+                //_currentEditorObjectUIName = editorObject.UIName;
 
 
                 if (_currentSelectedEntity is Venue)
@@ -242,14 +251,103 @@ public class EditorObjectsManager : MonoBehaviour
 
     //TODO
     public void LoadFromFile()
-    { 
-    
-    
+    {
+        
+        //Clear old scene and load data
+
+        foreach (IEditorObject editorObject in _editorObjectsDic.Values)
+        {
+
+            //TODO METHOD FOR THIS REPITITION
+            GameObject gameObject = editorObject.EditorGameObject;
+            StateCounter counter = gameObject.GetComponent<StateCounter>();
+            GameObject counterGameObject = counter.CounterGameObject;
+            Destroy(counterGameObject);
+            Destroy(gameObject);
+        }
+        _workPlaceCounter = 1;
+        _hospitalCounter = 1;
+        _householdCounter = 1;
+
+        _editorObjectsDic.Clear();
+        _currentSelectedEntity = null;
+
+
+        //Todo disable UI
+        Simulation.Edit.Simulation simulation = SerializationExecutor.LoadData();
+        Entity[] entities = simulation.Entities;
+        
+        if (entities != null)
+        {
+
+            foreach (Entity entity in entities)
+            {
+                //TODO LOAD UI Name
+
+                //
+                if (entity is Workplace)
+                {
+                    ModelSelector.Instance.SetCurrentPrefab(PrefabName.Workplace);
+
+                    if (entity is Hospital)
+                    {
+                        ModelSelector.Instance.SetCurrentPrefab(PrefabName.Hospital);
+                    }
+                } 
+                else if (entity is Household)
+                {
+                    ModelSelector.Instance.SetCurrentPrefab(PrefabName.Household);
+                }
+
+
+
+
+                IEditorObject editorObject = EditorObjectFactory.Create(entity, "serialized mock text");
+                _editorObjectsDic.Add(entity.Position, editorObject);
+
+                //Spawn in position-> spawn handler or manager
+                GameObject gameObject = editorObject.EditorGameObject;
+
+                //TODO USE GRID MANAGER method to avoid repitition
+                Vector3 spawnPosition = SimulationGridManager.Grid.GetRelativeWorldPosition(new Vector2Int(entity.Position.X, entity.Position.Y));
+                gameObject.transform.position = new Vector3(spawnPosition.x, 0, spawnPosition.y);
+                gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+                gameObject.transform.localScale /= 2;
+                //update counter position
+                StateCounter counter = gameObject.GetComponent<StateCounter>();
+                counter.InstantiateCounter(spawnPosition);
+
+                ModelSelector.Instance.SetCurrentPrefab(PrefabName.None);
+
+            }
+        }
+        else Debug.LogWarning("Keine Entities !");
     }
 
-
     public void SaveToFile()
-    { 
+    {
+    
+        //Temporary Mocks for serialization
+        Policies policiesMock = new Policies(MaskType.None);
+        Simulation.Edit.Event[] eventsMock = null;
+        SimulationOptions simulationOptions = new SimulationOptions(policiesMock, eventsMock);
+
+        /////////////////////////////////////////////////////////////////////////////////
+
+        Entity[] entities = new Entity[_editorObjectsDic.Count];
+        int index = 0;
+
+        Debug.Log("Entities to save: " + _editorObjectsDic.Count);
+
+        foreach (IEditorObject editorObject in _editorObjectsDic.Values)
+        {
+            Entity entity = editorObject.EditorEntity;
+            entities[index] = entity;
+            index++;
+        }
+
+        Simulation.Edit.Simulation simulation = new Simulation.Edit.Simulation(simulationOptions, entities);
+        SerializationExecutor.SaveData(simulation);
     
     
     }

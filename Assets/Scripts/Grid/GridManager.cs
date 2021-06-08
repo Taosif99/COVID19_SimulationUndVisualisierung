@@ -76,9 +76,9 @@ namespace Grid
 
                 //Create a venue and add to editor objects will be done by EditorObjectsManager
                 GameObject gameObject = EditObjectsManager.AddEditorObject(gridCellPosition);
-                
 
-          
+
+
 
                 //TODO: Quick fix we need appropiate models or implement a system
                 if (gameObject != null)
@@ -97,13 +97,31 @@ namespace Grid
 
 
 
-    }
+            }
             else
             {
                 Debug.Log("Position already used !");
                 OnEditorObjectClicked?.Invoke(gridCellPosition);
 
             }
+        }
+
+
+        public void PositionObjectInGrid(GameObject gameObject, Vector3 spawnPosition)
+        {
+            /*
+            //TODO: Quick fix we need appropiate models or implement a system
+            if (gameObject != null)
+            {
+                gameObject.transform.position = new Vector3(spawnPosition.x, 0, spawnPosition.y);
+                gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+                gameObject.transform.localScale /= _scaleDiv;
+                //update counter position
+                StateCounter counter = gameObject.GetComponent<StateCounter>();
+                counter.InstantiateCounter(spawnPosition);
+
+            }*/
+
         }
     }
 }

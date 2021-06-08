@@ -3,7 +3,7 @@
 namespace Simulation.Edit
 {
     [Serializable]
-    enum MaskType
+   public enum MaskType
     {
         None,
         MedicalMask,

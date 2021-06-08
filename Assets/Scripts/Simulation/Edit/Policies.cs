@@ -3,7 +3,7 @@
 namespace Simulation.Edit
 {
     [Serializable]
-    class Policies
+    public class Policies
     {
         private MaskType _requiredMaskType;
         public Policies(MaskType requiredMaskType)
