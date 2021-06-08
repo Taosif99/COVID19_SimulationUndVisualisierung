@@ -1,4 +1,5 @@
-﻿using EditorObjects;
+﻿using System;
+using EditorObjects;
 using Simulation.Edit;
 using UnityEngine;
 
@@ -9,6 +10,26 @@ namespace RuntimeObjects
     /// </summary>
     static class RuntimeObjectFactory
     {
+        public static Simulation.Runtime.Entity Create(IEditorObject editorObject)
+        {
+            switch (editorObject)
+            {
+                case GraphEditorObject obj:
+                    return CreateGraphRuntimeObject(obj);
+
+                case HospitalEditorObject obj:
+                    return CreateHospitalRuntimeObject(obj);
+
+                case HouseholdEditorObject obj:
+                    return CreateHouseholdRuntimeObject(obj);
+
+                case WorkplaceEditorObject obj:
+                    return CreateWorkplaceRuntimeObject(obj);
+            }
+
+            throw new NotSupportedException($"Unsupported editor object type {editorObject.GetType()}");
+        }
+
         public static Simulation.Runtime.Graph CreateGraphRuntimeObject(GraphEditorObject graphEditorObject)
         {
             //The GameObject of the Editor object
