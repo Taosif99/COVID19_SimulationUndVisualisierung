@@ -77,7 +77,7 @@ namespace Simulation.Runtime
 
                 foreach (Person member in household.Members)
                 {
-                    member.UpdateInfectionState();
+                    member.UpdateInfectionState(_simulationDate);
 
                     if (member.TryGetActivityAt(_simulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
                     {

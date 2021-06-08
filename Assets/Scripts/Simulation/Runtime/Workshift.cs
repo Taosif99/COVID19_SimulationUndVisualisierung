@@ -2,7 +2,7 @@
 {
     class WorkShift
     {
-        public WorkShift(Workplace workplace, WeekDays weekDays, int startTime, int duration, )
+        public WorkShift(Workplace workplace, WeekDays weekDays, int startTime, int duration)
         {
             Workplace = workplace;
             Days = weekDays;

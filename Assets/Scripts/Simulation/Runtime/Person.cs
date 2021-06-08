@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Simulation.Runtime
 {
     // TODO: Separate statistical fields
-    public class Person
+    class Person
     {
         private Venue _currentLocation;
 
