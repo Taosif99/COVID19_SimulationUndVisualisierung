@@ -13,11 +13,14 @@ using Simulation.Edit;
 public static class SerializationExecutor 
 {
 
+
+    public const string FileExtension = ".covidSim";
+
     //TODO CATCH  UnauthorizedAccessException
     public static void SaveData(Simulation.Edit.Simulation simulation, string simulationName)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/"+ simulationName + ".covidSim" ;
+        string path = Application.persistentDataPath + "/"+ simulationName + FileExtension;
         FileStream stream = new FileStream(path, FileMode.Create);
         formatter.Serialize(stream, simulation);
         stream.Close();
@@ -27,7 +30,7 @@ public static class SerializationExecutor
 
     public static Simulation.Edit.Simulation LoadData(string simulationName)
     {
-        string path = Application.persistentDataPath + "/" + simulationName + ".covidSim";
+        string path = Application.persistentDataPath + "/" + simulationName + FileExtension;
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
