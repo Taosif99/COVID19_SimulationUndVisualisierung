@@ -44,7 +44,7 @@ namespace Grid
                 if (prefabName.Equals(namedPrefab.prefabName))
                 {
                     CurrentPrefabToSpawn = namedPrefab;
-                    Debug.Log("Set Prefab Name:" + namedPrefab.prefabName);
+                    //Debug.Log("Set Prefab Name:" + namedPrefab.prefabName);
                     CurrentPrefabName = namedPrefab.prefabName;
                     return;
                 }

@@ -50,8 +50,8 @@ namespace Grid
             {
                 CellSize = _plane.bounds.extents.x * transform.localScale.x / CellExtent
             };
-            Debug.Log("Plane bounds: " + _plane.bounds.extents.x);
-            Debug.Log("Using cell size " + Grid.CellSize);
+            //Debug.Log("Plane bounds: " + _plane.bounds.extents.x);
+            //Debug.Log("Using cell size " + Grid.CellSize);
         }
 
         private void Update()

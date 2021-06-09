@@ -2178,6 +2178,7 @@ MonoBehaviour:
   _panelGameObject: {fileID: 1644924412}
   _buttonItem: {fileID: 6191703034026425141, guid: af963072fe4ffed429da8f77e35c0ad2, type: 3}
   _yPositionButtonChange: 60
+  SimSceneLoader: {fileID: 1590471083}
 --- !u!4 &1443735898
 Transform:
   m_ObjectHideFlags: 0
@@ -2505,7 +2506,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -16.394, y: 82.093}
+  m_AnchoredPosition: {x: -16.394043, y: 82.09302}
   m_SizeDelta: {x: -563.99, y: -347.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1794373042
