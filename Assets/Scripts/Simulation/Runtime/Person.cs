@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,8 +8,6 @@ namespace Simulation.Runtime
     // TODO: Separate statistical fields
     class Person
     {
-        private Venue _currentLocation;
-
         private PhysicalCondition _physicalCondition;
         private float _carefulnessFactor;
         private float _risk;
@@ -29,20 +27,7 @@ namespace Simulation.Runtime
         public bool IsWorker { get; }
         public List<Activity> Activities { get; } = new List<Activity>();
 
-        public Venue CurrentLocation
-        {
-            get => _currentLocation;
-            set
-            {
-                if (_currentLocation == value)
-                {
-                    return;
-                }
-
-                _currentLocation = value;
-                value?.MovePersonHere(this);
-            }
-        }
+        public Venue CurrentLocation { get; set; }
 
         [Flags]
         public enum InfectionStates

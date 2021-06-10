@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Simulation.Runtime
@@ -77,12 +78,12 @@ namespace Simulation.Runtime
 
                     if (member.TryGetActivityAt(SimulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
                     {
-                        member.CurrentLocation = activity.Location;
+                        activity.Location.MovePersonHere(member);
                     }
 
                     if (!household.HasPersonHere(member) && !member.HasActivityAt(SimulationDate))
                     {
-                        member.CurrentLocation = household;
+                        household.MovePersonHere(member);
                     }
                 }
             }
