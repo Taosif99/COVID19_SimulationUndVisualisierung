@@ -15,6 +15,7 @@ namespace Grid
         private float _eulerAngleX = 30f;
         //Reference to the counter which can be modified
         private TextMeshProUGUI _counterText;
+        private int _amountInfectious;
         private int _amountInfected;
         private int _amountNotInfected;
 
@@ -33,12 +34,17 @@ namespace Grid
         {
             //TODO Getting values from Simulation Controller add modify text element of counter
 
+            _amountInfectious = 0;
             _amountInfected = 0;
             _amountNotInfected = 0;
             
             foreach (var person in Venue.GetPeopleAtVenue())
             {
-                if (person.InfectionState.HasFlag(Person.InfectionStates.Infected))
+                if (person.InfectionState.HasFlag(Person.InfectionStates.Infectious))
+                {
+                    _amountInfectious++;
+                }
+                else if (person.InfectionState.HasFlag(Person.InfectionStates.Infected))
                 {
                     _amountInfected++;
                 }
@@ -85,7 +91,7 @@ namespace Grid
 
         private void UpdateText()
         {
-            string text = $"<color=green>{_amountNotInfected}</color> <color=black>/</color> <color=red>{_amountInfected}</color>";
+            string text = $"<color=green>{_amountNotInfected}</color> <color=black>/</color> <color=orange>{_amountInfected}</color> <color=black>/</color> <color=red>{_amountInfectious}</color>";
             //Debug.Log(text);
             _counterText.SetText(text);
         }
