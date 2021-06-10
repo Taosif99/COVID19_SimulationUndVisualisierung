@@ -10,7 +10,7 @@ namespace Simulation.Runtime
     class Person
     {
         private PhysicalCondition _physicalCondition;
-        private float _carefulnessFactor;
+        
         private float _risk;
         private int _encounters;
         private int _amountOfPeopleInfected;
@@ -20,11 +20,12 @@ namespace Simulation.Runtime
 
         public Person(float carefulnessFactor, float risk, bool isWorker)
         {
-            _carefulnessFactor = carefulnessFactor;
+            CarefulnessFactor = carefulnessFactor;
             _risk = risk;
             IsWorker = isWorker;
         }
 
+        public float CarefulnessFactor { get; }
         public InfectionStates InfectionState { get; private set; }
         public bool IsWorker { get; }
         public List<Activity> Activities { get; } = new List<Activity>();
