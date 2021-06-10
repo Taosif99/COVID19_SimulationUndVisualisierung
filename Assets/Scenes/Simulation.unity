@@ -807,7 +807,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5625,7 +5625,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.45756358, y: 0, z: 0, w: 0.8891769}
-  m_LocalPosition: {x: 7.5, y: 25.86, z: -13.87}
+  m_LocalPosition: {x: 0, y: 15, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -10970,7 +10970,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1881684800}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1955927954}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1881684800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12913,7 +12925,7 @@ Transform:
   m_GameObject: {fileID: 8052080947404100265}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 1, z: 5}
+  m_LocalScale: {x: 3, y: 1, z: 3}
   m_Children: []
   m_Father: {fileID: 8052080947544201979}
   m_RootOrder: 0
@@ -12952,7 +12964,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8a7c81b4118b045a334cc29abb79e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cellExtent: 10
+  _cellExtent: 5
   EditObjectsManager: {fileID: 807507761}
   _groundMask:
     serializedVersion: 2
