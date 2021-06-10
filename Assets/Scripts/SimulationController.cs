@@ -16,10 +16,13 @@ class SimulationController : MonoBehaviour
     [SerializeField]
     private TMP_Text _simulationDateTime;
 
-    private bool _isRunning = false;
+    private bool _isInitialized = false;
+    private bool _isPaused = false;
     
-    private Simulation.Runtime.SimulationController _controller = new Simulation.Runtime.SimulationController();
+    private Simulation.Runtime.SimulationController _controller;
     private float _lastSimulationUpdate;
+
+    private bool IsRunning => _isInitialized && _isPaused == false;
 
     private void Awake()
     {
@@ -29,18 +32,26 @@ class SimulationController : MonoBehaviour
 
     public void Play()
     {
-        List<Entity> entities = _editorObjectsManager.GetAllEditorObjects()
-            .Select(RuntimeObjectFactory.Create)
-            .ToList();
+        if (_isInitialized == false)
+        {
+            List<Entity> entities = _editorObjectsManager.GetAllEditorObjects()
+                .Select(RuntimeObjectFactory.Create)
+                .ToList();
+
+            _controller = new Simulation.Runtime.SimulationController();
+            _controller.Initialize(entities);
         
-        _controller.Initialize(entities);
-        
-        _isRunning = true;
+            _isInitialized = true;    
+        }
+        else if (_isPaused == true)
+        {
+            _isPaused = false;
+        }    
     }
 
     private void Update()
     {
-        if (_isRunning == false)
+        if (!IsRunning)
         {
             return;
         }
@@ -54,4 +65,35 @@ class SimulationController : MonoBehaviour
             _lastSimulationUpdate = Time.time;
         }
     }
+
+    public void Pause()
+    {
+        if (!IsRunning)
+        {
+            return;
+        }
+
+        _isPaused = true;
+    }
+
+    public void Stop()
+    {
+        if (_isInitialized == true)
+        {
+            //TODO: Reset Entity GameObjects to Editor State
+            _isInitialized = false;
+            _isPaused = false;
+            _controller = null;   
+        }
+    }
+    
+    public void InfectRandomPerson()
+    {
+        if (!IsRunning)
+        {
+            return;
+        }
+        
+        _controller.InfectRandomPerson();
+    }  
 }

@@ -88,5 +88,16 @@ namespace Simulation.Runtime
                 }
             }
         }
+
+        public void InfectRandomPerson()
+        {
+            //TODO: Person should be validated if he is already infected.
+            Household[] households = _entities.OfType<Household>().ToArray();
+            Household randomHousehold = households[Random.Range(0, households.Length)];
+            Person randomPerson = randomHousehold.Members[Random.Range(0, randomHousehold.Members.Length)];
+            randomPerson.SetInfected(SimulationDate);
+        }
+        
+        
     }
 }
