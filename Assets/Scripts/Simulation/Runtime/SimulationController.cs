@@ -64,7 +64,7 @@ namespace Simulation.Runtime
 
             foreach (var venue in _entities.OfType<Venue>())
             {
-                // TODO: venue.SimulateEncounters();
+                venue.SimulateEncounters(SimulationDate);
 
                 if (!(venue is Household household))
                 {

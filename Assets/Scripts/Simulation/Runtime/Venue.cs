@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Simulation.Runtime
 {
     abstract class Venue : Entity
     {
+        private const float GeneralInfectionProbabilityFactor = 0.1f;
+        
         private HashSet<Person> _currentPeopleAtVenue = new HashSet<Person>();
 
         protected Venue(Edit.Venue editorEntity) : base(editorEntity)
@@ -24,19 +27,22 @@ namespace Simulation.Runtime
                 {
                     continue;
                 }
-                
+
                 foreach (Person i in _currentPeopleAtVenue)
                 {
-                    if (!p.InfectionState.HasFlag(Person.InfectionStates.Infectious))
+                    if (!i.InfectionState.HasFlag(Person.InfectionStates.Infectious))
                     {
                         continue;
                     }
 
-                    float infectionProbability = InfectionRisk * (1 - (p.CarefulnessFactor + i.CarefulnessFactor) / 2);
+                    float infectionProbability = InfectionRisk * (1 - (p.CarefulnessFactor + i.CarefulnessFactor) / 2) * GeneralInfectionProbabilityFactor;
+                    
+                    Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
 
                     if (Random.Range(0f, 1f) <= infectionProbability)
                     {
                         p.SetInfected(simulationDate);
+                        Debug.Log("Person was infected.");
                     }
                 }
             }
