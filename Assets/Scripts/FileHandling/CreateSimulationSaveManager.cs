@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Simulation.Edit;
 
 
 namespace FileHandling
@@ -13,7 +10,9 @@ namespace FileHandling
     /// </summary>
     public class CreateSimulationSaveManager : MonoBehaviour
     {
-
+        /// <summary>
+        /// With this field the file name of the simulation will be acquired.
+        /// </summary>
         [SerializeField] private InputField _nameInputField;
 
 
@@ -37,10 +36,10 @@ namespace FileHandling
             string fileName = _nameInputField.text;
             //////////////////////////////////////////////////////////////////////////////////////
             //Temporary Mocks for serialization, values must be get from global settings
-            Simulation.Edit.Simulation simulation = SerializationExecutor.GetSimulationMock();
+            Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock();
             /////////////////////////////////////////////////////////////////////////////////
-            SerializationExecutor.SelectedFileName = fileName;
-            SerializationExecutor.SaveData(simulation);
+            FileHandler.SelectedFileName = fileName;
+            FileHandler.SaveData(simulation);
 
         }
 

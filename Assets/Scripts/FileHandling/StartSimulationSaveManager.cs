@@ -14,14 +14,24 @@ namespace FileHandling
     public class StartSimulationSaveManager : MonoBehaviour
     {
 
-
+        /// <summary>
+        /// The prefab of a button must be a GameObject with:
+        /// A delete button as first child.
+        /// A load Simulation Button as second child.
+        /// </summary>
+        [SerializeField] private GameObject _buttonItem;
+        
+        //List which is used to delete/reload buttons
+        private List<GameObject> _itemList = new List<GameObject>();
 
         //Variables for simulation Loading (StartSimulation Scene)
+        
+        
+        //FIXME THIS PANEL SCROLLBAR SYSTEM IS KINDA BROKEN
         [SerializeField] private GameObject _panelGameObject;
-        [SerializeField] private GameObject _buttonItem;
         [SerializeField] private float _yPositionButtonChange = 60f;
-        private float _yPositionPanelChange = 100f; // Until 50 Buttons okay, system must be improved dynamically
-
+        private float _yPositionPanelChange = 100f; // system must be improved dynamically
+      
 
         public SceneLoader SimSceneLoader;
 
@@ -30,30 +40,28 @@ namespace FileHandling
         void Start()
         {
             //SpawnButtonItemTest();
-            SerializationExecutor.SelectedFileName = null;
+            FileHandler.SelectedFileName = null;
             LoadSimulationButtons();
         }
 
 
         private void LoadSimulationButtons()
         {
-
+            ClearButtonItems();
             float yButtonPositionDifference = 0f;
             float yPanelDownGrowth = 0f;
             RectTransform panelRecTransform = _panelGameObject.GetComponent<RectTransform>();
 
 
             string path = Application.persistentDataPath;
-
             //Getting all simulation Names
             string[] filePaths = System.IO.Directory.GetFiles(path, "*.covidSim");
 
             foreach (string filePath in filePaths)
             {
-                Debug.Log("Found file: " + filePath);
-
                 //Place buttons correctly
                 GameObject simulationButtonItem = Instantiate(_buttonItem, _panelGameObject.transform);
+                _itemList.Add(simulationButtonItem);
                 simulationButtonItem.transform.position += new Vector3(0, yButtonPositionDifference, 0);
                 yButtonPositionDifference -= _yPositionButtonChange;
 
@@ -63,39 +71,81 @@ namespace FileHandling
                 Text simulationButtonText = simulationButtonGameObject.transform.GetComponentInChildren<Text>();
 
                 //Remove the file extension
-                string simulationName = Path.GetFileName(filePath);
-                simulationName = simulationName.Remove(simulationName.Length - SerializationExecutor.FileExtension.Length);
+                string fileName = Path.GetFileName(filePath);
+                //Remove the file extension
+                fileName = fileName.Remove(fileName.Length - FileHandler.FileExtension.Length);
 
-                simulationButtonText.text = simulationName;
-                yPanelDownGrowth = yPanelDownGrowth - _yPositionPanelChange;
+                simulationButtonText.text = fileName;
 
                 //Adding the listener <-> use uiController for uniformity
                 Button button = simulationButtonGameObject.transform.GetComponent<Button>();
-                AddButtonListener(button, simulationName);
+                AddButtonListenerStartSimulation(button, fileName);
+                AddButtonListenerDeleteSimulation(simulationButtonItem,fileName);
+
+
+                yPanelDownGrowth = yPanelDownGrowth - _yPositionPanelChange;
             }
 
             //Let the button item panel grow
             panelRecTransform.offsetMin = new Vector2(panelRecTransform.offsetMin.x, yPanelDownGrowth);
         }
 
+
+
+        #region outsource to UI controller
+
+        /// <summary>
+        /// Method to destroy all previous loaded Bitton objects.
+        /// </summary>
+        private void ClearButtonItems()
+        {
+            foreach (GameObject buttonItemGameObject in _itemList)
+            {
+                Destroy(buttonItemGameObject);
+            }
+            _itemList.Clear();
+        }
+
+
         /// <summary>
         /// Method which assigns the appropiate method to open a new scene 
         /// and setting up the filename.
         /// </summary>
         /// <param name="button"></param>
-        /// <param name="simulationName"></param>
-        private void AddButtonListener(Button button, string simulationName)
+        /// <param name="fileName"></param>
+        private void AddButtonListenerStartSimulation(Button button, string fileName)
         {
             button.onClick.AddListener(() =>
             {
-                SerializationExecutor.SelectedFileName = simulationName;
+                FileHandler.SelectedFileName = fileName;
                 SimSceneLoader.LoadSimulation();
             });
         }
 
 
+        private void AddButtonListenerDeleteSimulation(GameObject simulationButtonItem, string fileName)
+        { 
+          GameObject deleteGameObject = simulationButtonItem.transform.GetChild(0).gameObject;
+          Button deleteButton = deleteGameObject.GetComponent<Button>();
 
 
+            deleteButton.onClick.AddListener(() =>
+            {
+                FileHandler.SelectedFileName = fileName;
+                FileHandler.DeleteData();
+                //Load again ui
+                LoadSimulationButtons();
+
+            });
+
+        }
+
+        #endregion
+
+        #region testing
+        /// <summary>
+        /// The scroll system must be improved.
+        /// </summary>
         private void SpawnButtonItemTest()
         {
             string mockName = "simulation";
@@ -120,5 +170,6 @@ namespace FileHandling
             //Let the button item panel grow
             panelRecTransform.offsetMin = new Vector2(panelRecTransform.offsetMin.x, yPanelDownGrowth);
         }
+        #endregion
     }
 }

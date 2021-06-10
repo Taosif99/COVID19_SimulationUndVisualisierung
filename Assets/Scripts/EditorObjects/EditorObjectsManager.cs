@@ -29,7 +29,7 @@ namespace EditorObjects
 
 
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////
+        #region outsource to UI controller
         //The settings objects can be outsourced in an  Venue properties UI class
         //public Text ObjectNameText;
         //Venue elements
@@ -48,7 +48,7 @@ namespace EditorObjects
         public Dropdown WorkerAvailabilityDropdown;
         //private HashSet<string> _usedUiNames = new HashSet<string>(); //TODO DIALOG BOX WHEN NAME USED TWICE
         //private string _currentEditorObjectUIName = "";
-        ///////////////////////////////////////////////////////////////////////////////////////////////
+        #endregion
 
 
         //counters for unique mock naming
@@ -73,8 +73,6 @@ namespace EditorObjects
             //TODO DEFINE LOGICAL DEFAULT CONSTRUCTOR FOR ENTITES / OR DEFAULT VALUES IN GENERAL
             switch (currentPrefabName)
             {
-
-
                 case PrefabName.Workplace:
                     uiName = "Workplace Mock " + _workPlaceCounter++;
                     Workplace workplace = new Workplace(gridCell, 0.2f, WorkplaceType.Other, 200);
@@ -134,6 +132,7 @@ namespace EditorObjects
                         Workplace workplace = (Workplace)entity;
                         List<string> availableWorkplaceOptions = WorkplaceTypeDropdown.options.Select(option => option.text).ToList();
                         WorkplaceTypeDropdown.value = availableWorkplaceOptions.IndexOf(workplace.Type.ToString());
+                        WorkplaceTypeDropdown.enabled = true;
                         CapacityInputField.text = workplace.WorkerCapacity.ToString();
 
                         if (entity is Hospital)
@@ -144,7 +143,11 @@ namespace EditorObjects
                             List<string> availableWorkerAvailabilityOptions = WorkerAvailabilityDropdown.options.Select(option => option.text).ToList();
                             HospitalScaleDropdown.value = availableHospitalScaleOptions.IndexOf(hospital.Scale.ToString());
                             WorkerAvailabilityDropdown.value = availableWorkerAvailabilityOptions.IndexOf(hospital.WorkerAvailability.ToString());
-                        }
+
+                            //At a hospital the dropdown of workplace type should not be changed !!!
+                            WorkplaceTypeDropdown.enabled = false;
+
+                        } //TODO MAKE SURE THAT HOSPITAL CANNOT BE SET
 
                     }
                     else if (entity is Household)
@@ -183,8 +186,6 @@ namespace EditorObjects
                     //_usedUiNames.Remove(_currentEditorObjectUIName);
                     //_usedUiNames.Add(editorObject.UIName);
                     //_currentEditorObjectUIName = editorObject.UIName;
-
-
                     if (_currentSelectedEntity is Venue)
                     {
 
@@ -245,12 +246,13 @@ namespace EditorObjects
             }
         }
 
-
+        /// <summary>
+        /// Method which will be called if user selects in the previous scene to load a file.
+        /// </summary>
         public void LoadFromFile()
         {
 
             //Clear old scene and load data
-
             foreach (IEditorObject editorObject in _editorObjectsDic.Values)
             {
 
@@ -261,27 +263,21 @@ namespace EditorObjects
                 Destroy(counterGameObject);
                 Destroy(gameObject);
             }
+            //reset naming counters 
             _workPlaceCounter = 1;
             _hospitalCounter = 1;
             _householdCounter = 1;
-
             _editorObjectsDic.Clear();
             _currentSelectedEntity = null;
-
-
-            //Todo disable UI
-            Simulation.Edit.Simulation simulation = SerializationExecutor.LoadData();
-
+            //Load Simulation
+            Simulation.Edit.Simulation simulation = FileHandler.LoadData();
             if (simulation != null)
             {
                 Entity[] entities = simulation.Entities;
-
                 if (entities != null)
                 {
-
                     foreach (Entity entity in entities)
                     {
-
                         if (entity is Workplace)
                         {
                             ModelSelector.Instance.SetCurrentPrefab(PrefabName.Workplace);
@@ -301,8 +297,6 @@ namespace EditorObjects
                         //Spawn in position-> spawn handler or manager
                         GameObject gameObject = editorObject.EditorGameObject;
                         SimulationGridManager.PositionObjectInGrid(gameObject, gridCellPosition);
-
-
                     }
                     ModelSelector.Instance.SetCurrentPrefab(PrefabName.None);
                     UIController.Instance.IsEntitySelectedUI(false);
@@ -318,19 +312,15 @@ namespace EditorObjects
         {
             Entity[] entities = new Entity[_editorObjectsDic.Count];
             int index = 0;
-
-            Debug.Log("Entities to save: " + _editorObjectsDic.Count);
-
             foreach (IEditorObject editorObject in _editorObjectsDic.Values)
             {
                 Entity entity = editorObject.EditorEntity;
                 entities[index] = entity;
                 index++;
             }
-
             //TODO REPLACE MOCK WITH REAL SIMULATION
-            Simulation.Edit.Simulation simulation = SerializationExecutor.GetSimulationMock(entities);
-            SerializationExecutor.SaveData(simulation);
+            Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock(entities);
+            FileHandler.SaveData(simulation);
         }
 
 
@@ -338,16 +328,13 @@ namespace EditorObjects
         void Start()
         {
             SimulationGridManager.OnEditorObjectClicked += LoadEditorObjectUI;
-
-
             //Getting the clicked simulation name if name exists
-            string fileName = SerializationExecutor.SelectedFileName;
+            string fileName = FileHandler.SelectedFileName;
             if (fileName != null)
             {
                 Debug.Log("File to load: " + fileName);
                 LoadFromFile();
             }
-
         }
     }
 }
