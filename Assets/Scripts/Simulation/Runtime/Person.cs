@@ -41,11 +41,11 @@ namespace Simulation.Runtime
             Recovering = 8,
             Recovered = 16,
 
-            Phase_0 = Uninfected,
-            Phase_1 = Infected | Infectious,
-            Phase_2 = Infected | Infectious | Symptoms,
-            Phase_3 = Symptoms | Recovering,
-            Phase_4 = Recovered
+            Phase1 = Infected,
+            Phase2 = Infected | Infectious,
+            Phase3 = Infected | Infectious | Symptoms,
+            Phase4 = Symptoms | Recovering,
+            Phase5 = Recovered
 
         }
 
@@ -68,59 +68,52 @@ namespace Simulation.Runtime
             int currentDay = currentDate.Day;
             int currentMonth = currentDate.Month;
             double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
-            //Debug.Log(_daysSinceInfection);
 
             switch (InfectionState)
             {
-                case InfectionStates.Phase_0:
-                    break;
-                
-                case InfectionStates.Infected:
-                    // TODO: Move to SetInfected();
-                    // _infectionStateTimePeriod = UnityEngine.Random.Range(InfectionStateDays.IncubationMinDay, InfectionStateDays.IncubationMaxDay);
+                case InfectionStates.Phase1:
                     if (daysSinceInfection > _infectionStateDuration)
                     {
-                        InfectionState = InfectionStates.Phase_1;
+                        InfectionState = InfectionStates.Phase2;
                         _infectionStateDuration = Random.Range(InfectionStateDays.InfectiousMinDay, InfectionStateDays.InfectiousMaxDay);
                     }
                     
                     break;
 
-                case InfectionStates.Phase_1:
+                case InfectionStates.Phase2:
                     if (daysSinceInfection > _infectionStateDuration)
                     {
-                        InfectionState = InfectionStates.Phase_2;
+                        InfectionState = InfectionStates.Phase3;
                         _infectionStateDuration = Random.Range(InfectionStateDays.SymptomsMinDay, InfectionStateDays.SymptomsMaxDay);
                     }
                     
                     break;
 
-                case InfectionStates.Phase_2:
+                case InfectionStates.Phase3:
                     if (daysSinceInfection > _infectionStateDuration)
                     {
-                        InfectionState = InfectionStates.Phase_3;
+                        InfectionState = InfectionStates.Phase4;
                         _infectionStateDuration = Random.Range(InfectionStateDays.RecoveringMinDay, InfectionStateDays.RecoveringMaxDay);
                     }
                     
                     break;
 
-                case InfectionStates.Phase_3:
+                case InfectionStates.Phase4:
 
                     if (daysSinceInfection > _infectionStateDuration)
                     {
-                        InfectionState = InfectionStates.Phase_4;
+                        InfectionState = InfectionStates.Phase5;
                         _infectionStateDuration = int.MaxValue;
                     }
                     
                     break;
 
 
-                case InfectionStates.Phase_4:
+                case InfectionStates.Phase5:
                     break;
             }
 
-            
-            // Debug.Log("State: " + _infectionStates);
+            // Debug.Log("State: " + InfectionState);
 
         }
 
@@ -151,6 +144,13 @@ namespace Simulation.Runtime
         public void UpdateHealthState(DateTime simulationDate)
         {
             throw new NotImplementedException();
+        }
+
+        public void SetInfected(DateTime infectionDate)
+        {
+            InfectionState = InfectionStates.Infected;
+            _infectionDate = infectionDate;
+            _infectionStateDuration = Random.Range(InfectionStateDays.IncubationMinDay, InfectionStateDays.IncubationMaxDay);
         }
     }
 }
