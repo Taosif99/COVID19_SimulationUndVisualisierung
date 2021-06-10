@@ -27,7 +27,7 @@ namespace Grid
         // Start is called before the first frame update
         void Start()
         {
-            StartCoroutine(Test());
+            // StartCoroutine(Test());
         }
 
 
@@ -61,7 +61,12 @@ namespace Grid
         public void InstantiateCounter()
         {
             GameObject counterPrefab = ModelSelector.Instance.CounterPrefab;
-            CounterGameObject = Instantiate(counterPrefab, new Vector3(0, _height, 0), Quaternion.Euler(_eulerAngleX, 0, 0), gameObject.transform);
+            
+            CounterGameObject = Instantiate(counterPrefab, gameObject.transform);
+
+            CounterGameObject.transform.localPosition = new Vector3(0, _height, 0);
+            CounterGameObject.transform.rotation = Quaternion.Euler(_eulerAngleX, 0, 0);
+            
             CounterGameObject.name = "CounterCanvas";
             _counterText = CounterGameObject.GetComponentInChildren<TextMeshProUGUI>();   
         }
@@ -83,7 +88,7 @@ namespace Grid
 
         private void UpdateText()
         {
-            string text = $"<color=green>{_amountNotInfected}</color>/<color=red>{_amountInfected}</color>";
+            string text = $"<color=green>{_amountNotInfected}</color> <color=black>/</color> <color=red>{_amountInfected}</color>";
             //Debug.Log(text);
             _counterText.SetText(text);
         }
