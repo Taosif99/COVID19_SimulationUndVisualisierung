@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -164,8 +164,8 @@ namespace Simulation.Runtime
             {
                 if (activity.Days.HasFlag(dateTime.DayOfWeek.AsDayOfWeek()))
                 {
-                    int timeInMinutes = dateTime.Hour * 60 + dateTime.Minute;
-                    if (activity.StartTime <= timeInMinutes && activity.EndTime > timeInMinutes)
+                    float timeInHours = dateTime.Hour + (float) dateTime.Minute / 60;
+                    if (activity.StartTime <= timeInHours && activity.EndTime > timeInHours)
                     {
                         return activity;
                     }
