@@ -12,16 +12,13 @@ namespace Grid
     /// </summary>
     class StateCounter : MonoBehaviour
     {
-
-        private float _height = 4f;
         private float _eulerAngleX = 30f;
         //Reference to the counter which can be modified
-        private GameObject _counterGameObject;
         private TextMeshProUGUI _counterText;
         private int _amountInfected;
         private int _amountNotInfected;
 
-        public GameObject CounterGameObject { get => _counterGameObject; set => _counterGameObject = value; }
+        public GameObject CounterGameObject { get; set; }
         public Venue Venue { get; set; }
 
         // Start is called before the first frame update
@@ -58,13 +55,13 @@ namespace Grid
         /// Method to instinatiate the counter prefab above a venue model after its creation.
         /// </summary>
         /// <param name="VenueSpawnPosition"></param>
-        public void InstantiateCounter()
+        public void InstantiateCounter(float verticalOffset = 4f)
         {
             GameObject counterPrefab = ModelSelector.Instance.CounterPrefab;
             
             CounterGameObject = Instantiate(counterPrefab, gameObject.transform);
 
-            CounterGameObject.transform.localPosition = new Vector3(0, _height, 0);
+            CounterGameObject.transform.localPosition = new Vector3(0, verticalOffset, 0);
             CounterGameObject.transform.rotation = Quaternion.Euler(_eulerAngleX, 0, 0);
             
             CounterGameObject.name = "CounterCanvas";

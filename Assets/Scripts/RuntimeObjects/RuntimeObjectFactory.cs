@@ -53,7 +53,7 @@ namespace RuntimeObjects
             //...gameObject.AddComponent
 
             Simulation.Runtime.Hospital hospital = new Simulation.Runtime.Hospital((Hospital)hospitalEditorObject.EditorEntity);
-            AddCounterToVenue(hospitalRuntimeGameObject, hospital);
+            AddCounterToVenue(hospitalRuntimeGameObject, hospital, 8f);
             
             return hospital;
         }
@@ -86,12 +86,12 @@ namespace RuntimeObjects
             return workplace;
         }
 
-        private static void AddCounterToVenue(GameObject gameObject, Simulation.Runtime.Venue runtimeEntity)
+        private static void AddCounterToVenue(GameObject gameObject, Simulation.Runtime.Venue runtimeEntity, float verticalOffset = 4f)
         {
             //Adding the counter as monobehaviour
             StateCounter counter = gameObject.AddComponent<StateCounter>();
             counter.Venue = runtimeEntity;
-            counter.InstantiateCounter();
+            counter.InstantiateCounter(verticalOffset);
         }
     }
 }
