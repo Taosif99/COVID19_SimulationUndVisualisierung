@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+
+using Random = UnityEngine.Random;
 
 namespace Simulation.Runtime
 {
@@ -15,6 +16,7 @@ namespace Simulation.Runtime
         private int _amountOfPeopleInfected;
         private bool _isVaccinated;
         private DateTime _infectionDate;
+        private int _infectionStateDuration;
 
         public Person(float carefulnessFactor, float risk, bool isWorker)
         {
@@ -65,7 +67,7 @@ namespace Simulation.Runtime
         {
             int currentDay = currentDate.Day;
             int currentMonth = currentDate.Month;
-            double _daysSinceInfection = _daysSinceInfection = (currentDate - _infectionDate).TotalDays;
+            double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
             //Debug.Log(_daysSinceInfection);
 
             switch (InfectionState)
@@ -74,54 +76,40 @@ namespace Simulation.Runtime
                     break;
                 
                 case InfectionStates.Infected:
-                    int InfectedDay = UnityEngine.Random.Range(InfectionStateDays.IncubationMinDay, InfectionStateDays.IncubationMaxDay);
-                    if (_daysSinceInfection <= InfectedDay)
-                    {
-                        InfectionState = InfectionStates.Phase_0;
-                    }
-                    else
+                    // TODO: Move to SetInfected();
+                    // _infectionStateTimePeriod = UnityEngine.Random.Range(InfectionStateDays.IncubationMinDay, InfectionStateDays.IncubationMaxDay);
+                    if (daysSinceInfection > _infectionStateDuration)
                     {
                         InfectionState = InfectionStates.Phase_1;
+                        _infectionStateDuration = Random.Range(InfectionStateDays.InfectiousMinDay, InfectionStateDays.InfectiousMaxDay);
                     }
                     
                     break;
 
                 case InfectionStates.Phase_1:
-                    int InfectiousDay = UnityEngine.Random.Range(InfectionStateDays.InfectiousMinDay, InfectionStateDays.InfectiousMaxDay);
-                    if (_daysSinceInfection <= InfectiousDay)
-                    {
-                        InfectionState = InfectionStates.Phase_1;
-                    }
-                    else
+                    if (daysSinceInfection > _infectionStateDuration)
                     {
                         InfectionState = InfectionStates.Phase_2;
+                        _infectionStateDuration = Random.Range(InfectionStateDays.SymptomsMinDay, InfectionStateDays.SymptomsMaxDay);
                     }
                     
                     break;
 
                 case InfectionStates.Phase_2:
-                    int SymptomsDay = UnityEngine.Random.Range(InfectionStateDays.SymptomsMinDay, InfectionStateDays.SymptomsMaxDay);
-                    if (_daysSinceInfection <= SymptomsDay)
-                    {
-                        InfectionState = InfectionStates.Phase_2;
-                    }
-                    else
+                    if (daysSinceInfection > _infectionStateDuration)
                     {
                         InfectionState = InfectionStates.Phase_3;
+                        _infectionStateDuration = Random.Range(InfectionStateDays.RecoveringMinDay, InfectionStateDays.RecoveringMaxDay);
                     }
                     
                     break;
 
                 case InfectionStates.Phase_3:
 
-                    int RecoveringDay = UnityEngine.Random.Range(InfectionStateDays.RecoveringMinDay, InfectionStateDays.RecoveringMaxDay);
-                    if (_daysSinceInfection <= RecoveringDay)
-                    {
-                        InfectionState = InfectionStates.Phase_3;
-                    }
-                    else
+                    if (daysSinceInfection > _infectionStateDuration)
                     {
                         InfectionState = InfectionStates.Phase_4;
+                        _infectionStateDuration = int.MaxValue;
                     }
                     
                     break;
