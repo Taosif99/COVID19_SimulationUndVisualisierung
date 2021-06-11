@@ -10,6 +10,10 @@ namespace FileHandling
     /// </summary>
     public class CreateSimulationSaveManager : MonoBehaviour
     {
+
+
+
+
         /// <summary>
         /// With this field the file name of the simulation will be acquired.
         /// </summary>
@@ -36,7 +40,22 @@ namespace FileHandling
             Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock();
             /////////////////////////////////////////////////////////////////////////////////
             FileHandler.SelectedFileName = fileName;
-            FileHandler.SaveData(simulation);
+
+
+            //FileHandler.SaveData(simulation);
+            if (FileHandler.SaveFileExists())
+            {
+
+                DialogBox dialogBox = DialogBox.CreateFileAlreadyExistsDB();
+                DialogBoxManager.Instance.currentMockSimulation = simulation;
+                DialogBoxManager.Instance.HandleDialogBox(dialogBox);
+
+            }
+            else
+            {   //save normally
+                FileHandler.SaveData(simulation);
+                SceneLoader.Instance.LoadSimulation();
+            }
 
         }
 
