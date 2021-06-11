@@ -31,10 +31,19 @@ namespace FileHandling
         [SerializeField] private GameObject _panelGameObject;
         [SerializeField] private float _yPositionButtonChange = 60f;
         private float _yPositionPanelChange = 100f; // system must be improved dynamically
-      
+
+
+
+        public static StartSimulationSaveManager Instance;
 
         public SceneLoader SimSceneLoader;
 
+
+
+        private void Awake()
+        {
+            if (Instance == null) Instance = this;
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -45,7 +54,7 @@ namespace FileHandling
         }
 
 
-        private void LoadSimulationButtons()
+        public void LoadSimulationButtons()
         {
             ClearButtonItems();
             float yButtonPositionDifference = 0f;
@@ -81,8 +90,6 @@ namespace FileHandling
                 Button button = simulationButtonGameObject.transform.GetComponent<Button>();
                 AddButtonListenerStartSimulation(button, fileName);
                 AddButtonListenerDeleteSimulation(simulationButtonItem,fileName);
-
-
                 yPanelDownGrowth = yPanelDownGrowth - _yPositionPanelChange;
             }
 
@@ -132,9 +139,11 @@ namespace FileHandling
             deleteButton.onClick.AddListener(() =>
             {
                 FileHandler.SelectedFileName = fileName;
-                FileHandler.DeleteData();
+
+                DialogBoxManager.Instance.HandleDialogBox(DialogBox.CreateSureToDeleteDB());
+                //FileHandler.DeleteData(); Das muss dass beim Ok button aufgerufen werden
                 //Load again ui
-                LoadSimulationButtons();
+                //LoadSimulationButtons();
 
             });
 

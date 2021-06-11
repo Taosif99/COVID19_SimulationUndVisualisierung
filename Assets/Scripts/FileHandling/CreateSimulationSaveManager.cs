@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using System.IO;
 
 namespace FileHandling
 {
@@ -39,8 +39,22 @@ namespace FileHandling
             Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock();
             /////////////////////////////////////////////////////////////////////////////////
             FileHandler.SelectedFileName = fileName;
-            FileHandler.SaveData(simulation);
 
+
+            //FileHandler.SaveData(simulation);
+            if (FileHandler.SaveFileExists())
+            {
+
+                DialogBox dialogBox = DialogBox.CreateFileAlreadyExistsDB();
+                DialogBoxManager.Instance.currentMockSimulation = simulation;
+                DialogBoxManager.Instance.HandleDialogBox(dialogBox);
+
+            }
+            else 
+            {   //save normally
+                FileHandler.SaveData(simulation);
+                SceneLoader.Instance.LoadSimulation();
+             }
         }
 
 

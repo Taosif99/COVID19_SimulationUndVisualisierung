@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    public static SceneLoader Instance;
 
     public void LoadMainMenu()
     {
@@ -31,5 +32,11 @@ public class SceneLoader : MonoBehaviour
 
     {
         Application.Quit();
+    }
+
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
     }
 }

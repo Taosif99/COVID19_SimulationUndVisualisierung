@@ -271,6 +271,10 @@ namespace EditorObjects
             _currentSelectedEntity = null;
             //Load Simulation
             Simulation.Edit.Simulation simulation = FileHandler.LoadData();
+
+            //Not Found dialog box Todo
+
+
             if (simulation != null)
             {
                 Entity[] entities = simulation.Entities;
@@ -303,7 +307,16 @@ namespace EditorObjects
                 }
                 else Debug.Log("No entities !");
             }
-            else Debug.LogWarning("Something went wrong !");
+            else
+            {
+                //Debug.Log("File not found !");
+
+                //DialogBox dialogBox = DialogBox.CreateFileNotFoundDB();
+                //DialogBoxManager.Instance.HandleDialogBox(dialogBox);
+                //Here we must show the dialogbox and go back
+
+
+            }
         }
         /// <summary>
         /// Method which initiates the saving process of the program configuration.

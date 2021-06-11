@@ -16,7 +16,7 @@ namespace FileHandling
     /// In Windows: %userprofile%\AppData\LocalLow\<companyname>\<productname>
     /// (See: https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html)
     /// </summary>
-    public static class FileHandler 
+    public static class FileHandler
     {
 
         public const string FileExtension = ".covidSim";
@@ -24,34 +24,25 @@ namespace FileHandling
 
         //TODO CATCH  UnauthorizedAccessException
 
+
+
+
+
+        #region serialization
         /// <summary>
         /// Method which saves simulation object as serialized object
         /// with the extension .covidSim. Using the same file name leads to
         /// overwritting. 
         /// </summary>
         /// <param name="simulation">The simulation object</param>
-        public static bool  SaveData(Simulation.Edit.Simulation simulation)
+        public static void SaveData(Simulation.Edit.Simulation simulation)
         {
             BinaryFormatter formatter = new BinaryFormatter();
             string path = Application.persistentDataPath + "/" + SelectedFileName + FileExtension;
-            bool saveIsPermitted = true;
-            
-            if (File.Exists(path))
-            {
-                string overWriteMsg = "File with the same name already exists. Will you overwrite " + SelectedFileName + "?";
-                //TODO DIALOG BOX
-
-            }
-
-            if (saveIsPermitted)
-            {
-                FileStream stream = new FileStream(path, FileMode.Create);
-                formatter.Serialize(stream, simulation);
-                stream.Close();
-                //Debug.Log("Data saved in: " + path);
-            }
-
-            return saveIsPermitted;
+            FileStream stream = new FileStream(path, FileMode.Create);
+            formatter.Serialize(stream, simulation);
+            stream.Close();
+            Debug.Log("Data saved in: " + path);
         }
 
         /// <summary>
@@ -61,54 +52,56 @@ namespace FileHandling
         public static Simulation.Edit.Simulation LoadData()
         {
             string path = Application.persistentDataPath + "/" + SelectedFileName + FileExtension;
-            string dialogMessage = "";
-            
+
+
             if (File.Exists(path))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 FileStream stream = new FileStream(path, FileMode.Open);
                 Simulation.Edit.Simulation data = formatter.Deserialize(stream) as Simulation.Edit.Simulation;
                 stream.Close();
-                dialogMessage = "Data loaded successfully!";
+
                 //Debug.Log("Data loaded successfully!");
                 return data;
             }
             else
             {
 
-                dialogMessage = "Save file not found in " + path;
-                Debug.LogError(dialogMessage);
+                Debug.LogError("Save file not found in " + path);
                 return null;
+            }
+        }
+        #endregion
+        /// <summary>
+        /// Method which deletes the current selected simulation file.
+        /// </summary>
+        public static void DeleteData()
+        {
+            string path = Application.persistentDataPath + "/" + SelectedFileName + FileExtension;
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                Debug.Log("File deleted !");
+            }
+            else
+            {
+                Debug.LogError("Save file to delete not found in " + path);
             }
         }
 
         /// <summary>
-        /// Method which deletes the current selected simulation file.
+        /// Method which checks if a save file does already exist.
         /// </summary>
-        public static bool DeleteData()
+        /// <returns>true if it exists, else false.</returns>
+        public static bool SaveFileExists()
         {
-            string deleteMsg = "Are you sure you want to delete " + SelectedFileName + "?";
-
-            //TODO DIALOG BOX
-            bool deleteSimulation = true;
-
-            if (deleteSimulation)
-            {
-                string path = Application.persistentDataPath + "/" + SelectedFileName + FileExtension;
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                    Debug.Log("File deleted !");
-                }
-                else
-                {
-                    Debug.LogError("Save file to delete not found in " + path);
-                }
-
-            }
-
-            return deleteSimulation;
+            string path = Application.persistentDataPath + "/" + SelectedFileName + FileExtension;
+            return File.Exists(path);
         }
+
+
+
+
 
 
         #region Debug Mock
