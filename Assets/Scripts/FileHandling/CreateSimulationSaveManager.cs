@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 namespace FileHandling
 {
@@ -13,9 +13,7 @@ namespace FileHandling
         /// <summary>
         /// With this field the file name of the simulation will be acquired.
         /// </summary>
-        [SerializeField] private InputField _nameInputField;
-
-
+        [SerializeField] private TMP_InputField _nameInputField;
 
         /// <summary>
         /// TODO IMPLEMENT PROPER INPUT HANDLING
@@ -25,7 +23,6 @@ namespace FileHandling
 
 
         }
-
 
         /// <summary>
         /// Methods which creates the simulation regarding the given input name.
@@ -49,6 +46,5 @@ namespace FileHandling
             //TODO WHEN WE HAVE SOME PREFABS
 
         }
-
     }
 }
