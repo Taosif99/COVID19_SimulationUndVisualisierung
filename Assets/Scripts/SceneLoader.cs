@@ -7,13 +7,13 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenuTMP");
             
     }
 
     public void LoadSimulation()
     {
-        SceneManager.LoadScene("Simulation");
+        SceneManager.LoadScene("SimulationTMP");
     }
 
     public void LoadStartSimulation()
@@ -24,7 +24,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadCreateSimulation()
     {
 
-        SceneManager.LoadScene("CreateSimulation");
+        SceneManager.LoadScene("CreateSimulationTMP");
     }
 
 
