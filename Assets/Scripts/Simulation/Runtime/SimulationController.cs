@@ -75,7 +75,17 @@ namespace Simulation.Runtime
                 {
                     member.UpdateInfectionState(SimulationDate);
                     // TODO: member.UpdateHealthState(SimulationDate);
-
+                    
+                    if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
+                    {
+                        if (!household.HasPersonHere(member))
+                        {
+                            household.MovePersonHere(member);  
+                        }
+                        
+                        continue;
+                    }
+                    
                     if (member.TryGetActivityAt(SimulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
                     {
                         activity.Location.MovePersonHere(member);
