@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EditorObjects;
 using RuntimeObjects;
 using Simulation.Runtime;
 using TMPro;
