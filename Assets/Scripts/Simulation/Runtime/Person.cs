@@ -165,7 +165,7 @@ namespace Simulation.Runtime
             {
                 float surviveProbability = Random.Range(0f, 1f);
 
-                if (_physicalCondition.Equals(_physicalCondition.HasFlag(PhysicalCondition.Healthy)))
+                if (_physicalCondition.Equals(PhysicalCondition.Healthy))
                     if (surviveProbability <= 0.026f)
                         _isDead = true;
                     else
