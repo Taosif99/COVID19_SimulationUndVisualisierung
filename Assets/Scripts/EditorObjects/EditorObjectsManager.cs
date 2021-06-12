@@ -242,9 +242,6 @@ namespace EditorObjects
                 {
                     //Destroy the gameObject in the scene
                     GameObject gameObject = editorObject.EditorGameObject;
-                    StateCounter counter = gameObject.GetComponent<StateCounter>();
-                    GameObject counterGameObject = counter.CounterGameObject;
-                    Destroy(counterGameObject);
                     Destroy(gameObject);
                     //_usedUiNames.Remove(editorObject.UIName);
                     _editorObjectsDic.Remove(_currentSelectedEntity.Position);

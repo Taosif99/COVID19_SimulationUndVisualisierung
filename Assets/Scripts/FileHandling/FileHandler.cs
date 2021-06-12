@@ -1,8 +1,9 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using System.Linq;
 using Simulation.Edit;
-
+using System.Collections.Generic;
 
 namespace FileHandling
 {
@@ -99,9 +100,43 @@ namespace FileHandling
             return File.Exists(path);
         }
 
+        /// <summary>
+        /// Method to get all file paths ordered b the modfification date (descending).
+        /// </summary>
+        /// <returns>A string list with oredered file directories.</returns>
+        public static List<string> GetFilePathsOrderByLastModifiedDate()
+        {
+            string path = Application.persistentDataPath;
+            List<string> filePaths = new List<string>();
+
+            List<FileInfo> sortedFiles = new DirectoryInfo(path).GetFiles("*.covidSim")
+                                                  .OrderByDescending(file => file.LastWriteTime)
+                                                  .ToList();
+
+            // Adding to the return list
+            sortedFiles.ForEach(fileInfo => filePaths.Add(fileInfo.FullName));
+            return filePaths;
+        }
 
 
+        /// <summary>
+        /// Method to get all file names ordered b the modfification date (descending).
+        /// </summary>
+        /// <returns>A string list with oredered file names.</returns>
+        public static List<string> GetFileNamesOrderByLastModifiedDate() 
+        {
+            List<string> filePaths = GetFilePathsOrderByLastModifiedDate();
+            List<string> fileNames = new List<string>();
+            foreach (string filePath in filePaths) 
+            { 
+                string fileName = Path.GetFileName(filePath);
+                fileName = fileName.Remove(fileName.Length - FileExtension.Length);
+                fileNames.Add(fileName);
+            }
 
+
+            return fileNames;
+        }
 
 
         #region Debug Mock

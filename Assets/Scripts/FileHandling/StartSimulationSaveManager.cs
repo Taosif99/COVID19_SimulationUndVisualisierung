@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
+
 
 namespace FileHandling
 {
@@ -60,13 +60,9 @@ namespace FileHandling
             float yButtonPositionDifference = 0f;
             float yPanelDownGrowth = 0f;
             RectTransform panelRecTransform = _panelGameObject.GetComponent<RectTransform>();
-
-
-            string path = Application.persistentDataPath;
-            //Getting all simulation Names
-            string[] filePaths = System.IO.Directory.GetFiles(path, "*.covidSim");
-
-            foreach (string filePath in filePaths)
+            //Getting all simulation Names ordered by last modified date
+            List<string> fileNames = FileHandler.GetFileNamesOrderByLastModifiedDate();
+            foreach (string fileName in fileNames)
             {
                 //Place buttons correctly
                 GameObject simulationButtonItem = Instantiate(_buttonItem, _panelGameObject.transform);
@@ -78,11 +74,6 @@ namespace FileHandling
                 GameObject simulationButtonGameObject = simulationButtonItem.transform.GetChild(1).gameObject;
                 //Change the text
                 Text simulationButtonText = simulationButtonGameObject.transform.GetComponentInChildren<Text>();
-
-                //Remove the file extension
-                string fileName = Path.GetFileName(filePath);
-                //Remove the file extension
-                fileName = fileName.Remove(fileName.Length - FileHandler.FileExtension.Length);
 
                 simulationButtonText.text = fileName;
 
