@@ -1,6 +1,6 @@
 
 using System;
-
+using EditorObjects;
 
 namespace FileHandling
 {
@@ -75,10 +75,41 @@ namespace FileHandling
             string msg = "Are you sure you want to delete the file ? ";
             string name = "Delete file ?";
             DialogBox dialogBox = new DialogBox(name, msg);
-            dialogBox.OnConfirmationPressed += FileHandler.DeleteData;
-            dialogBox.OnConfirmationPressed += StartSimulationSaveManager.Instance.LoadSimulationButtons;
+            dialogBox.OnConfirmationPressed += CreateSureToDeleteAction;
             return dialogBox;
         }
+
+        //TODO IMPLEMENT
+        public static DialogBox CreateSureToReturnToMainMenueDB(EditorObjectsManager editorObjectsManager)
+        {
+            //add path
+            string msg = "Do you want to save your changes?";
+            string name = "Save file ?";
+            DialogBox dialogBox = new DialogBox(name, msg);
+            dialogBox.OnConfirmationPressed += ReturnToMainMenuAction;
+            dialogBox.OnConfirmationPressed += editorObjectsManager.SaveToFile;
+           dialogBox.OnCancelPressed += SceneLoader.Instance.LoadMainMenu;
+            return dialogBox;
+        }
+
+
+        //Methods to prevent handler execution order problems
+        private static void ReturnToMainMenuAction()
+        {
+        
+
+            //Access to editor objectsmanager???
+            SceneLoader.Instance.LoadMainMenu();
+            
+
+        }
+
+        private static void CreateSureToDeleteAction()
+        {
+            FileHandler.DeleteData();
+            StartSimulationSaveManager.Instance.LoadSimulationButtons();
+        }
+
 
     }
 }
