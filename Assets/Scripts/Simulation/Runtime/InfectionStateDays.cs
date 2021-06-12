@@ -14,8 +14,8 @@ namespace Simulation.Runtime
         public const int SymptomsMaxDay = 14;
 
         /*
-         * c) Zeitspanne der Infektiosit‰t
-         * Zwei Studien geben Startpunkt der Infektiosit‰t mit circa 2,5 Tagen vor Symptombeginn an an, mit einem Maximum an Viruslast also Infektiosit‰t 0,6 Tage vor Symptombeginn
+         * c) Zeitspanne der Infektiosit√§t
+         * Zwei Studien geben Startpunkt der Infektiosit√§t mit circa 2,5 Tagen vor Symptombeginn an an, mit einem Maximum an Viruslast also Infektiosit√§t 0,6 Tage vor Symptombeginn
          * 
          * https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/ (aufgerufen 05.06.2021)
          * 
@@ -24,8 +24,8 @@ namespace Simulation.Runtime
         public const int InfectiousMaxDay = 11;
 
         /*
-         * f) Zeit von ersten Symptomen bis zur Erholung milder F‰lle
-         * Nach 14 Tagen ab Symptombeginn kann die h‰usliche Quarant‰ne beendet werden, wenn der Patient f¸r 48 Stunden symptomfrei war 
+         * f) Zeit von ersten Symptomen bis zur Erholung milder F√§lle
+         * Nach 14 Tagen ab Symptombeginn kann die h√§usliche Quarant√§ne beendet werden, wenn der Patient f√ºr 48 Stunden symptomfrei war 
          * 
          * https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/ (aufgerufen 05.06.2021)
         */

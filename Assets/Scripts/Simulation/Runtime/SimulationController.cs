@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EditorObjects;
-using RuntimeObjects;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Simulation.Runtime
@@ -12,18 +11,15 @@ namespace Simulation.Runtime
         private const double SimulationTimeStepInMinutes = 10;
 
         private List<Entity> _entities = new List<Entity>();
-        private DateTime _simulationDate = new DateTime(2020, 1, 1);
+        
+        public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
 
-        public void Initialize(List<IEditorObject> editorObjects)
+        public void Initialize(List<Entity> entities)
         {
-            foreach (IEditorObject editorObject in editorObjects)
-            {
-                Entity entity = RuntimeObjectFactory.Create(editorObject);
-                _entities.Add(entity);
-            }
+            _entities = entities;
             
             List<WorkShift> workShifts = _entities.OfType<Workplace>()
-                .SelectMany(w => w.GetWorkShifts())
+                .SelectMany(w => w.WorkShifts)
                 .ToList();
 
             int workShiftIndex = 0;
@@ -64,11 +60,11 @@ namespace Simulation.Runtime
 
         public void RunUpdate()
         {
-            _simulationDate = _simulationDate.AddMinutes(SimulationTimeStepInMinutes);
+            SimulationDate = SimulationDate.AddMinutes(SimulationTimeStepInMinutes);
 
             foreach (var venue in _entities.OfType<Venue>())
             {
-                venue.SimulateEncounters();
+                venue.SimulateEncounters(SimulationDate);
 
                 if (!(venue is Household household))
                 {
@@ -77,19 +73,31 @@ namespace Simulation.Runtime
 
                 foreach (Person member in household.Members)
                 {
-                    member.UpdateInfectionState(_simulationDate);
+                    member.UpdateInfectionState(SimulationDate);
+                    // TODO: member.UpdateHealthState(SimulationDate);
 
-                    if (member.TryGetActivityAt(_simulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
+                    if (member.TryGetActivityAt(SimulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
                     {
-                        member.CurrentLocation = activity.Location;
+                        activity.Location.MovePersonHere(member);
                     }
 
-                    if (!household.HasPersonHere(member) && !member.HasActivityAt(_simulationDate))
+                    if (!household.HasPersonHere(member) && !member.HasActivityAt(SimulationDate))
                     {
-                        member.CurrentLocation = household;
+                        household.MovePersonHere(member);
                     }
                 }
             }
         }
+
+        public void InfectRandomPerson()
+        {
+            //TODO: Person should be validated if he is already infected.
+            Household[] households = _entities.OfType<Household>().ToArray();
+            Household randomHousehold = households[Random.Range(0, households.Length)];
+            Person randomPerson = randomHousehold.Members[Random.Range(0, randomHousehold.Members.Length)];
+            randomPerson.SetInfected(SimulationDate);
+        }
+        
+        
     }
 }

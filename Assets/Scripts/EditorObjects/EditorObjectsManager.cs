@@ -98,7 +98,14 @@ namespace EditorObjects
             return editorObject.EditorGameObject;
         }
 
-
+        /// <summary>
+        /// Get all editor objects which are currently placed.
+        /// </summary>
+        /// <returns>A list of all currently placed editor objects</returns>
+        public List<IEditorObject> GetAllEditorObjects()
+        {
+            return _editorObjectsDic.Values.ToList();
+        }
 
         //We may handle different venues according the properties what can be set
 
