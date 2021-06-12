@@ -10,13 +10,13 @@ namespace Simulation.Runtime
     class Person
     {
         private PhysicalCondition _physicalCondition;
-        
         private float _risk;
         private int _encounters;
         private int _amountOfPeopleInfected;
         private bool _isVaccinated;
         private DateTime _infectionDate;
         private int _infectionStateDuration;
+        private bool _isDead;
 
         public Person(float carefulnessFactor, float risk, bool isWorker)
         {
@@ -29,8 +29,8 @@ namespace Simulation.Runtime
         public InfectionStates InfectionState { get; private set; }
         public bool IsWorker { get; }
         public List<Activity> Activities { get; } = new List<Activity>();
-
         public Venue CurrentLocation { get; set; }
+        public bool IsDead { get ; private set ;}
 
         [Flags]
         public enum InfectionStates
@@ -50,11 +50,10 @@ namespace Simulation.Runtime
 
         }
 
-        enum PhysicalCondition
+        public enum PhysicalCondition
         {
             Healthy,
-            Sick,
-            VerySick
+            PreIllness
         }
 
         /* 
@@ -142,9 +141,37 @@ namespace Simulation.Runtime
             return null;
         }
 
-        public void UpdateHealthState(DateTime simulationDate)
+        /*
+         * Get the physical Condition of a person.
+         * 
+        */
+        public PhysicalCondition GetPhysicalCondition()
         {
-            throw new NotImplementedException();
+            return _physicalCondition;
+        }
+
+        /*
+         * Defines whether the person dies based on the physical state set.
+         *  ,,Das Sterberisiko steigt bei den meisten Vorerkrankungen um bis zu 87 Prozent."
+         *  Quelle: https://www.quarks.de/gesundheit/medizin/wie-viele-menschen-sterben-an-corona/ ,
+         * 
+         * ,,Insgesamt sind 2,6% aller Personen, für die bestätigte SARS-CoV-2-Infektionen in Deutschland übermittelt wurden, im Zusammenhang mit einer COVID-19-Erkrankung verstorben."
+         * Quelle: 
+         * https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html;jsessionid=9380EA03621C1ECA856E7B2B4D5A9E4A.internet062?nn=13490888#doc13776792bodyText13
+         */
+        public void UpdateHealthState()
+        {
+            if (InfectionState.HasFlag(InfectionStates.Symptoms) & _isDead == false)
+            {
+                float surviveProbability = Random.Range(0f, 1f);
+
+                if (_physicalCondition.Equals(_physicalCondition.HasFlag(PhysicalCondition.Healthy)))
+                    if (surviveProbability <= 0.026f)
+                        _isDead = true;
+                    else
+                    if (surviveProbability <= 0.87f)
+                        _isDead = true;
+            }
         }
 
         public void SetInfected(DateTime infectionDate)
@@ -153,5 +180,5 @@ namespace Simulation.Runtime
             _infectionDate = infectionDate;
             _infectionStateDuration = Random.Range(InfectionStateDays.IncubationMinDay, InfectionStateDays.IncubationMaxDay);
         }
-    }
+    }   
 }
