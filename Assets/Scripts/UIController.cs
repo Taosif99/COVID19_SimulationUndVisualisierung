@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using EditorObjects;
 using Grid;
 using System;
+using TMPro;
 
 /// <summary>
 /// Script to implement UI related functions/behaviour.
@@ -16,7 +17,6 @@ using System;
 /// </summary>
 public class UIController : MonoBehaviour
 {
-
     //References to buttons
     public Button placeWorkplaceButton, placeHospitalButton, placeHouseholdButton, placeGraphButton;
     //To indicate which button is clicked
@@ -27,9 +27,8 @@ public class UIController : MonoBehaviour
     //later and invoke placement related functions functions, since they methods can be abstracted
     private Dictionary<PrefabName, Button> _placementButtonDictionary;
 
-
     //Probably can be replaced with actions later
-   // public GridManager2 SimulationGridManager;
+    //public GridManager2 SimulationGridManager;
     //Concerning Graph in UI
     public GraphEnabler SimulationGraphEnabler;
     public Toggle BarChartToggle;
@@ -39,8 +38,6 @@ public class UIController : MonoBehaviour
 
     public static UIController Instance;
 
-
-
     //GameObject groups of editor object UI elements
     public GameObject VenueUI;
     public GameObject HouseholdUI;
@@ -49,19 +46,16 @@ public class UIController : MonoBehaviour
     public GameObject SaveAndDeleteUI;
 
     // All texts field which must be resettet will be cached in this list
-    public List<InputField> InputFieldsToReset = new List<InputField>();
+    public List<TMP_InputField> InputFieldsToReset = new List<TMP_InputField>();
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
     }
 
-
     // Start is called before the first frame update
     void Start()
     {
-
-
         buttonList = new List<Button>
         {
             placeWorkplaceButton,
@@ -69,11 +63,11 @@ public class UIController : MonoBehaviour
             placeHouseholdButton,
             placeGraphButton
         };
+
         _placementButtonDictionary = new Dictionary<PrefabName, Button>();
         _placementButtonDictionary.Add(PrefabName.Workplace, placeWorkplaceButton);
         _placementButtonDictionary.Add(PrefabName.Hospital, placeHospitalButton);
         _placementButtonDictionary.Add(PrefabName.Household, placeHouseholdButton);
-
 
         foreach (PrefabName key in _placementButtonDictionary.Keys)
         {
@@ -85,7 +79,6 @@ public class UIController : MonoBehaviour
                 ModelSelector.Instance.SetCurrentPrefab(key);
                 _lastClickedButton = button;
                 DeactivateOldSettingsElements();
-
             });
         }
 
@@ -100,7 +93,6 @@ public class UIController : MonoBehaviour
             ModelSelector.Instance.CurrentPrefabName = PrefabName.None;
         });
 
-
         //Assign listeners Chart Toggles
         BarChartToggle.onValueChanged.AddListener(delegate
         {
@@ -111,7 +103,6 @@ public class UIController : MonoBehaviour
         {
             SimulationGraphEnabler.SetLineChartActive(LineChartToggle.isOn);
         });
-
     }
 
     /// <summary>
@@ -143,18 +134,16 @@ public class UIController : MonoBehaviour
     {
         ClearInputFields();
 
-
         if (_lastClickedButton == placeWorkplaceButton)
         {
             LoadWorkplaceUI();
-
         }
 
         if (_lastClickedButton == placeHospitalButton)
         {
             LoadHospitalUI();
-
         }
+
         //Handle Graph related UI components
         if (_lastClickedButton != placeGraphButton)
         {
@@ -166,7 +155,6 @@ public class UIController : MonoBehaviour
             HouseholdUI.SetActive(false);
             WorkplaceUI.SetActive(false);
             HospitalUI.SetActive(false);
-
         }
 
         if (_lastClickedButton == placeHouseholdButton)
@@ -175,15 +163,13 @@ public class UIController : MonoBehaviour
         }
     }
 
-
     private void ClearInputFields()
     {
-        foreach (InputField inputField in InputFieldsToReset)
+        foreach (TMP_InputField inputField in InputFieldsToReset)
         {
             inputField.text = "";
         }
     }
-
 
     //Methods for loading right properties
     public void LoadWorkplaceUI()
@@ -202,7 +188,6 @@ public class UIController : MonoBehaviour
         HospitalUI.SetActive(true);
     }
 
-
     public void LoadHouseholdUI()
     {
         VenueUI.SetActive(true);
@@ -211,16 +196,12 @@ public class UIController : MonoBehaviour
         HospitalUI.SetActive(false);
     }
 
- 
-
-
     /// <summary>
     ///Method which disables UI elements when no entity is selected 
     /// </summary>
     /// <param name="isSelected"></param>
     public void IsEntitySelectedUI(bool isSelected)
     {
-
         SaveAndDeleteUI.SetActive(isSelected);
         if (!isSelected)
         {
@@ -229,9 +210,5 @@ public class UIController : MonoBehaviour
             WorkplaceUI.SetActive(false);
             HospitalUI.SetActive(false);
         }
-
     }
-
-
-
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System;
 using Simulation;
 using FileHandling;
+using TMPro;
 
 namespace EditorObjects
 {
@@ -33,16 +34,16 @@ namespace EditorObjects
         //The settings objects can be outsourced in an  Venue properties UI class
         //public Text ObjectNameText;
         //Venue elements
-        public InputField ObjectNameInputField;
-        public InputField InfectionRiskInputField;
+        public TMP_InputField ObjectNameInputField;
+        public TMP_InputField InfectionRiskInputField;
         //public InputField CurrentPeopleAtVenueInputField; //Use Text or label later, remove from ui
         //Household elements
-        public InputField NumberOfPeopleInputField;
-        public InputField PercantageOfWorkersInputField;
-        public InputField CarefulnessInputField;
+        public TMP_InputField NumberOfPeopleInputField;
+        public TMP_InputField PercantageOfWorkersInputField;
+        public TMP_InputField CarefulnessInputField;
         //Workplace elements
         public Dropdown WorkplaceTypeDropdown;
-        public InputField CapacityInputField;
+        public TMP_InputField CapacityInputField;
         //Hospital elements
         public Dropdown HospitalScaleDropdown;
         public Dropdown WorkerAvailabilityDropdown;
