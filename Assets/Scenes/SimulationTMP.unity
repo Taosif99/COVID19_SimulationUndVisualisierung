@@ -2893,7 +2893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &483311089
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14692,7 +14692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: You can display a graph.
+  infoLeft: You can display or undisplay a graph.
   infoRight: 
 --- !u!1 &3418928827223752994
 GameObject:
