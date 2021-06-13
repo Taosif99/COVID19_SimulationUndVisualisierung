@@ -5280,7 +5280,6 @@ GameObject:
   - component: {fileID: 848896738}
   - component: {fileID: 848896737}
   - component: {fileID: 848896736}
-  - component: {fileID: 848896739}
   m_Layer: 0
   m_Name: DeleteCurrentObjectButtonTMP
   m_TagString: Untagged
@@ -5402,21 +5401,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848896734}
   m_CullTransparentMesh: 1
---- !u!114 &848896739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 848896734}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: You can delete the current selected venue.
-  infoRight: 
 --- !u!1 &868432250
 GameObject:
   m_ObjectHideFlags: 0
@@ -7398,7 +7382,6 @@ GameObject:
   - component: {fileID: 1201480445}
   - component: {fileID: 1201480444}
   - component: {fileID: 1201480443}
-  - component: {fileID: 1201480446}
   m_Layer: 0
   m_Name: PauseButtonTMP
   m_TagString: Untagged
@@ -7520,21 +7503,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1201480441}
   m_CullTransparentMesh: 1
---- !u!114 &1201480446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1201480441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: You can pause the simulation.
-  infoRight: 
 --- !u!1 &1227947097
 GameObject:
   m_ObjectHideFlags: 0
@@ -9299,8 +9267,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: "You can determine how many work in this workplace. \nPlease only enter
-    whole numbers."
+  infoLeft: "You can define how many work in this workplace. \nPlease only enter
+    whole numbers.\nExample: 12"
   infoRight: 
 --- !u!1 &1416399603
 GameObject:
@@ -9922,7 +9890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: You can speed up the simulation.
+  infoLeft: Speed up the simulation.
   infoRight: 
 --- !u!1 &1484664443
 GameObject:
@@ -11158,7 +11126,6 @@ GameObject:
   - component: {fileID: 1609975753}
   - component: {fileID: 1609975752}
   - component: {fileID: 1609975751}
-  - component: {fileID: 1609975754}
   m_Layer: 0
   m_Name: SaveButtonTMP
   m_TagString: Untagged
@@ -11280,21 +11247,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609975749}
   m_CullTransparentMesh: 1
---- !u!114 &1609975754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1609975749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: You can save the current selected venue.
-  infoRight: 
 --- !u!1 &1625582039
 GameObject:
   m_ObjectHideFlags: 0
@@ -12945,10 +12897,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: 'You can determine how many people live in a household.
+  infoLeft: 'You can define how many people live in a household.
 
     Please only
-    enter whole numbers.'
+    enter whole numbers.
+
+    Example: 12'
   infoRight: 
 --- !u!1 &1858235994
 GameObject:
@@ -13097,10 +13051,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: 'You can add an infected person to the simulation.
+  infoLeft: 'A random infected person is added in the simulation.
 
     If you click
-    on it multiple times, multiple infected people will be added.'
+    on it multiple times, multiple random infected people will be added.'
   infoRight: 
 --- !u!1 &1859516534
 GameObject:
@@ -13249,7 +13203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: You can start or continue the simulation.
+  infoLeft: Start or continue the simulation.
   infoRight: 
 --- !u!1 &1859798737
 GameObject:
@@ -13263,7 +13217,6 @@ GameObject:
   - component: {fileID: 1859798741}
   - component: {fileID: 1859798740}
   - component: {fileID: 1859798739}
-  - component: {fileID: 1859798742}
   m_Layer: 0
   m_Name: StopButtonTMP
   m_TagString: Untagged
@@ -13385,21 +13338,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859798737}
   m_CullTransparentMesh: 1
---- !u!114 &1859798742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859798737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: You can stop the simulation.
-  infoRight: 
 --- !u!1 &1862876214
 GameObject:
   m_ObjectHideFlags: 0
