@@ -1,13 +1,13 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
-
+using GraphChart;
 using Random = UnityEngine.Random;
 
 namespace Simulation.Runtime
 {
     // TODO: Separate statistical fields
-    class Person
+   public class Person
     {
         private PhysicalCondition _physicalCondition;
         private float _risk;
@@ -69,52 +69,65 @@ namespace Simulation.Runtime
             int currentMonth = currentDate.Month;
             double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
 
-            switch (InfectionState)
+            if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
             {
-                case InfectionStates.Phase1:
-                    if (daysSinceInfection > _infectionStateDuration)
-                    {
-                        InfectionState = InfectionStates.Phase2;
-                        _infectionStateDuration = Random.Range(InfectionStateDays.InfectiousMinDay, InfectionStateDays.InfectiousMaxDay);
-                    }
-                    
-                    break;
 
-                case InfectionStates.Phase2:
-                    if (daysSinceInfection > _infectionStateDuration)
-                    {
-                        InfectionState = InfectionStates.Phase3;
-                        _infectionStateDuration = Random.Range(InfectionStateDays.SymptomsMinDay, InfectionStateDays.SymptomsMaxDay);
-                    }
-                    
-                    break;
+                switch (InfectionState)
+                {
+                    case InfectionStates.Phase1:
+                        if (daysSinceInfection > _infectionStateDuration)
+                        {
+                            InfectionState = InfectionStates.Phase2;
+                            _infectionStateDuration = Random.Range(InfectionStateDays.InfectiousMinDay, InfectionStateDays.InfectiousMaxDay);
+                            SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
+                            GlobalSimulationGraph.Instance.OnUpdate?.Invoke();
 
-                case InfectionStates.Phase3:
-                    if (daysSinceInfection > _infectionStateDuration)
-                    {
-                        InfectionState = InfectionStates.Phase4;
-                        _infectionStateDuration = Random.Range(InfectionStateDays.RecoveringMinDay, InfectionStateDays.RecoveringMaxDay);
-                    }
-                    
-                    break;
+                        }
 
-                case InfectionStates.Phase4:
+                        break;
 
-                    if (daysSinceInfection > _infectionStateDuration)
-                    {
-                        InfectionState = InfectionStates.Phase5;
-                        _infectionStateDuration = int.MaxValue;
-                    }
-                    
-                    break;
+                    case InfectionStates.Phase2:
+                        if (daysSinceInfection > _infectionStateDuration)
+                        {
+                            InfectionState = InfectionStates.Phase3;
+                            _infectionStateDuration = Random.Range(InfectionStateDays.SymptomsMinDay, InfectionStateDays.SymptomsMaxDay);
+                            SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
+                            GlobalSimulationGraph.Instance.OnUpdate?.Invoke();
+                        }
+
+                        break;
+
+                    case InfectionStates.Phase3:
+                        if (daysSinceInfection > _infectionStateDuration)
+                        {
+                            InfectionState = InfectionStates.Phase4;
+                            _infectionStateDuration = Random.Range(InfectionStateDays.RecoveringMinDay, InfectionStateDays.RecoveringMaxDay);
+                            SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
+                            GlobalSimulationGraph.Instance.OnUpdate?.Invoke();
+                        }
+
+                        break;
+
+                    case InfectionStates.Phase4:
+
+                        if (daysSinceInfection > _infectionStateDuration)
+                        {
+                            InfectionState = InfectionStates.Phase5;
+                            _infectionStateDuration = int.MaxValue;
+                            SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
+                            GlobalSimulationGraph.Instance.OnUpdate?.Invoke();
+                        }
+
+                        break;
 
 
-                case InfectionStates.Phase5:
-                    break;
+                    case InfectionStates.Phase5:
+                        break;
+                }
+
+                // Debug.Log("State: " + InfectionState);
+               
             }
-
-            // Debug.Log("State: " + InfectionState);
-
         }
 
         public bool HasActivityAt(DateTime dateTime) => GetActivityAt(dateTime) != null;

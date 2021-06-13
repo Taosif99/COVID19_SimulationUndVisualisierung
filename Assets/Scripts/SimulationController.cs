@@ -84,7 +84,8 @@ class SimulationController : MonoBehaviour
             //TODO: Reset Entity GameObjects to Editor State
             _isInitialized = false;
             _isPaused = false;
-            _controller = null;   
+            _controller = null;
+            SimulationMaster.Instance.Reset();
         }
     }
     
