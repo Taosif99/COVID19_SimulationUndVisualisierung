@@ -7,6 +7,8 @@ namespace FileHandling
     /// <summary>
     /// Class which implements the functionality of
     /// creating new simulation data.
+    /// 
+    /// TODO: REPLACE SIMULATION MOCK OBJECTS
     /// </summary>
     public class CreateSimulationSaveManager : MonoBehaviour
     {
@@ -35,27 +37,33 @@ namespace FileHandling
         {
             CheckInputField();
             string fileName = _nameInputField.text;
-            //////////////////////////////////////////////////////////////////////////////////////
-            //Temporary Mocks for serialization, values must be get from global settings
-            Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock();
-            /////////////////////////////////////////////////////////////////////////////////
             FileHandler.SelectedFileName = fileName;
-
-
-            //FileHandler.SaveData(simulation);
             if (FileHandler.SaveFileExists())
             {
-
-                DialogBox dialogBox = DialogBox.CreateFileAlreadyExistsDB();
-                DialogBoxManager.Instance.currentMockSimulation = simulation;
+                string msg = "File with the same name already exists. Do you want to overwrite this file?";
+                string name = "File already exists";
+                DialogBox dialogBox = new DialogBox(name, msg);
+                dialogBox.OnConfirmationPressed += FileSaveExistsActionConfimation;
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
 
             }
             else
             {   //save normally
+                Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock();
                 FileHandler.SaveData(simulation);
                 SceneLoader.Instance.LoadSimulation();
             }
+
+        }
+        /// <summary>
+        /// Method which will be passed to the DialogBox confirmation action handler.
+        /// The simulation will be overweritten if user confirms it.
+        /// </summary>
+        private void FileSaveExistsActionConfimation()
+        {
+            Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock();
+            FileHandler.SaveData(simulation);
+            SceneLoader.Instance.LoadSimulation();
 
         }
 

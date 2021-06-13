@@ -2240,7 +2240,6 @@ MonoBehaviour:
   CancelButtonGB: {fileID: 2004599662}
   DialogTextGB: {fileID: 1824476089}
   DialogBoxGB: {fileID: 627765393}
-  ConfirmOk: 0
 --- !u!4 &1158059922
 Transform:
   m_ObjectHideFlags: 0

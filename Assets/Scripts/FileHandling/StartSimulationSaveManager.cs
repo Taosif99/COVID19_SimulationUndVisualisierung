@@ -130,15 +130,29 @@ namespace FileHandling
             deleteButton.onClick.AddListener(() =>
             {
                 FileHandler.SelectedFileName = fileName;
+                
+                string msg = "Are you sure you want to delete the file ? ";
+                string name = "Delete file ?";
 
-                DialogBoxManager.Instance.HandleDialogBox(DialogBox.CreateSureToDeleteDB());
-                //FileHandler.DeleteData(); Das muss dass beim Ok button aufgerufen werden
-                //Load again ui
-                //LoadSimulationButtons();
+                DialogBox dialogBox = new DialogBox(name, msg);
+                dialogBox.OnConfirmationPressed += CreateSureToDeleteAction;
+
+                DialogBoxManager.Instance.HandleDialogBox(dialogBox);
 
             });
 
         }
+
+        /// <summary>
+        /// Method which defines the deletion on confirmation and which reloads
+        /// the buttons in the UI.
+        /// </summary>
+        private  void CreateSureToDeleteAction()
+        {
+            FileHandler.DeleteData();
+            LoadSimulationButtons();
+        }
+
 
         #endregion
 

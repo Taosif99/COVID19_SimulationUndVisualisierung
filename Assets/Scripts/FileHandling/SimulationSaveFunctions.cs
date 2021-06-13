@@ -19,10 +19,24 @@ namespace FileHandling
             if (FileHandler.SaveFileExists())
             {
 
-                DialogBox diaogBox = DialogBox.CreateSureToReturnToMainMenueDB(editorObjectsManager);
-                DialogBoxManager.Instance.HandleDialogBox(diaogBox);
-            } // else show some error
+                //DialogBox diaogBox = DialogBox.CreateSureToReturnToMainMenueDB(editorObjectsManager);
+
+                string msg = "Do you want to save your changes?";
+                string name = "Save file ?";
+                DialogBox dialogBox = new DialogBox(name, msg);
+                dialogBox.OnConfirmationPressed += ReturnToMainMenuSaveAction;
+                dialogBox.OnCancelPressed += SceneLoader.Instance.LoadMainMenu;
+
+                DialogBoxManager.Instance.HandleDialogBox(dialogBox);
+            } // else TODO show some error
         }
+
+        private void ReturnToMainMenuSaveAction()
+        {
+            editorObjectsManager.SaveToFile();
+            SceneLoader.Instance.LoadMainMenu();
+        }
+
 
     }
 }

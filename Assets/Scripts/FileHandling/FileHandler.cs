@@ -49,7 +49,7 @@ namespace FileHandling
         /// <summary>
         /// Method to load Simulation Datat.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The simulation object if operation was successful, else null</returns>
         public static Simulation.Edit.Simulation LoadData()
         {
             string path = Application.persistentDataPath + "/" + SelectedFileName + FileExtension;
@@ -67,8 +67,6 @@ namespace FileHandling
             }
             else
             {
-
-                Debug.LogError("Save file not found in " + path);
                 return null;
             }
         }

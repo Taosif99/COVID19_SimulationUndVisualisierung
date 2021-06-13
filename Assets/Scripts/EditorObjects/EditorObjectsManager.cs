@@ -314,14 +314,18 @@ namespace EditorObjects
             }
             else
             {
-                //Debug.Log("File not found !");
-
-                //DialogBox dialogBox = DialogBox.CreateFileNotFoundDB();
+                //This is not working...
+                /*
+                Debug.Log("File not found !");
+                string msg = "Save file not found !";
+                string name = "File not found";
+                DialogBox dialogBox = new DialogBox(name, msg);
+                dialogBox.HasCancelButon = false;
                 //DialogBoxManager.Instance.HandleDialogBox(dialogBox);
-                //Here we must show the dialogbox and go back
-
-
-            }
+                //Go Back to main menu
+                //dialogBox.OnConfirmationPressed += SceneLoader.Instance.LoadMainMenu;
+            */
+           }
         }
         /// <summary>
         /// Method which initiates the saving process of the program configuration.

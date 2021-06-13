@@ -21,9 +21,6 @@ namespace FileHandling {
         public GameObject CancelButtonGB;
         public GameObject DialogTextGB;
         public GameObject DialogBoxGB;
-
-
-        
         private TextMeshProUGUI _dialogText;
        
 
@@ -33,9 +30,6 @@ namespace FileHandling {
         //public static DialogBoxManager Instance;
         private DialogBox _currentDialogBox;
 
-
-        //Mock
-        public Simulation.Edit.Simulation currentMockSimulation;
 
 
         public static DialogBoxManager Instance;
@@ -69,7 +63,6 @@ namespace FileHandling {
         public void OkClicked() 
         {
             DialogBoxGB.SetActive(false);
-            _currentDialogBox.OnConfirmationPressedS?.Invoke(currentMockSimulation);
             _currentDialogBox.OnConfirmationPressed?.Invoke();
  
         }
@@ -78,7 +71,6 @@ namespace FileHandling {
         public void CancelClicked()
         {
             DialogBoxGB.SetActive(false);
-            _currentDialogBox.OnCancelPressedS?.Invoke(currentMockSimulation);
             _currentDialogBox.OnCancelPressed?.Invoke();
         }
         #endregion
