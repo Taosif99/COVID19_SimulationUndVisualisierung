@@ -104,7 +104,7 @@ namespace GraphChart
 
             _xLabel = xLabel;
            _barchartValues= new List<int>() { 0, 0, 0};
-            _barchart.ShowGraph(_barchartValues, _xLabel);
+            //_barchart.ShowGraph(_barchartValues, _xLabel);
             //OnUpdate += UpdateBarChart;
 
         }
