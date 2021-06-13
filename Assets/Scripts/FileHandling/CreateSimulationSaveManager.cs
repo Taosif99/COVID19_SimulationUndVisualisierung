@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
+using DialogBoxSystem;
 using TMPro;
 
 namespace FileHandling

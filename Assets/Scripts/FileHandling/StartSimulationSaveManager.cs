@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using DialogBoxSystem;
 using UnityEngine;
 using UnityEngine.UI;
 

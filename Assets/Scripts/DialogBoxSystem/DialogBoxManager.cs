@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 
 
-namespace FileHandling {
+namespace DialogBoxSystem {
 
     /// <summary>
     /// Class which manages the possible dialogue messages.

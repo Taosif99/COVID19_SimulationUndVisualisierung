@@ -1,7 +1,7 @@
 
 using System;
 
-namespace FileHandling
+namespace DialogBoxSystem
 {
     /// <summary>
     /// Class to implement the basic functionality of a dialog box
