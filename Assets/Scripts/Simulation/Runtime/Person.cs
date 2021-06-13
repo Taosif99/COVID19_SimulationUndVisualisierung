@@ -22,7 +22,6 @@ namespace Simulation.Runtime
             CarefulnessFactor = carefulnessFactor;
             _risk = risk;
             IsWorker = isWorker;
-            //TODO: Add random physical condition for each person
         }
 
         public float CarefulnessFactor { get; }
@@ -45,7 +44,7 @@ namespace Simulation.Runtime
             Phase1 = Infected,
             Phase2 = Infected | Infectious,
             Phase3 = Infected | Infectious | Symptoms,
-            Phase4 = Infected | Symptoms | Recovering,
+            Phase4 = Symptoms | Recovering,
             Phase5 = Recovered
 
         }
@@ -65,7 +64,6 @@ namespace Simulation.Runtime
 
         public void UpdateInfectionState(DateTime currentDate)
         {
-<<<<<<< Updated upstream
             int currentDay = currentDate.Day;
             int currentMonth = currentDate.Month;
             double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
@@ -73,14 +71,6 @@ namespace Simulation.Runtime
 
             if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
             {
-=======
-
-            if (_isDead == false)
-            {
-                int currentDay = currentDate.Day;
-                int currentMonth = currentDate.Month;
-                double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
->>>>>>> Stashed changes
 
                 switch (InfectionState)
                 {
@@ -89,10 +79,7 @@ namespace Simulation.Runtime
                         {
                             InfectionState = InfectionStates.Phase2;
                             _infectionStateDuration = Random.Range(InfectionStateDays.InfectiousMinDay, InfectionStateDays.InfectiousMaxDay);
-<<<<<<< Updated upstream
                             stateTransition = true;
-=======
->>>>>>> Stashed changes
                         }
 
                         break;
@@ -102,9 +89,10 @@ namespace Simulation.Runtime
                         {
                             InfectionState = InfectionStates.Phase3;
                             _infectionStateDuration = Random.Range(InfectionStateDays.SymptomsMinDay, InfectionStateDays.SymptomsMaxDay);
-<<<<<<< Updated upstream
                             stateTransition = true;
+
                         }
+
                         break;
 
                     case InfectionStates.Phase3:
@@ -117,36 +105,6 @@ namespace Simulation.Runtime
                         }
 
                         break;
-=======
-                        }
-
-                        break;
-
-                    case InfectionStates.Phase3:
-                        if (daysSinceInfection > _infectionStateDuration)
-                        {
-                            InfectionState = InfectionStates.Phase4;
-                            _infectionStateDuration = Random.Range(InfectionStateDays.RecoveringMinDay, InfectionStateDays.RecoveringMaxDay);
-                        }
-
-                        break;
-
-                    case InfectionStates.Phase4:
-
-                        if (daysSinceInfection > _infectionStateDuration)
-                        {
-                            InfectionState = InfectionStates.Phase5;
-                            _infectionStateDuration = int.MaxValue;
-                        }
-
-                        break;
-
-
-                    case InfectionStates.Phase5:
-                        break;
-                }
-            }
->>>>>>> Stashed changes
 
                     case InfectionStates.Phase4:
 
@@ -155,11 +113,16 @@ namespace Simulation.Runtime
                             InfectionState = InfectionStates.Phase5;
                             _infectionStateDuration = int.MaxValue;
                             stateTransition = true;
+
                         }
 
                         break;
+
+
                     case InfectionStates.Phase5:
                         break;
+
+
                 }
 
                 if (stateTransition)
@@ -225,7 +188,7 @@ namespace Simulation.Runtime
                 if (_physicalCondition.Equals(PhysicalCondition.Healthy))
                     if (surviveProbability <= 0.026f)
                         _isDead = true;
-                else
+                    else
                     if (surviveProbability <= 0.87f)
                         _isDead = true;
             }
