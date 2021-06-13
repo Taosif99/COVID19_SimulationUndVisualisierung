@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CreateSimulationTMP.unity
     guid: d951e2921fa874a18b97a0197af23259
+  - enabled: 1
+    path: Assets/Scenes/AboutUsTMP.unity
+    guid: 859fa046c356dfe4bae3c8a29092ffa3
   m_configObjects: {}

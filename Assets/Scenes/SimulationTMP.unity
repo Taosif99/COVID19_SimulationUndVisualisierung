@@ -1074,6 +1074,7 @@ GameObject:
   - component: {fileID: 251351805}
   - component: {fileID: 251351804}
   - component: {fileID: 251351803}
+  - component: {fileID: 251351806}
   m_Layer: 5
   m_Name: ObjectNameInputFieldTMP
   m_TagString: Untagged
@@ -1237,6 +1238,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 251351801}
   m_CullTransparentMesh: 1
+--- !u!114 &251351806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251351801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: You can give the venue a name.
+  infoRight: 
 --- !u!1 &270469932
 GameObject:
   m_ObjectHideFlags: 0
@@ -5185,6 +5201,7 @@ GameObject:
   - component: {fileID: 848896738}
   - component: {fileID: 848896737}
   - component: {fileID: 848896736}
+  - component: {fileID: 848896739}
   m_Layer: 0
   m_Name: DeleteCurrentObjectButtonTMP
   m_TagString: Untagged
@@ -5306,6 +5323,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848896734}
   m_CullTransparentMesh: 1
+--- !u!114 &848896739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848896734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: You can delete the current selected venue.
+  infoRight: 
 --- !u!1 &868432250
 GameObject:
   m_ObjectHideFlags: 0
@@ -7243,6 +7275,7 @@ GameObject:
   - component: {fileID: 1201480445}
   - component: {fileID: 1201480444}
   - component: {fileID: 1201480443}
+  - component: {fileID: 1201480446}
   m_Layer: 0
   m_Name: PauseButtonTMP
   m_TagString: Untagged
@@ -7364,6 +7397,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1201480441}
   m_CullTransparentMesh: 1
+--- !u!114 &1201480446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201480441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: You can pause the simulation.
+  infoRight: 
 --- !u!1 &1227947097
 GameObject:
   m_ObjectHideFlags: 0
@@ -8951,6 +8999,7 @@ GameObject:
   - component: {fileID: 1399270294}
   - component: {fileID: 1399270293}
   - component: {fileID: 1399270295}
+  - component: {fileID: 1399270296}
   m_Layer: 5
   m_Name: WorkerCapacityInputFieldTMP
   m_TagString: Untagged
@@ -9114,6 +9163,22 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &1399270296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399270291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: "You can determine how many work in this workplace. \nPlease only enter
+    whole numbers."
+  infoRight: 
 --- !u!1 &1416399603
 GameObject:
   m_ObjectHideFlags: 0
@@ -9611,6 +9676,7 @@ GameObject:
   - component: {fileID: 1472784335}
   - component: {fileID: 1472784334}
   - component: {fileID: 1472784333}
+  - component: {fileID: 1472784336}
   m_Layer: 0
   m_Name: ForwardButtonTMP
   m_TagString: Untagged
@@ -9720,6 +9786,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1472784331}
   m_CullTransparentMesh: 1
+--- !u!114 &1472784336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472784331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: You can speed up the simulation.
+  infoRight: 
 --- !u!1 &1484664443
 GameObject:
   m_ObjectHideFlags: 0
@@ -10954,6 +11035,7 @@ GameObject:
   - component: {fileID: 1609975753}
   - component: {fileID: 1609975752}
   - component: {fileID: 1609975751}
+  - component: {fileID: 1609975754}
   m_Layer: 0
   m_Name: SaveButtonTMP
   m_TagString: Untagged
@@ -11075,6 +11157,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609975749}
   m_CullTransparentMesh: 1
+--- !u!114 &1609975754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609975749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: You can save the current selected venue.
+  infoRight: 
 --- !u!1 &1625582039
 GameObject:
   m_ObjectHideFlags: 0
@@ -11441,6 +11538,7 @@ GameObject:
   - component: {fileID: 1675842846}
   - component: {fileID: 1675842845}
   - component: {fileID: 1675842844}
+  - component: {fileID: 1675842847}
   m_Layer: 0
   m_Name: BackButtonTMP
   m_TagString: Untagged
@@ -11562,6 +11660,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1675842842}
   m_CullTransparentMesh: 1
+--- !u!114 &1675842847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675842842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: You can go back to main menu.
+  infoRight: 
 --- !u!1 &1679883668
 GameObject:
   m_ObjectHideFlags: 0
@@ -11784,7 +11897,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: Save the current simulation to the savefile.
+  infoLeft: You can save the current simulation to the savefile.
   infoRight: 
 --- !u!1 &1735369598
 GameObject:
@@ -12501,6 +12614,7 @@ GameObject:
   - component: {fileID: 1833106466}
   - component: {fileID: 1833106465}
   - component: {fileID: 1833106467}
+  - component: {fileID: 1833106468}
   m_Layer: 5
   m_Name: NumberOfPeopleInputFieldTMP
   m_TagString: Untagged
@@ -12664,6 +12778,24 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &1833106468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833106463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: 'You can determine how many people live in a household.
+
+    Please only
+    enter whole numbers.'
+  infoRight: 
 --- !u!1 &1858235994
 GameObject:
   m_ObjectHideFlags: 0
@@ -12676,6 +12808,7 @@ GameObject:
   - component: {fileID: 1858235998}
   - component: {fileID: 1858235997}
   - component: {fileID: 1858235996}
+  - component: {fileID: 1858235999}
   m_Layer: 0
   m_Name: VirusButtonTMP
   m_TagString: Untagged
@@ -12797,6 +12930,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1858235994}
   m_CullTransparentMesh: 1
+--- !u!114 &1858235999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858235994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: 'You can add an infected person to the simulation.
+
+    If you click
+    on it multiple times, multiple infected people will be added.'
+  infoRight: 
 --- !u!1 &1859516534
 GameObject:
   m_ObjectHideFlags: 0
@@ -12809,6 +12960,7 @@ GameObject:
   - component: {fileID: 1859516538}
   - component: {fileID: 1859516537}
   - component: {fileID: 1859516536}
+  - component: {fileID: 1859516539}
   m_Layer: 0
   m_Name: PlayButtonTMP
   m_TagString: Untagged
@@ -12930,6 +13082,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859516534}
   m_CullTransparentMesh: 1
+--- !u!114 &1859516539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859516534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: You can start or continue the simulation.
+  infoRight: 
 --- !u!1 &1859798737
 GameObject:
   m_ObjectHideFlags: 0
@@ -12942,6 +13109,7 @@ GameObject:
   - component: {fileID: 1859798741}
   - component: {fileID: 1859798740}
   - component: {fileID: 1859798739}
+  - component: {fileID: 1859798742}
   m_Layer: 0
   m_Name: StopButtonTMP
   m_TagString: Untagged
@@ -13063,6 +13231,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859798737}
   m_CullTransparentMesh: 1
+--- !u!114 &1859798742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859798737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: You can stop the simulation.
+  infoRight: 
 --- !u!1 &1862876214
 GameObject:
   m_ObjectHideFlags: 0
