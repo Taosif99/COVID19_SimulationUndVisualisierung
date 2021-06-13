@@ -7670,7 +7670,6 @@ GameObject:
   - component: {fileID: 1243824803}
   - component: {fileID: 1243824802}
   - component: {fileID: 1243824801}
-  - component: {fileID: 1243824804}
   m_Layer: 5
   m_Name: ImageRight
   m_TagString: Untagged
@@ -7751,21 +7750,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1243824799}
   m_CullTransparentMesh: 1
---- !u!114 &1243824804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1243824799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
-  infoLeft: Select a venue with one click and place it on the field.
-  infoRight: 
 --- !u!1 &1251218317
 GameObject:
   m_ObjectHideFlags: 0
@@ -12039,6 +12023,7 @@ GameObject:
   - component: {fileID: 1737330017}
   - component: {fileID: 1737330016}
   - component: {fileID: 1737330019}
+  - component: {fileID: 1737330020}
   m_Layer: 0
   m_Name: VenueButtonWorkplaceTMP
   m_TagString: Untagged
@@ -12163,6 +12148,21 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &1737330020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737330014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: Select it one click and place it on the field.
+  infoRight: 
 --- !u!1 &1737438053
 GameObject:
   m_ObjectHideFlags: 0
@@ -12515,6 +12515,7 @@ GameObject:
   - component: {fileID: 1824656365}
   - component: {fileID: 1824656364}
   - component: {fileID: 1824656367}
+  - component: {fileID: 1824656368}
   m_Layer: 0
   m_Name: VenueButtonHouseholdTMP
   m_TagString: Untagged
@@ -12639,6 +12640,21 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &1824656368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824656362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: Select it one click and place it on the field.
+  infoRight: 
 --- !u!1 &1827717267
 GameObject:
   m_ObjectHideFlags: 0
@@ -12870,7 +12886,9 @@ MonoBehaviour:
     Please only
     enter whole numbers.
 
-    Example: 12'
+    Example: 12
+
+    Maximum people in a houshold: 255'
   infoRight: 
 --- !u!1 &1858235994
 GameObject:
@@ -13394,6 +13412,7 @@ GameObject:
   - component: {fileID: 1870077520}
   - component: {fileID: 1870077519}
   - component: {fileID: 1870077522}
+  - component: {fileID: 1870077523}
   m_Layer: 0
   m_Name: VenueButtonHospitalTMP
   m_TagString: Untagged
@@ -13518,6 +13537,21 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &1870077523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870077517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleTooltipStyle: {fileID: 11400000, guid: 0385263a646cd1643bb5766a376e89fd, type: 2}
+  infoLeft: Select it one click and place it on the field.
+  infoRight: 
 --- !u!1 &1884939079
 GameObject:
   m_ObjectHideFlags: 0
