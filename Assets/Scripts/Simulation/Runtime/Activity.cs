@@ -1,6 +1,6 @@
 ﻿namespace Simulation.Runtime
 {
-    class Activity
+    public class Activity
     {
         public Activity(WeekDays weekDays, int startTime, int endTime, Venue location)
         {

@@ -4785,13 +4785,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SimulationGridManager: {fileID: 8052080947404100266}
-  ObjectNameInputField: {fileID: 535301996}
-  InfectionRiskInputField: {fileID: 1676530787}
-  NumberOfPeopleInputField: {fileID: 361770460}
-  PercantageOfWorkersInputField: {fileID: 1915831595}
-  CarefulnessInputField: {fileID: 1873183019}
+  ObjectNameInputField: {fileID: 0}
+  InfectionRiskInputField: {fileID: 0}
+  NumberOfPeopleInputField: {fileID: 0}
+  PercantageOfWorkersInputField: {fileID: 0}
+  CarefulnessInputField: {fileID: 0}
   WorkplaceTypeDropdown: {fileID: 472626616}
-  CapacityInputField: {fileID: 1070910531}
+  CapacityInputField: {fileID: 0}
   HospitalScaleDropdown: {fileID: 1362127859}
   WorkerAvailabilityDropdown: {fileID: 1531340280}
 --- !u!4 &807507762
@@ -11515,6 +11515,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2063695918}
   m_CullTransparentMesh: 1
+--- !u!1 &2085082788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2085082790}
+  - component: {fileID: 2085082789}
+  m_Layer: 0
+  m_Name: SimulationMaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2085082789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2085082788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f71d274ce615c1c4babd8168393a72e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2085082790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2085082788}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2097841194
 GameObject:
   m_ObjectHideFlags: 0
@@ -12099,11 +12142,11 @@ MonoBehaviour:
   HospitalUI: {fileID: 1416399603}
   SaveAndDeleteUI: {fileID: 127694753}
   InputFieldsToReset:
-  - {fileID: 535301996}
-  - {fileID: 1676530787}
-  - {fileID: 361770460}
-  - {fileID: 1915831595}
-  - {fileID: 1873183019}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!222 &6710811102927328187
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@
 namespace Simulation.Runtime
 {
     [Flags] //1010000 <=> Monday and Wednesday
-    enum WeekDays : byte
+   public enum WeekDays : byte
     {
         Monday    = 1 << 0,
         Tuesday   = 1 << 1,

@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace Simulation.Runtime
 {
-    abstract class Venue : Entity
+    public abstract class Venue : Entity
     {
         private const float GeneralInfectionProbabilityFactor = 0.1f;
         
@@ -42,6 +42,7 @@ namespace Simulation.Runtime
                     if (Random.Range(0f, 1f) <= infectionProbability)
                     {
                         p.SetInfected(simulationDate);
+                        SimulationMaster.Instance.AddToGlobalCounter(Person.InfectionStates.Phase1);
                         Debug.Log("Person was infected.");
                     }
                 }
