@@ -6,7 +6,7 @@ using Simulation.Runtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
-
+using GraphChart;
 class SimulationController : MonoBehaviour
 {
     private const float SimulationInterval = 0.05f;
@@ -62,7 +62,8 @@ class SimulationController : MonoBehaviour
             _controller.RunUpdate();
             _simulationDateTime.text =
                 $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
-            
+
+            //TODO Update Graph each first day of a month
             _lastSimulationUpdate = Time.time;
         }
     }
