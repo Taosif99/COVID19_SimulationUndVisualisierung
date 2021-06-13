@@ -2928,6 +2928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _multiLineGraph: {fileID: 6710811103308160235}
+  _barchart: {fileID: 2037222938}
 --- !u!114 &483311091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14010,7 +14011,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2037222935}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aea5894ba8ff6aa4980144adf5b7c310, type: 3}
   m_Name: 

@@ -143,6 +143,13 @@ public class SimulationMaster : MonoBehaviour
         return _infectionStateCounter[Person.InfectionStates.Uninfected];
     }
 
+    public int GetAmountRecovered()
+    {
+
+        return _infectionStateCounter[Person.InfectionStates.Phase5];
+
+    }
+
 
 
     private void DebugPrintOfCounterValues()

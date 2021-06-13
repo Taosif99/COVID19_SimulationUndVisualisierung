@@ -1,13 +1,12 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
-using GraphChart;
 using Random = UnityEngine.Random;
 
 namespace Simulation.Runtime
 {
     // TODO: Separate statistical fields
-   public class Person
+    public class Person
     {
         private PhysicalCondition _physicalCondition;
         private float _risk;
@@ -30,7 +29,7 @@ namespace Simulation.Runtime
         public bool IsWorker { get; }
         public List<Activity> Activities { get; } = new List<Activity>();
         public Venue CurrentLocation { get; set; }
-        public bool IsDead { get ; private set ;}
+        public bool IsDead { get; private set; }
 
         [Flags]
         public enum InfectionStates
@@ -68,6 +67,7 @@ namespace Simulation.Runtime
             int currentDay = currentDate.Day;
             int currentMonth = currentDate.Month;
             double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
+            bool stateTransition = false;
 
             if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
             {
@@ -79,9 +79,7 @@ namespace Simulation.Runtime
                         {
                             InfectionState = InfectionStates.Phase2;
                             _infectionStateDuration = Random.Range(InfectionStateDays.InfectiousMinDay, InfectionStateDays.InfectiousMaxDay);
-                            SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
-                            GlobalSimulationGraph.Instance.OnUpdate?.Invoke();
-
+                            stateTransition = true;
                         }
 
                         break;
@@ -91,8 +89,8 @@ namespace Simulation.Runtime
                         {
                             InfectionState = InfectionStates.Phase3;
                             _infectionStateDuration = Random.Range(InfectionStateDays.SymptomsMinDay, InfectionStateDays.SymptomsMaxDay);
-                            SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
-                            GlobalSimulationGraph.Instance.OnUpdate?.Invoke();
+                            stateTransition = true;
+
                         }
 
                         break;
@@ -102,8 +100,8 @@ namespace Simulation.Runtime
                         {
                             InfectionState = InfectionStates.Phase4;
                             _infectionStateDuration = Random.Range(InfectionStateDays.RecoveringMinDay, InfectionStateDays.RecoveringMaxDay);
-                            SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
-                            GlobalSimulationGraph.Instance.OnUpdate?.Invoke();
+                            stateTransition = true;
+
                         }
 
                         break;
@@ -114,8 +112,8 @@ namespace Simulation.Runtime
                         {
                             InfectionState = InfectionStates.Phase5;
                             _infectionStateDuration = int.MaxValue;
-                            SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
-                            GlobalSimulationGraph.Instance.OnUpdate?.Invoke();
+                            stateTransition = true;
+
                         }
 
                         break;
@@ -123,10 +121,19 @@ namespace Simulation.Runtime
 
                     case InfectionStates.Phase5:
                         break;
+
+
                 }
 
+                if (stateTransition)
+                {
+                    SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
+
+                    //This causes problems with the object destruction on the graph -> update each day or each 12 hours---
+                    //GlobalSimulationGraph.Instance.OnUpdate?.Invoke();
+                }
                 // Debug.Log("State: " + InfectionState);
-               
+
             }
         }
 
@@ -143,7 +150,7 @@ namespace Simulation.Runtime
             {
                 if (activity.Days.HasFlag(dateTime.DayOfWeek.AsDayOfWeek()))
                 {
-                    float timeInHours = dateTime.Hour + (float) dateTime.Minute / 60;
+                    float timeInHours = dateTime.Hour + (float)dateTime.Minute / 60;
                     if (activity.StartTime <= timeInHours && activity.EndTime > timeInHours)
                     {
                         return activity;
@@ -193,5 +200,5 @@ namespace Simulation.Runtime
             _infectionDate = infectionDate;
             _infectionStateDuration = Random.Range(InfectionStateDays.IncubationMinDay, InfectionStateDays.IncubationMaxDay);
         }
-    }   
+    }
 }
