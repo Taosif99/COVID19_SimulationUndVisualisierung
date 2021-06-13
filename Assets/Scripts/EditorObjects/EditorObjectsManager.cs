@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using EditorObjects;
 using Grid;
 using UnityEngine.UI;
 using Simulation.Edit;
@@ -49,6 +48,10 @@ namespace EditorObjects
         public Dropdown WorkerAvailabilityDropdown;
         //private HashSet<string> _usedUiNames = new HashSet<string>(); //TODO DIALOG BOX WHEN NAME USED TWICE
         //private string _currentEditorObjectUIName = "";
+
+
+        private List<TMP_InputField> _inputFields;
+        private List<Dropdown> _dropDowns;
         #endregion
 
 
@@ -182,51 +185,60 @@ namespace EditorObjects
         /// </summary>
         public void SaveToEntity()
         {
-
-            if (_currentSelectedEntity != null)
+            try
             {
-                IEditorObject editorObject = _editorObjectsDic[_currentSelectedEntity.Position];
-                if (editorObject != null)
-                {
 
-                    //Remove old and add new one
-                    editorObject.UIName = ObjectNameInputField.text;
-                    //_usedUiNames.Remove(_currentEditorObjectUIName);
-                    //_usedUiNames.Add(editorObject.UIName);
-                    //_currentEditorObjectUIName = editorObject.UIName;
-                    if (_currentSelectedEntity is Venue)
+                if (_currentSelectedEntity != null && InputOk())
+                {
+                    IEditorObject editorObject = _editorObjectsDic[_currentSelectedEntity.Position];
+                    if (editorObject != null)
                     {
 
-                        Venue venue = (Venue)_currentSelectedEntity;
-                        venue.InfectionRisk = float.Parse(InfectionRiskInputField.text);
-                        if (_currentSelectedEntity is Workplace)
+                        //Remove old and add new one
+                        editorObject.UIName = ObjectNameInputField.text;
+                        //_usedUiNames.Remove(_currentEditorObjectUIName);
+                        //_usedUiNames.Add(editorObject.UIName);
+                        //_currentEditorObjectUIName = editorObject.UIName;
+                        if (_currentSelectedEntity is Venue)
                         {
-                            Workplace workplace = (Workplace)_currentSelectedEntity;
-                            WorkplaceType workplaceType = (WorkplaceType)Enum.Parse(typeof(WorkplaceType), WorkplaceTypeDropdown.options[WorkplaceTypeDropdown.value].text);
-                            int capacity = int.Parse(CapacityInputField.text);
-                            workplace.WorkerCapacity = capacity;
-                            workplace.Type = workplaceType;
 
-                            if (_currentSelectedEntity is Hospital)
+                            Venue venue = (Venue)_currentSelectedEntity;
+                            venue.InfectionRisk = float.Parse(InfectionRiskInputField.text);
+                            if (_currentSelectedEntity is Workplace)
                             {
-                                Hospital hospital = (Hospital)_currentSelectedEntity;
-                                HospitalScale hospitalScale = (HospitalScale)Enum.Parse(typeof(HospitalScale), HospitalScaleDropdown.options[HospitalScaleDropdown.value].text);
-                                WorkerAvailability workerAvailability = (WorkerAvailability)Enum.Parse(typeof(WorkerAvailability), WorkerAvailabilityDropdown.options[WorkerAvailabilityDropdown.value].text);
-                                hospital.Scale = hospitalScale;
-                                hospital.WorkerAvailability = workerAvailability;
+                                Workplace workplace = (Workplace)_currentSelectedEntity;
+                                WorkplaceType workplaceType = (WorkplaceType)Enum.Parse(typeof(WorkplaceType), WorkplaceTypeDropdown.options[WorkplaceTypeDropdown.value].text);
+
+                                int capacity = int.Parse(CapacityInputField.text);
+                                workplace.WorkerCapacity = capacity;
+                                workplace.Type = workplaceType;
+
+                                if (_currentSelectedEntity is Hospital)
+                                {
+                                    Hospital hospital = (Hospital)_currentSelectedEntity;
+                                    HospitalScale hospitalScale = (HospitalScale)Enum.Parse(typeof(HospitalScale), HospitalScaleDropdown.options[HospitalScaleDropdown.value].text);
+                                    WorkerAvailability workerAvailability = (WorkerAvailability)Enum.Parse(typeof(WorkerAvailability), WorkerAvailabilityDropdown.options[WorkerAvailabilityDropdown.value].text);
+                                    hospital.Scale = hospitalScale;
+                                    hospital.WorkerAvailability = workerAvailability;
+                                }
+
                             }
+                            else if (_currentSelectedEntity is Household)
+                            {
+                                Household household = (Household)_currentSelectedEntity;
+                                household.NumberOfPeople = byte.Parse(NumberOfPeopleInputField.text);
+                                household.CarefulnessTendency = float.Parse(CarefulnessInputField.text);
+                                household.PercentageOfWorkers = float.Parse(PercantageOfWorkersInputField.text);
+                            }
+                        }
 
-                        }
-                        else if (_currentSelectedEntity is Household)
-                        {
-                            Household household = (Household)_currentSelectedEntity;
-                            household.NumberOfPeople = byte.Parse(NumberOfPeopleInputField.text);
-                            household.CarefulnessTendency = float.Parse(CarefulnessInputField.text);
-                            household.PercentageOfWorkers = float.Parse(PercantageOfWorkersInputField.text);
-                        }
                     }
-
                 }
+            }
+            catch (Exception e)
+            {
+                //TODO REMOVE 
+                Debug.Log(e.Message);
             }
         }
 
@@ -263,9 +275,6 @@ namespace EditorObjects
 
                 //TODO METHOD FOR THIS REPITITION
                 GameObject gameObject = editorObject.EditorGameObject;
-                StateCounter counter = gameObject.GetComponent<StateCounter>();
-                GameObject counterGameObject = counter.CounterGameObject;
-                Destroy(counterGameObject);
                 Destroy(gameObject);
             }
             //reset naming counters 
@@ -325,7 +334,7 @@ namespace EditorObjects
                 //Go Back to main menu
                 //dialogBox.OnConfirmationPressed += SceneLoader.Instance.LoadMainMenu;
             */
-           }
+            }
         }
         /// <summary>
         /// Method which initiates the saving process of the program configuration.
@@ -345,11 +354,58 @@ namespace EditorObjects
             FileHandler.SaveData(simulation);
         }
 
+        /// <summary>
+        /// Method to add on change listeners for better usability.
+        /// </summary>
+        private void AddOnChangeListenersToUI()
+        {
+            //Adding on change listeners 
+
+            foreach (TMP_InputField inputField in _inputFields)
+            {
+                inputField.onValueChanged.AddListener(delegate { SaveToEntity(); });
+            }
+
+            foreach (Dropdown dropdown in _dropDowns)
+            {
+                dropdown.onValueChanged.AddListener(delegate { SaveToEntity(); });
+            }
+        }
+
+
+        //TODO REFACTOR
+        private bool InputOk()
+        {
+
+            if (ObjectNameInputField.text.Equals("")) return false;
+            if (_currentSelectedEntity is Venue)
+            {
+                if (InfectionRiskInputField.text.Equals("")) return false; //TODO ROUND VALUES
+                if (_currentSelectedEntity is Workplace)
+                {
+                    if (CapacityInputField.text.Equals("")) return false;
+                }
+                else if (_currentSelectedEntity is Household)
+                {
+                    if (NumberOfPeopleInputField.text.Equals("")) return false;
+                    if (CarefulnessInputField.text.Equals("")) return false;
+                    if (PercantageOfWorkersInputField.text.Equals("")) return false;
+                }
+            }
+            return true;
+        }
+
 
         // Start is called before the first frame update
         void Start()
         {
+
+            _inputFields = new List<TMP_InputField> {ObjectNameInputField,InfectionRiskInputField,NumberOfPeopleInputField,
+            PercantageOfWorkersInputField,CarefulnessInputField,CapacityInputField};
+            _dropDowns = new List<Dropdown> { WorkplaceTypeDropdown, HospitalScaleDropdown, WorkerAvailabilityDropdown };
+
             SimulationGridManager.OnEditorObjectClicked += LoadEditorObjectUI;
+            AddOnChangeListenersToUI();
             //Getting the clicked simulation name if name exists
             string fileName = FileHandler.SelectedFileName;
             if (fileName != null)

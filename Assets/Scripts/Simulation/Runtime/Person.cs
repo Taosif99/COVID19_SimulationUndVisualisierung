@@ -90,9 +90,7 @@ namespace Simulation.Runtime
                             InfectionState = InfectionStates.Phase3;
                             _infectionStateDuration = Random.Range(InfectionStateDays.SymptomsMinDay, InfectionStateDays.SymptomsMaxDay);
                             stateTransition = true;
-
                         }
-
                         break;
 
                     case InfectionStates.Phase3:
@@ -113,16 +111,11 @@ namespace Simulation.Runtime
                             InfectionState = InfectionStates.Phase5;
                             _infectionStateDuration = int.MaxValue;
                             stateTransition = true;
-
                         }
 
                         break;
-
-
                     case InfectionStates.Phase5:
                         break;
-
-
                 }
 
                 if (stateTransition)
