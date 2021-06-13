@@ -27,6 +27,11 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("CreateSimulationTMP");
     }
 
+    public void LoadAboutUs()
+    {
+
+        SceneManager.LoadScene("AboutUsTMP");
+    }
 
     public void QuitGame()
 
