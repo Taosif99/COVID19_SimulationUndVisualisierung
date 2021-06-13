@@ -65,7 +65,6 @@ namespace Simulation.Runtime
 
         public void UpdateInfectionState(DateTime currentDate)
         {
-<<<<<<< Updated upstream
             int currentDay = currentDate.Day;
             int currentMonth = currentDate.Month;
             double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
@@ -73,15 +72,6 @@ namespace Simulation.Runtime
 
             if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
             {
-=======
-
-            if (_isDead == false)
-            {
-                int currentDay = currentDate.Day;
-                int currentMonth = currentDate.Month;
-                double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
->>>>>>> Stashed changes
-
                 switch (InfectionState)
                 {
                     case InfectionStates.Phase1:
@@ -89,12 +79,8 @@ namespace Simulation.Runtime
                         {
                             InfectionState = InfectionStates.Phase2;
                             _infectionStateDuration = Random.Range(InfectionStateDays.InfectiousMinDay, InfectionStateDays.InfectiousMaxDay);
-<<<<<<< Updated upstream
                             stateTransition = true;
-=======
->>>>>>> Stashed changes
                         }
-
                         break;
 
                     case InfectionStates.Phase2:
@@ -102,7 +88,6 @@ namespace Simulation.Runtime
                         {
                             InfectionState = InfectionStates.Phase3;
                             _infectionStateDuration = Random.Range(InfectionStateDays.SymptomsMinDay, InfectionStateDays.SymptomsMaxDay);
-<<<<<<< Updated upstream
                             stateTransition = true;
                         }
                         break;
@@ -115,38 +100,7 @@ namespace Simulation.Runtime
                             stateTransition = true;
 
                         }
-
                         break;
-=======
-                        }
-
-                        break;
-
-                    case InfectionStates.Phase3:
-                        if (daysSinceInfection > _infectionStateDuration)
-                        {
-                            InfectionState = InfectionStates.Phase4;
-                            _infectionStateDuration = Random.Range(InfectionStateDays.RecoveringMinDay, InfectionStateDays.RecoveringMaxDay);
-                        }
-
-                        break;
-
-                    case InfectionStates.Phase4:
-
-                        if (daysSinceInfection > _infectionStateDuration)
-                        {
-                            InfectionState = InfectionStates.Phase5;
-                            _infectionStateDuration = int.MaxValue;
-                        }
-
-                        break;
-
-
-                    case InfectionStates.Phase5:
-                        break;
-                }
-            }
->>>>>>> Stashed changes
 
                     case InfectionStates.Phase4:
 
@@ -156,7 +110,6 @@ namespace Simulation.Runtime
                             _infectionStateDuration = int.MaxValue;
                             stateTransition = true;
                         }
-
                         break;
                     case InfectionStates.Phase5:
                         break;
