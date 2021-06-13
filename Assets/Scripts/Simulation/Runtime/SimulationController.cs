@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using FileHandling;
 
 namespace Simulation.Runtime
 {
@@ -103,9 +104,21 @@ namespace Simulation.Runtime
         {
             //TODO: Person should be validated if he is already infected.
             Household[] households = _entities.OfType<Household>().ToArray();
-            Household randomHousehold = households[Random.Range(0, households.Length)];
-            Person randomPerson = randomHousehold.Members[Random.Range(0, randomHousehold.Members.Length)];
-            randomPerson.SetInfected(SimulationDate);
+            if (households != null && households.Length > 0)
+            {
+                Household randomHousehold = households[Random.Range(0, households.Length)];
+                Person randomPerson = randomHousehold.Members[Random.Range(0, randomHousehold.Members.Length)];
+                randomPerson.SetInfected(SimulationDate);
+            }
+            else 
+            { 
+                Debug.Log("No households");
+                string msg = "Atleast one household with one person is requiered to infect one person!";
+                string name = "No households";
+                DialogBox dialogBox = new DialogBox(name, msg);
+                dialogBox.HasCancelButon = false;
+                DialogBoxManager.Instance.HandleDialogBox(dialogBox);
+            }
         }
         
         
