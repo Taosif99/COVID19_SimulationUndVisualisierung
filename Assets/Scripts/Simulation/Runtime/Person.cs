@@ -127,7 +127,7 @@ namespace Simulation.Runtime
 
                 if (stateTransition)
                 {
-                    SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
+                    //SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
 
                     //This causes problems with the object destruction on the graph -> update each day or each 12 hours---
                     //GlobalSimulationGraph.Instance.OnUpdate?.Invoke();

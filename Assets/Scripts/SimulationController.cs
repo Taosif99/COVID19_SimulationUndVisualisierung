@@ -86,7 +86,7 @@ class SimulationController : MonoBehaviour
             _isInitialized = false;
             _isPaused = false;
             _controller = null;
-            SimulationMaster.Instance.Reset();
+           // SimulationMaster.Instance.Reset();
         }
     }
     

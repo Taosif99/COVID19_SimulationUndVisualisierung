@@ -1,8 +1,7 @@
 using UnityEngine;
 using DialogBoxSystem;
 using TMPro;
-using System.Linq;
-using System;
+using InputValidation;
 
 namespace FileHandling
 {
@@ -14,29 +13,18 @@ namespace FileHandling
     /// </summary>
     public class CreateSimulationSaveManager : MonoBehaviour
     {
-
-
-
         /// <summary>
         /// With this field the file name of the simulation will be acquired.
         /// </summary>
         [SerializeField] private TMP_InputField _nameInputField;
 
-        /// <summary>
-        /// TODO IMPLEMENT PROPER INPUT HANDLING, just checking if string is empty and removing white spaces
-        /// </summary>
-        private bool CheckInputField()
-        {
-            string trimmedText =  string.Concat(_nameInputField.text.Where(c => !char.IsWhiteSpace(c)));
-            return !trimmedText.Equals("");
-        }
 
         /// <summary>
         /// Methods which creates the simulation regarding the given input name.
         /// </summary>
         public void CreateSimulation()
         {
-            if (CheckInputField())
+            if (InputValidator.BasicInputValidation(_nameInputField.text))
             {
                 _nameInputField.image.color = Color.white;
                 string fileName = _nameInputField.text;

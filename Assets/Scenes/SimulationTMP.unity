@@ -478,69 +478,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
---- !u!1 &127694753
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 127694754}
-  - component: {fileID: 127694755}
-  m_Layer: 0
-  m_Name: SaveAndDeleteButtonGroup
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &127694754
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 127694753}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 848896735}
-  m_Father: {fileID: 615847773}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.10083, y: -307.02267}
-  m_SizeDelta: {x: 199.48, y: 40.8395}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &127694755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 127694753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!1 &132424038
 GameObject:
   m_ObjectHideFlags: 0
@@ -3352,7 +3289,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 583314450}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3364,7 +3301,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 95, y: -62}
+  m_AnchoredPosition: {x: 80, y: -42.065052}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &583314452
@@ -3420,8 +3357,6 @@ MonoBehaviour:
     - m_Text: Other
       m_Image: {fileID: 0}
     - m_Text: Store
-      m_Image: {fileID: 0}
-    - m_Text: Hospital
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3586,7 +3521,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1565268863}
-  - {fileID: 127694754}
+  - {fileID: 848896735}
   m_Father: {fileID: 1815046297}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4981,16 +4916,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee850df3bd2e64949afacb3f56472d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SimulationGridManager: {fileID: 945396490}
-  ObjectNameInputField: {fileID: 251351803}
-  InfectionRiskInputField: {fileID: 181692759}
-  NumberOfPeopleInputField: {fileID: 1833106467}
-  PercantageOfWorkersInputField: {fileID: 250470348}
-  CarefulnessInputField: {fileID: 697823805}
-  WorkplaceTypeDropdown: {fileID: 583314452}
-  CapacityInputField: {fileID: 1399270295}
-  HospitalScaleDropdown: {fileID: 1522897196}
-  WorkerAvailabilityDropdown: {fileID: 1968393019}
+  _gridManager: {fileID: 945396490}
 --- !u!4 &807507762
 Transform:
   m_ObjectHideFlags: 0
@@ -5018,7 +4944,7 @@ GameObject:
   - component: {fileID: 848896737}
   - component: {fileID: 848896736}
   m_Layer: 0
-  m_Name: DeleteCurrentObjectButtonTMP
+  m_Name: DeleteCurrentEntityButtonTMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5036,12 +4962,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1501728378}
-  m_Father: {fileID: 127694754}
-  m_RootOrder: 0
+  m_Father: {fileID: 615847773}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 108.232155, y: -716.3101}
   m_SizeDelta: {x: 200, y: 37.6243}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &848896736
@@ -9226,6 +9152,51 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1422860494
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1422860496}
+  - component: {fileID: 1422860495}
+  m_Layer: 0
+  m_Name: SimulationSaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1422860495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422860494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad915fea7b6603a498961dea56ba6dbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorObjectsManager: {fileID: 807507761}
+  _gridManager: {fileID: 945396490}
+--- !u!4 &1422860496
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422860494}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 642.5261, y: 486.58524, z: -0.0007324219}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1471728760
 GameObject:
   m_ObjectHideFlags: 0
@@ -9911,7 +9882,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 95, y: -50}
+  m_AnchoredPosition: {x: 80, y: -41.6301}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1522897194
@@ -11137,7 +11108,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1884939082}
+      - m_Target: {fileID: 1422860495}
         m_TargetAssemblyTypeName: FileHandling.SimulationSaveFunctions, Assembly-CSharp
         m_MethodName: BackToMainMenuSave
         m_Mode: 1
@@ -11271,8 +11242,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 807507761}
-        m_TargetAssemblyTypeName: EditorObjects.EditorObjectsManager, Assembly-CSharp
+      - m_Target: {fileID: 1422860495}
+        m_TargetAssemblyTypeName: FileHandling.SimulationSaveFunctions, Assembly-CSharp
         m_MethodName: SaveToFile
         m_Mode: 1
         m_Arguments:
@@ -13058,7 +13029,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Option A
+  m_text: Other
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -13067,7 +13038,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4281479730
   m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -13080,7 +13051,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -13220,7 +13191,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1884939081}
   - component: {fileID: 1884939080}
-  - component: {fileID: 1884939082}
   m_Layer: 0
   m_Name: DialogBoxManager
   m_TagString: Untagged
@@ -13258,19 +13228,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1884939082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884939079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad915fea7b6603a498961dea56ba6dbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorObjectsManager: {fileID: 807507761}
 --- !u!1 &1894658419
 GameObject:
   m_ObjectHideFlags: 0
@@ -13712,7 +13669,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 95, y: -50}
+  m_AnchoredPosition: {x: 80, y: -108.26019}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1968393021
@@ -13998,7 +13955,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Option A
+  m_text: Low
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -14007,7 +13964,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4281479730
   m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -14020,7 +13977,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -14151,7 +14108,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Option A
+  m_text: Small
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -14160,7 +14117,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4281479730
   m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -14173,7 +14130,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -14734,11 +14691,13 @@ MonoBehaviour:
   SimulationGraphEnabler: {fileID: 412718097}
   BarChartToggle: {fileID: 1672415282}
   LineChartToggle: {fileID: 1290578917}
+  _workplaceTypeDropDownGameObject: {fileID: 1301181507}
+  _workplaceTypeTextDownGameObject: {fileID: 583314450}
   VenueUI: {fileID: 2134757431}
   HouseholdUI: {fileID: 1285273493}
   WorkplaceUI: {fileID: 1909716065}
   HospitalUI: {fileID: 1416399603}
-  SaveAndDeleteUI: {fileID: 127694753}
+  DeleteEntityGameObject: {fileID: 848896734}
   InputFieldsToReset:
   - {fileID: 251351803}
   - {fileID: 181692759}
@@ -14746,6 +14705,16 @@ MonoBehaviour:
   - {fileID: 250470348}
   - {fileID: 697823805}
   - {fileID: 1399270295}
+  ObjectNameInputField: {fileID: 251351803}
+  InfectionRiskInputField: {fileID: 181692759}
+  NumberOfPeopleInputField: {fileID: 1833106467}
+  PercantageOfWorkersInputField: {fileID: 250470348}
+  CarefulnessInputField: {fileID: 697823805}
+  WorkplaceTypeDropdown: {fileID: 583314452}
+  WorkerCapacityInputField: {fileID: 1399270295}
+  HospitalScaleDropdown: {fileID: 1522897196}
+  WorkerAvailabilityDropdown: {fileID: 1968393019}
+  editorObjectsManager: {fileID: 807507761}
 --- !u!222 &6710811102927328187
 CanvasRenderer:
   m_ObjectHideFlags: 0

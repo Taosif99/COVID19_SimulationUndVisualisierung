@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Grid;
-using UnityEngine.UI;
 using Simulation.Edit;
 using System.Linq;
 using System;
 using Simulation;
-using FileHandling;
+using InputValidation;
 using TMPro;
 
 namespace EditorObjects
@@ -17,48 +16,30 @@ namespace EditorObjects
     /// I think it would be better to implement a "gameMaster" class to remove Monobehaviour inheritance
     /// 
     /// 
-    /// Currently working wick mock editor objects
+    /// Currently working with mock editor objects
     /// </summary>
     public class EditorObjectsManager : MonoBehaviour
     {
 
-        public GridManager SimulationGridManager;
+        [SerializeField] private GridManager _gridManager;
         //We use the unique GridCell Position as Key
         private Dictionary<GridCell, IEditorObject> _editorObjectsDic = new Dictionary<GridCell, IEditorObject>();
         private Entity _currentSelectedEntity;
 
 
-
-        #region outsource to UI controller
-        //The settings objects can be outsourced in an  Venue properties UI class
-        //public Text ObjectNameText;
-        //Venue elements
-        public TMP_InputField ObjectNameInputField;
-        public TMP_InputField InfectionRiskInputField; //TODO Slider
-        //public InputField CurrentPeopleAtVenueInputField; //Use Text or label later, remove from ui
-        //Household elements
-        public TMP_InputField NumberOfPeopleInputField;
-        public TMP_InputField PercantageOfWorkersInputField; //TODO Slider
-        public TMP_InputField CarefulnessInputField; //TODO Slider
-        //Workplace elements
-        public TMP_Dropdown WorkplaceTypeDropdown;
-        public TMP_InputField CapacityInputField;
-        //Hospital elements
-        public TMP_Dropdown HospitalScaleDropdown;
-        public TMP_Dropdown WorkerAvailabilityDropdown;
         //private HashSet<string> _usedUiNames = new HashSet<string>(); //TODO DIALOG BOX WHEN NAME USED TWICE
         //private string _currentEditorObjectUIName = "";
-
-
-        private List<TMP_InputField> _inputFields;
-        private List<TMP_Dropdown> _dropDowns;
-        #endregion
-
 
         //counters for unique mock naming
         private int _workPlaceCounter = 1;
         private int _hospitalCounter = 1;
         private int _householdCounter = 1;
+
+        public Entity CurrentSelectedEntity { get => _currentSelectedEntity; set => _currentSelectedEntity = value; }
+        public int WorkPlaceCounter { get => _workPlaceCounter; set => _workPlaceCounter = value; }
+        public int HospitalCounter { get => _hospitalCounter; set => _hospitalCounter = value; }
+        public int HouseholdCounter { get => _householdCounter; set => _householdCounter = value; }
+        public Dictionary<GridCell, IEditorObject> EditorObjectsDic { get => _editorObjectsDic; set => _editorObjectsDic = value; }
 
 
 
@@ -78,17 +59,17 @@ namespace EditorObjects
             switch (currentPrefabName)
             {
                 case PrefabName.Workplace:
-                    uiName = "Workplace Mock " + _workPlaceCounter++;
+                    uiName = "Workplace Mock " + WorkPlaceCounter++;
                     Workplace workplace = new Workplace(gridCell, 0.2f, WorkplaceType.Other, 200);
                     editorObject = EditorObjectFactory.Create(workplace, uiName);
                     break;
                 case PrefabName.Hospital:
-                    uiName = "Hospital Mock " + _hospitalCounter++;
+                    uiName = "Hospital Mock " + HospitalCounter++;
                     Hospital hospital = new Hospital(gridCell, 0.1f, WorkplaceType.Hospital, 299, HospitalScale.Large, WorkerAvailability.Low);
                     editorObject = EditorObjectFactory.Create(hospital, uiName);
                     break;
                 case PrefabName.Household:
-                    uiName = "Household Mock " + _householdCounter++;
+                    uiName = "Household Mock " + HouseholdCounter++;
                     Household household = new Household(gridCell, 0.6f, 12, 0.7f, 0.5f, 0.3f, 2, 5);
                     editorObject = EditorObjectFactory.Create(household, uiName);
                     break;
@@ -97,21 +78,12 @@ namespace EditorObjects
                     break;
             }
             // _usedUiNames.Add(uiName);
-            _editorObjectsDic.Add(gridCell, editorObject);
+            EditorObjectsDic.Add(gridCell, editorObject);
             LoadEditorObjectUI(gridCellPosition);
             return editorObject.EditorGameObject;
         }
 
-        /// <summary>
-        /// Get all editor objects which are currently placed.
-        /// </summary>
-        /// <returns>A list of all currently placed editor objects</returns>
-        public List<IEditorObject> GetAllEditorObjects()
-        {
-            return _editorObjectsDic.Values.ToList();
-        }
 
-        //We may handle different venues according the properties what can be set
 
         /// <summary>
         /// Method which loads Values from the UI according the correspoding Clicked Venue Object Object
@@ -121,59 +93,61 @@ namespace EditorObjects
         {
 
             GridCell gridCell = new GridCell(gridCellPosition.x, gridCellPosition.y);
-            IEditorObject editorObject = _editorObjectsDic[gridCell];
+            IEditorObject editorObject = EditorObjectsDic[gridCell];
             if (editorObject != null)
             {
 
                 UIController.Instance.IsEntitySelectedUI(true);
-                ObjectNameInputField.text = editorObject.UIName;
-
+                UIController.Instance.ObjectNameInputField.text = editorObject.UIName;
+                Debug.Log("Why did the name not change ??? " + editorObject.UIName);
                 Entity entity = editorObject.EditorEntity;
 
-                _currentSelectedEntity = entity;
+                CurrentSelectedEntity = entity;
                 // _currentEditorObjectUIName = editorObject.UIName;
                 //Check if Graph....TODO WHEN GRAPH IS UI ELEMENT IN WORLD
                 if (entity is Venue)
                 {
                     Venue venue = (Venue)entity;
-                    InfectionRiskInputField.text = venue.InfectionRisk.ToString(); //TODO ROUND VALUES
+                    UIController.Instance.InfectionRiskInputField.text = venue.InfectionRisk.ToString(); //TODO ROUND VALUES
                     if (entity is Workplace)
                     {
                         UIController.Instance.LoadWorkplaceUI();
                         Workplace workplace = (Workplace)entity;
-                        List<string> availableWorkplaceOptions = WorkplaceTypeDropdown.options.Select(option => option.text).ToList();
-                        WorkplaceTypeDropdown.value = availableWorkplaceOptions.IndexOf(workplace.Type.ToString());
-                        WorkplaceTypeDropdown.enabled = true;
-                        CapacityInputField.text = workplace.WorkerCapacity.ToString();
+
+
+                        if (!(CurrentSelectedEntity is Hospital))
+                        {
+                            List<string> availableWorkplaceOptions = UIController.Instance.WorkplaceTypeDropdown.options.Select(option => option.text).ToList();
+                            UIController.Instance.WorkplaceTypeDropdown.value = availableWorkplaceOptions.IndexOf(workplace.Type.ToString());
+                        }
+                        UIController.Instance.WorkerCapacityInputField.text = workplace.WorkerCapacity.ToString();
 
                         if (entity is Hospital)
                         {
+
                             UIController.Instance.LoadHospitalUI();
                             Hospital hospital = (Hospital)entity;
-                            List<string> availableHospitalScaleOptions = HospitalScaleDropdown.options.Select(option => option.text).ToList();
-                            List<string> availableWorkerAvailabilityOptions = WorkerAvailabilityDropdown.options.Select(option => option.text).ToList();
-                            HospitalScaleDropdown.value = availableHospitalScaleOptions.IndexOf(hospital.Scale.ToString());
-                            WorkerAvailabilityDropdown.value = availableWorkerAvailabilityOptions.IndexOf(hospital.WorkerAvailability.ToString());
+                            List<string> availableHospitalScaleOptions = UIController.Instance.HospitalScaleDropdown.options.Select(option => option.text).ToList();
+                            List<string> availableWorkerAvailabilityOptions = UIController.Instance.WorkerAvailabilityDropdown.options.Select(option => option.text).ToList();
+                            UIController.Instance.HospitalScaleDropdown.value = availableHospitalScaleOptions.IndexOf(hospital.Scale.ToString());
+                            UIController.Instance.WorkerAvailabilityDropdown.value = availableWorkerAvailabilityOptions.IndexOf(hospital.WorkerAvailability.ToString());
 
-                            //At a hospital the dropdown of workplace type should not be changed !!!
-                            WorkplaceTypeDropdown.enabled = false;
-
-                        } //TODO MAKE SURE THAT HOSPITAL CANNOT BE SET
+                        }
 
                     }
                     else if (entity is Household)
                     {
                         UIController.Instance.LoadHouseholdUI();
                         Household household = (Household)entity;
-                        NumberOfPeopleInputField.text = household.NumberOfPeople.ToString();
-                        CarefulnessInputField.text = household.CarefulnessTendency.ToString();
-                        PercantageOfWorkersInputField.text = household.PercentageOfWorkers.ToString();
+                        UIController.Instance.NumberOfPeopleInputField.text = household.NumberOfPeople.ToString();
+                        UIController.Instance.CarefulnessInputField.text = household.CarefulnessTendency.ToString();
+                        UIController.Instance.PercantageOfWorkersInputField.text = household.PercentageOfWorkers.ToString();
                     }
                 }
             }
         }
 
-        //TODO CATCH INPUT ERRORS, use tryparse...
+
         //TODO UI Name must be unique !
         /// <summary>
         /// 
@@ -186,277 +160,109 @@ namespace EditorObjects
         /// </summary>
         public void SaveToEntity()
         {
-    
-                float infectionRisk = 0f;
-                int capacity = 0;
-                byte numberOfPeople = 0;
-                float carefulness = 0f;
-                float percentageOfWorkers = 0f;
-                bool inputIsOkay = TryParseInputFields(ref infectionRisk, ref capacity, ref numberOfPeople, ref carefulness, ref percentageOfWorkers);
-            if (_currentSelectedEntity != null && inputIsOkay)
+            float infectionRisk = 0f;
+            int capacity = 0;
+            byte numberOfPeople = 0;
+            float carefulness = 0f;
+            float percentageOfWorkers = 0f;
+
+            if (CurrentSelectedEntity != null)
             {
-                IEditorObject editorObject = _editorObjectsDic[_currentSelectedEntity.Position];
-                if (editorObject != null)
+
+                bool inputIsOkay = InputValidator.TryParseInputFields(ref infectionRisk,
+                ref capacity,
+                ref numberOfPeople,
+                ref carefulness,
+                ref percentageOfWorkers,
+                CurrentSelectedEntity);
+                if (inputIsOkay)
                 {
-                    //Remove old and add new one
-                    editorObject.UIName = ObjectNameInputField.text;
-                    //_usedUiNames.Remove(_currentEditorObjectUIName);
-                    //_usedUiNames.Add(editorObject.UIName);
-                    //_currentEditorObjectUIName = editorObject.UIName;
-                    if (_currentSelectedEntity is Venue)
+
+                    IEditorObject editorObject = EditorObjectsDic[CurrentSelectedEntity.Position];
+                    if (editorObject != null)
                     {
-                        Venue venue = (Venue)_currentSelectedEntity;
-                        venue.InfectionRisk = infectionRisk;
-                        if (_currentSelectedEntity is Workplace)
+                        //Remove old and add new one
+                        editorObject.UIName = UIController.Instance.ObjectNameInputField.text;
+                        //_usedUiNames.Remove(_currentEditorObjectUIName);
+                        //_usedUiNames.Add(editorObject.UIName);
+                        //UIController.Instance.ObjectNameInputField.text = editorObject.UIName;
+                        Debug.Log("Change editor name to  ###" + editorObject.UIName);
+                        if (CurrentSelectedEntity is Venue)
                         {
-                            Workplace workplace = (Workplace)_currentSelectedEntity;
-                            WorkplaceType workplaceType = (WorkplaceType)Enum.Parse(typeof(WorkplaceType), WorkplaceTypeDropdown.options[WorkplaceTypeDropdown.value].text);
-                            workplace.WorkerCapacity = capacity;
-                            workplace.Type = workplaceType;
-
-                            if (_currentSelectedEntity is Hospital)
+                            Venue venue = (Venue)CurrentSelectedEntity;
+                            venue.InfectionRisk = infectionRisk;
+                            if (CurrentSelectedEntity is Workplace)
                             {
-                                Hospital hospital = (Hospital)_currentSelectedEntity;
-                                HospitalScale hospitalScale = (HospitalScale)Enum.Parse(typeof(HospitalScale), HospitalScaleDropdown.options[HospitalScaleDropdown.value].text);
-                                WorkerAvailability workerAvailability = (WorkerAvailability)Enum.Parse(typeof(WorkerAvailability), WorkerAvailabilityDropdown.options[WorkerAvailabilityDropdown.value].text);
-                                hospital.Scale = hospitalScale;
-                                hospital.WorkerAvailability = workerAvailability;
+                                Workplace workplace = (Workplace)CurrentSelectedEntity;
+
+                                if (!(CurrentSelectedEntity is Hospital))
+                                {
+                                    WorkplaceType workplaceType = (WorkplaceType)Enum.Parse(typeof(WorkplaceType), UIController.Instance.WorkplaceTypeDropdown.options[UIController.Instance.WorkplaceTypeDropdown.value].text);
+                                    workplace.WorkerCapacity = capacity;
+                                    workplace.Type = workplaceType;
+                                }
+
+                                if (CurrentSelectedEntity is Hospital)
+                                {
+                                    Hospital hospital = (Hospital)CurrentSelectedEntity;
+                                    hospital.Type = WorkplaceType.Hospital;
+                                    HospitalScale hospitalScale = (HospitalScale)Enum.Parse(typeof(HospitalScale), UIController.Instance.HospitalScaleDropdown.options[UIController.Instance.HospitalScaleDropdown.value].text);
+                                    WorkerAvailability workerAvailability = (WorkerAvailability)Enum.Parse(typeof(WorkerAvailability), UIController.Instance.WorkerAvailabilityDropdown.options[UIController.Instance.WorkerAvailabilityDropdown.value].text);
+                                    hospital.Scale = hospitalScale;
+                                    hospital.WorkerAvailability = workerAvailability;
+                                }
+
                             }
+                            else if (CurrentSelectedEntity is Household)
+                            {
+                                Household household = (Household)CurrentSelectedEntity;
+                                household.NumberOfPeople = numberOfPeople;
+                                household.CarefulnessTendency = carefulness;
+                                household.PercentageOfWorkers = percentageOfWorkers;
+                            }
+                        }
 
-                        }
-                        else if (_currentSelectedEntity is Household)
-                        {
-                            Household household = (Household)_currentSelectedEntity;
-                            household.NumberOfPeople = numberOfPeople;
-                            household.CarefulnessTendency = carefulness;
-                            household.PercentageOfWorkers = percentageOfWorkers;
-                        }
                     }
-
                 }
+
+
             }
         }
 
         /// <summary>
-        /// Method which deletes the current selected entities
+        /// Method which deletes the current selected entity.
         /// </summary>
         public void DeleteCurrentEntity()
         {
-            if (_currentSelectedEntity != null)
+            if (CurrentSelectedEntity != null)
             {
-                IEditorObject editorObject = _editorObjectsDic[_currentSelectedEntity.Position];
+                IEditorObject editorObject = EditorObjectsDic[CurrentSelectedEntity.Position];
                 if (editorObject != null)
                 {
                     //Destroy the gameObject in the scene
                     GameObject gameObject = editorObject.EditorGameObject;
                     Destroy(gameObject);
                     //_usedUiNames.Remove(editorObject.UIName);
-                    _editorObjectsDic.Remove(_currentSelectedEntity.Position);
-                    _currentSelectedEntity = null;
+                    EditorObjectsDic.Remove(CurrentSelectedEntity.Position);
+                    CurrentSelectedEntity = null;
                     UIController.Instance.IsEntitySelectedUI(false);
                 }
             }
         }
 
         /// <summary>
-        /// Method which will be called if user selects in the previous scene to load a file.
+        /// Get all editor objects which are currently placed.
         /// </summary>
-        public void LoadFromFile()
+        /// <returns>A list of all currently placed editor objects</returns>
+        public List<IEditorObject> GetAllEditorObjects()
         {
-
-            //Clear old scene and load data
-            foreach (IEditorObject editorObject in _editorObjectsDic.Values)
-            {
-
-                //TODO METHOD FOR THIS REPITITION
-                GameObject gameObject = editorObject.EditorGameObject;
-                Destroy(gameObject);
-            }
-            //reset naming counters 
-            _workPlaceCounter = 1;
-            _hospitalCounter = 1;
-            _householdCounter = 1;
-            _editorObjectsDic.Clear();
-            _currentSelectedEntity = null;
-            //Load Simulation
-            Simulation.Edit.Simulation simulation = FileHandler.LoadData();
-
-            //Not Found dialog box Todo
-
-
-            if (simulation != null)
-            {
-                Entity[] entities = simulation.Entities;
-                if (entities != null)
-                {
-                    foreach (Entity entity in entities)
-                    {
-                        if (entity is Workplace)
-                        {
-                            ModelSelector.Instance.SetCurrentPrefab(PrefabName.Workplace);
-
-                            if (entity is Hospital)
-                            {
-                                ModelSelector.Instance.SetCurrentPrefab(PrefabName.Hospital);
-                            }
-                        }
-                        else if (entity is Household)
-                        {
-                            ModelSelector.Instance.SetCurrentPrefab(PrefabName.Household);
-                        }
-                        IEditorObject editorObject = EditorObjectFactory.Create(entity, "serialized mock text");
-                        _editorObjectsDic.Add(entity.Position, editorObject);
-                        Vector2Int gridCellPosition = new Vector2Int(entity.Position.X, entity.Position.Y);
-                        //Spawn in position-> spawn handler or manager
-                        GameObject gameObject = editorObject.EditorGameObject;
-                        SimulationGridManager.PositionObjectInGrid(gameObject, gridCellPosition);
-                    }
-                    ModelSelector.Instance.SetCurrentPrefab(PrefabName.None);
-                    UIController.Instance.IsEntitySelectedUI(false);
-                }
-                else Debug.Log("No entities !");
-            }
-            else
-            {
-                //This is not working...
-                /*
-                Debug.Log("File not found !");
-                string msg = "Save file not found !";
-                string name = "File not found";
-                DialogBox dialogBox = new DialogBox(name, msg);
-                dialogBox.HasCancelButon = false;
-                //DialogBoxManager.Instance.HandleDialogBox(dialogBox);
-                //Go Back to main menu
-                //dialogBox.OnConfirmationPressed += SceneLoader.Instance.LoadMainMenu;
-            */
-            }
+            return EditorObjectsDic.Values.ToList();
         }
-        /// <summary>
-        /// Method which initiates the saving process of the program configuration.
-        /// </summary>
-        public void SaveToFile()
-        {
-            Entity[] entities = new Entity[_editorObjectsDic.Count];
-            int index = 0;
-            foreach (IEditorObject editorObject in _editorObjectsDic.Values)
-            {
-                Entity entity = editorObject.EditorEntity;
-                entities[index] = entity;
-                index++;
-            }
-            //TODO REPLACE MOCK WITH REAL SIMULATION
-            Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock(entities);
-            FileHandler.SaveData(simulation);
-        }
-
-        /// <summary>
-        /// Method to add on change listeners for better usability.
-        /// </summary>
-        private void AddOnChangeListenersToUI()
-        {
-            //Adding on change listeners 
-
-            foreach (TMP_InputField inputField in _inputFields)
-            {
-                inputField.onValueChanged.AddListener(delegate { SaveToEntity(); });
-            }
-
-            foreach (TMP_Dropdown dropdown in _dropDowns)
-            {
-                dropdown.onValueChanged.AddListener(delegate { SaveToEntity(); });
-            }
-        }
-
-
-        //TODO InputHandler Class
-        /// <summary>
-        /// Method which parses al inputfields in the simulation scene and which checks for correct value ranges.
-        /// </summary>
-        /// <param name="infectionRisk"></param>
-        /// <param name="capacity"></param>
-        /// <param name="numberOfPeople"></param>
-        /// <param name="carefulness"></param>
-        /// <param name="percentageOfWorkers"></param>
-        /// <returns>true if all requiered inputfields can be parsed to correct values, else false</returns>
-        private bool TryParseInputFields(ref float infectionRisk, ref int capacity, ref byte numberOfPeople, ref float carefulness, ref float percentageOfWorkers)
-        {
-            bool inputIsValid = true;
-            if (ObjectNameInputField.text.Equals("")) return false;
-            if (_currentSelectedEntity is Venue)
-            {
-                bool infectionRiskIsValid = float.TryParse(InfectionRiskInputField.text, out infectionRisk) && IsValidPercentage(infectionRisk);
-                SetInputFieldColor(InfectionRiskInputField, infectionRiskIsValid);
-                inputIsValid = inputIsValid && infectionRiskIsValid;
-      
-                if (_currentSelectedEntity is Workplace)
-                {
-                    bool capacityIsValid = int.TryParse(CapacityInputField.text, out capacity) && capacity >= 0;
-                    SetInputFieldColor(CapacityInputField, capacityIsValid);
-                    inputIsValid = inputIsValid && capacityIsValid;
-                }
-                else if (_currentSelectedEntity is Household)
-                {
-                    bool numberOfPeopleIsValid = byte.TryParse(NumberOfPeopleInputField.text, out numberOfPeople);
-                    bool carefulnessIsValid = float.TryParse(CarefulnessInputField.text, out carefulness) && IsValidPercentage(carefulness);
-                    bool percantageOfWorkersIsValid = float.TryParse(PercantageOfWorkersInputField.text, out percentageOfWorkers) && IsValidPercentage(percentageOfWorkers);
-                    SetInputFieldColor(NumberOfPeopleInputField, numberOfPeopleIsValid);
-                    SetInputFieldColor(CarefulnessInputField, carefulnessIsValid);
-                    SetInputFieldColor(PercantageOfWorkersInputField, percantageOfWorkersIsValid);
-                    inputIsValid = inputIsValid && numberOfPeopleIsValid;
-                    inputIsValid = inputIsValid && carefulnessIsValid;
-                    inputIsValid = inputIsValid && percantageOfWorkersIsValid;
-
-                }
-            }
-
-            return inputIsValid;
-        }
-        /// <summary>
-        /// Method to set the color of an inputfield depending if its content 
-        /// can be parsed.
-        /// </summary>
-        /// <param name="inputField"></param>
-        /// <param name="contentIsCorrect"></param>
-        private void SetInputFieldColor(TMP_InputField inputField, bool contentIsCorrect) 
-        {
-            if (!contentIsCorrect)
-            {
-               inputField.image.color = Color.red;
-            }
-            else
-            {
-               inputField.image.color = Color.white;
-            }
-        }
-
-        /// <summary>
-        /// Method to make sure that percentage values are in decimal format.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        private bool IsValidPercentage(float value)
-        {
-            return value >= 0f && value <= 1f;
-        }
-
 
         // Start is called before the first frame update
         void Start()
         {
-
-            _inputFields = new List<TMP_InputField> {ObjectNameInputField,InfectionRiskInputField,NumberOfPeopleInputField,
-            PercantageOfWorkersInputField,CarefulnessInputField,CapacityInputField};
-            _dropDowns = new List<TMP_Dropdown> { WorkplaceTypeDropdown, HospitalScaleDropdown, WorkerAvailabilityDropdown };
-
-            SimulationGridManager.OnEditorObjectClicked += LoadEditorObjectUI;
-            AddOnChangeListenersToUI();
-            //Getting the clicked simulation name if name exists
-            string fileName = FileHandler.SelectedFileName;
-            if (fileName != null)
-            {
-                Debug.Log("File to load: " + fileName);
-                LoadFromFile();
-            }
+            _gridManager.OnEditorObjectClicked += LoadEditorObjectUI;
         }
     }
 }

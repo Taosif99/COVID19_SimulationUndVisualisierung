@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using EditorObjects;
 using Grid;
-using System;
 using TMPro;
 
 /// <summary>
@@ -19,34 +18,69 @@ public class UIController : MonoBehaviour
 {
     //References to buttons
     public Button placeWorkplaceButton, placeHospitalButton, placeHouseholdButton, placeGraphButton;
-    //To indicate which button is clicked
+    //Color to indicate which button is clicked
     public Color outlineColor;
 
     //To reset all buttons 
     private List<Button> buttonList;
     //later and invoke placement related functions functions, since they methods can be abstracted
     private Dictionary<PrefabName, Button> _placementButtonDictionary;
+    //Needed to implement clear up logic
+    private Button _lastClickedButton;
 
     //Probably can be replaced with actions later
     //public GridManager2 SimulationGridManager;
     //Concerning Graph in UI
+    [Header("Graph UI children")]
     public GraphEnabler SimulationGraphEnabler;
     public Toggle BarChartToggle;
     public Toggle LineChartToggle;
-    //Needed to implement clear up logic
-    private Button _lastClickedButton;
+
 
     public static UIController Instance;
 
+
+    [Header("To disable workplace type at hospital")]
+    [SerializeField] private GameObject _workplaceTypeDropDownGameObject;
+    [SerializeField] private GameObject _workplaceTypeTextDownGameObject;
+
     //GameObject groups of editor object UI elements
+    [Header("Right Image UI children")]
     public GameObject VenueUI;
     public GameObject HouseholdUI;
     public GameObject WorkplaceUI;
     public GameObject HospitalUI;
-    public GameObject SaveAndDeleteUI;
+    public GameObject DeleteEntityGameObject;
 
     // All texts field which must be resettet will be cached in this list
     public List<TMP_InputField> InputFieldsToReset = new List<TMP_InputField>();
+
+    //Left Image UI Elements
+    [Header("Left Image UI children")]
+    //Venue elements
+    public TMP_InputField ObjectNameInputField;
+    public TMP_InputField InfectionRiskInputField; //TODO Slider
+                                                 
+    //Household elements
+    public TMP_InputField NumberOfPeopleInputField;
+    public TMP_InputField PercantageOfWorkersInputField; //TODO Slider
+    public TMP_InputField CarefulnessInputField; //TODO Slider
+    //Workplace elements
+    public TMP_Dropdown WorkplaceTypeDropdown;
+    public TMP_InputField WorkerCapacityInputField;
+    //Hospital elements
+    public TMP_Dropdown HospitalScaleDropdown;
+    public TMP_Dropdown WorkerAvailabilityDropdown;
+    
+    //inputfields and dropdowns of left image
+    private List<TMP_InputField> _leftInputFields; //TODO PRIVATE
+    private List<TMP_Dropdown> _leftDropDowns;
+
+    [Header("References to manager(s)")]
+    //Will be replaced
+    [SerializeField] private EditorObjectsManager editorObjectsManager;
+
+
 
     private void Awake()
     {
@@ -56,6 +90,14 @@ public class UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _leftInputFields = new List<TMP_InputField> {ObjectNameInputField,InfectionRiskInputField,NumberOfPeopleInputField,
+          Instance.PercantageOfWorkersInputField,CarefulnessInputField,WorkerCapacityInputField};
+        _leftDropDowns = new List<TMP_Dropdown> {WorkplaceTypeDropdown, HospitalScaleDropdown,WorkerAvailabilityDropdown };
+        //Adding listeners to left UI
+        AddOnChangeListenersToLeftUI();
+
+
+
         buttonList = new List<Button>
         {
             placeWorkplaceButton,
@@ -93,7 +135,6 @@ public class UIController : MonoBehaviour
             ModelSelector.Instance.CurrentPrefabName = PrefabName.None;
         });
 
-        //Assign listeners Chart Toggles
         BarChartToggle.onValueChanged.AddListener(delegate
         {
             SimulationGraphEnabler.SetBarChartActive(BarChartToggle.isOn);
@@ -178,6 +219,8 @@ public class UIController : MonoBehaviour
         HouseholdUI.SetActive(false);
         WorkplaceUI.SetActive(true);
         HospitalUI.SetActive(false);
+        _workplaceTypeDropDownGameObject.SetActive(true);
+        _workplaceTypeTextDownGameObject.SetActive(true);
     }
 
     public void LoadHospitalUI()
@@ -186,6 +229,8 @@ public class UIController : MonoBehaviour
         HouseholdUI.SetActive(false);
         WorkplaceUI.SetActive(true);
         HospitalUI.SetActive(true);
+        _workplaceTypeDropDownGameObject.SetActive(false);
+        _workplaceTypeTextDownGameObject.SetActive(false);
     }
 
     public void LoadHouseholdUI()
@@ -202,13 +247,33 @@ public class UIController : MonoBehaviour
     /// <param name="isSelected"></param>
     public void IsEntitySelectedUI(bool isSelected)
     {
-        SaveAndDeleteUI.SetActive(isSelected);
+        DeleteEntityGameObject.SetActive(isSelected);
         if (!isSelected)
         {
             VenueUI.SetActive(false);
             HouseholdUI.SetActive(false);
             WorkplaceUI.SetActive(false);
             HospitalUI.SetActive(false);
+        }
+    }
+
+ 
+
+    /// <summary>
+    /// Method to add on change listeners for better usability.
+    /// </summary>
+    private void AddOnChangeListenersToLeftUI()
+    {
+        //Adding on change listeners 
+        //Debug.Log("Adding listeners: " + UIController.Instance._inputFields.Count);
+        foreach (TMP_InputField inputField in _leftInputFields)
+        {
+            inputField.onValueChanged.AddListener(delegate { editorObjectsManager.SaveToEntity(); });
+        }
+
+        foreach (TMP_Dropdown dropdown in _leftDropDowns)
+        {
+            dropdown.onValueChanged.AddListener(delegate { editorObjectsManager.SaveToEntity(); });
         }
     }
 }
