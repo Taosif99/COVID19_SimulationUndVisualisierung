@@ -45,8 +45,8 @@ namespace Simulation.Runtime
                     {
 
                         new WorkShift(this, WeekDays.All, 0, 8),
-                        new Workshift(this, WeekDays.All, 8, 8),
-                        new Workshift(this, WeekDays.All, 16, 8)
+                        new WorkShift(this, WeekDays.All, 8, 8),
+                        new WorkShift(this, WeekDays.All, 16, 8)
                         
 
                     };
