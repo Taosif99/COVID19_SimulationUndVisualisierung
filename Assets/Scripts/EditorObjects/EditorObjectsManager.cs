@@ -177,68 +177,63 @@ namespace EditorObjects
         //TODO UI Name must be unique !
         /// <summary>
         /// 
-        /// Method which saves changes (currently) to editor
-        /// objects 
+        /// Method which saves changes  to editor
+        /// objects. The enums are parsed with the Enum.Parse()
+        /// method which may cause an exception if something goes wrong.
         /// 
         /// TODO Load save values to runtime entity
         /// Enum parsing looks ugly
         /// </summary>
         public void SaveToEntity()
         {
-            try
+    
+                float infectionRisk = 0f;
+                int capacity = 0;
+                byte numberOfPeople = 0;
+                float carefulness = 0f;
+                float percentageOfWorkers = 0f;
+                bool inputIsOkay = TryParseInputFields(ref infectionRisk, ref capacity, ref numberOfPeople, ref carefulness, ref percentageOfWorkers);
+            if (_currentSelectedEntity != null && inputIsOkay)
             {
-
-                if (_currentSelectedEntity != null && InputOk())
+                IEditorObject editorObject = _editorObjectsDic[_currentSelectedEntity.Position];
+                if (editorObject != null)
                 {
-                    IEditorObject editorObject = _editorObjectsDic[_currentSelectedEntity.Position];
-                    if (editorObject != null)
+                    //Remove old and add new one
+                    editorObject.UIName = ObjectNameInputField.text;
+                    //_usedUiNames.Remove(_currentEditorObjectUIName);
+                    //_usedUiNames.Add(editorObject.UIName);
+                    //_currentEditorObjectUIName = editorObject.UIName;
+                    if (_currentSelectedEntity is Venue)
                     {
-
-                        //Remove old and add new one
-                        editorObject.UIName = ObjectNameInputField.text;
-                        //_usedUiNames.Remove(_currentEditorObjectUIName);
-                        //_usedUiNames.Add(editorObject.UIName);
-                        //_currentEditorObjectUIName = editorObject.UIName;
-                        if (_currentSelectedEntity is Venue)
+                        Venue venue = (Venue)_currentSelectedEntity;
+                        venue.InfectionRisk = infectionRisk;
+                        if (_currentSelectedEntity is Workplace)
                         {
+                            Workplace workplace = (Workplace)_currentSelectedEntity;
+                            WorkplaceType workplaceType = (WorkplaceType)Enum.Parse(typeof(WorkplaceType), WorkplaceTypeDropdown.options[WorkplaceTypeDropdown.value].text);
+                            workplace.WorkerCapacity = capacity;
+                            workplace.Type = workplaceType;
 
-                            Venue venue = (Venue)_currentSelectedEntity;
-                            venue.InfectionRisk = float.Parse(InfectionRiskInputField.text);
-                            if (_currentSelectedEntity is Workplace)
+                            if (_currentSelectedEntity is Hospital)
                             {
-                                Workplace workplace = (Workplace)_currentSelectedEntity;
-                                WorkplaceType workplaceType = (WorkplaceType)Enum.Parse(typeof(WorkplaceType), WorkplaceTypeDropdown.options[WorkplaceTypeDropdown.value].text);
-
-                                int capacity = int.Parse(CapacityInputField.text);
-                                workplace.WorkerCapacity = capacity;
-                                workplace.Type = workplaceType;
-
-                                if (_currentSelectedEntity is Hospital)
-                                {
-                                    Hospital hospital = (Hospital)_currentSelectedEntity;
-                                    HospitalScale hospitalScale = (HospitalScale)Enum.Parse(typeof(HospitalScale), HospitalScaleDropdown.options[HospitalScaleDropdown.value].text);
-                                    WorkerAvailability workerAvailability = (WorkerAvailability)Enum.Parse(typeof(WorkerAvailability), WorkerAvailabilityDropdown.options[WorkerAvailabilityDropdown.value].text);
-                                    hospital.Scale = hospitalScale;
-                                    hospital.WorkerAvailability = workerAvailability;
-                                }
-
+                                Hospital hospital = (Hospital)_currentSelectedEntity;
+                                HospitalScale hospitalScale = (HospitalScale)Enum.Parse(typeof(HospitalScale), HospitalScaleDropdown.options[HospitalScaleDropdown.value].text);
+                                WorkerAvailability workerAvailability = (WorkerAvailability)Enum.Parse(typeof(WorkerAvailability), WorkerAvailabilityDropdown.options[WorkerAvailabilityDropdown.value].text);
+                                hospital.Scale = hospitalScale;
+                                hospital.WorkerAvailability = workerAvailability;
                             }
-                            else if (_currentSelectedEntity is Household)
-                            {
-                                Household household = (Household)_currentSelectedEntity;
-                                household.NumberOfPeople = byte.Parse(NumberOfPeopleInputField.text);
-                                household.CarefulnessTendency = float.Parse(CarefulnessInputField.text);
-                                household.PercentageOfWorkers = float.Parse(PercantageOfWorkersInputField.text);
-                            }
+
                         }
-
+                        else if (_currentSelectedEntity is Household)
+                        {
+                            Household household = (Household)_currentSelectedEntity;
+                            household.NumberOfPeople = numberOfPeople;
+                            household.CarefulnessTendency = carefulness;
+                            household.PercentageOfWorkers = percentageOfWorkers;
+                        }
                     }
+
                 }
-            }
-            catch (Exception e)
-            {
-                //TODO REMOVE 
-                Debug.Log(e.Message);
             }
         }
 
@@ -373,26 +368,75 @@ namespace EditorObjects
         }
 
 
-        //TODO REFACTOR
-        private bool InputOk()
+        //TODO InputHandler Class
+        /// <summary>
+        /// Method which parses al inputfields in the simulation scene and which checks for correct value ranges.
+        /// </summary>
+        /// <param name="infectionRisk"></param>
+        /// <param name="capacity"></param>
+        /// <param name="numberOfPeople"></param>
+        /// <param name="carefulness"></param>
+        /// <param name="percentageOfWorkers"></param>
+        /// <returns>true if all requiered inputfields can be parsed to correct values, else false</returns>
+        private bool TryParseInputFields(ref float infectionRisk, ref int capacity, ref byte numberOfPeople, ref float carefulness, ref float percentageOfWorkers)
         {
-
+            bool inputIsValid = true;
             if (ObjectNameInputField.text.Equals("")) return false;
             if (_currentSelectedEntity is Venue)
             {
-                if (InfectionRiskInputField.text.Equals("")) return false; //TODO ROUND VALUES
+                bool infectionRiskIsValid = float.TryParse(InfectionRiskInputField.text, out infectionRisk) && IsValidPercentage(infectionRisk);
+                SetInputFieldColor(InfectionRiskInputField, infectionRiskIsValid);
+                inputIsValid = inputIsValid && infectionRiskIsValid;
+      
                 if (_currentSelectedEntity is Workplace)
                 {
-                    if (CapacityInputField.text.Equals("")) return false;
+                    bool capacityIsValid = int.TryParse(CapacityInputField.text, out capacity) && capacity >= 0;
+                    SetInputFieldColor(CapacityInputField, capacityIsValid);
+                    inputIsValid = inputIsValid && capacityIsValid;
                 }
                 else if (_currentSelectedEntity is Household)
                 {
-                    if (NumberOfPeopleInputField.text.Equals("")) return false;
-                    if (CarefulnessInputField.text.Equals("")) return false;
-                    if (PercantageOfWorkersInputField.text.Equals("")) return false;
+                    bool numberOfPeopleIsValid = byte.TryParse(NumberOfPeopleInputField.text, out numberOfPeople);
+                    bool carefulnessIsValid = float.TryParse(CarefulnessInputField.text, out carefulness) && IsValidPercentage(carefulness);
+                    bool percantageOfWorkersIsValid = float.TryParse(PercantageOfWorkersInputField.text, out percentageOfWorkers) && IsValidPercentage(percentageOfWorkers);
+                    SetInputFieldColor(NumberOfPeopleInputField, numberOfPeopleIsValid);
+                    SetInputFieldColor(CarefulnessInputField, carefulnessIsValid);
+                    SetInputFieldColor(PercantageOfWorkersInputField, percantageOfWorkersIsValid);
+                    inputIsValid = inputIsValid && numberOfPeopleIsValid;
+                    inputIsValid = inputIsValid && carefulnessIsValid;
+                    inputIsValid = inputIsValid && percantageOfWorkersIsValid;
+
                 }
             }
-            return true;
+
+            return inputIsValid;
+        }
+        /// <summary>
+        /// Method to set the color of an inputfield depending if its content 
+        /// can be parsed.
+        /// </summary>
+        /// <param name="inputField"></param>
+        /// <param name="contentIsCorrect"></param>
+        private void SetInputFieldColor(TMP_InputField inputField, bool contentIsCorrect) 
+        {
+            if (!contentIsCorrect)
+            {
+               inputField.image.color = Color.red;
+            }
+            else
+            {
+               inputField.image.color = Color.white;
+            }
+        }
+
+        /// <summary>
+        /// Method to make sure that percentage values are in decimal format.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private bool IsValidPercentage(float value)
+        {
+            return value >= 0f && value <= 1f;
         }
 
 
