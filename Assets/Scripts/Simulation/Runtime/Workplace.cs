@@ -31,8 +31,8 @@ namespace Simulation.Runtime
                 case WorkplaceType.Store:
                     return new List<WorkShift>
                     {
-                        new WorkShift(this, WeekDays.WorkDays| WeekDays.Saturday, 8, 8),
-                        new WorkShift(this, WeekDays.WorkDays| WeekDays.Saturday, 12, 8)
+                        new WorkShift(this, WeekDays.WorkDays | WeekDays.Saturday, 8, 8),
+                        new WorkShift(this, WeekDays.WorkDays | WeekDays.Saturday, 12, 8)
                     };
 
 
