@@ -77,19 +77,18 @@ namespace Simulation.Runtime
                         if (daysSinceInfection > _infectionStateDuration)
                         {
                             InfectionState = InfectionStates.Phase2;
-                            _infectionStateDuration = Random.Range(InfectionStateDays.InfectiousMinDay, InfectionStateDays.InfectiousMaxDay);
+                            _infectionStateDuration = Random.Range(InfectionStateParameters.InfectiousMinDay, InfectionStateParameters.InfectiousMaxDay);
                             stateTransition = true;
                         }
-
+                       
                         break;
 
                     case InfectionStates.Phase2:
                         if (daysSinceInfection > _infectionStateDuration)
                         {
                             InfectionState = InfectionStates.Phase3;
-                            _infectionStateDuration = Random.Range(InfectionStateDays.SymptomsMinDay, InfectionStateDays.SymptomsMaxDay);
+                            _infectionStateDuration = Random.Range(InfectionStateParameters.SymptomsMinDay, InfectionStateParameters.SymptomsMaxDay);
                             stateTransition = true;
-
                         }
 
                         break;
@@ -98,7 +97,7 @@ namespace Simulation.Runtime
                         if (daysSinceInfection > _infectionStateDuration)
                         {
                             InfectionState = InfectionStates.Phase4;
-                            _infectionStateDuration = Random.Range(InfectionStateDays.RecoveringMinDay, InfectionStateDays.RecoveringMaxDay);
+                            _infectionStateDuration = Random.Range(InfectionStateParameters.RecoveringMinDay, InfectionStateParameters.RecoveringMaxDay);
                             stateTransition = true;
 
                         }
@@ -116,7 +115,6 @@ namespace Simulation.Runtime
                         }
 
                         break;
-
 
                     case InfectionStates.Phase5:
                         break;
@@ -160,24 +158,18 @@ namespace Simulation.Runtime
             return null;
         }
 
-        /*
-         * Get the physical Condition of a person.
-         * 
-        */
+        /// <summary>
+        /// Returns the physical conditon of the person.
+        /// </summary>
+        /// <returns></returns>
         public PhysicalCondition GetPhysicalCondition()
         {
             return _physicalCondition;
         }
 
-        /*
-         * Defines whether the person dies based on the physical state set.
-         *  ,,Das Sterberisiko steigt bei den meisten Vorerkrankungen um bis zu 87 Prozent."
-         *  Source: https://www.quarks.de/gesundheit/medizin/wie-viele-menschen-sterben-an-corona/ ,
-         * 
-         * ,,Insgesamt sind 2,6% aller Personen, für die bestätigte SARS-CoV-2-Infektionen in Deutschland übermittelt wurden, im Zusammenhang mit einer COVID-19-Erkrankung verstorben."
-         * Source: 
-         * https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html;jsessionid=9380EA03621C1ECA856E7B2B4D5A9E4A.internet062?nn=13490888#doc13776792bodyText13
-         */
+        /// <summary>
+        /// Update the health state of the person. 
+        /// </summary>
         public void UpdateHealthState()
         {
             if (InfectionState.HasFlag(InfectionStates.Symptoms) & _isDead == false)
@@ -186,12 +178,12 @@ namespace Simulation.Runtime
 
                 if (_physicalCondition.Equals(PhysicalCondition.Healthy))
                 {
-                    if (surviveProbability <= 0.026f)
+                    if (surviveProbability <= InfectionStateParameters.FatalityRate)
                         _isDead = true;
                 }
                 else
                 {
-                    if (surviveProbability <= 0.87f)
+                    if (surviveProbability <= InfectionStateParameters.FatalityRatePreIllness)
                         _isDead = true;
                 }
             }
@@ -201,7 +193,7 @@ namespace Simulation.Runtime
         {
             InfectionState = InfectionStates.Infected;
             _infectionDate = infectionDate;
-            _infectionStateDuration = Random.Range(InfectionStateDays.IncubationMinDay, InfectionStateDays.IncubationMaxDay);
+            _infectionStateDuration = Random.Range(InfectionStateParameters.IncubationMinDay, InfectionStateParameters.IncubationMaxDay);
         }
     }
 }
