@@ -34,24 +34,24 @@ namespace EditorObjects
         //public Text ObjectNameText;
         //Venue elements
         public TMP_InputField ObjectNameInputField;
-        public TMP_InputField InfectionRiskInputField;
+        public TMP_InputField InfectionRiskInputField; //TODO Slider
         //public InputField CurrentPeopleAtVenueInputField; //Use Text or label later, remove from ui
         //Household elements
         public TMP_InputField NumberOfPeopleInputField;
-        public TMP_InputField PercantageOfWorkersInputField;
-        public TMP_InputField CarefulnessInputField;
+        public TMP_InputField PercantageOfWorkersInputField; //TODO Slider
+        public TMP_InputField CarefulnessInputField; //TODO Slider
         //Workplace elements
-        public Dropdown WorkplaceTypeDropdown;
+        public TMP_Dropdown WorkplaceTypeDropdown;
         public TMP_InputField CapacityInputField;
         //Hospital elements
-        public Dropdown HospitalScaleDropdown;
-        public Dropdown WorkerAvailabilityDropdown;
+        public TMP_Dropdown HospitalScaleDropdown;
+        public TMP_Dropdown WorkerAvailabilityDropdown;
         //private HashSet<string> _usedUiNames = new HashSet<string>(); //TODO DIALOG BOX WHEN NAME USED TWICE
         //private string _currentEditorObjectUIName = "";
 
 
         private List<TMP_InputField> _inputFields;
-        private List<Dropdown> _dropDowns;
+        private List<TMP_Dropdown> _dropDowns;
         #endregion
 
 
@@ -361,7 +361,7 @@ namespace EditorObjects
                 inputField.onValueChanged.AddListener(delegate { SaveToEntity(); });
             }
 
-            foreach (Dropdown dropdown in _dropDowns)
+            foreach (TMP_Dropdown dropdown in _dropDowns)
             {
                 dropdown.onValueChanged.AddListener(delegate { SaveToEntity(); });
             }
@@ -446,7 +446,7 @@ namespace EditorObjects
 
             _inputFields = new List<TMP_InputField> {ObjectNameInputField,InfectionRiskInputField,NumberOfPeopleInputField,
             PercantageOfWorkersInputField,CarefulnessInputField,CapacityInputField};
-            _dropDowns = new List<Dropdown> { WorkplaceTypeDropdown, HospitalScaleDropdown, WorkerAvailabilityDropdown };
+            _dropDowns = new List<TMP_Dropdown> { WorkplaceTypeDropdown, HospitalScaleDropdown, WorkerAvailabilityDropdown };
 
             SimulationGridManager.OnEditorObjectClicked += LoadEditorObjectUI;
             AddOnChangeListenersToUI();

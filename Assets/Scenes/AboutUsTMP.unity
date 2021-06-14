@@ -293,8 +293,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 606.83, y: -0.0013103}
-  m_SizeDelta: {x: 23.873, y: 360.63}
+  m_AnchoredPosition: {x: 606.83, y: 0.000084877014}
+  m_SizeDelta: {x: 23.873, y: 413.95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &265556633
 MonoBehaviour:
@@ -339,8 +339,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 778560448}
   m_HandleRect: {fileID: 778560447}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.3982555
+  m_Value: 1.0000001
+  m_Size: 0.45713457
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1137,8 +1137,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000031007, y: -24}
-  m_SizeDelta: {x: 1250.7994, y: 360.6294}
+  m_AnchoredPosition: {x: 0.000031007, y: 2.6581}
+  m_SizeDelta: {x: 1250.7994, y: 413.9457}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1713929387
 MonoBehaviour:
@@ -1185,7 +1185,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1713929385}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
@@ -1404,7 +1404,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000037749, y: -272.4466}
+  m_AnchoredPosition: {x: 0.000037749, y: -245.78842}
   m_SizeDelta: {x: 1189.7834, y: 905.5225}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1852758319
@@ -1431,19 +1431,21 @@ MonoBehaviour:
     who designed a simple CoViD19 simulation as part of a university project. Our
     goal is to offer users a way to start a CoViD19 simulation without having a lot
     of specialist knowledge.\r\n\r\nIn the simulation it is possible to place and
-    remove venues. The venues have properties which you can define yourself. \nYou
-    can also save the simulation so that you have to set everything again when you
-    restart the program.\nWe have an option to display graphs.\n<color=red>\n- wie
-    werden die Arbeitspl\xE4tze verwaltet\r\n- Haushalt\r\n- Wie k\xF6nnen sich die
-    Personen infizieren?\r\n- Man kann die Simulation auch abspeichern, sodass man
-    beim neustarten des Programms alles nochmal neu einstellen muss.\r\n- Wir haben
-    eine Option Graphen anzeigen zulassen. Aus dem Graph kann man ... rauslesen und
-    es ist m\xF6glich die Graphenvariante zu ver\xE4ndern.\r\n\r</color>\nWhen infected,
-    the person goes through the following stages if the person does not die.\nCourse
-    of disease:\nPhase 1: The person is infected.\r\nPhase 2: The person is infected
-    and is infectious.\r\nPhase 3: The person is infected, infectious and has symptoms.\r\nPhase
-    4: The person is  infected, has symptoms and is starting with recovery.\r\nPhase
-    5: The person is recovered.\r\n\r\nWe used the following sources for our research:\r\n\r\nhttps://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html;jsessionid=4F9C8FBD1A6B20D6B25BDFC1EBCC726B.internet082?nn=13490888#doc13776792bodyText5\r\n\nhttps://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/\r"
+    remove venues. The venues have properties which you can define yourself. Above
+    venue there is an indication of how many are healthy (green), infected (orange)
+    and infectious (red).\nYou can also save the simulation so that you have to set
+    everything again when you restart the program.\nWe have an option to display
+    graphs.\n<color=red>\n- wie werden die Arbeitspl\xE4tze verwaltet\r\n- Haushalt\r\n-
+    Wie k\xF6nnen sich die Personen infizieren?\r\n- Man kann die Simulation auch
+    abspeichern, sodass man beim neustarten des Programms alles nochmal neu einstellen
+    muss.\r\n- Wir haben eine Option Graphen anzeigen zulassen. Aus dem Graph kann
+    man ... rauslesen und es ist m\xF6glich die Graphenvariante zu ver\xE4ndern.\r\n\r</color>\nWhen
+    infected, the person goes through the following stages if the person does not
+    die.\nCourse of disease:\nPhase 1: The person is infected.\r\nPhase 2: The person
+    is infected and is infectious.\r\nPhase 3: The person is infected, infectious
+    and has symptoms.\r\nPhase 4: The person is  infected, has symptoms and is starting
+    with recovery.\r\nPhase 5: The person is recovered.\r\n\r\nWe used the following
+    sources for our research:\r\n\r\nhttps://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html;jsessionid=4F9C8FBD1A6B20D6B25BDFC1EBCC726B.internet082?nn=13490888#doc13776792bodyText5\r\n\nhttps://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/\r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
