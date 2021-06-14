@@ -19,38 +19,33 @@ namespace Simulation.Runtime
 
         private List<WorkShift> CreateWorkShifts()
         {
-            //throw new NotImplementedException();
-             switch (Type)
+            switch (Type)
             {
-                case Type.Other:
-
+                case WorkplaceType.Other:
                     return new List<WorkShift>
                     {
-      
                         new WorkShift(this, WeekDays.WorkDays, 8, 8)
                     };
 
 
-                case Type.Store:
+                case WorkplaceType.Store:
                     return new List<WorkShift>
                     {
                         new WorkShift(this, WeekDays.WorkDays| WeekDays.Saturday, 8, 8),
                         new WorkShift(this, WeekDays.WorkDays| WeekDays.Saturday, 12, 8)
-
                     };
 
 
-                 case Type.Hospital:
+                 case WorkplaceType.Hospital:
                     return new List<WorkShift>
                     {
-
                         new WorkShift(this, WeekDays.All, 0, 8),
                         new WorkShift(this, WeekDays.All, 8, 8),
                         new WorkShift(this, WeekDays.All, 16, 8)
-                        
-
                     };
             }
+
+            throw new NotSupportedException($"Workplace Type {Type} is currently not supported");
         }
     }
 }
