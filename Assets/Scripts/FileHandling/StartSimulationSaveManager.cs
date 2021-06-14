@@ -49,6 +49,8 @@ namespace FileHandling
         void Start()
         {
             //SpawnButtonItemTest();
+            
+            
             FileHandler.SelectedFileName = null;
             LoadSimulationButtons();
         }
@@ -163,7 +165,7 @@ namespace FileHandling
         private void SpawnButtonItemTest()
         {
             string mockName = "simulation";
-            int amountButtons = 5;
+            int amountButtons = 100;
             //yPositionPanelChange = amountButtons * 1.5f; //Quick fix to make sure that it works always
             float yButtonPositionDifference = 0f;
             float yPanelDownGrowth = 0f;
