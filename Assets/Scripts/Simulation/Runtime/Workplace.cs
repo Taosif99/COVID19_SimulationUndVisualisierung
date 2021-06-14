@@ -20,10 +20,37 @@ namespace Simulation.Runtime
         private List<WorkShift> CreateWorkShifts()
         {
             //throw new NotImplementedException();
-            return new List<WorkShift>
+             switch (Type)
             {
-                new WorkShift(this, WeekDays.WorkDays, 9, 8)
-            };
+                case Type.Other:
+
+                    return new List<WorkShift>
+                    {
+      
+                        new WorkShift(this, WeekDays.WorkDays, 8, 8)
+                    };
+
+
+                case Type.Store:
+                    return new List<WorkShift>
+                    {
+                        new WorkShift(this, WeekDays.WorkDays| WeekDays.Saturday, 8, 8),
+                        new WorkShift(this, WeekDays.WorkDays| WeekDays.Saturday, 12, 8)
+
+                    };
+
+
+                 case Type.Hospital:
+                    return new List<WorkShift>
+                    {
+
+                        new WorkShift(this, WeekDays.All, 0, 8),
+                        new WorkShift(this, WeekDays.All, 8, 8),
+                        new WorkShift(this, WeekDays.All, 16, 8)
+                        
+
+                    };
+            }
         }
     }
 }
