@@ -44,7 +44,7 @@ namespace Simulation.Runtime
             Phase1 = Infected,
             Phase2 = Infected | Infectious,
             Phase3 = Infected | Infectious | Symptoms,
-            Phase4 = Symptoms | Recovering,
+            Phase4 = Infected | Symptoms | Recovering,
             Phase5 = Recovered
 
         }
@@ -55,13 +55,12 @@ namespace Simulation.Runtime
             PreIllness
         }
 
-        /* 
-         * Calculates the difference between the current date and the infection date in days.
-         * The difference determines in which infection states the person is. 
-         * The infection status is stored in the attribute public InfectionStates _infectionStates.
-         *
-         */
-
+        /// <summary>
+        /// Calculates the difference between the current date and the infection date in days.
+        /// The difference determines in which infection states the person is. 
+        /// The infection status is stored in the attribute public InfectionStates _infectionStates.
+        /// </summary>
+        /// <param name="currentDate">Current simulations date</param>
         public void UpdateInfectionState(DateTime currentDate)
         {
             int currentDay = currentDate.Day;
@@ -173,10 +172,10 @@ namespace Simulation.Runtime
         /*
          * Defines whether the person dies based on the physical state set.
          *  ,,Das Sterberisiko steigt bei den meisten Vorerkrankungen um bis zu 87 Prozent."
-         *  Quelle: https://www.quarks.de/gesundheit/medizin/wie-viele-menschen-sterben-an-corona/ ,
+         *  Source: https://www.quarks.de/gesundheit/medizin/wie-viele-menschen-sterben-an-corona/ ,
          * 
          * ,,Insgesamt sind 2,6% aller Personen, für die bestätigte SARS-CoV-2-Infektionen in Deutschland übermittelt wurden, im Zusammenhang mit einer COVID-19-Erkrankung verstorben."
-         * Quelle: 
+         * Source: 
          * https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html;jsessionid=9380EA03621C1ECA856E7B2B4D5A9E4A.internet062?nn=13490888#doc13776792bodyText13
          */
         public void UpdateHealthState()
@@ -186,11 +185,15 @@ namespace Simulation.Runtime
                 float surviveProbability = Random.Range(0f, 1f);
 
                 if (_physicalCondition.Equals(PhysicalCondition.Healthy))
+                {
                     if (surviveProbability <= 0.026f)
                         _isDead = true;
-                    else
+                }
+                else
+                {
                     if (surviveProbability <= 0.87f)
                         _isDead = true;
+                }
             }
         }
 
