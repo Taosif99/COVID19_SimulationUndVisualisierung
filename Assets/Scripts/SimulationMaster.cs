@@ -85,7 +85,7 @@ public class SimulationMaster : MonoBehaviour
     void Update()
     {
         
-        DebugPrintOfCounterValues();
+        //DebugPrintOfCounterValues();
     }
 
     /// <summary>

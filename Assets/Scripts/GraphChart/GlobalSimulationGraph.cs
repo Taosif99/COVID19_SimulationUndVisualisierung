@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 namespace GraphChart
 {
@@ -11,9 +12,14 @@ namespace GraphChart
     public class GlobalSimulationGraph : MonoBehaviour
     {
 
-
+        [SerializeField] private GameObject _fullScreenGraphGameObject;
+        
         [SerializeField] private GraphChart _multiLineGraph;
         [SerializeField] private GraphChart _barchart;
+        
+
+        [SerializeField] private GameObject _multiLineGraphGameObject;
+        [SerializeField] private GameObject _barchartGameObject;
 
 
         //Multiline
@@ -27,6 +33,16 @@ namespace GraphChart
         private bool _barChartCreated = false;
 
         public static GlobalSimulationGraph Instance;
+
+        /*
+        public GraphChart MultiLineGraph { get => _multiLineGraph; set => _multiLineGraph = value; }
+        public GraphChart Barchart { get => _barchart; set => _barchart = value; }
+        */
+
+        public bool BarChartCreated { get => _barChartCreated; set => _barChartCreated = value; }
+        public GameObject MultiLineGraphGameObject { get => _multiLineGraphGameObject; set => _multiLineGraphGameObject = value; }
+        public GameObject BarchartGameObject { get => _barchartGameObject; set => _barchartGameObject = value; }
+
         private void Awake()
         {
             //if (Instance == null) Instance = this;
@@ -48,11 +64,11 @@ namespace GraphChart
         // Start is called before the first frame update
         void Start()
         {
+
+
             InitMultiLineGraph();
             InitBarChart();
             StartCoroutine(UpdateGraphsEachDay());
-
-
         }
 
         private void InitMultiLineGraph()
@@ -114,7 +130,8 @@ namespace GraphChart
 
             };
 
-            _barchart.TypeOfGraph = GraphChart.GraphType.BarChart;
+            //Barchart.TypeOfGraph = GraphChart.GraphType.BarChart;
+            BarchartGameObject.GetComponent<GraphChart>().TypeOfGraph = GraphChart.GraphType.BarChart;
         }
 
 
@@ -142,48 +159,70 @@ namespace GraphChart
         }
 
 
-        private void UpdateBarChart()
+        private void UpdateBarChartValues()
         {
-            
 
-            _barchart.UpdateValue(0, SimulationMaster.Instance.AmountInfected);
-            _barchart.UpdateValue(1, SimulationMaster.Instance.AmountRecovered);
-            _barchart.UpdateValue(2, SimulationMaster.Instance.AmountUninfected);
-          
-       
+            /*
+             * FIXME UPDATE CAUSES NULL POINTER EXCEPTION
+            Barchart.UpdateValue(0, SimulationMaster.Instance.AmountInfected);
+            Barchart.UpdateValue(1, SimulationMaster.Instance.AmountRecovered);
+            Barchart.UpdateValue(2, SimulationMaster.Instance.AmountUninfected);
+          */
+            _barchartValues[0] = SimulationMaster.Instance.AmountInfected;
+            _barchartValues[1] = SimulationMaster.Instance.AmountRecovered;
+            _barchartValues[2] = SimulationMaster.Instance.AmountUninfected;
         }
-
-        private void UpdateValuesAndShowGraphs()
+        /// <summary>
+        /// Method to show the active graphs and eventually to update the values.
+        /// </summary>
+        /// <param name="shouldUpdateValues">If the infection values should be updated, e.g. after a day, a week...</param>
+        public void UpdateValuesAndShowGraphs(bool shouldUpdateValues)
         {
 
 
 
             // UpdateGraph();
-            if (!_barChartCreated && _barchart.isActiveAndEnabled)
+            /*
+            if (!BarChartCreated && Barchart.isActiveAndEnabled)
             {
-                _barchart.ShowGraph(_barchartValues, _xLabelBarChart);
-                _barChartCreated = true;
+                Barchart.ShowGraph(_barchartValues, _xLabelBarChart);
+                BarChartCreated = true;
 
             }
 
-            if (_barChartCreated && _barchart.isActiveAndEnabled)
+            if (BarChartCreated && Barchart.isActiveAndEnabled)
             {
 
                 UpdateBarChart();
 
-            }
-
-         
-            UpdateLineGraphValues();
-            if (_multiLineGraph.isActiveAndEnabled)
+            }*/
+            //if (Barchart.isActiveAndEnabled)
+            if (BarchartGameObject.activeInHierarchy)
             {
-               
-                _multiLineGraph.ShowMultiLineGraph(_lines, _colorList, _xLabelMultilineGraph);
+
+                if (shouldUpdateValues)
+                    UpdateBarChartValues();
+
+                //Barchart.ShowGraph(_barchartValues, _xLabelBarChart);
+                BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _xLabelBarChart);
+
             }
+   
+
+            if(shouldUpdateValues)
+                UpdateLineGraphValues();
+            //if (MultiLineGraph.isActiveAndEnabled)
+            if (MultiLineGraphGameObject.activeInHierarchy)
+            {
+
+                // MultiLineGraph.ShowMultiLineGraph(_lines, _colorList, _xLabelMultilineGraph);
+                MultiLineGraphGameObject.GetComponent<GraphChart>().ShowMultiLineGraph(_lines, _colorList, _xLabelMultilineGraph);
+            }
+           
 
         }
 
-
+        //TODO USING ACTION FROM SIMULATION CONTROLLER ???
         private IEnumerator UpdateGraphsEachDay()
         {
             for (; ; )
@@ -191,12 +230,8 @@ namespace GraphChart
                 //A day takes approx. 8 seconds
                 //TODO CALCULATE DAY LENGTH VIA CODE         
                 yield return new WaitForSeconds(8f);
-                UpdateValuesAndShowGraphs();
-
+                UpdateValuesAndShowGraphs(true);
             }
         }
-
-
-
     }
 }
