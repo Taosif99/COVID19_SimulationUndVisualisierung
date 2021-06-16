@@ -77,12 +77,7 @@ public class SimulationMaster : MonoBehaviour
 
         //TODO rename uninfected to suspicipus or something
         //TODO GET ALL UNINFECRED
-        
-        int amountUninfected = editorObjectsManager.AmountPeople;
-        Debug.Log("Amount uninfected !" + amountUninfected);
-        
-        
-        _infectionStateCounter.Add(Person.InfectionStates.Uninfected, amountUninfected);
+        _infectionStateCounter.Add(Person.InfectionStates.Uninfected, 0);
     
    }
 
@@ -137,7 +132,7 @@ public class SimulationMaster : MonoBehaviour
     }
 
     /// <summary>
-    /// Method which resets the count of the states.
+    /// Method which resets the count of the states. //TODO CALL
     /// </summary>
     public void Reset()
     {
@@ -146,7 +141,8 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter[Person.InfectionStates.Phase3] = 0;
         _infectionStateCounter[Person.InfectionStates.Phase4] = 0;
         _infectionStateCounter[Person.InfectionStates.Phase5] = 0;
-       
+        //_infectionStateCounter[Person.InfectionStates.Uninfected] = ;
+
     }
 
     //Must be called before the simulation starts and after the file is loaded

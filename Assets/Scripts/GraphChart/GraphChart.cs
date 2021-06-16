@@ -204,63 +204,71 @@ namespace GraphChart
         /// <param name="getAxisLabelY">Delegate for the y-axis.</param>
         public void ShowMultiLineGraph(List<List<int>> valueLists, List<Color> colors = null, Func<int, string> getAxisLabelX = null, Func<float, string> getAxisLabelY = null)
         {
-            _typeOfGraph = GraphType.LineGraph;
-            InitializeLabels(getAxisLabelX, getAxisLabelY);
-            //Destroying objects of previous graph
-            foreach (GameObject gameObject in _gameObjectList)
+
+
+            //Do this only if we have some values in the List<List> and not only empty list
+            if (valueLists[0].Count > 0)
             {
-                Destroy(gameObject);
-            }
-            _gameObjectList.Clear();
-            _yLabelList.Clear();
-            _dotsConnectionList.Clear();
-            float yMax, yMin;
-            CalculateYScaleMultiline(out yMin, out yMax, valueLists);
-            //Value list with the most values must be used
-            int maxCount = 0;
-            foreach (List<int> list in valueLists)
-            {
-                if (list.Count > maxCount)
+
+                _typeOfGraph = GraphType.LineGraph;
+                InitializeLabels(getAxisLabelX, getAxisLabelY);
+                //Destroying objects of previous graph
+                foreach (GameObject gameObject in _gameObjectList)
                 {
-                    maxCount = list.Count;
+                    Destroy(gameObject);
                 }
-            }
-            float xSize = _graphWidth / (maxCount + 1);
-            int listCounter = 0;
-            //This must be done for each value List
-            foreach (List<int> valueList in valueLists)
-            {
-                GameObject lastDotGameObject = null;
-                Color color;
-                if (colors != null && colors.Count > 0)
+                _gameObjectList.Clear();
+                _yLabelList.Clear();
+                _dotsConnectionList.Clear();
+                float yMax, yMin;
+                CalculateYScaleMultiline(out yMin, out yMax, valueLists);
+                //Value list with the most values must be used
+                int maxCount = 0;
+                foreach (List<int> list in valueLists)
                 {
-                    //Repeat colors modulu clockwise if not enough given
-                    color = colors[listCounter % valueLists.Count];
+                    if (list.Count > maxCount)
+                    {
+                        maxCount = list.Count;
+                    }
                 }
-                else
+                float xSize = _graphWidth / (maxCount + 1);
+                int listCounter = 0;
+                //This must be done for each value List
+                foreach (List<int> valueList in valueLists)
                 {
-                    //White as default color
-                    color = new Color(1, 1, 1, 0.5f);
+                    GameObject lastDotGameObject = null;
+                    Color color;
+                    if (colors != null && colors.Count > 0)
+                    {
+                        //Repeat colors modulu clockwise if not enough given
+                        color = colors[listCounter % valueLists.Count];
+                    }
+                    else
+                    {
+                        //White as default color
+                        color = new Color(1, 1, 1, 0.5f);
+                    }
+
+                    for (int i = 0; i < valueList.Count; i++)
+                    {
+                        float xPosition = xSize + i * xSize;
+                        float yPosition = ((valueList[i] - yMin) / (yMax - yMin)) * _graphHeight;
+                        BuildDotLine(xPosition, yPosition, ref lastDotGameObject, color);
+                    }
+
+                    listCounter++;
+
                 }
 
-                for (int i = 0; i < valueList.Count; i++)
+                for (int i = 0; i < maxCount; i++)
                 {
                     float xPosition = xSize + i * xSize;
-                    float yPosition = ((valueList[i] - yMin) / (yMax - yMin)) * _graphHeight;
-                    BuildDotLine(xPosition, yPosition, ref lastDotGameObject, color);
+                    BuildXLabelsAndDashes(xPosition, i);
                 }
 
-                listCounter++;
+                BuildYLabelsAndDashes(yMin, yMax);
 
             }
-
-            for (int i = 0; i < maxCount; i++)
-            {
-                float xPosition = xSize + i * xSize;
-                BuildXLabelsAndDashes(xPosition, i);
-            }
-
-            BuildYLabelsAndDashes(yMin, yMax);
         }
 
 
