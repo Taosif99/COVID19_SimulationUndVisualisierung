@@ -6,14 +6,14 @@ using System.Linq;
 using System;
 using Simulation;
 using InputValidation;
-using TMPro;
+
 
 namespace EditorObjects
 {
 
     /// <summary>
     /// This class maintains the editor Objects during the Runtime
-    /// I think it would be better to implement a "gameMaster" class to remove Monobehaviour inheritance
+    ///
     /// 
     /// 
     /// Currently working with mock editor objects
@@ -34,12 +34,14 @@ namespace EditorObjects
         private int _workPlaceCounter = 1;
         private int _hospitalCounter = 1;
         private int _householdCounter = 1;
+        private int _amountPeople = 0;
 
         public Entity CurrentSelectedEntity { get => _currentSelectedEntity; set => _currentSelectedEntity = value; }
         public int WorkPlaceCounter { get => _workPlaceCounter; set => _workPlaceCounter = value; }
         public int HospitalCounter { get => _hospitalCounter; set => _hospitalCounter = value; }
         public int HouseholdCounter { get => _householdCounter; set => _householdCounter = value; }
         public Dictionary<GridCell, IEditorObject> EditorObjectsDic { get => _editorObjectsDic; set => _editorObjectsDic = value; }
+        public int AmountPeople { get => _amountPeople; set => _amountPeople = value; }
 
 
 
@@ -78,7 +80,8 @@ namespace EditorObjects
                     break;
             }
             // _usedUiNames.Add(uiName);
-            EditorObjectsDic.Add(gridCell, editorObject);
+    
+            AddEditorObjectToCollection(gridCell, editorObject);
             LoadEditorObjectUI(gridCellPosition);
             return editorObject.EditorGameObject;
         }
@@ -93,7 +96,7 @@ namespace EditorObjects
         {
 
             GridCell gridCell = new GridCell(gridCellPosition.x, gridCellPosition.y);
-            IEditorObject editorObject = EditorObjectsDic[gridCell];
+            IEditorObject editorObject = _editorObjectsDic[gridCell];
             if (editorObject != null)
             {
 
@@ -178,7 +181,7 @@ namespace EditorObjects
                 if (inputIsOkay)
                 {
 
-                    IEditorObject editorObject = EditorObjectsDic[CurrentSelectedEntity.Position];
+                    IEditorObject editorObject = _editorObjectsDic[CurrentSelectedEntity.Position];
                     if (editorObject != null)
                     {
                         //Remove old and add new one
@@ -236,14 +239,14 @@ namespace EditorObjects
         {
             if (CurrentSelectedEntity != null)
             {
-                IEditorObject editorObject = EditorObjectsDic[CurrentSelectedEntity.Position];
+                IEditorObject editorObject = _editorObjectsDic[CurrentSelectedEntity.Position];
                 if (editorObject != null)
                 {
                     //Destroy the gameObject in the scene
                     GameObject gameObject = editorObject.EditorGameObject;
                     Destroy(gameObject);
                     //_usedUiNames.Remove(editorObject.UIName);
-                    EditorObjectsDic.Remove(CurrentSelectedEntity.Position);
+                    _editorObjectsDic.Remove(CurrentSelectedEntity.Position);
                     CurrentSelectedEntity = null;
                     UIController.Instance.IsEntitySelectedUI(false);
                 }
@@ -256,8 +259,28 @@ namespace EditorObjects
         /// <returns>A list of all currently placed editor objects</returns>
         public List<IEditorObject> GetAllEditorObjects()
         {
-            return EditorObjectsDic.Values.ToList();
+            return _editorObjectsDic.Values.ToList();
         }
+
+        /// <summary>
+        /// Method to add an editor object to the internal used collection which also counts
+        /// internal simulation properties like the amount of people at the beginning.
+        /// </summary>
+        /// <param name="key">The unique gridcell position of an object in our world.</param>
+        /// <param name="editorObject">The corresponding editorobject which holds the entity.</param>
+        public void AddEditorObjectToCollection(GridCell key, IEditorObject editorObject)
+        {
+
+           _editorObjectsDic.Add(key,editorObject);
+
+            Entity entity = editorObject.EditorEntity;
+            if (entity is Household) 
+            {
+                Household household = (Household)entity;
+                _amountPeople += household.NumberOfPeople;
+            }
+        }
+
 
         // Start is called before the first frame update
         void Start()

@@ -41,7 +41,9 @@ class SimulationController : MonoBehaviour
 
             _controller = new Simulation.Runtime.SimulationController();
             _controller.Initialize(entities);
-        
+
+            SimulationMaster.Instance.StartUninfectedCounting();
+
             _isInitialized = true;    
         }
         else if (_isPaused == true)

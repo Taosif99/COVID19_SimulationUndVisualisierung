@@ -4,6 +4,7 @@ using UnityEngine;
 using Simulation.Runtime;
 using Simulation.Edit;
 using EditorObjects;
+using System;
 
 /// <summary>
 /// Class which handles simulation specific properties and settings.
@@ -18,10 +19,37 @@ public class SimulationMaster : MonoBehaviour
     public static SimulationMaster Instance;
 
 
+
     /// <summary>
     /// Dictionary which is used as global counter to count the infection sates.
     /// </summary>
     private Dictionary<Person.InfectionStates, int> _infectionStateCounter = new Dictionary<Person.InfectionStates, int>();
+
+
+
+    public int AmountInfected
+    {
+        get 
+        {
+          return  _infectionStateCounter[Person.InfectionStates.Phase1];
+        }
+    }
+
+    public int AmountUninfected
+    {
+        get
+        {
+            return _infectionStateCounter[Person.InfectionStates.Uninfected];
+        }
+    }
+
+    public int AmountRecovered
+    {
+        get
+        {
+            return _infectionStateCounter[Person.InfectionStates.Phase5];
+        }
+    }
 
 
 
@@ -49,27 +77,35 @@ public class SimulationMaster : MonoBehaviour
 
         //TODO rename uninfected to suspicipus or something
         //TODO GET ALL UNINFECRED
-        int amountUninfected = CountAmountPeopleUninfected();
+        
+        int amountUninfected = editorObjectsManager.AmountPeople;
+        Debug.Log("Amount uninfected !" + amountUninfected);
+        
+        
         _infectionStateCounter.Add(Person.InfectionStates.Uninfected, amountUninfected);
-    }
+    
+   }
 
     // Update is called once per frame
     void Update()
     {
-        //DebugPrintOfCounterValues();
+        
+        DebugPrintOfCounterValues();
     }
 
     /// <summary>
     /// Method which handles the counting of infection states if a state transition happens.
     /// </summary>
     /// <param name="infectionState">The new state after transition.</param>
-    public void AddToGlobalCounter(Person.InfectionStates infectionState)
+    public void AddToGlobalCounter(Person.StateTransitionEventArgs eventArgs)
     {
+        Person.InfectionStates infectionState = eventArgs.newInfectionState;
 
         switch (infectionState)
         {
             case Person.InfectionStates.Phase1:
                 _infectionStateCounter[Person.InfectionStates.Phase1] += 1;
+                //Decreasing amount uninfected
                 if(_infectionStateCounter[Person.InfectionStates.Uninfected] > 0)
                 _infectionStateCounter[Person.InfectionStates.Uninfected] -= 1; //suceptible
                 break;
@@ -84,7 +120,7 @@ public class SimulationMaster : MonoBehaviour
 
             case Person.InfectionStates.Phase4:
 
-                _infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
+                //_infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase2] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase3] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase4] += 1;
@@ -92,6 +128,7 @@ public class SimulationMaster : MonoBehaviour
 
 
             case Person.InfectionStates.Phase5:
+                _infectionStateCounter[Person.InfectionStates.Phase1] -= 1; //added
                 _infectionStateCounter[Person.InfectionStates.Phase4] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase5] += 1;
                 break;
@@ -109,61 +146,29 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter[Person.InfectionStates.Phase3] = 0;
         _infectionStateCounter[Person.InfectionStates.Phase4] = 0;
         _infectionStateCounter[Person.InfectionStates.Phase5] = 0;
-        _infectionStateCounter[Person.InfectionStates.Uninfected] = CountAmountPeopleUninfected();
+       
     }
 
-    //TODO MAKE EFFICIENT IN EDITOR OBJECTS MANAGER
-    private int CountAmountPeopleUninfected()
+    //Must be called before the simulation starts and after the file is loaded
+    public void StartUninfectedCounting()
     {
-        List<IEditorObject> editorObjects = editorObjectsManager.GetAllEditorObjects();
-        int amountPeople = 0;
-
-        //TODO BETTER COUNTING, probably while creating editor objects
-        foreach (IEditorObject editorObject in editorObjects) 
-        {
-            Simulation.Edit.Entity entity = editorObject.EditorEntity;
-            if (entity is Simulation.Edit.Household) 
-            {
-                Simulation.Edit.Household household = (Simulation.Edit.Household)entity;
-                amountPeople += household.NumberOfPeople;
-            }
-        }
-        return amountPeople;
+        _infectionStateCounter[Person.InfectionStates.Uninfected] = editorObjectsManager.AmountPeople;
     }
 
 
-    //TODO PROPERTIES
-    public int GetAmountInfected()
-    {
-        return _infectionStateCounter[Person.InfectionStates.Phase1];
-    }
-
-    public int GetAmountUninfected()
-    {
-        return _infectionStateCounter[Person.InfectionStates.Uninfected];
-    }
-
-    public int GetAmountRecovered()
-    {
-
-        return _infectionStateCounter[Person.InfectionStates.Phase5];
-
-    }
 
 
 
     private void DebugPrintOfCounterValues()
     {
 
-        string debugText = $"<color=yellow>Amount Infected/Phase 1: {   _infectionStateCounter[Person.InfectionStates.Phase1] } </color>" +
-            $"<color=red> Amount phase 2:{   _infectionStateCounter[Person.InfectionStates.Phase2] } </color>" +
-            $"<color=brown> Amount phase 3:{   _infectionStateCounter[Person.InfectionStates.Phase3] } </color>" +
-            $"<color=chocolate>Amount phase 4:{   _infectionStateCounter[Person.InfectionStates.Phase4] } </color>" +
-            $"<color=chartreuse>Amount phase 5:{   _infectionStateCounter[Person.InfectionStates.Phase5] }</color>" +
-            $"<color=chartreuse>Amount uninfected:{_infectionStateCounter[Person.InfectionStates.Uninfected] }</color>";
+        string debugText = $"<color=yellow>Infected/Phase 1: {   _infectionStateCounter[Person.InfectionStates.Phase1] } </color>" +
+            $"<color=red> Infected,Infectious/Phase 2:{   _infectionStateCounter[Person.InfectionStates.Phase2] } </color>" +
+            $"<color=brown> Infected,Infectious,Symptoms/Phase 3:{   _infectionStateCounter[Person.InfectionStates.Phase3] } </color>" +
+            $"<color=LightGreen>Infected,Symptoms,Recovering/Phase 4:{   _infectionStateCounter[Person.InfectionStates.Phase4] } </color>" +
+            $"<color=green>Amount Recovered/Phase 5:{   _infectionStateCounter[Person.InfectionStates.Phase5] }</color>" +
+            $"<color=gray>Amount uninfected:{_infectionStateCounter[Person.InfectionStates.Uninfected] }</color>";
         Debug.Log(debugText);
     
     }
-
-
 }

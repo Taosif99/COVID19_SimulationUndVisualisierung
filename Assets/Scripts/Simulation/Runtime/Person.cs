@@ -31,6 +31,13 @@ namespace Simulation.Runtime
         public Venue CurrentLocation { get; set; }
         public bool IsDead { get; private set; }
 
+        public event Action <StateTransitionEventArgs> OnStateTrasitionHandler;
+        public class StateTransitionEventArgs : EventArgs
+        {
+            public InfectionStates newInfectionState;
+        }
+
+
         [Flags]
         public enum InfectionStates
         {
@@ -54,6 +61,11 @@ namespace Simulation.Runtime
             Healthy,
             PreIllness
         }
+
+
+
+
+
 
         /// <summary>
         /// Calculates the difference between the current date and the infection date in days.
@@ -124,10 +136,9 @@ namespace Simulation.Runtime
 
                 if (stateTransition)
                 {
-                    //SimulationMaster.Instance.AddToGlobalCounter(InfectionState);
-
-                    //This causes problems with the object destruction on the graph -> update each day or each 12 hours---
-                    //GlobalSimulationGraph.Instance.OnUpdate?.Invoke();
+                    StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
+                    stateTransitionEventArgs.newInfectionState = InfectionState;
+                    OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
                 }
                 // Debug.Log("State: " + InfectionState);
 
@@ -194,6 +205,9 @@ namespace Simulation.Runtime
             InfectionState = InfectionStates.Infected;
             _infectionDate = infectionDate;
             _infectionStateDuration = Random.Range(InfectionStateParameters.IncubationMinDay, InfectionStateParameters.IncubationMaxDay);
+            StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
+            stateTransitionEventArgs.newInfectionState = InfectionState;
+            OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
         }
     }
 }

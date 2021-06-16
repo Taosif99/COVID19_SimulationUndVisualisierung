@@ -115,9 +115,9 @@ namespace GraphChart
 
             if (_lines != null)
             {
-                _lines[0].Add(SimulationMaster.Instance.GetAmountInfected());
-                _lines[1].Add(SimulationMaster.Instance.GetAmountRecovered());
-                _lines[2].Add(SimulationMaster.Instance.GetAmountUninfected());
+                _lines[0].Add(SimulationMaster.Instance.AmountInfected);
+                _lines[1].Add(SimulationMaster.Instance.AmountRecovered);
+                _lines[2].Add(SimulationMaster.Instance.AmountUninfected);
                 _multiLineGraph.ShowMultiLineGraph(_lines, _colorList);
             }
         }
@@ -126,9 +126,9 @@ namespace GraphChart
         private void UpdateBarChart()
         {
 
-            _barchart.UpdateValue(0, SimulationMaster.Instance.GetAmountInfected());
-            _barchart.UpdateValue(1, SimulationMaster.Instance.GetAmountRecovered());
-            _barchart.UpdateValue(2, SimulationMaster.Instance.GetAmountUninfected());
+            _barchart.UpdateValue(0, SimulationMaster.Instance.AmountInfected);
+            _barchart.UpdateValue(1, SimulationMaster.Instance.AmountRecovered);
+            _barchart.UpdateValue(2, SimulationMaster.Instance.AmountUninfected);
 
         }
 

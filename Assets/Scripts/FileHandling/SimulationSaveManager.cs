@@ -99,7 +99,7 @@ namespace FileHandling
                             ModelSelector.Instance.SetCurrentPrefab(PrefabName.Household);
                         }
                         IEditorObject editorObject = EditorObjectFactory.Create(entity, "serialized mock text");
-                        editorObjectsManager.EditorObjectsDic.Add(entity.Position, editorObject);
+                        editorObjectsManager.AddEditorObjectToCollection(entity.Position, editorObject);
                         Vector2Int gridCellPosition = new Vector2Int(entity.Position.X, entity.Position.Y);
                         //Spawn in position-> spawn handler or manager
                         GameObject gameObject = editorObject.EditorGameObject;
@@ -124,6 +124,8 @@ namespace FileHandling
                 //dialogBox.OnConfirmationPressed += SceneLoader.Instance.LoadMainMenu;
             */
             }
+
+
         }
 
 

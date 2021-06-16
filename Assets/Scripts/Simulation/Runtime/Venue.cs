@@ -41,7 +41,7 @@ namespace Simulation.Runtime
                     if (Random.Range(0f, 1f) <= infectionProbability)
                     {
                         p.SetInfected(simulationDate);
-                        SimulationMaster.Instance.AddToGlobalCounter(Person.InfectionStates.Phase1);
+           
                         Debug.Log("Person was infected.");
                     }
                 }

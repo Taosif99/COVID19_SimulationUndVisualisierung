@@ -110,7 +110,7 @@ namespace Simulation.Runtime
                 Household randomHousehold = households[Random.Range(0, households.Length)];
                 Person randomPerson = randomHousehold.Members[Random.Range(0, randomHousehold.Members.Length)];
                 randomPerson.SetInfected(SimulationDate);
-                SimulationMaster.Instance.AddToGlobalCounter(Person.InfectionStates.Phase1);
+               
             }
             else 
             { 
