@@ -8,51 +8,33 @@ namespace GraphChart {
     public class GraphOnClickBehaviour : MonoBehaviour,IPointerClickHandler
     {
        
-        [SerializeField] private GameObject _fullScreenGraph;
-        [SerializeField] private GameObject _lineGraph;
-        [SerializeField] private GameObject _barchart;
-
+        [SerializeField] private GameObject _fullScreenGraphGameObject;
+        [SerializeField] private GameObject _lineGraphGameObject;
+        [SerializeField] private GameObject _barchartGameObject;
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            GraphChart fullScreenGraphChart = _fullScreenGraph.transform.GetComponent<GraphChart>();
+            GraphChart fullScreenGraphChart = _fullScreenGraphGameObject.transform.GetComponent<GraphChart>();
             GraphChart clickedGraphChart = transform.transform.GetComponent<GraphChart>();
-
             GraphChart.GraphType clikedGraphType = clickedGraphChart.TypeOfGraph;
             Debug.Log("You clicked a: " + clikedGraphType);
-
-
-           
-
+            _fullScreenGraphGameObject.SetActive(true);
 
             if (clikedGraphType == GraphChart.GraphType.BarChart)
             {
                // GlobalSimulationGraph.Instance.BarChartCreated = false;
-
                 fullScreenGraphChart.TypeOfGraph = GraphChart.GraphType.BarChart;
-                //GlobalSimulationGraph.Instance.Barchart = fullScreenGraphChart;
-                GlobalSimulationGraph.Instance.BarchartGameObject = _fullScreenGraph;
-
-                //Showing directly the Graph
-
-                GlobalSimulationGraph.Instance.UpdateValuesAndShowGraphs(false);
+                GlobalSimulationGraph.Instance.BarchartGameObject = _fullScreenGraphGameObject;
             }
             else
 
-            {
-                
+            {               
                 fullScreenGraphChart.TypeOfGraph = GraphChart.GraphType.LineGraph;
-                //GlobalSimulationGraph.Instance.MultiLineGraph =fullScreenGraphChart;
-                GlobalSimulationGraph.Instance.MultiLineGraphGameObject = _fullScreenGraph;
-                //Showing directly the Graph
-                GlobalSimulationGraph.Instance.UpdateValuesAndShowGraphs(false);
-
+                GlobalSimulationGraph.Instance.MultiLineGraphGameObject = _fullScreenGraphGameObject;
             }
-
-            _fullScreenGraph.SetActive(true);
-            _lineGraph.SetActive(false);
-            _barchart.SetActive(false);
-            
+            GlobalSimulationGraph.Instance.UpdateValuesAndShowGraphs(false);
+            _lineGraphGameObject.SetActive(false);
+            _barchartGameObject.SetActive(false);
         }
     }
 }

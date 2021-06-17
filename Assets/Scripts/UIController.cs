@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using EditorObjects;
 using Grid;
 using TMPro;
+using GraphChart;
 
 /// <summary>
 /// Script to implement UI related functions/behaviour.
@@ -135,14 +136,18 @@ public class UIController : MonoBehaviour
             ModelSelector.Instance.CurrentPrefabName = PrefabName.None;
         });
 
+        //Adding listeners to left Barchart toggles
+
         BarChartToggle.onValueChanged.AddListener(delegate
         {
             SimulationGraphEnabler.SetBarChartActive(BarChartToggle.isOn);
+            GlobalSimulationGraph.Instance.UpdateValuesAndShowGraphs(false);
         });
 
         LineChartToggle.onValueChanged.AddListener(delegate
         {
             SimulationGraphEnabler.SetLineChartActive(LineChartToggle.isOn);
+            GlobalSimulationGraph.Instance.UpdateValuesAndShowGraphs(false);
         });
     }
 

@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Simulation.Runtime;
-using Simulation.Edit;
 using EditorObjects;
-using System;
+
 
 /// <summary>
 /// Class which handles simulation specific properties and settings.
@@ -150,10 +148,6 @@ public class SimulationMaster : MonoBehaviour
     {
         _infectionStateCounter[Person.InfectionStates.Uninfected] = editorObjectsManager.AmountPeople;
     }
-
-
-
-
 
     private void DebugPrintOfCounterValues()
     {

@@ -13,11 +13,6 @@ namespace GraphChart
     {
 
         [SerializeField] private GameObject _fullScreenGraphGameObject;
-        
-        [SerializeField] private GraphChart _multiLineGraph;
-        [SerializeField] private GraphChart _barchart;
-        
-
         [SerializeField] private GameObject _multiLineGraphGameObject;
         [SerializeField] private GameObject _barchartGameObject;
 
@@ -34,35 +29,21 @@ namespace GraphChart
 
         public static GlobalSimulationGraph Instance;
 
-        /*
-        public GraphChart MultiLineGraph { get => _multiLineGraph; set => _multiLineGraph = value; }
-        public GraphChart Barchart { get => _barchart; set => _barchart = value; }
-        */
-
         public bool BarChartCreated { get => _barChartCreated; set => _barChartCreated = value; }
         public GameObject MultiLineGraphGameObject { get => _multiLineGraphGameObject; set => _multiLineGraphGameObject = value; }
         public GameObject BarchartGameObject { get => _barchartGameObject; set => _barchartGameObject = value; }
 
         private void Awake()
         {
-            //if (Instance == null) Instance = this;
+
             if (Instance == null)
             {
                 Instance = this;
-                //DontDestroyOnLoad(Instance);
             }
-            else if (Instance != null)
-            {
-                Destroy(gameObject);
-            }
-
-
-            _barchartValues = new List<int>() { 0, 0, 0 };
-
         }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
 
 
@@ -71,15 +52,47 @@ namespace GraphChart
             StartCoroutine(UpdateGraphsEachDay());
         }
 
+        /// <summary>
+        /// Method to show the active graphs and eventually to update the values.
+        /// </summary>
+        /// <param name="shouldUpdateValues">If the infection values should be updated, e.g. after a day, a week...</param>
+        public void UpdateValuesAndShowGraphs(bool shouldUpdateValues)
+        {
+            if (BarchartGameObject.activeInHierarchy)
+            {
+
+                if (shouldUpdateValues)
+                {
+                    UpdateBarChartValues();
+                }
+                //Barchart.ShowGraph(_barchartValues, _xLabelBarChart);
+                BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _xLabelBarChart);
+
+            }
+
+
+            if (shouldUpdateValues)
+            {
+                UpdateLineGraphValues();
+            }
+
+            if (MultiLineGraphGameObject.activeInHierarchy)
+            {
+                MultiLineGraphGameObject.GetComponent<GraphChart>().ShowMultiLineGraph(_lines, _colorList, _xLabelMultilineGraph);
+            }
+
+        }
+
+
         private void InitMultiLineGraph()
         {
 
 
-        _xLabelMultilineGraph = delegate (int index)
-            {
-                return (index + 1).ToString();
+            _xLabelMultilineGraph = delegate (int index)
+                {
+                    return (index + 1).ToString();
 
-            };
+                };
 
 
             List<int> phase1Values = new List<int>();
@@ -90,19 +103,21 @@ namespace GraphChart
             List<int> uninfectedValues = new List<int>();
 
             _lines = new List<List<int>>();
+            _lines.Add(uninfectedValues);
             _lines.Add(phase1Values);
             //lines.Add(phase2Values);
             //lines.Add(phase3Values);
             //lines.Add(phase4Values);
             _lines.Add(phase5Values);
-            _lines.Add(uninfectedValues);
 
 
-            //For simplification only showing infected and uninfected
+
+            //For simplification only showing infected , uninfected and recovered
             //TODO UNIFORM COLORS and legend in UI
+            Color uninfectedColor = Color.white;
             Color infectedColor = Color.yellow;
             Color recoveredColor = Color.green;
-            Color uninfectedColor = Color.white;
+           
             _colorList = new List<Color>();
             _colorList.Add(infectedColor);
             _colorList.Add(recoveredColor);
@@ -112,37 +127,34 @@ namespace GraphChart
 
         private void InitBarChart()
         {
-            //Init Bar chart
-            //Example how to declare a label delegate function...
+            _barchartValues = new List<int>() { 0, 0, 0 };
             _xLabelBarChart = delegate (int index)
             {
                 switch (index)
                 {
                     case 0:
-                        return "Infected";
-                    case 1:
-                        return "Recovered";
-                    case 2:
                         return "Uninfected";
+                    case 1:
+                        return "Infected";
+                    case 2:
+                        return "Recovered";
                     default:
                         return "undefined";
                 }
 
             };
-
-            //Barchart.TypeOfGraph = GraphChart.GraphType.BarChart;
             BarchartGameObject.GetComponent<GraphChart>().TypeOfGraph = GraphChart.GraphType.BarChart;
         }
 
 
         //E.g called each day or each state transition
-        private void UpdateLineGraphValues() 
+        private void UpdateLineGraphValues()
         {
-         
-                _lines[0].Add(SimulationMaster.Instance.AmountInfected);
-                _lines[1].Add(SimulationMaster.Instance.AmountRecovered);
-                _lines[2].Add(SimulationMaster.Instance.AmountUninfected);
-            
+            _lines[0].Add(SimulationMaster.Instance.AmountUninfected);
+            _lines[1].Add(SimulationMaster.Instance.AmountInfected);
+            _lines[2].Add(SimulationMaster.Instance.AmountRecovered);
+          
+
             //Clear lists each 7 days
             if (_lines[0].Count == 8)
             {
@@ -151,9 +163,9 @@ namespace GraphChart
                 _lines[2].Clear(); ;
 
                 //Add the cleared day
-                _lines[0].Add(SimulationMaster.Instance.AmountInfected);
-                _lines[1].Add(SimulationMaster.Instance.AmountRecovered);
-                _lines[2].Add(SimulationMaster.Instance.AmountUninfected);
+                _lines[0].Add(SimulationMaster.Instance.AmountUninfected);
+                _lines[1].Add(SimulationMaster.Instance.AmountInfected);
+                _lines[2].Add(SimulationMaster.Instance.AmountRecovered);
             }
 
         }
@@ -168,59 +180,12 @@ namespace GraphChart
             Barchart.UpdateValue(1, SimulationMaster.Instance.AmountRecovered);
             Barchart.UpdateValue(2, SimulationMaster.Instance.AmountUninfected);
           */
-            _barchartValues[0] = SimulationMaster.Instance.AmountInfected;
-            _barchartValues[1] = SimulationMaster.Instance.AmountRecovered;
-            _barchartValues[2] = SimulationMaster.Instance.AmountUninfected;
+            _barchartValues[0] = SimulationMaster.Instance.AmountUninfected;
+            _barchartValues[1] = SimulationMaster.Instance.AmountInfected;
+            _barchartValues[2] = SimulationMaster.Instance.AmountRecovered;
+            
         }
-        /// <summary>
-        /// Method to show the active graphs and eventually to update the values.
-        /// </summary>
-        /// <param name="shouldUpdateValues">If the infection values should be updated, e.g. after a day, a week...</param>
-        public void UpdateValuesAndShowGraphs(bool shouldUpdateValues)
-        {
 
-
-
-            // UpdateGraph();
-            /*
-            if (!BarChartCreated && Barchart.isActiveAndEnabled)
-            {
-                Barchart.ShowGraph(_barchartValues, _xLabelBarChart);
-                BarChartCreated = true;
-
-            }
-
-            if (BarChartCreated && Barchart.isActiveAndEnabled)
-            {
-
-                UpdateBarChart();
-
-            }*/
-            //if (Barchart.isActiveAndEnabled)
-            if (BarchartGameObject.activeInHierarchy)
-            {
-
-                if (shouldUpdateValues)
-                    UpdateBarChartValues();
-
-                //Barchart.ShowGraph(_barchartValues, _xLabelBarChart);
-                BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _xLabelBarChart);
-
-            }
-   
-
-            if(shouldUpdateValues)
-                UpdateLineGraphValues();
-            //if (MultiLineGraph.isActiveAndEnabled)
-            if (MultiLineGraphGameObject.activeInHierarchy)
-            {
-
-                // MultiLineGraph.ShowMultiLineGraph(_lines, _colorList, _xLabelMultilineGraph);
-                MultiLineGraphGameObject.GetComponent<GraphChart>().ShowMultiLineGraph(_lines, _colorList, _xLabelMultilineGraph);
-            }
-           
-
-        }
 
         //TODO USING ACTION FROM SIMULATION CONTROLLER ???
         private IEnumerator UpdateGraphsEachDay()

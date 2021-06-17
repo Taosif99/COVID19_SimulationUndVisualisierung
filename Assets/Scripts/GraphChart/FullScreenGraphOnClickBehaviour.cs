@@ -9,8 +9,8 @@ namespace GraphChart
     public class FullScreenGraphOnClickBehaviour : MonoBehaviour, IPointerClickHandler
     {
 
-        [SerializeField] private GameObject _lineGraph;
-        [SerializeField] private GameObject _barchart;
+        [SerializeField] private GameObject _lineGraphGameObject;
+        [SerializeField] private GameObject _barchartGameObject;
 
         public void OnPointerClick(PointerEventData eventData)
         {
@@ -19,25 +19,21 @@ namespace GraphChart
             if (clikedGraphType == GraphChart.GraphType.BarChart)
             {
                 // GlobalSimulationGraph.Instance.BarChartCreated = false;
-                //GlobalSimulationGraph.Instance.Barchart = _barchart.transform.GetComponent<GraphChart>();
-                GlobalSimulationGraph.Instance.BarchartGameObject = _barchart;
+                GlobalSimulationGraph.Instance.BarchartGameObject = _barchartGameObject;
 
             }
             else
             {
-                //GlobalSimulationGraph.Instance.MultiLineGraph = _lineGraph.GetComponent<GraphChart>();
-                GlobalSimulationGraph.Instance.MultiLineGraphGameObject = _lineGraph;
+                GlobalSimulationGraph.Instance.MultiLineGraphGameObject = _lineGraphGameObject;
             }
 
             //Activate graphs
             bool lineChartOn = UIController.Instance.LineChartToggle.isOn;
             bool barChartOn = UIController.Instance.BarChartToggle.isOn;
-
-            _lineGraph.SetActive(lineChartOn);
-            _barchart.SetActive(barChartOn);
+            _lineGraphGameObject.SetActive(lineChartOn);
+            _barchartGameObject.SetActive(barChartOn);
             //Showing directly the Graph
             GlobalSimulationGraph.Instance.UpdateValuesAndShowGraphs(false);
-
             this.transform.gameObject.SetActive(false);
 
         }
