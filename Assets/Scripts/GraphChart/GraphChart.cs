@@ -7,7 +7,8 @@ namespace GraphChart
 {
     /// <summary>
     /// Implementation of a linegraph and barchart.
-    /// Used and modified the tutorial of CodeMonkey: https://www.youtube.com/watch?v=CmU5-v-v1Qo
+    /// Used and modified the tutorial of CodeMonkey: 
+    /// <see cref="https://www.youtube.com/watch?v=CmU5-v-v1Qo"/>
     /// </summary>
     public class GraphChart : MonoBehaviour
     {
@@ -111,13 +112,16 @@ namespace GraphChart
 
         /// <summary>
         /// Method which shows a Graph.
+        /// Colorlist must have the same length as valueList !
         /// </summary>
         /// <param name="valueList">Values which will be plotted.</param>
         /// <param name="getAxisLabelX">Delegate for the x-axis.</param>
         /// <param name="getAxisLabelY">Delegate for the y-axis.</param>
-        public void ShowGraph(List<int> valueList, Func<int, string> getAxisLabelX = null, Func<float, string> getAxisLabelY = null)
+        /// <param name="colors">An list of colors which will be applied to each one by another to each value of a barchart in the value list</param>
+        public void ShowGraph(List<int> valueList, Func<int, string> getAxisLabelX = null, Func<float, string> getAxisLabelY = null, List<Color> colors = null)
         {
             this._valueList = valueList;
+
             InitializeLabels(getAxisLabelX, getAxisLabelY);
             //Destroying objects of previous graph
             foreach (GameObject gameObject in _gameObjectList)
@@ -133,13 +137,19 @@ namespace GraphChart
             //Here we can do a if else statement to check for the graph type
             //I think using an enum makes the code less complicated
             GameObject lastDotGameObject = null;
+
+            
             for (int i = 0; i < valueList.Count; i++)
             {
                 float xPosition = xSize + i * xSize;
                 float yPosition = ((valueList[i] - yMin) / (yMax - yMin)) * _graphHeight;
                 if (_typeOfGraph == GraphType.BarChart)
                 {
-                    GameObject barGameObject = CreateBar(new Vector2(xPosition, yPosition), xSize * .9f);
+                    Color barChartColor;
+                    if (colors != null) barChartColor = colors[i];
+                    else barChartColor = Color.white;
+
+                    GameObject barGameObject = CreateBar(new Vector2(xPosition, yPosition), xSize * .9f,barChartColor);
                     _gameObjectList.Add(barGameObject);
                     _dotsOrBarsList.Add(barGameObject);
                 }
@@ -198,7 +208,7 @@ namespace GraphChart
         /// Method to show a multiline graph.
         /// </summary>
         /// <param name="valueLists">A list of integer list which represent the linegraphs to display.</param>
-        /// <param name="colors">An array of colors which will be applied "clockwise" on the linegraphs. 
+        /// <param name="colors">An list of colors which will be applied "clockwise" on the linegraphs. 
         /// White is the default color if colors is null or if it does not contain any color.</param>
         /// <param name="getAxisLabelX">Delegate for the x-axis.</param>
         /// <param name="getAxisLabelY">Delegate for the y-axis.</param>
@@ -371,10 +381,11 @@ namespace GraphChart
             return gameObject;
         }
 
-        private GameObject CreateBar(Vector2 graphPosition, float barWidth)
+        private GameObject CreateBar(Vector2 graphPosition, float barWidth,Color color)
         {
             GameObject gameObject = new GameObject("bar", typeof(Image));
             gameObject.transform.SetParent(_graphContainer, false);
+            gameObject.GetComponent<Image>().color = color; //Test
             RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = new Vector2(graphPosition.x, 0f);
             rectTransform.sizeDelta = new Vector2(barWidth, graphPosition.y);
@@ -435,10 +446,10 @@ namespace GraphChart
             {
                 valueLists = new List<List<int>>();
                 valueLists.Add(singleLinevalues);
+               
             }
 
-            GraphHelperMethods.MultiIntegerListSearch(valueLists, out yMax, out yMin);
-
+            GraphHelperMethods.MultiIntegerListSearch(valueLists, out yMin, out yMax);
             float yDifference = yMax - yMin;
             //Default Case if all values are the same or something went wrong
             if (yDifference <= 0)
@@ -448,6 +459,9 @@ namespace GraphChart
             //Scalling the min and maximum value a little bit up / lengthen y axis
             yMax = yMax + (yDifference * 0.2f);
             yMin = yMin - (yDifference * 0.2f);
+
+
+           
             // Start the graph always at zero on the y-axis
             if (_startYScaleAtZero)
             {
@@ -458,6 +472,7 @@ namespace GraphChart
             {
                 yMax = _maxYValue;
             }
+           
         }
     }
 }

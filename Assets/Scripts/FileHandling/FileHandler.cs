@@ -15,7 +15,7 @@ namespace FileHandling
     /// it gives us platform independency.
     /// 
     /// In Windows: %userprofile%\AppData\LocalLow\<companyname>\<productname>
-    /// (See: https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html)
+    /// <see cref="https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html"/> 
     /// </summary>
     public static class FileHandler
     {

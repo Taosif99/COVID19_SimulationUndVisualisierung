@@ -414,7 +414,7 @@ MonoBehaviour:
   _graphChart: {fileID: 309934129}
   valueList: 
   startExample: 1
-  UsedGraphTestType: 0
+  UsedGraphTestType: 2
 --- !u!114 &309934129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,9 +428,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dotSprite: {fileID: 0}
-  _startYScaleAtZero: 1
-  _useFixedMaxYValue: 1
-  _maxYValue: 100
+  _startYScaleAtZero: 0
+  _useFixedMaxYValue: 0
+  _maxYValue: 42
   _amountHorizontalLines: 11
   _typeOfGraph: 0
 --- !u!1 &378159027

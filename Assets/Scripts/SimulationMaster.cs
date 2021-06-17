@@ -23,7 +23,13 @@ public class SimulationMaster : MonoBehaviour
     /// </summary>
     private Dictionary<Person.InfectionStates, int> _infectionStateCounter = new Dictionary<Person.InfectionStates, int>();
 
-
+    public int AmountUninfected
+    {
+        get
+        {
+            return _infectionStateCounter[Person.InfectionStates.Uninfected];
+        }
+    }
 
     public int AmountInfected
     {
@@ -33,13 +39,15 @@ public class SimulationMaster : MonoBehaviour
         }
     }
 
-    public int AmountUninfected
+
+    public int AmountInfectious
     {
         get
         {
-            return _infectionStateCounter[Person.InfectionStates.Uninfected];
+            return _infectionStateCounter[Person.InfectionStates.Infectious];
         }
     }
+
 
     public int AmountRecovered
     {
@@ -67,17 +75,18 @@ public class SimulationMaster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _infectionStateCounter.Add(Person.InfectionStates.Phase1, 0);
+        _infectionStateCounter.Add(Person.InfectionStates.Phase1, 0); //Infected
         _infectionStateCounter.Add(Person.InfectionStates.Phase2, 0);
         _infectionStateCounter.Add(Person.InfectionStates.Phase3, 0);
         _infectionStateCounter.Add(Person.InfectionStates.Phase4, 0);
-        _infectionStateCounter.Add(Person.InfectionStates.Phase5, 0);
+        _infectionStateCounter.Add(Person.InfectionStates.Phase5, 0); //Recovered
 
         //TODO rename uninfected to suspicipus or something
         //TODO GET ALL UNINFECRED
         _infectionStateCounter.Add(Person.InfectionStates.Uninfected, 0);
-    
-   }
+        _infectionStateCounter.Add(Person.InfectionStates.Infectious, 0);
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -105,6 +114,7 @@ public class SimulationMaster : MonoBehaviour
 
             case Person.InfectionStates.Phase2:
                 _infectionStateCounter[Person.InfectionStates.Phase2] += 1;
+                _infectionStateCounter[Person.InfectionStates.Infectious] += 1;
                 break;
 
             case Person.InfectionStates.Phase3:
@@ -116,6 +126,7 @@ public class SimulationMaster : MonoBehaviour
                 //_infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase2] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase3] -= 1;
+                _infectionStateCounter[Person.InfectionStates.Infectious] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase4] += 1;
                 break;
 

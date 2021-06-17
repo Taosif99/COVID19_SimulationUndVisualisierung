@@ -46,7 +46,7 @@ namespace GraphChart
         private void Start()
         {
 
-
+            InitColorList();
             InitMultiLineGraph();
             InitBarChart();
             StartCoroutine(UpdateGraphsEachDay());
@@ -65,9 +65,7 @@ namespace GraphChart
                 {
                     UpdateBarChartValues();
                 }
-                //Barchart.ShowGraph(_barchartValues, _xLabelBarChart);
-                BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _xLabelBarChart);
-
+                BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _xLabelBarChart,null,_colorList);
             }
 
 
@@ -83,6 +81,23 @@ namespace GraphChart
 
         }
 
+
+        private void InitColorList()
+        {
+      
+            Color uninfectedColor = Color.white;
+            Color infectedColor = Color.yellow;
+            Color infectiousColor = Color.red;
+            Color recoveredColor = Color.green;
+
+            _colorList = new List<Color>();
+            _colorList.Add(uninfectedColor);
+            _colorList.Add(infectedColor);
+            _colorList.Add(infectiousColor);
+            _colorList.Add(recoveredColor);
+
+
+        }
 
         private void InitMultiLineGraph()
         {
@@ -101,33 +116,24 @@ namespace GraphChart
             List<int> phase4Values = new List<int>();
             List<int> phase5Values = new List<int>();
             List<int> uninfectedValues = new List<int>();
+            List<int> infectious = new List<int>();
+
 
             _lines = new List<List<int>>();
             _lines.Add(uninfectedValues);
             _lines.Add(phase1Values);
+            _lines.Add(infectious);
             //lines.Add(phase2Values);
             //lines.Add(phase3Values);
             //lines.Add(phase4Values);
             _lines.Add(phase5Values);
-
-
-
-            //For simplification only showing infected , uninfected and recovered
-            //TODO UNIFORM COLORS and legend in UI
-            Color uninfectedColor = Color.white;
-            Color infectedColor = Color.yellow;
-            Color recoveredColor = Color.green;
-           
-            _colorList = new List<Color>();
-            _colorList.Add(infectedColor);
-            _colorList.Add(recoveredColor);
-            _colorList.Add(uninfectedColor);
+          
         }
 
 
         private void InitBarChart()
         {
-            _barchartValues = new List<int>() { 0, 0, 0 };
+            _barchartValues = new List<int>() { 0, 0, 0,0 };
             _xLabelBarChart = delegate (int index)
             {
                 switch (index)
@@ -137,6 +143,8 @@ namespace GraphChart
                     case 1:
                         return "Infected";
                     case 2:
+                        return "Infectious";
+                    case 3:
                         return "Recovered";
                     default:
                         return "undefined";
@@ -152,7 +160,8 @@ namespace GraphChart
         {
             _lines[0].Add(SimulationMaster.Instance.AmountUninfected);
             _lines[1].Add(SimulationMaster.Instance.AmountInfected);
-            _lines[2].Add(SimulationMaster.Instance.AmountRecovered);
+            _lines[2].Add(SimulationMaster.Instance.AmountInfectious);
+            _lines[3].Add(SimulationMaster.Instance.AmountRecovered);
           
 
             //Clear lists each 7 days
@@ -160,12 +169,14 @@ namespace GraphChart
             {
                 _lines[0].Clear();
                 _lines[1].Clear();
-                _lines[2].Clear(); ;
+                _lines[2].Clear();
+                _lines[3].Clear();
 
                 //Add the cleared day
                 _lines[0].Add(SimulationMaster.Instance.AmountUninfected);
                 _lines[1].Add(SimulationMaster.Instance.AmountInfected);
-                _lines[2].Add(SimulationMaster.Instance.AmountRecovered);
+                _lines[2].Add(SimulationMaster.Instance.AmountInfectious);
+                _lines[3].Add(SimulationMaster.Instance.AmountRecovered);
             }
 
         }
@@ -182,7 +193,8 @@ namespace GraphChart
           */
             _barchartValues[0] = SimulationMaster.Instance.AmountUninfected;
             _barchartValues[1] = SimulationMaster.Instance.AmountInfected;
-            _barchartValues[2] = SimulationMaster.Instance.AmountRecovered;
+            _barchartValues[2] = SimulationMaster.Instance.AmountInfectious;
+            _barchartValues[3] = SimulationMaster.Instance.AmountRecovered;
             
         }
 
@@ -190,8 +202,11 @@ namespace GraphChart
         //TODO USING ACTION FROM SIMULATION CONTROLLER ???
         private IEnumerator UpdateGraphsEachDay()
         {
+
+
             for (; ; )
             {
+
                 //A day takes approx. 8 seconds
                 //TODO CALCULATE DAY LENGTH VIA CODE         
                 yield return new WaitForSeconds(8f);
