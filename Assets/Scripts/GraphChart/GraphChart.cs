@@ -87,7 +87,7 @@ namespace GraphChart
         public enum GraphType
         {
             BarChart,
-            LineGraph //Sums up also multiline graph
+            LineGraph //Includes also multiline graph
         }
         private void Awake()
         {
@@ -110,63 +110,13 @@ namespace GraphChart
             _dotsConnectionList = new List<GameObject>();
         }
 
-        /// <summary>
-        /// Method which shows a Graph.
-        /// Colorlist must have the same length as valueList !
-        /// </summary>
-        /// <param name="valueList">Values which will be plotted.</param>
-        /// <param name="getAxisLabelX">Delegate for the x-axis.</param>
-        /// <param name="getAxisLabelY">Delegate for the y-axis.</param>
-        /// <param name="colors">An list of colors which will be applied to each one by another to each value of a barchart in the value list</param>
-        public void ShowGraph(List<int> valueList, Func<int, string> getAxisLabelX = null, Func<float, string> getAxisLabelY = null, List<Color> colors = null)
-        {
-            this._valueList = valueList;
-
-            InitializeLabels(getAxisLabelX, getAxisLabelY);
-            //Destroying objects of previous graph
-            foreach (GameObject gameObject in _gameObjectList)
-            {
-                Destroy(gameObject);
-            }
-            _gameObjectList.Clear();
-            _yLabelList.Clear();
-            _dotsConnectionList.Clear();
-            float yMax, yMin;
-            CalculateYScale(out yMin, out yMax);
-            float xSize = _graphWidth / (_valueList.Count + 1);
-            //Here we can do a if else statement to check for the graph type
-            //I think using an enum makes the code less complicated
-            GameObject lastDotGameObject = null;
-
-            
-            for (int i = 0; i < valueList.Count; i++)
-            {
-                float xPosition = xSize + i * xSize;
-                float yPosition = ((valueList[i] - yMin) / (yMax - yMin)) * _graphHeight;
-                if (_typeOfGraph == GraphType.BarChart)
-                {
-                    Color barChartColor;
-                    if (colors != null) barChartColor = colors[i];
-                    else barChartColor = Color.white;
-
-                    GameObject barGameObject = CreateBar(new Vector2(xPosition, yPosition), xSize * .9f,barChartColor);
-                    _gameObjectList.Add(barGameObject);
-                    _dotsOrBarsList.Add(barGameObject);
-                }
-                else if (_typeOfGraph == GraphType.LineGraph)
-                {
-                    BuildDotLine(xPosition, yPosition, ref lastDotGameObject, new Color(1, 1, 1, 0.5f));
-                }
-                BuildXLabelsAndDashes(xPosition, i);
-            }
-            BuildYLabelsAndDashes(yMin, yMax);
-        }
 
         /// <summary>
-        /// Method to update a value at a given index of the valueList.
+        /// Method to update a value at a given index of the valueList. TODO USE
         /// </summary>
         /// <param name="index"></param>
         /// <param name="value"></param>
+       /*
         public void UpdateValue(int index, int value)
         {
             float yMinBefore, yMaxBefore;
@@ -201,23 +151,87 @@ namespace GraphChart
                     _yLabelList[i].GetComponent<Text>().text = _getAxisLabelY(yMin + (normalizedValue * (yMax - yMin)));
                 }
             }
+        }*/
+
+        /// <summary>
+        /// Method which shows a Graph. The Graph can be a linechart or barchart.
+        /// </summary>
+        /// <param name="valueList">Graph Values which will be plotted if enabled.</param>
+        /// <param name="colors">An list of colors which will be applied to each one by another to each value of a barchart in the value list</param>
+        /// <param name="getAxisLabelX">Delegate for the x-axis.</param>
+        /// <param name="getAxisLabelY">Delegate for the y-axis.</param>
+
+        public void ShowGraph(List<GraphValue> valueList, List<Color> colors = null, Func<int, string> getAxisLabelX = null, Func<float, string> getAxisLabelY = null)
+        {
+            List<int> intValueList = new List<int>();
+            //Needed when update is fully implemented, else remove !
+            foreach (GraphValue graphValue in valueList) 
+            {
+                intValueList.Add(graphValue.Value);
+            }
+
+            this._valueList = intValueList;
+
+            InitializeLabels(getAxisLabelX, getAxisLabelY);
+            //Destroying objects of previous graph
+            foreach (GameObject gameObject in _gameObjectList)
+            {
+                Destroy(gameObject);
+            }
+            _gameObjectList.Clear();
+            _yLabelList.Clear();
+            _dotsConnectionList.Clear();
+            float yMax, yMin;
+            CalculateYScale(out yMin, out yMax);
+            float xSize = _graphWidth / (_valueList.Count + 1);
+            //Here we can do a if else statement to check for the graph type
+            //I think using an enum makes the code less complicated
+            GameObject lastDotGameObject = null;
+
+            int graphValueIndex = 0;
+            for (int i = 0; i < valueList.Count; i++)
+            {
+                if (valueList[i].IsEnabled)
+                {
+
+                    float xPosition = xSize + graphValueIndex * xSize;
+                    float yPosition = ((valueList[i].Value - yMin) / (yMax - yMin)) * _graphHeight;
+                    if (_typeOfGraph == GraphType.BarChart)
+                    {
+                        Color barChartColor;
+                        if (colors != null) barChartColor = colors[i];
+                        else barChartColor = Color.white;
+
+                        GameObject barGameObject = CreateBar(new Vector2(xPosition, yPosition), xSize * .9f, barChartColor);
+                        _gameObjectList.Add(barGameObject);
+                        _dotsOrBarsList.Add(barGameObject);
+                    }
+                    else if (_typeOfGraph == GraphType.LineGraph)
+                    {
+                        BuildDotLine(xPosition, yPosition, ref lastDotGameObject, new Color(1, 1, 1, 0.5f));
+                    }
+                    BuildXLabelsAndDashes(xPosition, i);
+
+                    graphValueIndex++;
+                }
+                BuildYLabelsAndDashes(yMin, yMax);
+            }
         }
 
 
         /// <summary>
-        /// Method to show a multiline graph.
+        /// 
         /// </summary>
-        /// <param name="valueLists">A list of integer list which represent the linegraphs to display.</param>
-        /// <param name="colors">An list of colors which will be applied "clockwise" on the linegraphs. 
-        /// White is the default color if colors is null or if it does not contain any color.</param>
+        /// <param name="lines">Lines objects of the multiline graph</param>
+        /// <param name="colors">>An list of colors which will be applied "clockwise" on the linegraphs.</param>
         /// <param name="getAxisLabelX">Delegate for the x-axis.</param>
         /// <param name="getAxisLabelY">Delegate for the y-axis.</param>
-        public void ShowMultiLineGraph(List<List<int>> valueLists, List<Color> colors = null, Func<int, string> getAxisLabelX = null, Func<float, string> getAxisLabelY = null)
+        public void ShowMultiLineGraph(List<Line> lines, List<Color> colors = null, Func<int, string> getAxisLabelX = null, Func<float, string> getAxisLabelY = null)
         {
 
 
-            //Do this only if we have some values in the List<List> and not only empty list
-            if (valueLists[0].Count > 0)
+            //Do this only if we have some values in the List<Lines> and not only empty list
+            if (lines[0].Values.Count > 0)
             {
 
                 _typeOfGraph = GraphType.LineGraph;
@@ -230,42 +244,57 @@ namespace GraphChart
                 _gameObjectList.Clear();
                 _yLabelList.Clear();
                 _dotsConnectionList.Clear();
-                float yMax, yMin;
-                CalculateYScaleMultiline(out yMin, out yMax, valueLists);
+            
                 //Value list with the most values must be used
                 int maxCount = 0;
-                foreach (List<int> list in valueLists)
+                List<List<int>> valuesLists = new List<List<int>>();
+                foreach (Line line in lines)
                 {
-                    if (list.Count > maxCount)
+                    
+                    if (line.Values.Count > maxCount)
                     {
-                        maxCount = list.Count;
+                        maxCount = line.Values.Count;
                     }
+                    valuesLists.Add(line.Values);
                 }
+
+                float yMax, yMin;
+                CalculateYScaleMultiline(out yMin, out yMax, valuesLists);
+
+
+
                 float xSize = _graphWidth / (maxCount + 1);
                 int listCounter = 0;
                 //This must be done for each value List
-                foreach (List<int> valueList in valueLists)
+                foreach (Line line in lines)
                 {
-                    GameObject lastDotGameObject = null;
-                    Color color;
-                    if (colors != null && colors.Count > 0)
+                    if (line.IsEnabled)
                     {
-                        //Repeat colors modulu clockwise if not enough given
-                        color = colors[listCounter % valueLists.Count];
-                    }
-                    else
-                    {
-                        //White as default color
-                        color = new Color(1, 1, 1, 0.5f);
-                    }
+                        List<int> valueList = line.Values;
 
-                    for (int i = 0; i < valueList.Count; i++)
-                    {
-                        float xPosition = xSize + i * xSize;
-                        float yPosition = ((valueList[i] - yMin) / (yMax - yMin)) * _graphHeight;
-                        BuildDotLine(xPosition, yPosition, ref lastDotGameObject, color);
-                    }
+                        GameObject lastDotGameObject = null;
+                        Color color;
+                        if (colors != null && colors.Count > 0)
+                        {
+                            //Repeat colors modulu clockwise if not enough given
+                            color = colors[listCounter % lines.Count];
+                        }
+                        else
+                        {
+                            //White as default color
+                            color = new Color(1, 1, 1, 0.5f);
+                        }
 
+                        for (int i = 0; i < valueList.Count; i++)
+                        {
+                            float xPosition = xSize + i * xSize;
+                            float yPosition = ((valueList[i] - yMin) / (yMax - yMin)) * _graphHeight;
+                            BuildDotLine(xPosition, yPosition, ref lastDotGameObject, color);
+                        }
+
+                     
+
+                    }
                     listCounter++;
 
                 }
@@ -277,7 +306,6 @@ namespace GraphChart
                 }
 
                 BuildYLabelsAndDashes(yMin, yMax);
-
             }
         }
 

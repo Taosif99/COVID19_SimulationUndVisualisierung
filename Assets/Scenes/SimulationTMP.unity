@@ -1393,7 +1393,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 483311090}
+        m_TargetAssemblyTypeName: GraphChart.GlobalSimulationGraph, Assembly-CSharp
+        m_MethodName: OnToggleChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &223496872
 GameObject:
@@ -2620,7 +2632,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enable Barchart
+  m_text: Enable Linechart
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3289,10 +3301,10 @@ MonoBehaviour:
   _fullScreenGraphGameObject: {fileID: 798117537}
   _multiLineGraphGameObject: {fileID: 6710811103308160233}
   _barchartGameObject: {fileID: 1574761055}
-  UninfectedToggle: {fileID: 0}
-  InfectedToggle: {fileID: 0}
-  InfectiousToggle: {fileID: 0}
-  RecoveredToggle: {fileID: 0}
+  UninfectedToggle: {fileID: 577692798}
+  InfectedToggle: {fileID: 1161563033}
+  InfectiousToggle: {fileID: 221200478}
+  RecoveredToggle: {fileID: 718191434}
 --- !u!114 &483311091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3947,7 +3959,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 483311090}
+        m_TargetAssemblyTypeName: GraphChart.GlobalSimulationGraph, Assembly-CSharp
+        m_MethodName: OnToggleChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &582108315
 GameObject:
@@ -5702,7 +5726,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 483311090}
+        m_TargetAssemblyTypeName: GraphChart.GlobalSimulationGraph, Assembly-CSharp
+        m_MethodName: OnToggleChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &729917048
 GameObject:
@@ -6485,6 +6521,10 @@ MonoBehaviour:
   _graphChart: {fileID: 798117540}
   valueList: 
   startExample: 1
+  LineBar1Enabled: 1
+  LineBar2Enabled: 1
+  LineBar3Enabled: 1
+  CalculateRandomNumbers: 0
   UsedGraphTestType: 2
 --- !u!114 &798117540
 MonoBehaviour:
@@ -7795,6 +7835,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7882,6 +7923,18 @@ MonoBehaviour:
   _mainCamera: {fileID: 0}
   cameraMovementSpeed: 8
   _smoothFactor: 0.5
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3878f620cc17b746b81df2256dce16c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &974711176
 GameObject:
   m_ObjectHideFlags: 0
@@ -9396,7 +9449,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 483311090}
+        m_TargetAssemblyTypeName: GraphChart.GlobalSimulationGraph, Assembly-CSharp
+        m_MethodName: OnToggleChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &1171629798
 GameObject:
@@ -13011,6 +13076,10 @@ MonoBehaviour:
   _graphChart: {fileID: 1574761058}
   valueList: 
   startExample: 1
+  LineBar1Enabled: 1
+  LineBar2Enabled: 1
+  LineBar3Enabled: 1
+  CalculateRandomNumbers: 0
   UsedGraphTestType: 2
 --- !u!114 &1574761058
 MonoBehaviour:
@@ -17851,6 +17920,10 @@ MonoBehaviour:
   _graphChart: {fileID: 6710811103308160235}
   valueList: 
   startExample: 1
+  LineBar1Enabled: 1
+  LineBar2Enabled: 1
+  LineBar3Enabled: 1
+  CalculateRandomNumbers: 0
   UsedGraphTestType: 2
 --- !u!114 &6710811103308160235
 MonoBehaviour:

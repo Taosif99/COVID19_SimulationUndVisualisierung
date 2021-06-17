@@ -14,7 +14,7 @@ namespace EditorObjects
     /// <summary>
     /// This class maintains the editor Objects during the Runtime
     ///
-    /// 
+    /// TODO: Remove UI Name eventually
     /// 
     /// Currently working with mock editor objects
     /// </summary>
@@ -219,6 +219,8 @@ namespace EditorObjects
                             else if (CurrentSelectedEntity is Household)
                             {
                                 Household household = (Household)CurrentSelectedEntity;
+                                _amountPeople -= household.NumberOfPeople;
+                                _amountPeople += numberOfPeople;
                                 household.NumberOfPeople = numberOfPeople;
                                 household.CarefulnessTendency = carefulness;
                                 household.PercentageOfWorkers = percentageOfWorkers;

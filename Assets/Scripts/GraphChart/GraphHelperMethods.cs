@@ -18,7 +18,6 @@ namespace GraphChart
         {
             direction = direction.normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            //if (angle < 0) angle += 360; //Diese line macht bei Atan2 keinen sinn !?
             return angle;
         }
 
@@ -30,7 +29,6 @@ namespace GraphChart
         /// <param name="max">The returned maximum value.</param>
         public static void MultiIntegerListSearch(List<List<int>> valueLists, out float min, out float max)
         {
-            // Identify y Min and Max values
             max = valueLists[0][0];
             min = valueLists[0][0];
 

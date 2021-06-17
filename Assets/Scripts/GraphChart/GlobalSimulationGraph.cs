@@ -18,11 +18,14 @@ namespace GraphChart
 
 
         //Multiline
-        private List<List<int>> _lines;
+        //private List<List<int>> _lines;
+        private List<Line> _lines;
+
         private List<Color> _colorList;
         private Func<int, string> _xLabelMultilineGraph;
         //Barchart
-        private List<int> _barchartValues;
+        //private List<int> _barchartValues;
+        private List<GraphValue> _barchartValues;
         private Func<int, string> _xLabelBarChart;
         //To use the more performant update value of a barchart
         private bool _barChartCreated = false;
@@ -79,7 +82,8 @@ namespace GraphChart
                     UpdateBarChartValues();
                 }
 
-                BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _xLabelBarChart,null,_colorList);
+                //BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _xLabelBarChart,null,_colorList);
+                BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _colorList, _xLabelBarChart);
             }
 
 
@@ -90,6 +94,7 @@ namespace GraphChart
 
             if (MultiLineGraphGameObject.activeInHierarchy)
             {
+                //MultiLineGraphGameObject.GetComponent<GraphChart>().ShowMultiLineGraph(_lines, _colorList, _xLabelMultilineGraph);
                 MultiLineGraphGameObject.GetComponent<GraphChart>().ShowMultiLineGraph(_lines, _colorList, _xLabelMultilineGraph);
             }
 
@@ -130,9 +135,9 @@ namespace GraphChart
             List<int> phase4Values = new List<int>();
             List<int> phase5Values = new List<int>();
             List<int> uninfectedValues = new List<int>();
-            List<int> infectious = new List<int>();
+            List<int> infectiousValues = new List<int>();
 
-
+            /*
             _lines = new List<List<int>>();
             _lines.Add(uninfectedValues);
             _lines.Add(phase1Values);
@@ -142,12 +147,38 @@ namespace GraphChart
             //lines.Add(phase4Values);
             _lines.Add(phase5Values);
           
+            */
+            Line phase1Line = new Line(phase1Values, true);
+            Line phase2Line = new Line(phase2Values, true);
+            Line phase3Line = new Line(phase3Values, true);
+            Line phase4Line = new Line(phase4Values, true);
+            Line phase5Line = new Line(phase5Values, true);
+            Line uninfectedLine = new Line(uninfectedValues, true);
+            Line infectiousLine = new Line(infectiousValues,true);
+            _lines = new List<Line>();
+            _lines.Add(uninfectedLine);
+            _lines.Add(phase1Line);
+            _lines.Add(infectiousLine);
+           // _lines.Add(phase2Line);
+            //_lines.Add(phase3Line);
+            //_lines.Add(phase4Line);
+            _lines.Add(phase5Line);
+           
+        
         }
 
 
         private void InitBarChart()
         {
-            _barchartValues = new List<int>() { 0, 0, 0,0 };
+            //_barchartValues = new List<int>() { 0, 0, 0,0 };
+            _barchartValues = new List<GraphValue>() 
+            { 
+             new GraphValue(0,true),
+             new GraphValue(0,true),
+             new GraphValue(0,true),
+             new GraphValue(0,true),
+            };
+            
             _xLabelBarChart = delegate (int index)
             {
                 switch (index)
@@ -174,17 +205,23 @@ namespace GraphChart
         {
             AddValuesToLinesList();
             //Clear lists each 7 days
-            if (_lines[0].Count == 8)
+            if (_lines[0].Values.Count == 8)
             {
                 /*
                 foreach (var line in _lines)
                 {
                     _lines.Clear();
                 }*/
+                /*
                 _lines[0].Clear();
                 _lines[1].Clear();
                 _lines[2].Clear();
                 _lines[3].Clear();
+                */
+                _lines[0].Values.Clear();
+                _lines[1].Values.Clear();
+                _lines[2].Values.Clear();
+                _lines[3].Values.Clear();
 
                 //Add the cleared day
                 AddValuesToLinesList();
@@ -196,11 +233,18 @@ namespace GraphChart
 
         private void AddValuesToLinesList()
         {
-
+            /*
             _lines[0].Add(SimulationMaster.Instance.AmountUninfected);
             _lines[1].Add(SimulationMaster.Instance.AmountInfected);
             _lines[2].Add(SimulationMaster.Instance.AmountInfectious);
             _lines[3].Add(SimulationMaster.Instance.AmountRecovered);
+            */
+            _lines[0].Values.Add(SimulationMaster.Instance.AmountUninfected);
+            _lines[1].Values.Add(SimulationMaster.Instance.AmountInfected);
+            _lines[2].Values.Add(SimulationMaster.Instance.AmountInfectious);
+            _lines[3].Values.Add(SimulationMaster.Instance.AmountRecovered);
+
+
         }
 
 
@@ -213,11 +257,16 @@ namespace GraphChart
             Barchart.UpdateValue(1, SimulationMaster.Instance.AmountRecovered);
             Barchart.UpdateValue(2, SimulationMaster.Instance.AmountUninfected);
           */
+            /*
             _barchartValues[0] = SimulationMaster.Instance.AmountUninfected;
             _barchartValues[1] = SimulationMaster.Instance.AmountInfected;
             _barchartValues[2] = SimulationMaster.Instance.AmountInfectious;
             _barchartValues[3] = SimulationMaster.Instance.AmountRecovered;
-            
+            */
+            _barchartValues[0].Value = SimulationMaster.Instance.AmountUninfected;
+            _barchartValues[1].Value = SimulationMaster.Instance.AmountInfected;
+            _barchartValues[2].Value = SimulationMaster.Instance.AmountInfectious;
+            _barchartValues[3].Value = SimulationMaster.Instance.AmountRecovered;
         }
 
 
@@ -234,43 +283,29 @@ namespace GraphChart
         }
 
 
-        /*
+        
         public void OnToggleChanged()
         {
             bool uninfectedOn = UninfectedToggle.isOn;
             bool infectedOn = InfectedToggle.isOn;
             bool infectiousOn = InfectiousToggle.isOn;
             bool recoveredOn = RecoveredToggle.isOn;
-            int indexCounter = 0;
-
-            if (uninfectedOn)
-            {
 
 
-                indexCounter++;
-            }
+            _barchartValues[0].IsEnabled = uninfectedOn;
+            _barchartValues[1].IsEnabled = infectedOn;
+            _barchartValues[2].IsEnabled = infectiousOn;
+            _barchartValues[3].IsEnabled = recoveredOn;
 
-            if (infectedOn)
-            {
+            _lines[0].IsEnabled = uninfectedOn;
+            _lines[1].IsEnabled = infectedOn;
+            _lines[2].IsEnabled = infectiousOn;
+            _lines[3].IsEnabled = recoveredOn;
 
-                indexCounter++;
-            }
-
-            if (infectiousOn)
-            {
-
-                indexCounter++;
-            }
-
-            if (recoveredOn)
-            {
+            UpdateValuesAndShowGraphs(false);
 
 
-                indexCounter++;
-            }
-
-
-        }*/
+        }
 
 
     }
