@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Collections;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace GraphChart
 {
@@ -27,11 +27,24 @@ namespace GraphChart
         //To use the more performant update value of a barchart
         private bool _barChartCreated = false;
 
+
+        //private delegate void UpdateBarchartValues();
+        //private delegate void UpdateLinechartValues();
+
         public static GlobalSimulationGraph Instance;
 
         public bool BarChartCreated { get => _barChartCreated; set => _barChartCreated = value; }
         public GameObject MultiLineGraphGameObject { get => _multiLineGraphGameObject; set => _multiLineGraphGameObject = value; }
         public GameObject BarchartGameObject { get => _barchartGameObject; set => _barchartGameObject = value; }
+
+
+        //TODO OUTSOURCE UI CONTROLLER
+        public Toggle UninfectedToggle;
+        public Toggle InfectedToggle;
+        public Toggle InfectiousToggle;
+        public Toggle RecoveredToggle;
+
+
 
         private void Awake()
         {
@@ -65,6 +78,7 @@ namespace GraphChart
                 {
                     UpdateBarChartValues();
                 }
+
                 BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _xLabelBarChart,null,_colorList);
             }
 
@@ -158,27 +172,35 @@ namespace GraphChart
         //E.g called each day or each state transition
         private void UpdateLineGraphValues()
         {
-            _lines[0].Add(SimulationMaster.Instance.AmountUninfected);
-            _lines[1].Add(SimulationMaster.Instance.AmountInfected);
-            _lines[2].Add(SimulationMaster.Instance.AmountInfectious);
-            _lines[3].Add(SimulationMaster.Instance.AmountRecovered);
-          
-
+            AddValuesToLinesList();
             //Clear lists each 7 days
             if (_lines[0].Count == 8)
             {
+                /*
+                foreach (var line in _lines)
+                {
+                    _lines.Clear();
+                }*/
                 _lines[0].Clear();
                 _lines[1].Clear();
                 _lines[2].Clear();
                 _lines[3].Clear();
 
                 //Add the cleared day
-                _lines[0].Add(SimulationMaster.Instance.AmountUninfected);
-                _lines[1].Add(SimulationMaster.Instance.AmountInfected);
-                _lines[2].Add(SimulationMaster.Instance.AmountInfectious);
-                _lines[3].Add(SimulationMaster.Instance.AmountRecovered);
+                AddValuesToLinesList();
+           
             }
 
+        }
+
+
+        private void AddValuesToLinesList()
+        {
+
+            _lines[0].Add(SimulationMaster.Instance.AmountUninfected);
+            _lines[1].Add(SimulationMaster.Instance.AmountInfected);
+            _lines[2].Add(SimulationMaster.Instance.AmountInfectious);
+            _lines[3].Add(SimulationMaster.Instance.AmountRecovered);
         }
 
 
@@ -202,16 +224,54 @@ namespace GraphChart
         //TODO USING ACTION FROM SIMULATION CONTROLLER ???
         private IEnumerator UpdateGraphsEachDay()
         {
-
-
             for (; ; )
             {
-
                 //A day takes approx. 8 seconds
                 //TODO CALCULATE DAY LENGTH VIA CODE         
                 yield return new WaitForSeconds(8f);
                 UpdateValuesAndShowGraphs(true);
             }
         }
+
+
+        /*
+        public void OnToggleChanged()
+        {
+            bool uninfectedOn = UninfectedToggle.isOn;
+            bool infectedOn = InfectedToggle.isOn;
+            bool infectiousOn = InfectiousToggle.isOn;
+            bool recoveredOn = RecoveredToggle.isOn;
+            int indexCounter = 0;
+
+            if (uninfectedOn)
+            {
+
+
+                indexCounter++;
+            }
+
+            if (infectedOn)
+            {
+
+                indexCounter++;
+            }
+
+            if (infectiousOn)
+            {
+
+                indexCounter++;
+            }
+
+            if (recoveredOn)
+            {
+
+
+                indexCounter++;
+            }
+
+
+        }*/
+
+
     }
 }
