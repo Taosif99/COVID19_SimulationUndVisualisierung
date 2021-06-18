@@ -65,7 +65,8 @@ namespace GraphChart
             InitBarChart();
 
             //TODO START COROURINE OR USE EVENTS ONLY IF SIMULATION STARTED
-            StartCoroutine(UpdateGraphsEachDay());
+            //StartCoroutine(UpdateGraphsEachDay());
+  
         }
 
         /// <summary>
@@ -199,7 +200,7 @@ namespace GraphChart
         private void UpdateLineGraphValues()
         {
             AddValuesToLinesList();
-            //Clear lists each 7 days
+            //Clear lists each 7 days / seven simulation time-step-units
             if (_lines[0].Values.Count == 8)
             {
                 /*
@@ -266,6 +267,9 @@ namespace GraphChart
 
 
         //TODO USING ACTION FROM SIMULATION CONTROLLER ???
+      
+        
+        /*
         private IEnumerator UpdateGraphsEachDay()
         {
             for (; ; )
@@ -275,7 +279,7 @@ namespace GraphChart
                 yield return new WaitForSeconds(8f);
                 UpdateValuesAndShowGraphs(true);
             }
-        }
+        }*/
 
 
         

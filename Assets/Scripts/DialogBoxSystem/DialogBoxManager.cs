@@ -1,13 +1,10 @@
 using UnityEngine;
 using TMPro;
-
-
 namespace DialogBoxSystem {
 
     /// <summary>
     /// Class which manages the possible dialogue messages.
     /// 
-    /// TODO: proper singleton
     /// </summary>
     public class DialogBoxManager : MonoBehaviour
     {
@@ -41,6 +38,7 @@ namespace DialogBoxSystem {
         private void Awake()
         {
             if (Instance == null) Instance = this;
+            
         }
 
         // Start is called before the first frame update

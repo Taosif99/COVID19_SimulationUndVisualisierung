@@ -7,6 +7,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using GraphChart;
+using System;
+
 class SimulationController : MonoBehaviour
 {
     private const float SimulationInterval = 0.05f;
@@ -16,6 +18,9 @@ class SimulationController : MonoBehaviour
 
     [SerializeField]
     private TMP_Text _simulationDateTime;
+
+    private int _currentDay;
+    private event Action<bool> _onDayPassed;
 
     private bool _isInitialized = false;
     private bool _isPaused = false;
@@ -29,6 +34,7 @@ class SimulationController : MonoBehaviour
     {
         Assert.IsNotNull(_editorObjectsManager);
         Assert.IsNotNull(_simulationDateTime);
+        _onDayPassed += GlobalSimulationGraph.Instance.UpdateValuesAndShowGraphs;
     }
 
     public void Play()
@@ -42,6 +48,7 @@ class SimulationController : MonoBehaviour
             _controller = new Simulation.Runtime.SimulationController();
             _controller.Initialize(entities);
 
+            _currentDay = _controller.SimulationDate.Day;
             SimulationMaster.Instance.StartUninfectedCounting();
 
             _isInitialized = true;    
@@ -65,7 +72,14 @@ class SimulationController : MonoBehaviour
             _simulationDateTime.text =
                 $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
 
-            //TODO Update Graph each first day of a month
+            //Update statistics each day
+            if (_currentDay != _controller.SimulationDate.Day) 
+            {
+                _currentDay = _controller.SimulationDate.Day;
+                _onDayPassed?.Invoke(true);
+               
+            }
+                 
             _lastSimulationUpdate = Time.time;
         }
     }

@@ -156,6 +156,7 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter[Person.InfectionStates.Uninfected] = editorObjectsManager.AmountPeople;
     }
 
+
     private void DebugPrintOfCounterValues()
     {
 
