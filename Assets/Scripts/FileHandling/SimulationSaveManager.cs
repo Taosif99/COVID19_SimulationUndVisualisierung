@@ -171,10 +171,12 @@ namespace FileHandling
             if (!InputValidator.BasicInputFieldValidation(inputfield) || (FileHandler.SaveFileExists(newName) && !(newName == FileHandler.SelectedFileName)))
             {
                 OkButton.SetActive(false);
+                inputfield.image.color = Color.red;
             }
             else
             {
                 OkButton.SetActive(true);
+                inputfield.image.color = Color.white;
             }
         }
 

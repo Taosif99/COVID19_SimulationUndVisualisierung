@@ -10,9 +10,10 @@ namespace FileHandling
 
     /// <summary>
     /// Class which serializes a simulation with all entities.
-    /// Data will be loaded and saved in the Application.persistentDataPath Directory.
+    /// Simulation data will be loaded and saved in the Application.persistentDataPath + "\" + SaveStateFolderName Directory.
     /// The main advantage of thid directory is that it remains after updates and that
-    /// it gives us platform independency.
+    /// it gives us platform independency. Screenshots will be saved in 
+    /// Application.persistentDataPath + "\" + ScreenshotFolderName
     /// 
     /// In Windows: %userprofile%\AppData\LocalLow\<companyname>\<productname>
     /// <see cref="https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html"/> 
@@ -20,9 +21,11 @@ namespace FileHandling
     public static class FileHandler
     {
 
-        public const string FileExtension = ".covidSim";
-        public static string SelectedFileName = null;
 
+        public static string SelectedFileName = null;
+        private const string FileExtension = ".covidSim";
+        private const string SaveStateFolderName = "SavedSimulations";
+        private const string ScreenshotFolderName = "Screenshots";
         //TODO CATCH  UnauthorizedAccessException
 
         #region serialization
@@ -35,7 +38,7 @@ namespace FileHandling
         public static void SaveData(Simulation.Edit.Simulation simulation)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            string path = Application.persistentDataPath + "/" + SelectedFileName + FileExtension;
+            string path = GetCurrentSaveStateFilePath();
             FileStream stream = new FileStream(path, FileMode.Create);
             formatter.Serialize(stream, simulation);
             stream.Close();
@@ -48,17 +51,13 @@ namespace FileHandling
         /// <returns>The simulation object if operation was successful, else null</returns>
         public static Simulation.Edit.Simulation LoadData()
         {
-            string path = Application.persistentDataPath + "/" + SelectedFileName + FileExtension;
-
-
+            string path = GetCurrentSaveStateFilePath();
             if (File.Exists(path))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 FileStream stream = new FileStream(path, FileMode.Open);
                 Simulation.Edit.Simulation data = formatter.Deserialize(stream) as Simulation.Edit.Simulation;
                 stream.Close();
-
-                //Debug.Log("Data loaded successfully!");
                 return data;
             }
             else
@@ -67,12 +66,13 @@ namespace FileHandling
             }
         }
         #endregion
+
         /// <summary>
         /// Method which deletes the current selected simulation file.
         /// </summary>
         public static void DeleteData()
         {
-            string path = Application.persistentDataPath + "/" + SelectedFileName + FileExtension;
+            string path = GetCurrentSaveStateFilePath();
             if (File.Exists(path))
             {
                 File.Delete(path);
@@ -91,7 +91,7 @@ namespace FileHandling
         /// <returns>true if it exists, else false.</returns>
         public static bool SaveFileExists()
         {
-            string path = Application.persistentDataPath + "/" + SelectedFileName + FileExtension;
+            string path = GetCurrentSaveStateFilePath();
             return File.Exists(path);
         }
 
@@ -103,7 +103,9 @@ namespace FileHandling
         /// <returns>true if this file exists, else false</returns>
         public static bool SaveFileExists(string filename)
         {
-            string path = Application.persistentDataPath + "/" + filename + FileExtension;
+            //string path = Application.persistentDataPath + "/" + filename + FileExtension;
+            string pathToFolder = GetSaveStatesFilePath();
+            string path = pathToFolder + "/" + filename + FileExtension;
             return File.Exists(path);
 
         }
@@ -115,13 +117,12 @@ namespace FileHandling
         /// <returns>A string list with oredered file directories.</returns>
         public static List<string> GetFilePathsOrderByLastModifiedDate()
         {
-            string path = Application.persistentDataPath;
+            string path = GetSaveStatesFilePath();
             List<string> filePaths = new List<string>();
 
             List<FileInfo> sortedFiles = new DirectoryInfo(path).GetFiles("*.covidSim")
                                                   .OrderByDescending(file => file.LastWriteTime)
                                                   .ToList();
-
             // Adding to the return list
             sortedFiles.ForEach(fileInfo => filePaths.Add(fileInfo.FullName));
             return filePaths;
@@ -132,12 +133,12 @@ namespace FileHandling
         /// Method to get all file names ordered b the modfification date (descending).
         /// </summary>
         /// <returns>A string list with oredered file names.</returns>
-        public static List<string> GetFileNamesOrderByLastModifiedDate() 
+        public static List<string> GetFileNamesOrderByLastModifiedDate()
         {
             List<string> filePaths = GetFilePathsOrderByLastModifiedDate();
             List<string> fileNames = new List<string>();
-            foreach (string filePath in filePaths) 
-            { 
+            foreach (string filePath in filePaths)
+            {
                 string fileName = Path.GetFileName(filePath);
                 fileName = fileName.Remove(fileName.Length - FileExtension.Length);
                 fileNames.Add(fileName);
@@ -145,6 +146,42 @@ namespace FileHandling
 
 
             return fileNames;
+        }
+
+        /// <summary>
+        /// Method which returns the path where the screenshots are saved.
+        /// Screenshots folder will be created if it does not exists.
+        /// </summary>
+        /// <returns>The path of the created/existing folder.</returns>
+        public static string GetScreenshotFilePath()
+        {
+            string pathToFolder = Application.persistentDataPath + "/" + ScreenshotFolderName;
+            Directory.CreateDirectory(pathToFolder);
+            return pathToFolder;
+
+        }
+
+        /// <summary>
+        /// Method which returns the path where the savestates are saved.
+        /// Savestates folder will be created if it does not exists.
+        /// </summary>
+        /// <returns>The path of the created/existing folder.</returns>
+        public static string GetSaveStatesFilePath()
+        {
+            string pathToFolder = Application.persistentDataPath + "/" + SaveStateFolderName;
+            Directory.CreateDirectory(pathToFolder);
+            return pathToFolder;
+
+        }
+
+        /// <summary>
+        /// Method to get the path of the curren save state file.
+        /// </summary>
+        /// <returns>The corresponding full path with file extension.</returns>
+        public static string GetCurrentSaveStateFilePath()
+        {
+            string pathToFolder = GetSaveStatesFilePath();
+            return pathToFolder + "/" + SelectedFileName + FileExtension;
         }
 
 
@@ -162,7 +199,6 @@ namespace FileHandling
             Simulation.Edit.Simulation simulation = new Simulation.Edit.Simulation(simulationOptions, entities);
             return simulation;
         }
-
         #endregion
     }
 }
