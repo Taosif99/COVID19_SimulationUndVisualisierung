@@ -20,9 +20,12 @@ namespace DialogBoxSystem {
         public GameObject OkButtonGB;
         public GameObject CancelButtonGB;
         public GameObject DialogTextGB;
+        public GameObject DialogTitleGB;
         public GameObject DialogBoxGB;
+        public GameObject InputfieldGB;
         private TextMeshProUGUI _dialogText;
-       
+        private TextMeshProUGUI _dialogTitle;
+
 
 
 
@@ -43,16 +46,19 @@ namespace DialogBoxSystem {
         // Start is called before the first frame update
         void Start()
         {
+            _dialogTitle = DialogTitleGB.GetComponent<TextMeshProUGUI>();
             _dialogText = DialogTextGB.GetComponent<TextMeshProUGUI>();
-         
         }
 
 
         public void HandleDialogBox(DialogBox dialogBox)
         {
+            DialogTitleGB.SetActive(true);
             DialogBoxGB.SetActive(true);
             OkButtonGB.SetActive(dialogBox.HasOkButton);
             CancelButtonGB.SetActive(dialogBox.HasCancelButon);
+            InputfieldGB.SetActive(dialogBox.HasTextField);
+            _dialogTitle.SetText(dialogBox.Title);
             _dialogText.SetText(dialogBox.Message);
             _currentDialogBox = dialogBox;
         }

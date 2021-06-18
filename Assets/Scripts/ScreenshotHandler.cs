@@ -4,7 +4,7 @@ using System;
 
 /// <summary>
 /// Class which implements the functionality of taking
-/// screenshots in the game. With this the user can for example save an image of
+/// screenshots in the simulation. With this the user can for example save an image of
 /// a graph.
 /// One should be able take a picture each second, if click is faster it will be overwritten.
 /// 

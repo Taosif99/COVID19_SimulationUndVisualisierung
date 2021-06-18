@@ -18,7 +18,7 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadStartSimulation()
     {
-        SceneManager.LoadScene("StartSimulation");
+        SceneManager.LoadScene("StartSimulationTMP");
     }
 
     public void LoadCreateSimulation()

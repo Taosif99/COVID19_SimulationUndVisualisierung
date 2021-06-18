@@ -87,7 +87,7 @@ namespace GraphChart
         public enum GraphType
         {
             BarChart,
-            LineGraph //Includes also multiline graph
+            LineGraph //Includes also multiline graphs
         }
         private void Awake()
         {

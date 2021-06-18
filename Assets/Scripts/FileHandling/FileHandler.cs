@@ -25,10 +25,6 @@ namespace FileHandling
 
         //TODO CATCH  UnauthorizedAccessException
 
-
-
-
-
         #region serialization
         /// <summary>
         /// Method which saves simulation object as serialized object
@@ -90,6 +86,7 @@ namespace FileHandling
 
         /// <summary>
         /// Method which checks if a save file does already exist.
+        /// (using the current selected file)
         /// </summary>
         /// <returns>true if it exists, else false.</returns>
         public static bool SaveFileExists()
@@ -97,6 +94,20 @@ namespace FileHandling
             string path = Application.persistentDataPath + "/" + SelectedFileName + FileExtension;
             return File.Exists(path);
         }
+
+        /// <summary>
+        /// Method which checks if a save file does already exist.
+        /// (using a filename as parameter) 
+        /// </summary>
+        /// <param name="filename">The filename to check without extension</param>
+        /// <returns>true if this file exists, else false</returns>
+        public static bool SaveFileExists(string filename)
+        {
+            string path = Application.persistentDataPath + "/" + filename + FileExtension;
+            return File.Exists(path);
+
+        }
+
 
         /// <summary>
         /// Method to get all file paths ordered b the modfification date (descending).

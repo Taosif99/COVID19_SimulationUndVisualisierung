@@ -24,7 +24,7 @@ namespace FileHandling
         /// </summary>
         public void CreateSimulation()
         {
-            if (InputValidator.BasicInputValidation(_nameInputField.text))
+            if (InputValidator.BasicInputFieldValidation(_nameInputField))
             {
                 _nameInputField.image.color = Color.white;
                 string fileName = _nameInputField.text;
@@ -54,10 +54,7 @@ namespace FileHandling
                 DialogBox dialogBox = new DialogBox(name, msg);
                 dialogBox.HasCancelButon = false;
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
-                _nameInputField.image.color = Color.red;
-
             }
-
         }
         /// <summary>
         /// Method which will be passed to the DialogBox confirmation action handler.

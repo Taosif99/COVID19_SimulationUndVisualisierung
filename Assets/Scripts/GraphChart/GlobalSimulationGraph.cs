@@ -8,23 +8,21 @@ namespace GraphChart
 {
     /// <summary>
     /// Class which handles the showing of graphs and updating of the corresponding values
+    /// in the simulation.
     /// </summary>
     public class GlobalSimulationGraph : MonoBehaviour
     {
 
-        [SerializeField] private GameObject _fullScreenGraphGameObject;
         [SerializeField] private GameObject _multiLineGraphGameObject;
         [SerializeField] private GameObject _barchartGameObject;
 
 
         //Multiline
-        //private List<List<int>> _lines;
         private List<Line> _lines;
 
         private List<Color> _colorList;
         private Func<int, string> _xLabelMultilineGraph;
         //Barchart
-        //private List<int> _barchartValues;
         private List<GraphValue> _barchartValues;
         private Func<int, string> _xLabelBarChart;
         //To use the more performant update value of a barchart
@@ -65,6 +63,8 @@ namespace GraphChart
             InitColorList();
             InitMultiLineGraph();
             InitBarChart();
+
+            //TODO START COROURINE OR USE EVENTS ONLY IF SIMULATION STARTED
             StartCoroutine(UpdateGraphsEachDay());
         }
 
@@ -74,27 +74,22 @@ namespace GraphChart
         /// <param name="shouldUpdateValues">If the infection values should be updated, e.g. after a day, a week...</param>
         public void UpdateValuesAndShowGraphs(bool shouldUpdateValues)
         {
-            if (BarchartGameObject.activeInHierarchy)
-            {
-
-                if (shouldUpdateValues)
-                {
-                    UpdateBarChartValues();
-                }
-
-                //BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _xLabelBarChart,null,_colorList);
-                BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _colorList, _xLabelBarChart);
-            }
 
 
             if (shouldUpdateValues)
             {
+                UpdateBarChartValues();
                 UpdateLineGraphValues();
+            }
+
+
+            if (BarchartGameObject.activeInHierarchy)
+            {
+                BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _colorList, _xLabelBarChart);
             }
 
             if (MultiLineGraphGameObject.activeInHierarchy)
             {
-                //MultiLineGraphGameObject.GetComponent<GraphChart>().ShowMultiLineGraph(_lines, _colorList, _xLabelMultilineGraph);
                 MultiLineGraphGameObject.GetComponent<GraphChart>().ShowMultiLineGraph(_lines, _colorList, _xLabelMultilineGraph);
             }
 
@@ -303,8 +298,6 @@ namespace GraphChart
             _lines[3].IsEnabled = recoveredOn;
 
             UpdateValuesAndShowGraphs(false);
-
-
         }
 
 

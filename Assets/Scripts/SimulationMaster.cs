@@ -65,10 +65,6 @@ public class SimulationMaster : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(Instance);
-        } else if(Instance != null)
-        {
-            Destroy(gameObject);
         }
     }
 

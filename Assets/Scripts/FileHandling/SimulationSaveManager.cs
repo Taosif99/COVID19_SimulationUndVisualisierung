@@ -4,7 +4,8 @@ using DialogBoxSystem;
 using Simulation.Edit;
 using System.Collections.Generic;
 using Grid;
-
+using TMPro;
+using InputValidation;
 
 namespace FileHandling
 {
@@ -140,17 +141,54 @@ namespace FileHandling
                 DialogBox dialogBox = new DialogBox(name, msg);
                 dialogBox.OnConfirmationPressed += ReturnToMainMenuSaveAction;
                 dialogBox.OnCancelPressed += SceneLoader.Instance.LoadMainMenu;
-
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             } // else TODO show some error
         }
+
+
+
+        public void SaveAs()
+        {
+            string msg = "Please enter a new simulation name";
+            string name = "Save as a new file ";
+            DialogBox dialogBox = new DialogBox(name, msg);
+            dialogBox.HasTextField = true;
+            TMP_InputField inputfield = DialogBoxManager.Instance.InputfieldGB.GetComponent<TMP_InputField>();
+            inputfield.text = FileHandler.SelectedFileName;
+            inputfield.onValueChanged.AddListener(delegate { SaveAsInputFieldOnChange(); });
+            dialogBox.OnConfirmationPressed += SaveAsConfirmationAcion;
+            DialogBoxManager.Instance.HandleDialogBox(dialogBox);
+            
+
+        }
+
+        private void SaveAsInputFieldOnChange()
+        {
+            TMP_InputField inputfield = DialogBoxManager.Instance.InputfieldGB.GetComponent<TMP_InputField>();
+            string newName = inputfield.text;
+            GameObject OkButton = DialogBoxManager.Instance.OkButtonGB;
+            //Overriding of other files than current file not allowed
+            if (!InputValidator.BasicInputFieldValidation(inputfield) || (FileHandler.SaveFileExists(newName) && !(newName == FileHandler.SelectedFileName)))
+            {
+                OkButton.SetActive(false);
+            }
+            else
+            {
+                OkButton.SetActive(true);
+            }
+        }
+
+        private void SaveAsConfirmationAcion()
+        {
+            FileHandler.SelectedFileName = DialogBoxManager.Instance.InputfieldGB.GetComponent<TMP_InputField>().text;
+            SaveToFile();
+        }
+
 
         private void ReturnToMainMenuSaveAction()
         {
             SaveToFile();
             SceneLoader.Instance.LoadMainMenu();
         }
-
-
     }
 }

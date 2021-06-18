@@ -10,11 +10,11 @@ namespace DialogBoxSystem
     public class DialogBox
     {
 
-        public string Name;
+        public string Title;
         public string Message;
         public bool HasOkButton;
         public bool HasCancelButon;
-
+        public bool HasTextField;
 
 
         //These actions hold what will happen when ok or cancel is pressed
@@ -23,12 +23,12 @@ namespace DialogBoxSystem
 
         public DialogBox(string name, string message)
         {
-            Name = name;
+            Title = name;
             Message = message;
             HasOkButton = true;
             HasCancelButon = true;
+            HasTextField = false;
         }
 
-        //TODO SHOW METHOD
     }
 }

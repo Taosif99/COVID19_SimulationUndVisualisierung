@@ -73,8 +73,19 @@ namespace InputValidation
             string trimmedText = string.Concat(simulationName.Where(c => !char.IsWhiteSpace(c)));
             return !trimmedText.Equals("");
         }
-        
-        
+
+        /// <summary>
+        /// This method combines SetInputField() and BasicInputValidation-
+        /// </summary>
+        /// <param name="inputField"></param>
+        /// <returns>true if text of inputfield is not empty and does not only consist of whitespaces , false if string is empty or only consists of whitespaces
+        /// inputfield will be colored white if true, else it will be colored white</returns>
+        public static bool BasicInputFieldValidation(TMP_InputField inputField) 
+        {
+            bool isInputOk = BasicInputValidation(inputField.text);
+            SetInputFieldColor(inputField, isInputOk);
+            return isInputOk;
+        }
         
         /// <summary>
         /// Method to set the color of an inputfield depending if its content 
@@ -98,7 +109,7 @@ namespace InputValidation
         /// Method to make sure that percentage values are in decimal format.
         /// </summary>
         /// <param name="value"></param>
-        /// <returns></returns>
+        /// <returns>true if value is a valid decimal number, else false</returns>
         private static bool IsValidPercentage(float value)
         {
             return value >= 0f && value <= 1f;
