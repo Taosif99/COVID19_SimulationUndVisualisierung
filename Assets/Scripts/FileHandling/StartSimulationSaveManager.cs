@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DialogBoxSystem;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 
 namespace FileHandling
@@ -75,7 +76,7 @@ namespace FileHandling
 
                 GameObject simulationButtonGameObject = simulationButtonItem.transform.GetChild(1).gameObject;
                 //Change the text
-                Text simulationButtonText = simulationButtonGameObject.transform.GetComponentInChildren<Text>();
+                TMP_Text simulationButtonText = simulationButtonGameObject.transform.GetComponentInChildren<TMP_Text>();
 
                 simulationButtonText.text = fileName;
 
