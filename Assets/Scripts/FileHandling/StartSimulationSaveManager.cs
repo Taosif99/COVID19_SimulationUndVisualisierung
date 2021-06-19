@@ -180,7 +180,7 @@ namespace FileHandling
                 yButtonPositionDifference -= _yPositionButtonChange;
                 GameObject simulationButton = simulationButtonItem.transform.GetChild(1).gameObject;
                 //Change the text
-                Text simulationButtonText = simulationButton.transform.GetComponentInChildren<Text>();
+                TMP_Text simulationButtonText = simulationButton.transform.GetComponentInChildren<TMP_Text>();
                 simulationButtonText.text = mockName;
                 yPanelDownGrowth = yPanelDownGrowth - _yPositionPanelChange;
             }
