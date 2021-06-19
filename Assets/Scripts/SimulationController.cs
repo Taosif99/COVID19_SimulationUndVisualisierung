@@ -20,7 +20,7 @@ class SimulationController : MonoBehaviour
     private TMP_Text _simulationDateTime;
 
     private int _currentDay;
-    private event Action<bool> _onDayPassed;
+    private event Action<bool> _onDayPassed; //TODO PROPER EVENT
 
     private bool _isInitialized = false;
     private bool _isPaused = false;
@@ -35,6 +35,7 @@ class SimulationController : MonoBehaviour
         Assert.IsNotNull(_editorObjectsManager);
         Assert.IsNotNull(_simulationDateTime);
         _onDayPassed += GlobalSimulationGraph.Instance.UpdateValuesAndShowGraphs;
+       
     }
 
     public void Play()
@@ -50,6 +51,7 @@ class SimulationController : MonoBehaviour
 
             _currentDay = _controller.SimulationDate.Day;
             SimulationMaster.Instance.StartUninfectedCounting();
+            SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
 
             _isInitialized = true;    
         }
@@ -72,12 +74,18 @@ class SimulationController : MonoBehaviour
             _simulationDateTime.text =
                 $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
 
+            
+            
             //Update statistics each day
             if (_currentDay != _controller.SimulationDate.Day) 
             {
+               
                 _currentDay = _controller.SimulationDate.Day;
                 _onDayPassed?.Invoke(true);
-               
+                //10 min bias ???
+                SimulationMaster.Instance.OnDayEnds();
+                SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
+
             }
                  
             _lastSimulationUpdate = Time.time;

@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Simulation.Runtime;
 using EditorObjects;
-
+using EpidemiologicalCalculation;
+using System;
 
 /// <summary>
 /// Class which handles simulation specific properties and settings.
@@ -15,6 +16,11 @@ public class SimulationMaster : MonoBehaviour
 
 
     public static SimulationMaster Instance;
+
+
+
+    private int _currentDayOfSimulation = 0;
+    private DayInfoHandler _dayInfoHandler = new DayInfoHandler();
 
 
 
@@ -57,7 +63,7 @@ public class SimulationMaster : MonoBehaviour
         }
     }
 
-
+    public int CurrentDayOfSimulation { get => _currentDayOfSimulation; set => _currentDayOfSimulation = value; }
 
     private void Awake()
     {
@@ -169,4 +175,42 @@ public class SimulationMaster : MonoBehaviour
         Debug.Log(debugText);
     
     }
+
+    //remove ?
+    public void IncreaseDayCounter() 
+    {
+
+        _currentDayOfSimulation += 1;
+  
+    }
+
+
+    //wrapping also DayInfoHandler
+    public void OnDayBegins(DateTime date)
+    {
+        IncreaseDayCounter();
+        _dayInfoHandler.AddDayInfo(date);
+    }
+
+    public void OnDayEnds()
+    {
+        float rValue = _dayInfoHandler.UpdateRValue(CurrentDayOfSimulation);
+
+        //We may set the R-Value here
+        if(rValue == -1f)
+        UIController.Instance.RValueText.text = "R-Value: ? ";
+        else 
+        {
+                UIController.Instance.RValueText.text = $"R-Value: " + rValue;
+        }
+    }
+
+
+
+    public void OnPersonInfected()
+    {
+
+        _dayInfoHandler.AddNewInfectionToCurrentDate(CurrentDayOfSimulation);
+    }
+
 }

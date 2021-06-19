@@ -208,6 +208,9 @@ namespace Simulation.Runtime
             StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
             stateTransitionEventArgs.newInfectionState = InfectionState;
             OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
+            //TODO EVENT
+            SimulationMaster.Instance.OnPersonInfected();
+
         }
     }
 }

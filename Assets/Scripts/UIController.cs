@@ -52,7 +52,7 @@ public class UIController : MonoBehaviour
     public GameObject WorkplaceUI;
     public GameObject HospitalUI;
     public GameObject DeleteEntityGameObject;
-
+    public TMP_Text RValueText;
     // All texts field which must be resettet will be cached in this list
     public List<TMP_InputField> InputFieldsToReset = new List<TMP_InputField>();
 
