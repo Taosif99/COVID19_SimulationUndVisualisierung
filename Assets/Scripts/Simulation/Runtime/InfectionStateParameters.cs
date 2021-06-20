@@ -36,5 +36,17 @@ namespace Simulation.Runtime
         /// </summary>
         public const float FatalityRate = 0.026f;
         public const float FatalityRatePreIllness = 0.87f;
+
+        /// <summary>
+        /// "Etwa 36,5 Millionen Menschen in Deutschland haben danach ein erhöhtes Risiko für einen schweren COVID-19-Verlauf.Unter diesen gehören 21,6 Millionen Menschen zur Hochrisikogruppe."
+        /// PreIllness Probability:
+        /// 36.5 - 21.6 = 14.9
+        /// 21.6 / 36.5 ≈ 0.6 
+        /// 14.9 / 36.5 ≈ 0.4
+        /// 21.6 * 0.6 + 14.9 * 0.4 = 18.92
+        /// 18.92 / 83.02 (Einwohner Deutschlands)  = 0.22f
+        /// Source: https://www.rki.de/DE/Content/Gesundheitsmonitoring/Gesundheitsberichterstattung/GBEDownloadsJ/JoHM_S2_2021_Risikogruppen_COVID_19.pdf?__blob=publicationFile
+        /// </summary>
+        public const float preIllnessProbability = 0.22f;
     }
 }

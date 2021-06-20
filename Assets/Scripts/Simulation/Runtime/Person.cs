@@ -8,20 +8,21 @@ namespace Simulation.Runtime
     // TODO: Separate statistical fields
     public class Person
     {
-        private PhysicalCondition _physicalCondition;
+        //private PhysicalCondition _physicalCondition;
         private float _risk;
         private int _encounters;
         private int _amountOfPeopleInfected;
         private bool _isVaccinated;
         private DateTime _infectionDate;
         private int _infectionStateDuration;
-        private bool _isDead;
+        private HealthState _healthState;
 
         public Person(float carefulnessFactor, float risk, bool isWorker)
         {
             CarefulnessFactor = carefulnessFactor;
             _risk = risk;
             IsWorker = isWorker;
+            _healthState = new HealthState();
         }
 
         public float CarefulnessFactor { get; }
@@ -29,7 +30,6 @@ namespace Simulation.Runtime
         public bool IsWorker { get; }
         public List<Activity> Activities { get; } = new List<Activity>();
         public Venue CurrentLocation { get; set; }
-        public bool IsDead { get; private set; }
 
         public event Action <StateTransitionEventArgs> OnStateTrasitionHandler;
         public class StateTransitionEventArgs : EventArgs
@@ -56,6 +56,7 @@ namespace Simulation.Runtime
 
         }
 
+<<<<<<< Updated upstream
         public enum PhysicalCondition
         {
             Healthy,
@@ -67,6 +68,8 @@ namespace Simulation.Runtime
 
 
 
+=======
+>>>>>>> Stashed changes
         /// <summary>
         /// Calculates the difference between the current date and the infection date in days.
         /// The difference determines in which infection states the person is. 
@@ -130,8 +133,6 @@ namespace Simulation.Runtime
 
                     case InfectionStates.Phase5:
                         break;
-
-
                 }
 
                 if (stateTransition)
@@ -169,48 +170,19 @@ namespace Simulation.Runtime
             return null;
         }
 
-        /// <summary>
-        /// Returns the physical conditon of the person.
-        /// </summary>
-        /// <returns></returns>
-        public PhysicalCondition GetPhysicalCondition()
-        {
-            return _physicalCondition;
-        }
-
-        /// <summary>
-        /// Update the health state of the person. 
-        /// </summary>
-        public void UpdateHealthState()
-        {
-            if (InfectionState.HasFlag(InfectionStates.Symptoms) & _isDead == false)
-            {
-                float surviveProbability = Random.Range(0f, 1f);
-
-                if (_physicalCondition.Equals(PhysicalCondition.Healthy))
-                {
-                    if (surviveProbability <= InfectionStateParameters.FatalityRate)
-                        _isDead = true;
-                }
-                else
-                {
-                    if (surviveProbability <= InfectionStateParameters.FatalityRatePreIllness)
-                        _isDead = true;
-                }
-            }
-        }
-
         public void SetInfected(DateTime infectionDate)
         {
             InfectionState = InfectionStates.Infected;
             _infectionDate = infectionDate;
             _infectionStateDuration = Random.Range(InfectionStateParameters.IncubationMinDay, InfectionStateParameters.IncubationMaxDay);
+<<<<<<< Updated upstream
             StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
             stateTransitionEventArgs.newInfectionState = InfectionState;
             OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
             //TODO EVENT
             SimulationMaster.Instance.OnPersonInfected();
 
+            _healthState.SurviveProbability();
         }
     }
 }
