@@ -16,6 +16,9 @@ namespace Simulation.Runtime
             SetHealthCondition();
         }
 
+        /// <summary>
+        /// On the basis of given parameters it is determined whether the person is pre-diseased.
+        /// </summary>
         void SetHealthCondition()
         {
             float healthyProbability = Random.Range(0f, 1f);
@@ -25,11 +28,19 @@ namespace Simulation.Runtime
             }
         }
 
+        /// <summary>
+        /// A random survive probaility will be calculated
+        /// </summary>
         public void SurviveProbability()
         {
             float _surviveProbability = Random.Range(0f, 1f);
         }
 
+        /// <summary>
+        /// Checks if the person has symptoms and is alive. If these requirements are met, the health state will be updated. 
+        /// The pre-illness is taken into account in the health state update.
+        /// </summary>
+        /// <param name="person">Called person in the simulation</param>
         public void UpdateHealthState(Person person)
         {
             if (person.InfectionState.HasFlag(Person.InfectionStates.Symptoms) & _isDead == false)

@@ -8,7 +8,7 @@ namespace Simulation.Runtime
     // TODO: Separate statistical fields
     public class Person
     {
-        //private PhysicalCondition _physicalCondition;
+        private PhysicalCondition _physicalCondition;
         private float _risk;
         private int _encounters;
         private int _amountOfPeopleInfected;
@@ -53,7 +53,6 @@ namespace Simulation.Runtime
             Phase3 = Infected | Infectious | Symptoms,
             Phase4 = Infected | Symptoms | Recovering,
             Phase5 = Recovered
-
         }
 
         public enum PhysicalCondition
@@ -162,6 +161,11 @@ namespace Simulation.Runtime
             return null;
         }
 
+        /// <summary>
+        /// Set the Infection state of a person to infected and set the current simulation date as the infection date of the person.
+        /// In addition, an incubation time and the survive probability of the person are set. 
+        /// </summary>
+        /// <param name="infectionDate">Current simulations date</param>
         public void SetInfected(DateTime infectionDate)
         {
             InfectionState = InfectionStates.Infected;
