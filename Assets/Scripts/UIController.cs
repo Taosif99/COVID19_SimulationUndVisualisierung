@@ -53,6 +53,10 @@ public class UIController : MonoBehaviour
     public GameObject HospitalUI;
     public GameObject DeleteEntityGameObject;
     public TMP_Text RValueText;
+    public TMP_Text IncidenceText;
+    public Toggle EpidemicInfoToggle;
+    [SerializeField] private GameObject RValueGameObject;
+    [SerializeField] private GameObject IncidenceGameObject;
     // All texts field which must be resettet will be cached in this list
     public List<TMP_InputField> InputFieldsToReset = new List<TMP_InputField>();
 
@@ -263,6 +267,15 @@ public class UIController : MonoBehaviour
     }
 
  
+    public void OnEpidemicInfoToggleChange()
+    {
+        IncidenceText.text = "";
+        RValueText.text = "";
+        RValueGameObject.SetActive(EpidemicInfoToggle.isOn);
+        IncidenceGameObject.SetActive(EpidemicInfoToggle.isOn);
+    
+    }
+    
 
     /// <summary>
     /// Method to add on change listeners for better usability.

@@ -194,12 +194,25 @@ public class SimulationMaster : MonoBehaviour
         float incidence;
        _dayInfoHandler.UpdateRValueAndIncidence(CurrentDayOfSimulation,out rValue,out incidence);
 
-        //We may set the R-Value here
-        if(rValue == -1f)
-        UIController.Instance.RValueText.text = "R-Value: ? ";
-        else 
+
+        if (UIController.Instance.EpidemicInfoToggle.isOn)
         {
+
+            //We may set the R-Value here
+            if (rValue == -1f)
+                UIController.Instance.RValueText.text = "R-Value: ? ";
+            else
+            {
                 UIController.Instance.RValueText.text = $"R-Value: " + rValue;
+            }
+            if (incidence == -1f)
+            {
+                UIController.Instance.IncidenceText.text = "Incidence: ? ";
+            }
+            else
+            {
+                UIController.Instance.IncidenceText.text = $"Incidence: {incidence} ";
+            }
         }
     }
 
@@ -207,7 +220,6 @@ public class SimulationMaster : MonoBehaviour
 
     public void OnPersonInfected()
     {
-
         _dayInfoHandler.AddNewInfectionToCurrentDate(CurrentDayOfSimulation);
     }
 
