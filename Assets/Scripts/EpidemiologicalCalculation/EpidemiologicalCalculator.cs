@@ -71,6 +71,38 @@ namespace EpidemiologicalCalculation
             return result;
         }
 
+        /// <summary>
+        /// Method which calculates the incidence as ratio
+        /// of the amount of new infections until simualtionDay devided by the riskPopulation
+        /// 
+        /// 
+        /// Definition from:
+        /// Einfiihrung in die Epidemiologie 2., vollstandig iiberarbeitete Auflage 
+        /// Aus dem Englischen von Karin Beifuss
+        /// ISBN 978-J-456-84535-7
+        /// Page 37
+        /// 
+        /// 
+        /// </summary>
+        /// <param name="simulationDay"></param>
+        /// <param name="simulationDays"></param>
+        /// <returns>-1 if riskpopulation is 0, else the incidence</returns>
+        public static float CalculateIncidence(int simulationDay, List<DayInfo> simulationDays)
+        {
+            float amountNewInfectionsInDeltaT = 0f;
+            float riskPopulation = SimulationMaster.Instance.AmountUninfected;
+          
+            if (riskPopulation == 0) return -1;
+            for (int i = 0; i < simulationDay - 1; i++)
+            {
+                amountNewInfectionsInDeltaT += simulationDays[i].AmountNewInfections;
+            }
+            Debug.Log($"RiskPop:{riskPopulation} amount new inf: {amountNewInfectionsInDeltaT}");
+            return amountNewInfectionsInDeltaT / riskPopulation;
+        }
+
+
+
         private static float CalculateRatio(int day, int tau, List<DayInfo> dayInfos)
         {
 

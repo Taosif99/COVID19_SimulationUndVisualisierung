@@ -153,6 +153,8 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter[Person.InfectionStates.Phase4] = 0;
         _infectionStateCounter[Person.InfectionStates.Phase5] = 0;
         //_infectionStateCounter[Person.InfectionStates.Uninfected] = ;
+        _dayInfoHandler = new DayInfoHandler();
+        _currentDayOfSimulation = 0;
 
     }
 
@@ -176,25 +178,21 @@ public class SimulationMaster : MonoBehaviour
     
     }
 
-    //remove ?
-    public void IncreaseDayCounter() 
-    {
 
-        _currentDayOfSimulation += 1;
-  
-    }
 
 
     //wrapping also DayInfoHandler
     public void OnDayBegins(DateTime date)
     {
-        IncreaseDayCounter();
+        _currentDayOfSimulation += 1;
         _dayInfoHandler.AddDayInfo(date);
     }
 
     public void OnDayEnds()
     {
-        float rValue = _dayInfoHandler.UpdateRValue(CurrentDayOfSimulation);
+        float rValue;
+        float incidence;
+       _dayInfoHandler.UpdateRValueAndIncidence(CurrentDayOfSimulation,out rValue,out incidence);
 
         //We may set the R-Value here
         if(rValue == -1f)

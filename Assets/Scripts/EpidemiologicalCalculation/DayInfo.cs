@@ -14,7 +14,7 @@ namespace EpidemiologicalCalculation
         private DateTime _date;
         private int _amountNewInfections;
         private float _rValue;
-
+        private float _incidence;
 
         public DayInfo(DateTime date)
         {
@@ -27,12 +27,11 @@ namespace EpidemiologicalCalculation
         public DateTime Date { get => _date; set => _date = value; }
         public int AmountNewInfections { get => _amountNewInfections; set => _amountNewInfections = value; }
         public float RValue { get => _rValue; set => _rValue = value; }
+        public float Incidence { get => _incidence; set => _incidence = value; }
 
-        
-                
         public override string ToString()
         {
-            return Date.ToString() + "|" + AmountNewInfections + "|" + RValue;
+            return Date.ToString() + ";" + AmountNewInfections + ";" + RValue + ";" + Incidence;
         }
         
 

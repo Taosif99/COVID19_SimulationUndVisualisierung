@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Linq;
 using Simulation.Edit;
 using System.Collections.Generic;
+using EpidemiologicalCalculation;
+using System.Text;
 
 namespace FileHandling
 {
@@ -183,6 +185,20 @@ namespace FileHandling
             string pathToFolder = GetSaveStatesFilePath();
             return pathToFolder + "/" + SelectedFileName + FileExtension;
         }
+
+        //Currently Debug, maybe feature if product owner wants it
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="dayInfo"></param>
+        /// <param name="csv"></param>
+        public static void WriteToCsv(DayInfo dayInfo, StringBuilder csv)
+        {
+            csv.AppendLine(dayInfo.ToString());
+            File.WriteAllText(Application.persistentDataPath + "/" + "debug.csv", csv.ToString());
+        }
+
+
 
 
         #region Debug Mock

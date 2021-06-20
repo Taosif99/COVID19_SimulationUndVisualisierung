@@ -1,5 +1,7 @@
-using System.Collections.Generic;
+using FileHandling;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace EpidemiologicalCalculation
@@ -9,6 +11,8 @@ namespace EpidemiologicalCalculation
     /// </summary>
     public class DayInfoHandler
     {
+       private StringBuilder _csv;
+
         /// <summary>
         /// This list manages the days of the simulation.
         /// The first day has index 0, second 1,...
@@ -18,6 +22,8 @@ namespace EpidemiologicalCalculation
         public DayInfoHandler()
         {
             _simulationDays = new List<DayInfo>();
+            _csv = new StringBuilder();
+            _csv.AppendLine("Day;AmountNewInfections;R-Value;Incidence");
         }
 
      
@@ -38,6 +44,7 @@ namespace EpidemiologicalCalculation
 
         /// <summary>
         /// Method which adds 1 to the amounts of new infections in the current day.
+        /// 
         /// </summary>
         /// <param name="currentDayOfSimulation">The current day of the simulation, e.g. First day 1, second 2 ...</param>
         public void AddNewInfectionToCurrentDate(int currentDayOfSimulation)
@@ -53,18 +60,22 @@ namespace EpidemiologicalCalculation
         /// </summary>
         /// <param name="currentSimulationDay"></param>
         /// <returns>The calculated R-Value</returns>
-        public float UpdateRValue(int currentSimulationDay)
+        public void UpdateRValueAndIncidence(int currentSimulationDay, out float rValue, out float incidence)
         {
-            float RValue = EpidemiologicalCalculator.CalculateR7Value(currentSimulationDay, _simulationDays);
-            _simulationDays[currentSimulationDay - 1].RValue = RValue;
+            rValue = EpidemiologicalCalculator.CalculateRValue(currentSimulationDay, _simulationDays);
+            _simulationDays[currentSimulationDay - 1].RValue = rValue;
             //Debug.Log("Calculated R-Value: (-1 is undefined): " + _simulationDays[currentSimulationDay - 1].RValue);
-            return RValue;
+
+            incidence = EpidemiologicalCalculator.CalculateIncidence(currentSimulationDay,_simulationDays) ;
+            _simulationDays[currentSimulationDay - 1].Incidence = incidence;
+
+            //Better write once all dayinfos at the end of the simulation
+            FileHandler.WriteToCsv(_simulationDays[currentSimulationDay - 1],_csv);
+            
         
         }
 
-
-
-
+        
 
         private void DebugViewDataSets() 
         {
