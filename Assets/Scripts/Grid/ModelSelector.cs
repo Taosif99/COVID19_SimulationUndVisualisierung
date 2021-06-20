@@ -1,5 +1,6 @@
 using UnityEngine;
 using EditorObjects;
+using Simulation.Edit;
 
 namespace Grid
 {
@@ -9,18 +10,13 @@ namespace Grid
     /// </summary>
     public class ModelSelector : MonoBehaviour
     {
-
         public static ModelSelector Instance;
 
-        //The GameObject prefab to spawn with its name
-        public NamedPrefab CurrentPrefabToSpawn { get; set; }
-        public PrefabName CurrentPrefabName = PrefabName.None;
         //The used models
         public NamedPrefab[] Prefabs;
 
         //Will be set in the inspector
         public Transform ModelParentTransform;
-
 
         //Prefab of the counter of the Models
         public GameObject CounterPrefab;
@@ -32,23 +28,45 @@ namespace Grid
                 Instance = this;
             }
         }
-
+        
         /// <summary>
-        /// Method to set the current prefab outside this class.
+        /// Retrieve the prefab for the given name/type.
         /// </summary>
-        /// <param name="prefabName">The name of the prefab. </param>
-        public void SetCurrentPrefab(PrefabName prefabName)
+        /// <param name="prefabName">Name/type of the prefab to retrieve</param>
+        /// <returns>The prefab for the given name</returns>
+        public GameObject GetPrefab(PrefabName prefabName)
         {
             foreach (NamedPrefab namedPrefab in Prefabs)
             {
                 if (prefabName.Equals(namedPrefab.prefabName))
                 {
-                    CurrentPrefabToSpawn = namedPrefab;
-                    //Debug.Log("Set Prefab Name:" + namedPrefab.prefabName);
-                    CurrentPrefabName = namedPrefab.prefabName;
-                    return;
+                    return namedPrefab.prefab;
                 }
             }
+
+            return null;
+        }
+        
+        /// <summary>
+        /// Retrieve the prefab for the given editor entity.
+        /// </summary>
+        /// <param name="entity">Editor entity to retrieve the prefab for</param>
+        /// <returns>The prefab for the given editor entity</returns>
+        public GameObject GetPrefab(Entity entity)
+        {
+            switch (entity)
+            {
+                /*case Graph graph:
+                    return GetPrefab(PrefabName.Graph);*/
+                case Household household:
+                    return GetPrefab(PrefabName.Household);
+                case Hospital hospital:
+                    return GetPrefab(PrefabName.Hospital);
+                case Workplace workplace:
+                    return GetPrefab(PrefabName.Workplace);
+            }
+
+            return null;
         }
     }
 }

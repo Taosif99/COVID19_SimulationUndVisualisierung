@@ -116,7 +116,8 @@ public class UIController : MonoBehaviour
         _placementButtonDictionary.Add(PrefabName.Hospital, placeHospitalButton);
         _placementButtonDictionary.Add(PrefabName.Household, placeHouseholdButton);
 
-        foreach (PrefabName key in _placementButtonDictionary.Keys)
+        // TODO: Remove
+        /*foreach (PrefabName key in _placementButtonDictionary.Keys)
         {
             Button button = _placementButtonDictionary[key];
             button.onClick.AddListener(() =>
@@ -127,8 +128,9 @@ public class UIController : MonoBehaviour
                 _lastClickedButton = button;
                 DeactivateOldSettingsElements();
             });
-        }
+        }*/
 
+        // TODO: Remove
         placeGraphButton.onClick.AddListener(() =>
         {
             DisableButtonOutlineColors();
@@ -137,7 +139,6 @@ public class UIController : MonoBehaviour
             SimulationGraphEnabler.EnableGraphSettings();
             _lastClickedButton = placeGraphButton;
             DeactivateOldSettingsElements();
-            ModelSelector.Instance.CurrentPrefabName = PrefabName.None;
         });
 
         //Adding listeners to left Barchart toggles

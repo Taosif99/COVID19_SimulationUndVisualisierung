@@ -15,7 +15,7 @@ namespace EditorObjects
 
         public static IEditorObject Create(Entity entity, string UIName)
         {
-            GameObject prefabToSpawn = ModelSelector.Instance.CurrentPrefabToSpawn.prefab;
+            GameObject prefabToSpawn = ModelSelector.Instance.GetPrefab(entity);
             IEditorObject editorObject = null;
 
             switch (entity)

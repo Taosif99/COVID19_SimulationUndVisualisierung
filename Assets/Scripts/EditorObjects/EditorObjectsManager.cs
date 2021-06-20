@@ -43,22 +43,18 @@ namespace EditorObjects
         public Dictionary<GridCell, IEditorObject> EditorObjectsDic { get => _editorObjectsDic; set => _editorObjectsDic = value; }
         public int AmountPeople { get => _amountPeople; set => _amountPeople = value; }
 
-
-
         /// <summary>
         /// Method to add an EditorObject to our system.
         /// </summary>
         /// <param name="gridCellPosition"></param>
         /// <returns>The created GameObject which can be place in the scene.</returns>
-        public GameObject AddEditorObject(Vector2Int gridCellPosition)
+        public GameObject AddEditorObject(PrefabName prefabName, Vector2Int gridCellPosition)
         {
-
-            PrefabName currentPrefabName = ModelSelector.Instance.CurrentPrefabName;
             IEditorObject editorObject = null;
             GridCell gridCell = new GridCell(gridCellPosition.x, gridCellPosition.y);
             string uiName = "";
             //TODO DEFINE LOGICAL DEFAULT CONSTRUCTOR FOR ENTITES / OR DEFAULT VALUES IN GENERAL
-            switch (currentPrefabName)
+            switch (prefabName)
             {
                 case PrefabName.Workplace:
                     uiName = "Workplace Mock " + WorkPlaceCounter++;

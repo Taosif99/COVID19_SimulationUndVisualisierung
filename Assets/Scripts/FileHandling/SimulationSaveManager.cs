@@ -86,19 +86,6 @@ namespace FileHandling
                 {
                     foreach (Entity entity in entities)
                     {
-                        if (entity is Workplace)
-                        {
-                            ModelSelector.Instance.SetCurrentPrefab(PrefabName.Workplace);
-
-                            if (entity is Hospital)
-                            {
-                                ModelSelector.Instance.SetCurrentPrefab(PrefabName.Hospital);
-                            }
-                        }
-                        else if (entity is Household)
-                        {
-                            ModelSelector.Instance.SetCurrentPrefab(PrefabName.Household);
-                        }
                         IEditorObject editorObject = EditorObjectFactory.Create(entity, "serialized mock text");
                         editorObjectsManager.AddEditorObjectToCollection(entity.Position, editorObject);
                         Vector2Int gridCellPosition = new Vector2Int(entity.Position.X, entity.Position.Y);
@@ -106,7 +93,7 @@ namespace FileHandling
                         GameObject gameObject = editorObject.EditorGameObject;
                         _gridManager.PositionObjectInGrid(gameObject, gridCellPosition);
                     }
-                    ModelSelector.Instance.SetCurrentPrefab(PrefabName.None);
+                    
                     UIController.Instance.IsEntitySelectedUI(false);
                 }
                 else Debug.Log("No entities !");

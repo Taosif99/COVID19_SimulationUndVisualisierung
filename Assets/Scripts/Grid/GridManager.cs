@@ -2,7 +2,6 @@
 using UnityEngine;
 using EditorObjects;
 using System;
-using UnityEngine.EventSystems;
 
 namespace Grid
 {
@@ -54,38 +53,29 @@ namespace Grid
             //Debug.Log("Using cell size " + Grid.CellSize);
         }
 
+        // TODO: Move to EditorObjectsManager
         private void Update()
         {
             //Check if left mouse button clicked and UI not clicked, rethink prefab.None for UI logic
-            if (Input.GetMouseButtonDown(0) && !CameraController.IsMouseOverUi && ModelSelector.Instance.CurrentPrefabName != PrefabName.None)
+            if (Input.GetMouseButtonDown(0) && !CameraController.IsMouseOverUi)
             {
                 //Raycast into the scene
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                
                 //Check if we hit something
-                if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _groundMask))
+                if (!Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _groundMask))
                 {
-                    PlacePrefab(hitInfo.point);
+                    return;
                 }
-            }
-        }
-
-
-        private void PlacePrefab(Vector3 clickPoint)
-        {
-
-            Vector2Int gridCellPosition = Grid.GetGridCell(new Vector2(clickPoint.x, clickPoint.z));
-            if (!PlacedPositions.Contains(gridCellPosition))
-            {
-
-                //Create a venue and add to editor objects will be done by EditorObjectsManager
-                GameObject gameObject = EditObjectsManager.AddEditorObject(gridCellPosition);
-                PositionObjectInGrid(gameObject,  gridCellPosition);
-
-            }
-            else
-            {
-                Debug.Log("Position already used !");
-                OnEditorObjectClicked?.Invoke(gridCellPosition);
+                
+                var worldPoint = new Vector3(hitInfo.point.x, 0, hitInfo.point.z);
+                Vector3 localPoint = worldPoint - transform.position;
+                Vector2Int gridCellPosition = Grid.GetGridCell(new Vector2(localPoint.x, localPoint.z));
+                    
+                if (PlacedPositions.Contains(gridCellPosition))
+                {
+                    OnEditorObjectClicked?.Invoke(gridCellPosition);
+                }
             }
         }
 
