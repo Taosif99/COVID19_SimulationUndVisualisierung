@@ -8338,6 +8338,7 @@ GameObject:
   - component: {fileID: 945396490}
   - component: {fileID: 945396489}
   - component: {fileID: 945396488}
+  - component: {fileID: 945396494}
   m_Layer: 6
   m_Name: WorldPlane
   m_TagString: Untagged
@@ -8451,7 +8452,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5ab47d05c9e011543874225cc36da1e9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8481,6 +8482,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 945396486}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &945396494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945396486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 693e21e3060e43b185a96d2069ed578f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: 224f9518b6e428941b3acb8c3d34cbb4, type: 2}
 --- !u!1 &951045767
 GameObject:
   m_ObjectHideFlags: 0
