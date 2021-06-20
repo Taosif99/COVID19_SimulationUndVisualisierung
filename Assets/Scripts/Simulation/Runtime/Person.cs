@@ -56,20 +56,12 @@ namespace Simulation.Runtime
 
         }
 
-<<<<<<< Updated upstream
         public enum PhysicalCondition
         {
             Healthy,
             PreIllness
         }
 
-
-
-
-
-
-=======
->>>>>>> Stashed changes
         /// <summary>
         /// Calculates the difference between the current date and the infection date in days.
         /// The difference determines in which infection states the person is. 
@@ -175,13 +167,10 @@ namespace Simulation.Runtime
             InfectionState = InfectionStates.Infected;
             _infectionDate = infectionDate;
             _infectionStateDuration = Random.Range(InfectionStateParameters.IncubationMinDay, InfectionStateParameters.IncubationMaxDay);
-<<<<<<< Updated upstream
             StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
             stateTransitionEventArgs.newInfectionState = InfectionState;
             OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
-            //TODO EVENT
             SimulationMaster.Instance.OnPersonInfected();
-
             _healthState.SurviveProbability();
         }
     }
