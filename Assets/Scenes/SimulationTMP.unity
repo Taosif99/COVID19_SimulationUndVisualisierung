@@ -5321,7 +5321,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &615847773
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18808,6 +18808,7 @@ MonoBehaviour:
   - {fileID: 250470348}
   - {fileID: 697823805}
   - {fileID: 1399270295}
+  _entityPropertiesPanel: {fileID: 615847773}
   ObjectNameInputField: {fileID: 251351803}
   InfectionRiskInputField: {fileID: 181692759}
   NumberOfPeopleInputField: {fileID: 1833106467}

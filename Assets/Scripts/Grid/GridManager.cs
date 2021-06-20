@@ -65,16 +65,21 @@ namespace Grid
                 //Check if we hit something
                 if (!Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _groundMask))
                 {
+                    UIController.Instance.SetEntityPropertiesVisible(false);
                     return;
                 }
                 
                 var worldPoint = new Vector3(hitInfo.point.x, 0, hitInfo.point.z);
                 Vector3 localPoint = worldPoint - transform.position;
                 Vector2Int gridCellPosition = Grid.GetGridCell(new Vector2(localPoint.x, localPoint.z));
-                    
+                
                 if (PlacedPositions.Contains(gridCellPosition))
                 {
                     OnEditorObjectClicked?.Invoke(gridCellPosition);
+                }
+                else
+                {
+                    UIController.Instance.SetEntityPropertiesVisible(false);
                 }
             }
         }

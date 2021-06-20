@@ -40,7 +40,6 @@ public class UIController : MonoBehaviour
 
     public static UIController Instance;
 
-
     [Header("To disable workplace type at hospital")]
     [SerializeField] private GameObject _workplaceTypeDropDownGameObject;
     [SerializeField] private GameObject _workplaceTypeTextDownGameObject;
@@ -62,6 +61,9 @@ public class UIController : MonoBehaviour
 
     //Left Image UI Elements
     [Header("Left Image UI children")]
+    [SerializeField]
+    private RectTransform _entityPropertiesPanel;
+    
     //Venue elements
     public TMP_InputField ObjectNameInputField;
     public TMP_InputField InfectionRiskInputField; //TODO Slider
@@ -267,6 +269,14 @@ public class UIController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set whether or not the entity properties should be visible.
+    /// </summary>
+    /// <param name="isVisible">True to show the entity properties, false to hide them</param>
+    public void SetEntityPropertiesVisible(bool isVisible)
+    {
+        _entityPropertiesPanel.gameObject.SetActive(isVisible);
+    }
  
     public void OnEpidemicInfoToggleChange()
     {
