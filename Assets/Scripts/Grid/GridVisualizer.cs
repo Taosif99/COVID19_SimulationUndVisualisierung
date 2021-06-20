@@ -47,7 +47,7 @@ namespace Grid
 
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cube.transform.localScale = new Vector3(size, 0.1f, size);
-                    cube.transform.localPosition = new Vector3(position.x, 0.05f, position.y);
+                    cube.transform.localPosition = new Vector3(position.x, 0, position.y);
                     cube.transform.SetParent(transform);
 
                     cube.GetComponent<Renderer>().sharedMaterial = _material;
