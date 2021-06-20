@@ -22,15 +22,8 @@ namespace Grid
         public GameObject CounterGameObject { get; set; }
         public Venue Venue { get; set; }
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            // StartCoroutine(Test());
-        }
-
-
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             //TODO Getting values from Simulation Controller add modify text element of counter
 
@@ -74,27 +67,9 @@ namespace Grid
             _counterText = CounterGameObject.GetComponentInChildren<TextMeshProUGUI>();   
         }
 
-        //Testing counter with random values every four seconds
-        private IEnumerator Test()
-        {
-            for (; ; )
-            {
-                if (CounterGameObject != null && _counterText != null)
-                {
-                    _amountInfected = Random.Range(0, 100);
-                    _amountNotInfected = Random.Range(0, 100);
-                    UpdateText();
-                    yield return new WaitForSeconds(4f);
-                }
-            }
-        }
-
         private void UpdateText()
         {
-            string text = $"<color=green>{_amountNotInfected}</color> <color=black>/</color> <color=orange>{_amountInfected}</color> <color=black>/</color> <color=red>{_amountInfectious}</color>";
-            //Debug.Log(text);
-            _counterText.SetText(text);
+            _counterText.SetText($"<color=green>{_amountNotInfected}</color> / <color=orange>{_amountInfected}</color> / <color=red>{_amountInfectious}</color>");
         }
-
     }
 }

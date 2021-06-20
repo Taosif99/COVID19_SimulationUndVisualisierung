@@ -53,7 +53,7 @@ namespace RuntimeObjects
             //...gameObject.AddComponent
 
             Simulation.Runtime.Hospital hospital = new Simulation.Runtime.Hospital((Hospital)hospitalEditorObject.EditorEntity);
-            AddCounterToVenue(hospitalRuntimeGameObject, hospital, 8f);
+            AddCounterToVenue(hospitalRuntimeGameObject, hospital, 8.5f);
             
             return hospital;
         }
