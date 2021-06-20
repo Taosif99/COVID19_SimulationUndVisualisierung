@@ -94,58 +94,60 @@ namespace EditorObjects
         /// <param name="spawnPosition"></param>
         public void LoadEditorObjectUI(Vector2Int gridCellPosition)
         {
-
             GridCell gridCell = new GridCell(gridCellPosition.x, gridCellPosition.y);
             IEditorObject editorObject = _editorObjectsDic[gridCell];
-            if (editorObject != null)
+            
+            if (editorObject == null)
             {
+                return;
+            }
 
-                UIController.Instance.IsEntitySelectedUI(true);
-                UIController.Instance.ObjectNameInputField.text = editorObject.UIName;
-                Debug.Log("Why did the name not change ??? " + editorObject.UIName);
-                Entity entity = editorObject.EditorEntity;
+            CurrentSelectedEntity = editorObject.EditorEntity;
+                
+            UIController.Instance.IsEntitySelectedUI(true);
+            UIController.Instance.ObjectNameInputField.text = editorObject.UIName;
+                
+            // _currentEditorObjectUIName = editorObject.UIName;
+            //Check if Graph....TODO WHEN GRAPH IS UI ELEMENT IN WORLD
+            if (!(CurrentSelectedEntity is Venue venue))
+            {
+                return;
+            }
 
-                CurrentSelectedEntity = entity;
-                // _currentEditorObjectUIName = editorObject.UIName;
-                //Check if Graph....TODO WHEN GRAPH IS UI ELEMENT IN WORLD
-                if (entity is Venue)
+            UIController.Instance.InfectionRiskInputField.text = venue.InfectionRisk.ToString(); //TODO ROUND VALUES
+            
+            switch (CurrentSelectedEntity)
+            {
+                case Workplace workplace:
                 {
-                    Venue venue = (Venue)entity;
-                    UIController.Instance.InfectionRiskInputField.text = venue.InfectionRisk.ToString(); //TODO ROUND VALUES
-                    if (entity is Workplace)
+                    UIController.Instance.LoadWorkplaceUI();
+
+                    UIController.Instance.WorkerCapacityInputField.text = workplace.WorkerCapacity.ToString();
+
+                    if (workplace is Hospital hospital)
                     {
-                        UIController.Instance.LoadWorkplaceUI();
-                        Workplace workplace = (Workplace)entity;
-
-
-                        if (!(CurrentSelectedEntity is Hospital))
-                        {
-                            List<string> availableWorkplaceOptions = UIController.Instance.WorkplaceTypeDropdown.options.Select(option => option.text).ToList();
-                            UIController.Instance.WorkplaceTypeDropdown.value = availableWorkplaceOptions.IndexOf(workplace.Type.ToString());
-                        }
-                        UIController.Instance.WorkerCapacityInputField.text = workplace.WorkerCapacity.ToString();
-
-                        if (entity is Hospital)
-                        {
-
-                            UIController.Instance.LoadHospitalUI();
-                            Hospital hospital = (Hospital)entity;
-                            List<string> availableHospitalScaleOptions = UIController.Instance.HospitalScaleDropdown.options.Select(option => option.text).ToList();
-                            List<string> availableWorkerAvailabilityOptions = UIController.Instance.WorkerAvailabilityDropdown.options.Select(option => option.text).ToList();
-                            UIController.Instance.HospitalScaleDropdown.value = availableHospitalScaleOptions.IndexOf(hospital.Scale.ToString());
-                            UIController.Instance.WorkerAvailabilityDropdown.value = availableWorkerAvailabilityOptions.IndexOf(hospital.WorkerAvailability.ToString());
-
-                        }
-
+                        UIController.Instance.LoadHospitalUI();
+                        List<string> availableHospitalScaleOptions = UIController.Instance.HospitalScaleDropdown.options.Select(option => option.text).ToList();
+                        List<string> availableWorkerAvailabilityOptions = UIController.Instance.WorkerAvailabilityDropdown.options.Select(option => option.text).ToList();
+                        UIController.Instance.HospitalScaleDropdown.value = availableHospitalScaleOptions.IndexOf(hospital.Scale.ToString());
+                        UIController.Instance.WorkerAvailabilityDropdown.value = availableWorkerAvailabilityOptions.IndexOf(hospital.WorkerAvailability.ToString());
                     }
-                    else if (entity is Household)
+                    else
                     {
-                        UIController.Instance.LoadHouseholdUI();
-                        Household household = (Household)entity;
-                        UIController.Instance.NumberOfPeopleInputField.text = household.NumberOfPeople.ToString();
-                        UIController.Instance.CarefulnessInputField.text = household.CarefulnessTendency.ToString();
-                        UIController.Instance.PercantageOfWorkersInputField.text = household.PercentageOfWorkers.ToString();
+                        List<string> availableWorkplaceOptions = UIController.Instance.WorkplaceTypeDropdown.options.Select(option => option.text).ToList();
+                        UIController.Instance.WorkplaceTypeDropdown.value = availableWorkplaceOptions.IndexOf(workplace.Type.ToString());
                     }
+
+                    break;
+                }
+                
+                case Household household:
+                {
+                    UIController.Instance.LoadHouseholdUI();
+                    UIController.Instance.NumberOfPeopleInputField.text = household.NumberOfPeople.ToString();
+                    UIController.Instance.CarefulnessInputField.text = household.CarefulnessTendency.ToString();
+                    UIController.Instance.PercantageOfWorkersInputField.text = household.PercentageOfWorkers.ToString();
+                    break;
                 }
             }
         }
@@ -189,7 +191,7 @@ namespace EditorObjects
                         //_usedUiNames.Remove(_currentEditorObjectUIName);
                         //_usedUiNames.Add(editorObject.UIName);
                         //UIController.Instance.ObjectNameInputField.text = editorObject.UIName;
-                        Debug.Log("Change editor name to  ###" + editorObject.UIName);
+                        
                         if (CurrentSelectedEntity is Venue)
                         {
                             Venue venue = (Venue)CurrentSelectedEntity;
