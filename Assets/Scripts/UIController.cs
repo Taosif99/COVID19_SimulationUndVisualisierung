@@ -135,6 +135,8 @@ public class UIController : MonoBehaviour
         // TODO: Remove
         placeGraphButton.onClick.AddListener(() =>
         {
+            SetEntityPropertiesVisible(true);
+            
             DisableButtonOutlineColors();
             ModifyOutlineColor(placeGraphButton);
             //Here a Graph must be activated in the UI...

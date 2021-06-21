@@ -15338,7 +15338,6 @@ GameObject:
   - component: {fileID: 1737330016}
   - component: {fileID: 1737330019}
   - component: {fileID: 1737330020}
-  - component: {fileID: 1737330022}
   - component: {fileID: 1737330021}
   m_Layer: 0
   m_Name: VenueButtonWorkplaceTMP
@@ -15494,18 +15493,6 @@ MonoBehaviour:
   _gridManager: {fileID: 945396490}
   _prefabName: 1
   _entityScale: 0.5
---- !u!225 &1737330022
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1737330014}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &1763234734
 GameObject:
   m_ObjectHideFlags: 0
@@ -15852,7 +15839,6 @@ GameObject:
   - component: {fileID: 1824656364}
   - component: {fileID: 1824656367}
   - component: {fileID: 1824656368}
-  - component: {fileID: 1824656370}
   - component: {fileID: 1824656369}
   m_Layer: 0
   m_Name: VenueButtonHouseholdTMP
@@ -16008,18 +15994,6 @@ MonoBehaviour:
   _gridManager: {fileID: 945396490}
   _prefabName: 2
   _entityScale: 0.5
---- !u!225 &1824656370
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1824656362}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &1833106463
 GameObject:
   m_ObjectHideFlags: 0
@@ -16741,7 +16715,6 @@ GameObject:
   - component: {fileID: 1870077519}
   - component: {fileID: 1870077522}
   - component: {fileID: 1870077523}
-  - component: {fileID: 1870077525}
   - component: {fileID: 1870077524}
   m_Layer: 0
   m_Name: VenueButtonHospitalTMP
@@ -16897,18 +16870,6 @@ MonoBehaviour:
   _gridManager: {fileID: 945396490}
   _prefabName: 3
   _entityScale: 0.5
---- !u!225 &1870077525
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1870077517}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &1874323206
 GameObject:
   m_ObjectHideFlags: 0
@@ -18667,7 +18628,6 @@ GameObject:
   - component: {fileID: 2146745156}
   - component: {fileID: 2146745159}
   - component: {fileID: 2146745160}
-  - component: {fileID: 2146745162}
   - component: {fileID: 2146745161}
   m_Layer: 0
   m_Name: GraphButtonTMP
@@ -18815,7 +18775,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2146745154}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4606339b7cbb7744b865f31dba96d3c6, type: 3}
   m_Name: 
@@ -18823,18 +18783,6 @@ MonoBehaviour:
   _gridManager: {fileID: 945396490}
   _prefabName: 0
   _entityScale: 0.5
---- !u!225 &2146745162
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146745154}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &3418928827223752994
 GameObject:
   m_ObjectHideFlags: 0
