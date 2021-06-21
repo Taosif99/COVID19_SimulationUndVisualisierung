@@ -16,6 +16,7 @@ public class PlaceableEntity : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     [SerializeField]
     private float _entityScale = 0.5f;
     
+    private LayerMask _groundLayer;
     private GameObject _prefab;
     private GameObject _entityObject;
     private Vector2Int _currentGridCell;
@@ -24,6 +25,7 @@ public class PlaceableEntity : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     private void Start()
     {
+        _groundLayer = LayerMask.GetMask("Ground");
         _prefab = ModelSelector.Instance.GetPrefab(PrefabName);
         
         Assert.IsNotNull(_gridManager);
@@ -54,7 +56,7 @@ public class PlaceableEntity : MonoBehaviour, IBeginDragHandler, IEndDragHandler
             return;
         }
         
-        if (!_gridManager.PlacedPositions.Contains(_currentGridCell))
+        if (CanPlaceAtCurrentGridCell())
         {
             GameObject gameObject = _gridManager.EditObjectsManager.AddEditorObject(PrefabName, _currentGridCell);
             _gridManager.PositionObjectInGrid(gameObject, _currentGridCell);
@@ -70,7 +72,7 @@ public class PlaceableEntity : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         }
 
         Ray ray = Camera.main.ScreenPointToRay(eventData.position);
-        if (!Physics.Raycast(ray, out RaycastHit hitInfo))
+        if (!Physics.Raycast(ray, out RaycastHit hitInfo, float.PositiveInfinity, _groundLayer))
         {
             return;
         }
@@ -80,7 +82,7 @@ public class PlaceableEntity : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         
         _currentGridCell = _gridManager.Grid.GetGridCell(new Vector2(localPoint.x, localPoint.z));
 
-        if (!_gridManager.PlacedPositions.Contains(_currentGridCell))
+        if (CanPlaceAtCurrentGridCell())
         {
             Vector2 relativeWorldPosition = _gridManager.Grid.GetRelativeWorldPosition(_currentGridCell);
             _entityObject.transform.position = new Vector3(relativeWorldPosition.x, 0, relativeWorldPosition.y) +
@@ -90,5 +92,12 @@ public class PlaceableEntity : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         {
             _entityObject.transform.position = worldPoint;
         }
+    }
+
+    private bool CanPlaceAtCurrentGridCell()
+    {
+        return !_gridManager.PlacedPositions.Contains(_currentGridCell)
+               && Math.Abs(_currentGridCell.x) <= _gridManager.CellExtent
+               && Math.Abs(_currentGridCell.y) <= _gridManager.CellExtent;
     }
 }
