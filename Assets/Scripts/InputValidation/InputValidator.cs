@@ -66,6 +66,39 @@ namespace InputValidation
 
 
 
+        //Private ?
+        public static bool TryParseMinMaxIntDay(TMP_InputField minInputField, TMP_InputField maxInputField,  ref int minInputValue, ref int maxInputValue) 
+        {
+            bool minInputOk = int.TryParse(minInputField.text,out minInputValue) && minInputValue > 0;
+            bool maxInputOk = int.TryParse(maxInputField.text, out maxInputValue) && maxInputValue > 0;
+            SetInputFieldColor(minInputField, minInputOk);
+            SetInputFieldColor(maxInputField, maxInputOk);
+
+            //TODO SHOW MESSAGE IF MIN > MAX
+            if (minInputValue > maxInputValue)
+            {
+                SetInputFieldColor(minInputField, false);
+                SetInputFieldColor(maxInputField, false);
+                return false;
+            }
+
+
+            return minInputOk && maxInputOk ;
+        }
+
+        public static bool TryParseFloatPercentageInputField(TMP_InputField inputField, ref float value)
+        {
+            bool validPercentage = float.TryParse(inputField.text, out value) && IsValidPercentage(value);
+            SetInputFieldColor(inputField, validPercentage);
+            return validPercentage;
+        }
+
+
+
+
+
+
+
         /// <summary>
         /// Method to check whethe a string is empty or only consists of whitespaces.
         /// </summary>
