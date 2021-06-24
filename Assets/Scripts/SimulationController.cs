@@ -113,7 +113,13 @@ class SimulationController : MonoBehaviour
            // SimulationMaster.Instance.Reset();
         }
     }
-    
+
+    public void ForwardSimulation()
+    {
+        _controller.SimulationDate = _controller.SimulationDate.AddDays(1);
+        //Debug.Log(_controller.SimulationDate);
+    }
+
     public void InfectRandomPerson()
     {
         if (!IsRunning)
