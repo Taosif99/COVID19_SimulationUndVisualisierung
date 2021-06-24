@@ -22,7 +22,8 @@ namespace Simulation.Runtime
         void SetHealthCondition()
         {
             float healthyProbability = Random.Range(0f, 1f);
-            if (healthyProbability <= InfectionStateParameters.PreIllnessProbability)
+            Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+            if (healthyProbability <= settings.PreIllnessProbability)
             {
                 _preIllness = true;
             }
@@ -45,14 +46,16 @@ namespace Simulation.Runtime
         {
             if (person.InfectionState.HasFlag(Person.InfectionStates.Symptoms) & _isDead == false)
             {
+                Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+
                 if (_preIllness == false)
                 {
-                    if (_surviveProbability <= InfectionStateParameters.FatalityRate)
+                    if (_surviveProbability <= settings.FatalityRate)
                         _isDead = true;
                 }
                 else
                 {
-                    if (_surviveProbability <= InfectionStateParameters.FatalityRatePreIllness)
+                    if (_surviveProbability <= settings.FatalityRatePreIllness)
                         _isDead = true;
                 }
             }

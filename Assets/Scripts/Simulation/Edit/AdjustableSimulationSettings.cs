@@ -30,7 +30,7 @@ namespace Simulation.Edit
         //Default constructor loads values from static class
         public AdjustableSimulationSettings()
         {
-
+            /*
             IncubationMinDay = InfectionStateParameters.IncubationMinDay;
             IncubationMaxDay = InfectionStateParameters.IncubationMaxDay;
             SymptomsMinDay = InfectionStateParameters.SymptomsMinDay;
@@ -42,7 +42,20 @@ namespace Simulation.Edit
             FatalityRate = InfectionStateParameters.FatalityRate;
             FatalityRatePreIllness = InfectionStateParameters.FatalityRatePreIllness;
             PreIllnessProbability = InfectionStateParameters.PreIllnessProbability;
+            */
+            IncubationMinDay = DefaultInfectionParameters.IncubationMinDay;
+            IncubationMaxDay = DefaultInfectionParameters.IncubationMaxDay;
+            SymptomsMinDay = DefaultInfectionParameters.SymptomsMinDay;
+            SymptomsMaxDay = DefaultInfectionParameters.SymptomsMaxDay;
+            InfectiousMinDay = DefaultInfectionParameters.InfectiousMinDay;
+            InfectiousMaxDay = DefaultInfectionParameters.InfectiousMaxDay;
+            RecoveringMinDay = DefaultInfectionParameters.RecoveringMinDay;
+            RecoveringMaxDay = DefaultInfectionParameters.RecoveringMaxDay;
+            FatalityRate = DefaultInfectionParameters.FatalityRate;
+            FatalityRatePreIllness = DefaultInfectionParameters.FatalityRatePreIllness;
+            PreIllnessProbability = DefaultInfectionParameters.PreIllnessProbability;
 
+            /*
             Debug.Log("Created simulation settings !");
             Debug.Log( IncubationMinDay + ", " +
                         IncubationMaxDay + ", " +
@@ -55,6 +68,7 @@ namespace Simulation.Edit
                         FatalityRate + ", " +
                         FatalityRatePreIllness + ", " +
                         PreIllnessProbability + ", ");
+            */
         }
 
 

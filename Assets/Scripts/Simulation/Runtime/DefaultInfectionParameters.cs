@@ -1,8 +1,12 @@
 using System;
 namespace Simulation.Runtime
 {
-    public static class InfectionStateParameters
+    public static class DefaultInfectionParameters
     {
+
+
+        //Infection state parameters
+
         /// <summary>
         /// "Die Inkubationszeit gibt die Zeit von der Ansteckung bis zum Beginn der Erkrankung an. Die mittlere Inkubationszeit(Median) wird in den meisten Studien mit 5-6 Tagen angegeben.
         /// In verschiedenen Studien wurde berechnet, zu welchem Zeitpunkt 95% der Infizierten Symptome entwickelt hatten, dabei lag das 95. Perzentil der Inkubationszeit bei 10-14 Tagen."
@@ -26,6 +30,12 @@ namespace Simulation.Runtime
         /// </summary>
         public const int RecoveringMinDay = 24;
         public const int RecoveringMaxDay = 28; //
+
+
+
+
+        //Heath and DeathParameters
+
 
         /// <summary>
         /// Defines whether the person dies based on the physical state set.

@@ -70,6 +70,17 @@ public class SimulationMaster : MonoBehaviour
 
     public int CurrentDayOfSimulation { get => _currentDayOfSimulation; set => _currentDayOfSimulation = value; }
 
+
+    public Simulation.Edit.AdjustableSimulationSettings AdjustableSettings
+    {
+        get 
+        { 
+            return CurrentSimulation.SimulationOptions.AdjustableSimulationPrameters; 
+        }
+        
+    }
+
+
     private void Awake()
     {
         //if (Instance == null) Instance = this;

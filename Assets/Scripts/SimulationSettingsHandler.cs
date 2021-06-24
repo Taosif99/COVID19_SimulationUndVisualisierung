@@ -1,10 +1,11 @@
 using UnityEngine;
 using TMPro;
 
+
 public class SimulationSettingsHandler : MonoBehaviour
 {
 
-    //TODO OUTSOURCE UI CONTROLLER and input validation
+    //TODO OUTSOURCE UI CONTROLLER and input validation and save on change function
     //TMP_Text maxIncubationTimeText:
 
     public TMP_InputField IncubationMinDayText;
@@ -36,18 +37,7 @@ public class SimulationSettingsHandler : MonoBehaviour
         }
 
 
-
-        IncubationMinDayText.text = settings.IncubationMinDay.ToString();
-        IncubationMaxDayText.text = settings.IncubationMaxDay.ToString();
-        SymptomsMinDayText.text = settings.SymptomsMinDay.ToString();
-        SymptomsMaxDayText.text = settings.SymptomsMaxDay.ToString();
-        InfectiousMinDayText.text = settings.InfectiousMinDay.ToString();
-        InfectiousMaxDayText.text = settings.InfectiousMaxDay.ToString();
-        RecoveringMinDayText.text = settings.RecoveringMinDay.ToString();
-        RecoveringMaxDayText.text = settings.RecoveringMaxDay.ToString();
-        FatalityRateText.text = settings.FatalityRate.ToString();
-        FatalityRatePreIllnessText.text = settings.FatalityRatePreIllness.ToString();
-        PreIllnessProbabilityText.text = settings.PreIllnessProbability.ToString();
+        DisplaySettings(settings);
     }
 
 
@@ -78,5 +68,32 @@ public class SimulationSettingsHandler : MonoBehaviour
 
     }
 
+
+    public void ResetDefaultSettings()
+    {
+        Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation;
+        Simulation.Edit.AdjustableSimulationSettings settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
+        settings = new Simulation.Edit.AdjustableSimulationSettings();
+        DisplaySettings(settings);
+    }
+
+
+    private void DisplaySettings(Simulation.Edit.AdjustableSimulationSettings settings)
+    {
+
+
+        IncubationMinDayText.text = settings.IncubationMinDay.ToString();
+        IncubationMaxDayText.text = settings.IncubationMaxDay.ToString();
+        SymptomsMinDayText.text = settings.SymptomsMinDay.ToString();
+        SymptomsMaxDayText.text = settings.SymptomsMaxDay.ToString();
+        InfectiousMinDayText.text = settings.InfectiousMinDay.ToString();
+        InfectiousMaxDayText.text = settings.InfectiousMaxDay.ToString();
+        RecoveringMinDayText.text = settings.RecoveringMinDay.ToString();
+        RecoveringMaxDayText.text = settings.RecoveringMaxDay.ToString();
+        FatalityRateText.text = settings.FatalityRate.ToString();
+        FatalityRatePreIllnessText.text = settings.FatalityRatePreIllness.ToString();
+        PreIllnessProbabilityText.text = settings.PreIllnessProbability.ToString();
+
+    }
 
 }

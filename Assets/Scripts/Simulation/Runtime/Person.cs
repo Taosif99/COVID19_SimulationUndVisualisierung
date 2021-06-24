@@ -74,6 +74,8 @@ namespace Simulation.Runtime
             double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
             bool stateTransition = false;
 
+            Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+
             if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
             {
 
@@ -83,7 +85,7 @@ namespace Simulation.Runtime
                         if (daysSinceInfection > _infectionStateDuration)
                         {
                             InfectionState = InfectionStates.Phase2;
-                            _infectionStateDuration = Random.Range(InfectionStateParameters.InfectiousMinDay, InfectionStateParameters.InfectiousMaxDay);
+                            _infectionStateDuration = Random.Range(settings.InfectiousMinDay, settings.InfectiousMaxDay);
                             stateTransition = true;
                         }
                        
@@ -93,7 +95,7 @@ namespace Simulation.Runtime
                         if (daysSinceInfection > _infectionStateDuration)
                         {
                             InfectionState = InfectionStates.Phase3;
-                            _infectionStateDuration = Random.Range(InfectionStateParameters.SymptomsMinDay, InfectionStateParameters.SymptomsMaxDay);
+                            _infectionStateDuration = Random.Range(settings.SymptomsMinDay, settings.SymptomsMaxDay);
                             stateTransition = true;
                         }
 
@@ -103,7 +105,7 @@ namespace Simulation.Runtime
                         if (daysSinceInfection > _infectionStateDuration)
                         {
                             InfectionState = InfectionStates.Phase4;
-                            _infectionStateDuration = Random.Range(InfectionStateParameters.RecoveringMinDay, InfectionStateParameters.RecoveringMaxDay);
+                            _infectionStateDuration = Random.Range(settings.RecoveringMinDay, settings.RecoveringMaxDay);
                             stateTransition = true;
 
                         }
@@ -168,9 +170,10 @@ namespace Simulation.Runtime
         /// <param name="infectionDate">Current simulations date</param>
         public void SetInfected(DateTime infectionDate)
         {
+            Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
             InfectionState = InfectionStates.Infected;
             _infectionDate = infectionDate;
-            _infectionStateDuration = Random.Range(InfectionStateParameters.IncubationMinDay, InfectionStateParameters.IncubationMaxDay);
+            _infectionStateDuration = Random.Range(settings.IncubationMinDay, settings.IncubationMaxDay);
             StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
             stateTransitionEventArgs.newInfectionState = InfectionState;
             OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
