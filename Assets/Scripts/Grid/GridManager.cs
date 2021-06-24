@@ -108,5 +108,14 @@ namespace Grid
             } //Todo else exception
 
         }
+
+        /// <summary>
+        /// Resets _placedPositions.
+        /// </summary>
+        public void Reset()
+        {
+            _placedPositions.Clear();
+        }
+
     }
 }

@@ -110,12 +110,15 @@ class SimulationController : MonoBehaviour
     {
         if (_isInitialized == true)
         {
-            //TODO: Reset Entity GameObjects to Editor State
             _isInitialized = false;
             _isPaused = false;
             _controller = null;
-           // SimulationMaster.Instance.Reset();
+            _simulationDateTime.text = string.Empty;
             _virusButton.interactable = true;
+
+            _editorObjectsManager.ReloadEditorObjects();
+
+            SimulationMaster.Instance.Reset();
         }
     }
     

@@ -265,6 +265,34 @@ namespace EditorObjects
         }
 
         /// <summary>
+        /// Reloads all EditorObjects and Positions on the Grid.
+        /// </summary>
+        public void ReloadEditorObjects()
+        {
+            IEditorObject editorObject;
+            IEditorObject reloadedEditorObject;
+            GridCell position;
+            Dictionary<GridCell, IEditorObject> newEditorObjects = new Dictionary<GridCell, IEditorObject>();
+
+            _gridManager.Reset();
+
+            foreach (KeyValuePair<GridCell, IEditorObject> pair in _editorObjects)
+            {
+                editorObject = pair.Value;
+                position = pair.Key;
+
+                Destroy(editorObject.EditorGameObject);
+
+                reloadedEditorObject = EditorObjectFactory.Create(editorObject.EditorEntity, editorObject.UIName);
+                _gridManager.PositionObjectInGrid(reloadedEditorObject.EditorGameObject, position.ToVector2Int());
+
+                newEditorObjects[position] = reloadedEditorObject;
+            }
+
+            _editorObjects = newEditorObjects;
+        }
+        
+        /// <summary>
         /// Method to add an editor object to the internal used collection which also counts
         /// internal simulation properties like the amount of people at the beginning.
         /// </summary>
