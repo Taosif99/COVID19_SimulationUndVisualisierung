@@ -7,12 +7,9 @@ namespace Tooltips
     public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField]
-        private Canvas _canvas;
-        
-        [SerializeField]
         private GameObject _tooltipPrefab;
         
-        [TextArea]
+        [TextArea(3, 10)]
         [SerializeField]
         private string _text;
 
@@ -20,21 +17,18 @@ namespace Tooltips
 
         private void Awake()
         {
-            Assert.IsNotNull(_canvas, "_canvas != null");
             Assert.IsNotNull(_tooltipPrefab, "_tooltipPrefab != null");
+
+            Canvas canvas = DetermineParentingCanvas();
+            Assert.IsNotNull(canvas, "canvas != null");
             
-            _tooltip = Instantiate(_tooltipPrefab, _canvas.transform)
+            _tooltip = Instantiate(_tooltipPrefab, canvas.transform)
                 .GetComponent<TooltipController>();
             
-            _tooltip.SetCanvas(_canvas);
+            _tooltip.SetCanvas(canvas);
             _tooltip.SetText(_text);
             
             _tooltip.gameObject.SetActive(false);
-        }
-
-        private void EnableTooltip()
-        {
-            _tooltip.gameObject.SetActive(true);
         }
         
         public void OnPointerEnter(PointerEventData eventData)
@@ -46,6 +40,28 @@ namespace Tooltips
         {
             CancelInvoke(nameof(EnableTooltip));
             _tooltip.gameObject.SetActive(false);
+        }
+
+        private Canvas DetermineParentingCanvas()
+        {
+            Transform parent = transform.parent;
+            while (parent != null)
+            {
+                Canvas canvas;
+                if ((canvas = parent.GetComponent<Canvas>()) != null)
+                {
+                    return canvas;
+                }
+                
+                parent = parent.parent;
+            }
+
+            return null;
+        }
+
+        private void EnableTooltip()
+        {
+            _tooltip.gameObject.SetActive(true);
         }
     }
 }
