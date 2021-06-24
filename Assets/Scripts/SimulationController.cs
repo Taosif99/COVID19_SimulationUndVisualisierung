@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using GraphChart;
 using System;
+using UnityEngine.UI;
 
 class SimulationController : MonoBehaviour
 {
@@ -18,6 +19,9 @@ class SimulationController : MonoBehaviour
 
     [SerializeField]
     private TMP_Text _simulationDateTime;
+
+    [SerializeField]
+    private Button _virusButton;
 
     private int _currentDay;
     private event Action<bool> _onDayPassed; //TODO PROPER EVENT
@@ -35,7 +39,6 @@ class SimulationController : MonoBehaviour
         Assert.IsNotNull(_editorObjectsManager);
         Assert.IsNotNull(_simulationDateTime);
         _onDayPassed += GlobalSimulationGraph.Instance.UpdateValuesAndShowGraphs;
-       
     }
 
     public void Play()
@@ -52,7 +55,7 @@ class SimulationController : MonoBehaviour
             _currentDay = _controller.SimulationDate.Day;
             SimulationMaster.Instance.StartUninfectedCounting();
             SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
-
+            SimulationMaster.Instance.PlayDate = DateTime.Now;
             _isInitialized = true;    
         }
         else if (_isPaused == true)
@@ -106,11 +109,15 @@ class SimulationController : MonoBehaviour
     {
         if (_isInitialized == true)
         {
-            //TODO: Reset Entity GameObjects to Editor State
             _isInitialized = false;
             _isPaused = false;
             _controller = null;
-           // SimulationMaster.Instance.Reset();
+            _simulationDateTime.text = string.Empty;
+            _virusButton.interactable = true;
+
+            _editorObjectsManager.ReloadEditorObjects();
+
+            SimulationMaster.Instance.Reset();
         }
     }
 
@@ -126,7 +133,8 @@ class SimulationController : MonoBehaviour
         {
             return;
         }
-        
+       
         _controller.InfectRandomPerson();
+        _virusButton.interactable = false;
     }  
 }

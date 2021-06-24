@@ -11,18 +11,11 @@ namespace Grid
     [RequireComponent(typeof(MeshFilter))]
     public class GridManager : MonoBehaviour
     {
-
         [SerializeField] private int _cellExtent = 10;
         private Mesh _plane;
 
         public Grid Grid { get; private set; }
         public int CellExtent => _cellExtent;
-
-
-
-        //For access of loading object
-        public HashSet<Vector2Int> PlacedPositions { get => _placedPositions; set => _placedPositions = value; }
-
 
         //Manager which is responsible for maintainaing the editor objects
         public EditorObjectsManager EditObjectsManager;
@@ -73,7 +66,7 @@ namespace Grid
                 Vector3 localPoint = worldPoint - transform.position;
                 Vector2Int gridCellPosition = Grid.GetGridCell(new Vector2(localPoint.x, localPoint.z));
                 
-                if (PlacedPositions.Contains(gridCellPosition))
+                if (_placedPositions.Contains(gridCellPosition))
                 {
                     OnEditorObjectClicked?.Invoke(gridCellPosition);
                 }
@@ -103,10 +96,32 @@ namespace Grid
                 //update counter position
                 /*StateCounter counter = gameObject.GetComponent<StateCounter>();
                 counter.InstantiateCounter(spawnPosition);*/
-                PlacedPositions.Add(gridCellPosition);
+                _placedPositions.Add(gridCellPosition);
 
             } //Todo else exception
 
+        }
+
+        /// <summary>
+        /// Resets _placedPositions.
+        /// </summary>
+        public void Reset()
+        {
+            _placedPositions.Clear();
+        }
+
+        /// <summary>
+        /// returns true if provided gridcell is in _placedPositions
+        /// </summary>
+        /// <param name="gridcell"></param>
+        /// <returns></returns>
+        public bool IsCellUsed(Vector2Int gridcell)
+        {
+            if(_placedPositions.Contains(gridcell))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

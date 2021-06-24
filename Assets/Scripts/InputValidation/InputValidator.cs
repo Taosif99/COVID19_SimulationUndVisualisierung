@@ -12,7 +12,7 @@ namespace InputValidation
     /// </summary>
     public static class InputValidator
     {
-        //TODO InputHandler Class
+        
         /// <summary>
         /// Method which parses al inputfields in the simulation scene and which checks for correct value ranges.
         /// </summary>
@@ -23,7 +23,7 @@ namespace InputValidation
         /// <param name="percentageOfWorkers"></param>
         ///  /// <param name="currentSelectedEntity"></param>
         /// <returns>true if all requiered inputfields can be parsed to correct values, else false</returns>
-        public static bool TryParseInputFields(ref float infectionRisk, ref int capacity, ref byte numberOfPeople, ref float carefulness, ref float percentageOfWorkers, Entity currentSelectedEntity)
+        public static bool TryParseLeftInputFields(ref float infectionRisk, ref int capacity, ref byte numberOfPeople, ref float carefulness, ref float percentageOfWorkers, Entity currentSelectedEntity)
         {
             bool inputIsValid = true;
 
@@ -60,6 +60,43 @@ namespace InputValidation
 
             return inputIsValid;
         }
+
+
+
+
+
+
+        //Private ?
+        public static bool TryParseMinMaxIntDay(TMP_InputField minInputField, TMP_InputField maxInputField,  ref int minInputValue, ref int maxInputValue) 
+        {
+            bool minInputOk = int.TryParse(minInputField.text,out minInputValue) && minInputValue > 0;
+            bool maxInputOk = int.TryParse(maxInputField.text, out maxInputValue) && maxInputValue > 0;
+            SetInputFieldColor(minInputField, minInputOk);
+            SetInputFieldColor(maxInputField, maxInputOk);
+
+            //TODO SHOW MESSAGE IF MIN > MAX
+            if (minInputValue > maxInputValue)
+            {
+                SetInputFieldColor(minInputField, false);
+                SetInputFieldColor(maxInputField, false);
+                return false;
+            }
+
+
+            return minInputOk && maxInputOk ;
+        }
+
+        public static bool TryParseFloatPercentageInputField(TMP_InputField inputField, ref float value)
+        {
+            bool validPercentage = float.TryParse(inputField.text, out value) && IsValidPercentage(value);
+            SetInputFieldColor(inputField, validPercentage);
+            return validPercentage;
+        }
+
+
+
+
+
 
 
         /// <summary>

@@ -56,6 +56,7 @@ public class UIController : MonoBehaviour
     public Toggle EpidemicInfoToggle;
     [SerializeField] private GameObject RValueGameObject;
     [SerializeField] private GameObject IncidenceGameObject;
+    public Toggle CsvLogToggle;
     // All texts field which must be resettet will be cached in this list
     public List<TMP_InputField> InputFieldsToReset = new List<TMP_InputField>();
 
@@ -82,6 +83,20 @@ public class UIController : MonoBehaviour
     //inputfields and dropdowns of left image
     private List<TMP_InputField> _leftInputFields; //TODO PRIVATE
     private List<TMP_Dropdown> _leftDropDowns;
+
+    [Header("Simulation Settings Inputfields")]
+    public TMP_InputField IncubationMinDayInputField;
+    public TMP_InputField IncubationMaxDayInputField;
+    public TMP_InputField SymptomsMinDayInputField;
+    public TMP_InputField SymptomsMaxDayInputField;
+    public TMP_InputField InfectiousMinDayInputField;
+    public TMP_InputField InfectiousMaxDayInputField;
+    public TMP_InputField RecoveringMinDayInputField;
+    public TMP_InputField RecoveringMaxDayInputField;
+    public TMP_InputField FatalityRateTextInputField;
+    public TMP_InputField FatalityRatePreIllnessInputField;
+    public TMP_InputField PreIllnessProbabilityInputField;
+
 
     [Header("References to manager(s)")]
     //Will be replaced

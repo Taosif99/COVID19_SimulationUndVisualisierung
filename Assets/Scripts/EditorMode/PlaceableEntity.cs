@@ -96,7 +96,7 @@ public class PlaceableEntity : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     private bool CanPlaceAtCurrentGridCell()
     {
-        return !_gridManager.PlacedPositions.Contains(_currentGridCell)
+        return !_gridManager.IsCellUsed(_currentGridCell)
                && _currentGridCell.x >= -_gridManager.CellExtent && _currentGridCell.x < _gridManager.CellExtent
                && _currentGridCell.y >= -_gridManager.CellExtent && _currentGridCell.y < _gridManager.CellExtent;
     }

@@ -23,7 +23,7 @@ namespace EditorObjects
 
         [SerializeField] private GridManager _gridManager;
         //We use the unique GridCell Position as Key
-        private Dictionary<GridCell, IEditorObject> _editorObjectsDic = new Dictionary<GridCell, IEditorObject>();
+        private Dictionary<GridCell, IEditorObject> _editorObjects = new Dictionary<GridCell, IEditorObject>();
         private Entity _currentSelectedEntity;
 
 
@@ -40,7 +40,7 @@ namespace EditorObjects
         public int WorkPlaceCounter { get => _workPlaceCounter; set => _workPlaceCounter = value; }
         public int HospitalCounter { get => _hospitalCounter; set => _hospitalCounter = value; }
         public int HouseholdCounter { get => _householdCounter; set => _householdCounter = value; }
-        public Dictionary<GridCell, IEditorObject> EditorObjectsDic { get => _editorObjectsDic; set => _editorObjectsDic = value; }
+        public Dictionary<GridCell, IEditorObject> EditorObjectsDic { get => _editorObjects; set => _editorObjects = value; }
         public int AmountPeople { get => _amountPeople; set => _amountPeople = value; }
 
         /// <summary>
@@ -82,8 +82,6 @@ namespace EditorObjects
             return editorObject.EditorGameObject;
         }
 
-
-
         /// <summary>
         /// Method which loads Values from the UI according the correspoding Clicked Venue Object Object
         /// </summary>
@@ -93,7 +91,7 @@ namespace EditorObjects
             UIController.Instance.SetEntityPropertiesVisible(true);
             
             GridCell gridCell = new GridCell(gridCellPosition.x, gridCellPosition.y);
-            IEditorObject editorObject = _editorObjectsDic[gridCell];
+            IEditorObject editorObject = _editorObjects[gridCell];
             
             if (editorObject == null)
             {
@@ -150,7 +148,6 @@ namespace EditorObjects
             }
         }
 
-
         //TODO UI Name must be unique !
         /// <summary>
         /// 
@@ -172,7 +169,7 @@ namespace EditorObjects
             if (CurrentSelectedEntity != null)
             {
 
-                bool inputIsOkay = InputValidator.TryParseInputFields(ref infectionRisk,
+                bool inputIsOkay = InputValidator.TryParseLeftInputFields(ref infectionRisk,
                 ref capacity,
                 ref numberOfPeople,
                 ref carefulness,
@@ -181,7 +178,7 @@ namespace EditorObjects
                 if (inputIsOkay)
                 {
 
-                    IEditorObject editorObject = _editorObjectsDic[CurrentSelectedEntity.Position];
+                    IEditorObject editorObject = _editorObjects[CurrentSelectedEntity.Position];
                     if (editorObject != null)
                     {
                         //Remove old and add new one
@@ -241,14 +238,14 @@ namespace EditorObjects
         {
             if (CurrentSelectedEntity != null)
             {
-                IEditorObject editorObject = _editorObjectsDic[CurrentSelectedEntity.Position];
+                IEditorObject editorObject = _editorObjects[CurrentSelectedEntity.Position];
                 if (editorObject != null)
                 {
                     //Destroy the gameObject in the scene
                     GameObject gameObject = editorObject.EditorGameObject;
                     Destroy(gameObject);
                     //_usedUiNames.Remove(editorObject.UIName);
-                    _editorObjectsDic.Remove(CurrentSelectedEntity.Position);
+                    _editorObjects.Remove(CurrentSelectedEntity.Position);
                     CurrentSelectedEntity = null;
                     UIController.Instance.IsEntitySelectedUI(false);
                 }
@@ -261,9 +258,37 @@ namespace EditorObjects
         /// <returns>A list of all currently placed editor objects</returns>
         public List<IEditorObject> GetAllEditorObjects()
         {
-            return _editorObjectsDic.Values.ToList();
+            return _editorObjects.Values.ToList();
         }
 
+        /// <summary>
+        /// Reloads all EditorObjects and Positions on the Grid.
+        /// </summary>
+        public void ReloadEditorObjects()
+        {
+            IEditorObject editorObject;
+            IEditorObject reloadedEditorObject;
+            GridCell position;
+            Dictionary<GridCell, IEditorObject> newEditorObjects = new Dictionary<GridCell, IEditorObject>();
+
+            _gridManager.Reset();
+
+            foreach (KeyValuePair<GridCell, IEditorObject> pair in _editorObjects)
+            {
+                editorObject = pair.Value;
+                position = pair.Key;
+
+                Destroy(editorObject.EditorGameObject);
+
+                reloadedEditorObject = EditorObjectFactory.Create(editorObject.EditorEntity, editorObject.UIName);
+                _gridManager.PositionObjectInGrid(reloadedEditorObject.EditorGameObject, position.ToVector2Int());
+
+                newEditorObjects[position] = reloadedEditorObject;
+            }
+
+            _editorObjects = newEditorObjects;
+        }
+        
         /// <summary>
         /// Method to add an editor object to the internal used collection which also counts
         /// internal simulation properties like the amount of people at the beginning.
@@ -272,8 +297,7 @@ namespace EditorObjects
         /// <param name="editorObject">The corresponding editorobject which holds the entity.</param>
         public void AddEditorObjectToCollection(GridCell key, IEditorObject editorObject)
         {
-
-           _editorObjectsDic.Add(key,editorObject);
+           _editorObjects.Add(key,editorObject);
 
             Entity entity = editorObject.EditorEntity;
             if (entity is Household) 
@@ -282,7 +306,6 @@ namespace EditorObjects
                 _amountPeople += household.NumberOfPeople;
             }
         }
-
 
         // Start is called before the first frame update
         void Start()

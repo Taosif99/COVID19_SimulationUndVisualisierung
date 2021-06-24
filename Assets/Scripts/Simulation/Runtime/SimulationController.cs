@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using DialogBoxSystem;
-using GraphChart;
 
 namespace Simulation.Runtime
 {
@@ -103,7 +102,6 @@ namespace Simulation.Runtime
 
         public void InfectRandomPerson()
         {
-            //TODO: Person should be validated if he is already infected.
             Household[] households = _entities.OfType<Household>().ToArray();
             if (households != null && households.Length > 0)
             {

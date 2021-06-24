@@ -16,16 +16,21 @@ public class SimulationMaster : MonoBehaviour
 
 
     public static SimulationMaster Instance;
-
+    public Simulation.Edit.Simulation CurrentSimulation { get; set; }
+    
+    /// <summary>
+    /// The real world date the simulation started.
+    /// </summary>
+    public DateTime PlayDate { get; set; }
 
 
     private int _currentDayOfSimulation = 0;
     private DayInfoHandler _dayInfoHandler = new DayInfoHandler();
-
+    
 
 
     /// <summary>
-    /// Dictionary which is used as global counter to count the infection sates.
+    /// Dictionary which is used as global counter to count the infection states.
     /// </summary>
     private Dictionary<Person.InfectionStates, int> _infectionStateCounter = new Dictionary<Person.InfectionStates, int>();
 
@@ -64,6 +69,17 @@ public class SimulationMaster : MonoBehaviour
     }
 
     public int CurrentDayOfSimulation { get => _currentDayOfSimulation; set => _currentDayOfSimulation = value; }
+
+
+    public Simulation.Edit.AdjustableSimulationSettings AdjustableSettings
+    {
+        get 
+        { 
+            return CurrentSimulation.SimulationOptions.AdjustableSimulationPrameters; 
+        }
+        
+    }
+
 
     private void Awake()
     {
@@ -192,7 +208,7 @@ public class SimulationMaster : MonoBehaviour
     {
         float rValue;
         float incidence;
-       _dayInfoHandler.UpdateRValueAndIncidence(CurrentDayOfSimulation,out rValue,out incidence);
+       _dayInfoHandler.UpdateRValueAndIncidence(CurrentDayOfSimulation,out rValue,out incidence,PlayDate);
 
 
         if (UIController.Instance.EpidemicInfoToggle.isOn)
