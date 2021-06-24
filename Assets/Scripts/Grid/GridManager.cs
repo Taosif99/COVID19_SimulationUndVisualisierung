@@ -11,7 +11,6 @@ namespace Grid
     [RequireComponent(typeof(MeshFilter))]
     public class GridManager : MonoBehaviour
     {
-
         [SerializeField] private int _cellExtent = 10;
         private Mesh _plane;
 

@@ -39,7 +39,6 @@ class SimulationController : MonoBehaviour
         Assert.IsNotNull(_editorObjectsManager);
         Assert.IsNotNull(_simulationDateTime);
         _onDayPassed += GlobalSimulationGraph.Instance.UpdateValuesAndShowGraphs;
-       
     }
 
     public void Play()

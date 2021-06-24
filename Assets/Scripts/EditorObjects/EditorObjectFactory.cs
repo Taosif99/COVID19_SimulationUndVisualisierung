@@ -39,8 +39,6 @@ namespace EditorObjects
             return editorObject;
         }
 
-
-
         public static WorkplaceEditorObject CreateWorkplaceEditorObject(Workplace workplace, string UIName, GameObject prefabToSpawn)
         {
             // Instantiate at zero point and zero rotation.
@@ -60,14 +58,13 @@ namespace EditorObjects
             return householdEditorObject;
         }
 
-
         public static HospitalEditorObject CreateHospitalEditorObject(Hospital hospital, string UIName, GameObject prefabToSpawn)
         {
             // Instantiate at zero point and zero rotation.
             GameObject gameObject = UnityEngine.Object.Instantiate(prefabToSpawn, Vector3.zero, Quaternion.identity);
             gameObject.name = PrefabName.Hospital.ToString();
-            HospitalEditorObject houpitalEditorObject = new HospitalEditorObject(gameObject, hospital, UIName);
-            return houpitalEditorObject;
+            HospitalEditorObject hospitalEditorObject = new HospitalEditorObject(gameObject, hospital, UIName);
+            return hospitalEditorObject;
 
         }
 

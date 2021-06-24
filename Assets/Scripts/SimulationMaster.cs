@@ -30,7 +30,7 @@ public class SimulationMaster : MonoBehaviour
 
 
     /// <summary>
-    /// Dictionary which is used as global counter to count the infection sates.
+    /// Dictionary which is used as global counter to count the infection states.
     /// </summary>
     private Dictionary<Person.InfectionStates, int> _infectionStateCounter = new Dictionary<Person.InfectionStates, int>();
 
