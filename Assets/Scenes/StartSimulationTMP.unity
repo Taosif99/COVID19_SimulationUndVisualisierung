@@ -2294,6 +2294,7 @@ GameObject:
   - component: {fileID: 1455508171}
   - component: {fileID: 1455508170}
   - component: {fileID: 1455508169}
+  - component: {fileID: 1455508172}
   m_Layer: 5
   m_Name: CreateSimulationButtonTMP
   m_TagString: Untagged
@@ -2415,6 +2416,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1455508167}
   m_CullTransparentMesh: 1
+--- !u!114 &1455508172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455508167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvas: {fileID: 1385913344}
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: You can create a new simulation rather than loading an existing one.
 --- !u!1 &1498737182
 GameObject:
   m_ObjectHideFlags: 0
