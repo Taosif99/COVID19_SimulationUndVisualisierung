@@ -5,6 +5,8 @@ namespace Tooltips
 {
     public class TooltipController : MonoBehaviour
     {
+        private bool _initialized = false;
+        
         private Canvas _canvas;
         private RectTransform _canvasRectTransform;
         private RectTransform _rectTransform;
@@ -14,6 +16,11 @@ namespace Tooltips
         {
             _rectTransform = GetComponent<RectTransform>();
             _text = GetComponentInChildren<TMP_Text>();
+        }
+
+        private void Start()
+        {
+            _initialized = true;
         }
 
         public void SetCanvas(Canvas canvas)
@@ -26,7 +33,15 @@ namespace Tooltips
         {
             _text.text = tooltipText;
         }
-        
+
+        private void OnEnable()
+        {
+            if (_initialized)
+            {
+                Update();   
+            }
+        }
+
         private void Update()
         {
             Vector2 anchoredPosition = Input.mousePosition / _canvas.scaleFactor;

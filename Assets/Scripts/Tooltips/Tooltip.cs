@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 namespace Tooltips
 {
@@ -21,6 +20,9 @@ namespace Tooltips
 
         private void Awake()
         {
+            Assert.IsNotNull(_canvas, "_canvas != null");
+            Assert.IsNotNull(_tooltipPrefab, "_tooltipPrefab != null");
+            
             _tooltip = Instantiate(_tooltipPrefab, _canvas.transform)
                 .GetComponent<TooltipController>();
             
