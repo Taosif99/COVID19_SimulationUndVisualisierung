@@ -6,6 +6,7 @@ using Simulation.Edit;
 using System.Collections.Generic;
 using EpidemiologicalCalculation;
 using System.Text;
+using System;
 
 namespace FileHandling
 {
@@ -28,6 +29,8 @@ namespace FileHandling
         private const string FileExtension = ".covidSim";
         private const string SaveStateFolderName = "SavedSimulations";
         private const string ScreenshotFolderName = "Screenshots";
+        private const string DayLogFolderName = "SimulationLogs";
+        
         //TODO CATCH  UnauthorizedAccessException
 
         #region serialization
@@ -192,10 +195,18 @@ namespace FileHandling
         /// </summary>
         /// <param name="dayInfo"></param>
         /// <param name="csv"></param>
-        public static void WriteToCsv(DayInfo dayInfo, StringBuilder csv)
+        public static void WriteToCsv(DayInfo dayInfo, StringBuilder csv, DateTime playDate)
         {
             csv.AppendLine(dayInfo.ToString());
-            File.WriteAllText(Application.persistentDataPath + "/" + "debug.csv", csv.ToString());
+           
+            //ISO 8601 format 
+            string pathToFolder = Application.persistentDataPath + "/" + DayLogFolderName;
+             Directory.CreateDirectory(pathToFolder);
+
+            string pathAndFileName = pathToFolder + "/"+"DayLog_"+ SelectedFileName+"_"+playDate.ToString("yyyyMMddTHHmmss") +".csv";
+
+            File.WriteAllText(pathAndFileName, csv.ToString());
+            //File.WriteAllText(Application.persistentDataPath + "/"+ pathAndFileName, csv.ToString());
         }
 
 

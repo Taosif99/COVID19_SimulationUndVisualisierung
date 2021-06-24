@@ -16,12 +16,15 @@ public class SimulationMaster : MonoBehaviour
 
 
     public static SimulationMaster Instance;
-
+    
+    
+    //TODO PROPERTIES
+    public DateTime PlayDate;
 
 
     private int _currentDayOfSimulation = 0;
     private DayInfoHandler _dayInfoHandler = new DayInfoHandler();
-
+    
 
 
     /// <summary>
@@ -192,7 +195,7 @@ public class SimulationMaster : MonoBehaviour
     {
         float rValue;
         float incidence;
-       _dayInfoHandler.UpdateRValueAndIncidence(CurrentDayOfSimulation,out rValue,out incidence);
+       _dayInfoHandler.UpdateRValueAndIncidence(CurrentDayOfSimulation,out rValue,out incidence,PlayDate);
 
 
         if (UIController.Instance.EpidemicInfoToggle.isOn)

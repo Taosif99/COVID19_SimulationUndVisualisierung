@@ -52,7 +52,7 @@ class SimulationController : MonoBehaviour
             _currentDay = _controller.SimulationDate.Day;
             SimulationMaster.Instance.StartUninfectedCounting();
             SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
-
+            SimulationMaster.Instance.PlayDate = DateTime.Now;
             _isInitialized = true;    
         }
         else if (_isPaused == true)

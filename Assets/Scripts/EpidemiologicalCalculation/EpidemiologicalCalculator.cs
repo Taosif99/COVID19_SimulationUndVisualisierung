@@ -22,7 +22,7 @@ namespace EpidemiologicalCalculation
         /// </summary>
         /// <param name="currentSimulationDay"></param>
         /// <param name="simulationDays"></param>
-        /// <returns></returns>
+        /// <returns> TODO </returns>
         public static float CalculateRValue(int currentSimulationDay, List<DayInfo> simulationDays)
         {
             float result = -1f;
@@ -77,7 +77,7 @@ namespace EpidemiologicalCalculation
         /// 
         /// 
         /// Definition from:
-        /// Einfiihrung in die Epidemiologie 2., vollstandig iiberarbeitete Auflage 
+        /// Einfuehrung in die Epidemiologie 2., vollstaendig ueberarbeitete Auflage 
         /// Aus dem Englischen von Karin Beifuss
         /// ISBN 978-J-456-84535-7
         /// Page 37

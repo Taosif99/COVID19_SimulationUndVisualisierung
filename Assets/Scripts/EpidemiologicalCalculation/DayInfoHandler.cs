@@ -55,12 +55,13 @@ namespace EpidemiologicalCalculation
         
         }
 
+        //TODO UPDATE COMMENT
         /// <summary>
         /// Method which updates the R-Value of a day.
         /// </summary>
         /// <param name="currentSimulationDay"></param>
         /// <returns>The calculated R-Value</returns>
-        public void UpdateRValueAndIncidence(int currentSimulationDay, out float rValue, out float incidence)
+        public void UpdateRValueAndIncidence(int currentSimulationDay, out float rValue, out float incidence, DateTime playDate)
         {
             rValue = EpidemiologicalCalculator.CalculateRValue(currentSimulationDay, _simulationDays);
             _simulationDays[currentSimulationDay - 1].RValue = rValue;
@@ -70,7 +71,8 @@ namespace EpidemiologicalCalculation
             _simulationDays[currentSimulationDay - 1].Incidence = incidence;
 
             //Better write once all dayinfos at the end of the simulation
-            FileHandler.WriteToCsv(_simulationDays[currentSimulationDay - 1],_csv);
+            if(UIController.Instance.CsvLogToggle.isOn)
+                FileHandler.WriteToCsv(_simulationDays[currentSimulationDay - 1],_csv,playDate);
             
         
         }

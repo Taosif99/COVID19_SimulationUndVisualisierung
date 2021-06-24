@@ -56,6 +56,7 @@ public class UIController : MonoBehaviour
     public Toggle EpidemicInfoToggle;
     [SerializeField] private GameObject RValueGameObject;
     [SerializeField] private GameObject IncidenceGameObject;
+    public Toggle CsvLogToggle;
     // All texts field which must be resettet will be cached in this list
     public List<TMP_InputField> InputFieldsToReset = new List<TMP_InputField>();
 
