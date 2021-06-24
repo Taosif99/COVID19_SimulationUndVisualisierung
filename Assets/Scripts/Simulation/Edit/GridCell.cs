@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Simulation.Edit
 {
@@ -31,5 +32,7 @@ namespace Simulation.Edit
             hashCode = hashCode * -1521134295 + Y.GetHashCode();
             return hashCode;
         }
+
+        public Vector2Int ToVector2Int() => new Vector2Int(X, Y);
     }
 }
