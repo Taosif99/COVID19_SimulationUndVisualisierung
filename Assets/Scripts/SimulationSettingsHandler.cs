@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Simulation.Edit;
 using TMPro;
 
 public class SimulationSettingsHandler : MonoBehaviour
@@ -58,5 +55,28 @@ public class SimulationSettingsHandler : MonoBehaviour
     {
         SimulationSettingsGameObject.SetActive(false);
     }
+
+
+    public void SaveSettingsToSimulation()
+    {
+
+
+        Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation;
+        Simulation.Edit.AdjustableSimulationSettings settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
+
+
+        settings.IncubationMinDay = int.Parse(IncubationMinDayText.text);
+        settings.IncubationMaxDay = int.Parse(IncubationMaxDayText.text);
+        settings.SymptomsMinDay = int.Parse(SymptomsMinDayText.text);
+        settings.SymptomsMaxDay = int.Parse(SymptomsMaxDayText.text);
+        settings.InfectiousMinDay = int.Parse(InfectiousMinDayText.text);
+        settings.InfectiousMaxDay = int.Parse(InfectiousMaxDayText.text);
+        settings.RecoveringMinDay = int.Parse(RecoveringMinDayText.text);
+        settings.RecoveringMaxDay = int.Parse(RecoveringMaxDayText.text);
+        settings.FatalityRatePreIllness = float.Parse(FatalityRatePreIllnessText.text);
+        settings.PreIllnessProbability = float.Parse(PreIllnessProbabilityText.text);
+
+    }
+
 
 }

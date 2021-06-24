@@ -2226,8 +2226,8 @@ RectTransform:
   - {fileID: 1794373041}
   - {fileID: 1455508168}
   - {fileID: 1498737183}
-  - {fileID: 2558670645295947386}
   - {fileID: 1946479855}
+  - {fileID: 2558670645295947386}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2265,10 +2265,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1018a144806fdc428a45303842541a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buttonItem: {fileID: 6191703034026425141, guid: af963072fe4ffed429da8f77e35c0ad2, type: 3}
-  _panelGameObject: {fileID: 42336216}
-  _yPositionButtonChange: 60
-  SimSceneLoader: {fileID: 1590471083}
+  _simulationEntryPrefab: {fileID: 6191703034026425141, guid: af963072fe4ffed429da8f77e35c0ad2, type: 3}
+  _simulationPanel: {fileID: 42336216}
+  _simSceneLoader: {fileID: 1590471083}
 --- !u!4 &1443735898
 Transform:
   m_ObjectHideFlags: 0
@@ -3436,7 +3435,7 @@ RectTransform:
   - {fileID: 1007107686}
   - {fileID: 33861649}
   m_Father: {fileID: 1385913345}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4072,7 +4071,7 @@ RectTransform:
   - {fileID: 6441915294618395566}
   - {fileID: 2558670644575197142}
   m_Father: {fileID: 1385913345}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}

@@ -207,7 +207,7 @@ namespace FileHandling
 
         #region Debug Mock
         /// <summary>
-        /// Method to create a simulation Object for testing puropses.
+        /// Method to create a simulation Object for testing puropses. TODO REMOVE
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
