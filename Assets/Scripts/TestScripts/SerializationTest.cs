@@ -16,7 +16,7 @@ class SerializationTest
         Entity[] Pos = new Entity[1];
         //Pos[0] = new Entity(new GridCell(2, 1));
 
-        SimulationOptions Options = new SimulationOptions(One, Events);
+        SimulationOptions Options = new SimulationOptions(One, Events, null);
         Simulation.Edit.Simulation SerializeObject = new Simulation.Edit.Simulation(Options, Pos);
 
         //Objekt wird serialisiert

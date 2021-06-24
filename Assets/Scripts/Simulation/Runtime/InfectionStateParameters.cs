@@ -11,7 +11,7 @@ namespace Simulation.Runtime
         public const int IncubationMinDay = 5;
         public const int IncubationMaxDay = 6;
         public const int SymptomsMinDay = 10;
-        public const int SymptomsMaxDay = 14;
+        public const int SymptomsMaxDay = 14; //
 
         /// <summary>
         /// "Zwei Studien geben Startpunkt der Infektiosität mit circa 2,5 Tagen vor Symptombeginn an an, mit einem Maximum an Viruslast also Infektiosität 0,6 Tage vor Symptombeginn."
@@ -25,7 +25,7 @@ namespace Simulation.Runtime
         ///  Source: <see href="https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/">Sciencemediacente -  Time from first symptoms to recovery of mild cases</see> (website called on 05.06.2021)
         /// </summary>
         public const int RecoveringMinDay = 24;
-        public const int RecoveringMaxDay = 28;
+        public const int RecoveringMaxDay = 28; //
 
         /// <summary>
         /// Defines whether the person dies based on the physical state set.
@@ -47,6 +47,6 @@ namespace Simulation.Runtime
         /// 18.92 / 83.02 (Einwohner Deutschlands)  = 0.22f
         /// Source: https://www.rki.de/DE/Content/Gesundheitsmonitoring/Gesundheitsberichterstattung/GBEDownloadsJ/JoHM_S2_2021_Risikogruppen_COVID_19.pdf?__blob=publicationFile
         /// </summary>
-        public const float preIllnessProbability = 0.22f;
+        public const float PreIllnessProbability = 0.22f;
     }
 }

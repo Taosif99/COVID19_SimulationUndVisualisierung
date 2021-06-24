@@ -49,7 +49,11 @@ namespace FileHandling
                 index++;
             }
             //TODO REPLACE MOCK WITH REAL SIMULATION
-            Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock(entities);
+            //Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock(entities);
+
+            Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation ;
+            simulation.Entities = entities;
+
             FileHandler.SaveData(simulation);
         }
 
@@ -77,10 +81,11 @@ namespace FileHandling
             editorObjectsManager.CurrentSelectedEntity = null;
             //Load Simulation
             Simulation.Edit.Simulation simulation = FileHandler.LoadData();
-
+          
             //Not Found dialog box Todo
             if (simulation != null)
             {
+                SimulationMaster.Instance.CurrentSimulation = simulation;
                 Entity[] entities = simulation.Entities;
                 if (entities != null)
                 {

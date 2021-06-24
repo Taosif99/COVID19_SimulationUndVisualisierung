@@ -11,7 +11,7 @@ namespace EpidemiologicalCalculation
     /// </summary>
     public class DayInfoHandler
     {
-       private StringBuilder _csv;
+       private StringBuilder _csvStringBuilder;
 
         /// <summary>
         /// This list manages the days of the simulation.
@@ -22,8 +22,8 @@ namespace EpidemiologicalCalculation
         public DayInfoHandler()
         {
             _simulationDays = new List<DayInfo>();
-            _csv = new StringBuilder();
-            _csv.AppendLine("Day;AmountNewInfections;R-Value;Incidence");
+            _csvStringBuilder = new StringBuilder();
+            _csvStringBuilder.AppendLine("Day;AmountNewInfections;R-Value;Incidence");
         }
 
      
@@ -59,7 +59,8 @@ namespace EpidemiologicalCalculation
         /// <summary>
         /// Method which updates the R-Value of a day.
         /// </summary>
-        /// <param name="currentSimulationDay"></param>
+        /// <param name="currentSimulationDay">The current day since the start of the simulation, day = 1, day2 = 2,...</param>
+        /// <param name="playDate"> The real world date the simulation started.</param>
         /// <returns>The calculated R-Value</returns>
         public void UpdateRValueAndIncidence(int currentSimulationDay, out float rValue, out float incidence, DateTime playDate)
         {
@@ -70,9 +71,16 @@ namespace EpidemiologicalCalculation
             incidence = EpidemiologicalCalculator.CalculateIncidence(currentSimulationDay,_simulationDays) ;
             _simulationDays[currentSimulationDay - 1].Incidence = incidence;
 
-            //Better write once all dayinfos at the end of the simulation
-            if(UIController.Instance.CsvLogToggle.isOn)
-                FileHandler.WriteToCsv(_simulationDays[currentSimulationDay - 1],_csv,playDate);
+            //TODO Better write once all dayinfos at the end of the simulation
+            if (UIController.Instance.CsvLogToggle.isOn) 
+            {
+                string newDataRow = _simulationDays[currentSimulationDay - 1].ToString();
+                _csvStringBuilder.AppendLine(newDataRow);
+
+                FileHandler.WriteToCsv(_csvStringBuilder.ToString(), playDate);
+
+            }
+                
             
         
         }

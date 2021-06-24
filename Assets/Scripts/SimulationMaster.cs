@@ -16,10 +16,12 @@ public class SimulationMaster : MonoBehaviour
 
 
     public static SimulationMaster Instance;
+    public Simulation.Edit.Simulation CurrentSimulation { get; set; }
     
-    
-    //TODO PROPERTIES
-    public DateTime PlayDate;
+    /// <summary>
+    /// The real world date the simulation started.
+    /// </summary>
+    public DateTime PlayDate { get; set; }
 
 
     private int _currentDayOfSimulation = 0;

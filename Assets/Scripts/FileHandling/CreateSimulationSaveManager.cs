@@ -41,7 +41,8 @@ namespace FileHandling
                 }
                 else
                 {   //save normally
-                    Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock();
+                    //Default mock
+                    Simulation.Edit.Simulation simulation = FileHandler.GetDefaultSimulationMock();
                     FileHandler.SaveData(simulation);
                     SceneLoader.Instance.LoadSimulation();
                 }
@@ -62,7 +63,7 @@ namespace FileHandling
         /// </summary>
         private void FileSaveExistsActionConfimation()
         {
-            Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock();
+            Simulation.Edit.Simulation simulation = FileHandler.GetDefaultSimulationMock();
             FileHandler.SaveData(simulation);
             SceneLoader.Instance.LoadSimulation();
 

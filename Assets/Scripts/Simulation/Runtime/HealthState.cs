@@ -22,7 +22,7 @@ namespace Simulation.Runtime
         void SetHealthCondition()
         {
             float healthyProbability = Random.Range(0f, 1f);
-            if (healthyProbability <= InfectionStateParameters.preIllnessProbability)
+            if (healthyProbability <= InfectionStateParameters.PreIllnessProbability)
             {
                 _preIllness = true;
             }

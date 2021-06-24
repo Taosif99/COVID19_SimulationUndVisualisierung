@@ -7,11 +7,15 @@ namespace Simulation.Edit
     {
         private Policies _policies;
         private Event [] _event;
+        private AdjustableSimulationSettings _adjustableSimulationPrameters;
 
-        public SimulationOptions(Policies policies, Event[] @event)
+        public SimulationOptions(Policies policies, Event[] @event, AdjustableSimulationSettings adjustableSimulationPrameters)
         {
             _policies = policies;
             _event = @event;
+            _adjustableSimulationPrameters = adjustableSimulationPrameters;
         }
+
+        public AdjustableSimulationSettings AdjustableSimulationPrameters { get => _adjustableSimulationPrameters; set => _adjustableSimulationPrameters = value; }
     }
 }

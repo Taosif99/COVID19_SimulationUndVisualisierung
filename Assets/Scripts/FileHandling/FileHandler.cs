@@ -4,8 +4,6 @@ using UnityEngine;
 using System.Linq;
 using Simulation.Edit;
 using System.Collections.Generic;
-using EpidemiologicalCalculation;
-using System.Text;
 using System;
 
 namespace FileHandling
@@ -189,24 +187,19 @@ namespace FileHandling
             return pathToFolder + "/" + SelectedFileName + FileExtension;
         }
 
-        //Currently Debug, maybe feature if product owner wants it
         /// <summary>
-        /// TODO
+        /// Method which write the gerated datasets to a csv file.
         /// </summary>
-        /// <param name="dayInfo"></param>
-        /// <param name="csv"></param>
-        public static void WriteToCsv(DayInfo dayInfo, StringBuilder csv, DateTime playDate)
+        /// <param name="dayInfo">the real world date the simulation started.</param>
+        /// <param name="dataString">The whole dataset as line string representation csv with ; as seperator</param>
+        public static void WriteToCsv(string dataString, DateTime playDate)
         {
-            csv.AppendLine(dayInfo.ToString());
-           
+            
             //ISO 8601 format 
             string pathToFolder = Application.persistentDataPath + "/" + DayLogFolderName;
-             Directory.CreateDirectory(pathToFolder);
-
+            Directory.CreateDirectory(pathToFolder);
             string pathAndFileName = pathToFolder + "/"+"DayLog_"+ SelectedFileName+"_"+playDate.ToString("yyyyMMddTHHmmss") +".csv";
-
-            File.WriteAllText(pathAndFileName, csv.ToString());
-            //File.WriteAllText(Application.persistentDataPath + "/"+ pathAndFileName, csv.ToString());
+            File.WriteAllText(pathAndFileName, dataString);
         }
 
 
@@ -222,10 +215,30 @@ namespace FileHandling
         {
             Policies policiesMock = new Policies(MaskType.None);
             Simulation.Edit.Event[] eventsMock = null;
-            SimulationOptions simulationOptions = new SimulationOptions(policiesMock, eventsMock);
+            SimulationOptions simulationOptions = new SimulationOptions(policiesMock, eventsMock,null);
             Simulation.Edit.Simulation simulation = new Simulation.Edit.Simulation(simulationOptions, entities);
             return simulation;
         }
         #endregion
+
+
+        //"Real" mocks
+        public static Simulation.Edit.Simulation GetDefaultSimulationMock(Entity[] entities = null)
+        {
+            Policies policiesMock = new Policies(MaskType.None);
+            Simulation.Edit.Event[] eventsMock = null;
+            SimulationOptions simulationOptions = new SimulationOptions(policiesMock, eventsMock, new Simulation.Edit.AdjustableSimulationSettings());
+            Simulation.Edit.Simulation simulation = new Simulation.Edit.Simulation(simulationOptions, entities);
+            return simulation;
+        }
+
+        public static Simulation.Edit.Simulation GetDefaultSimulationMock(Entity[] entities, Simulation.Edit.AdjustableSimulationSettings adjustableSimulationSettings)
+        {
+
+            return null;
+        
+        }
+
+
     }
 }

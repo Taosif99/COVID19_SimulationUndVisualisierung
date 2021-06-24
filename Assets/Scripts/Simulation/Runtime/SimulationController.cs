@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using DialogBoxSystem;
-using GraphChart;
 
 namespace Simulation.Runtime
 {
