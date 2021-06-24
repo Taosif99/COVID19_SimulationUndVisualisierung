@@ -13,7 +13,7 @@ namespace Simulation.Runtime
 
         private List<Entity> _entities = new List<Entity>();
         
-        public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
+        public DateTime SimulationDate { get; set; } = new DateTime(2020, 1, 1);
 
         public void Initialize(List<Entity> entities)
         {
