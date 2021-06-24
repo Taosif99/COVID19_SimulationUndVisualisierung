@@ -15957,7 +15957,6 @@ GameObject:
   - component: {fileID: 1472784335}
   - component: {fileID: 1472784334}
   - component: {fileID: 1472784333}
-  - component: {fileID: 1472784336}
   m_Layer: 0
   m_Name: ForwardButtonTMP
   m_TagString: Untagged
@@ -16067,18 +16066,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1472784331}
   m_CullTransparentMesh: 1
---- !u!114 &1472784336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1472784331}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99634edca86565b4a96a0b7b261787f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1490182321
 GameObject:
   m_ObjectHideFlags: 0
@@ -22619,17 +22606,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf263d414d7b3db4dad75d55af71c59f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IncubationMinDayText: {fileID: 513563932320262072}
-  IncubationMaxDayText: {fileID: 513563932497038981}
-  SymptomsMinDayText: {fileID: 513563932418320803}
-  SymptomsMaxDayText: {fileID: 513563931264480486}
-  InfectiousMinDayText: {fileID: 513563932453968466}
-  InfectiousMaxDayText: {fileID: 513563931222979277}
-  RecoveringMinDayText: {fileID: 513563931537843390}
-  RecoveringMaxDayText: {fileID: 513563932344903112}
-  FatalityRateText: {fileID: 513563932371301789}
-  FatalityRatePreIllnessText: {fileID: 513563931519417975}
-  PreIllnessProbabilityText: {fileID: 513563930573349358}
   SimulationSettingsGameObject: {fileID: 513563931543189319}
 --- !u!4 &2104203144
 Transform:
@@ -23411,7 +23387,7 @@ GameObject:
   - component: {fileID: 513563930573349345}
   - component: {fileID: 513563930573349358}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: PreIllnessInputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25338,7 +25314,7 @@ GameObject:
   - component: {fileID: 513563931222979276}
   - component: {fileID: 513563931222979277}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: MaxInfectiousInputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25531,7 +25507,7 @@ GameObject:
   - component: {fileID: 513563931264480409}
   - component: {fileID: 513563931264480486}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: MaxSymptomsInputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26317,7 +26293,7 @@ GameObject:
   - component: {fileID: 513563931519417974}
   - component: {fileID: 513563931519417975}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: FatalityPreIllnessInputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26791,7 +26767,7 @@ GameObject:
   - component: {fileID: 513563931537843377}
   - component: {fileID: 513563931537843390}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: MinRecoveringInputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29715,7 +29691,7 @@ GameObject:
   - component: {fileID: 513563932320262075}
   - component: {fileID: 513563932320262072}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: MinIncubationInputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30046,7 +30022,7 @@ GameObject:
   - component: {fileID: 513563932344903115}
   - component: {fileID: 513563932344903112}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: MaxRecoveringInputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30201,7 +30177,7 @@ GameObject:
   - component: {fileID: 513563932371301788}
   - component: {fileID: 513563932371301789}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: FatalityInputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30574,7 +30550,7 @@ GameObject:
   - component: {fileID: 513563932418320802}
   - component: {fileID: 513563932418320803}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: MinSymptomsInputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30997,7 +30973,7 @@ GameObject:
   - component: {fileID: 513563932453968469}
   - component: {fileID: 513563932453968466}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: MinInfectiousInputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31481,7 +31457,7 @@ GameObject:
   - component: {fileID: 513563932497038980}
   - component: {fileID: 513563932497038981}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: MaxIncubationInputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31860,6 +31836,17 @@ MonoBehaviour:
   WorkerCapacityInputField: {fileID: 1399270295}
   HospitalScaleDropdown: {fileID: 1522897196}
   WorkerAvailabilityDropdown: {fileID: 1968393019}
+  IncubationMinDayInputField: {fileID: 513563932320262072}
+  IncubationMaxDayInputField: {fileID: 513563932497038981}
+  SymptomsMinDayInputField: {fileID: 513563932418320803}
+  SymptomsMaxDayInputField: {fileID: 513563931264480486}
+  InfectiousMinDayInputField: {fileID: 513563932453968466}
+  InfectiousMaxDayInputField: {fileID: 513563931222979277}
+  RecoveringMinDayInputField: {fileID: 513563931537843390}
+  RecoveringMaxDayInputField: {fileID: 513563932344903112}
+  FatalityRateTextInputField: {fileID: 513563932371301789}
+  FatalityRatePreIllnessInputField: {fileID: 513563931519417975}
+  PreIllnessProbabilityInputField: {fileID: 513563930573349358}
   editorObjectsManager: {fileID: 807507761}
 --- !u!222 &6710811102927328187
 CanvasRenderer:

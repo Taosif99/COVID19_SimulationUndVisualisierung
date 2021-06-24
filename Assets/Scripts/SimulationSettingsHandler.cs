@@ -6,21 +6,9 @@ public class SimulationSettingsHandler : MonoBehaviour
 {
 
     //TODO OUTSOURCE UI CONTROLLER and input validation and save on change function
-    //TMP_Text maxIncubationTimeText:
 
-    public TMP_InputField IncubationMinDayText;
-    public TMP_InputField IncubationMaxDayText;
-    public TMP_InputField SymptomsMinDayText;
-    public TMP_InputField SymptomsMaxDayText;
-    public TMP_InputField InfectiousMinDayText;
-    public TMP_InputField InfectiousMaxDayText;
-    public TMP_InputField RecoveringMinDayText;
-    public TMP_InputField RecoveringMaxDayText;
-    public TMP_InputField FatalityRateText;
-    public TMP_InputField FatalityRatePreIllnessText;
-    public TMP_InputField PreIllnessProbabilityText;
     public GameObject SimulationSettingsGameObject;
-
+    
     public void LoadSettings()
     {
         SimulationSettingsGameObject.SetActive(true);
@@ -55,16 +43,17 @@ public class SimulationSettingsHandler : MonoBehaviour
         Simulation.Edit.AdjustableSimulationSettings settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
 
 
-        settings.IncubationMinDay = int.Parse(IncubationMinDayText.text);
-        settings.IncubationMaxDay = int.Parse(IncubationMaxDayText.text);
-        settings.SymptomsMinDay = int.Parse(SymptomsMinDayText.text);
-        settings.SymptomsMaxDay = int.Parse(SymptomsMaxDayText.text);
-        settings.InfectiousMinDay = int.Parse(InfectiousMinDayText.text);
-        settings.InfectiousMaxDay = int.Parse(InfectiousMaxDayText.text);
-        settings.RecoveringMinDay = int.Parse(RecoveringMinDayText.text);
-        settings.RecoveringMaxDay = int.Parse(RecoveringMaxDayText.text);
-        settings.FatalityRatePreIllness = float.Parse(FatalityRatePreIllnessText.text);
-        settings.PreIllnessProbability = float.Parse(PreIllnessProbabilityText.text);
+        settings.IncubationMinDay = int.Parse(UIController.Instance.IncubationMinDayInputField.text);
+        settings.IncubationMaxDay = int.Parse(UIController.Instance.IncubationMaxDayInputField.text);
+        settings.SymptomsMinDay = int.Parse(UIController.Instance.SymptomsMinDayInputField.text);
+        settings.SymptomsMaxDay = int.Parse(UIController.Instance.SymptomsMaxDayInputField.text);
+        settings.InfectiousMinDay = int.Parse(UIController.Instance.InfectiousMinDayInputField.text);
+        settings.InfectiousMaxDay = int.Parse(UIController.Instance.InfectiousMaxDayInputField.text);
+        settings.RecoveringMinDay = int.Parse(UIController.Instance.RecoveringMinDayInputField.text);
+        settings.RecoveringMaxDay = int.Parse(UIController.Instance.RecoveringMaxDayInputField.text);
+        settings.FatalityRate = float.Parse(UIController.Instance.FatalityRateTextInputField.text);
+        settings.FatalityRatePreIllness = float.Parse(UIController.Instance.FatalityRatePreIllnessInputField.text);
+        settings.PreIllnessProbability = float.Parse(UIController.Instance.PreIllnessProbabilityInputField.text);
 
     }
 
@@ -82,17 +71,17 @@ public class SimulationSettingsHandler : MonoBehaviour
     {
 
 
-        IncubationMinDayText.text = settings.IncubationMinDay.ToString();
-        IncubationMaxDayText.text = settings.IncubationMaxDay.ToString();
-        SymptomsMinDayText.text = settings.SymptomsMinDay.ToString();
-        SymptomsMaxDayText.text = settings.SymptomsMaxDay.ToString();
-        InfectiousMinDayText.text = settings.InfectiousMinDay.ToString();
-        InfectiousMaxDayText.text = settings.InfectiousMaxDay.ToString();
-        RecoveringMinDayText.text = settings.RecoveringMinDay.ToString();
-        RecoveringMaxDayText.text = settings.RecoveringMaxDay.ToString();
-        FatalityRateText.text = settings.FatalityRate.ToString();
-        FatalityRatePreIllnessText.text = settings.FatalityRatePreIllness.ToString();
-        PreIllnessProbabilityText.text = settings.PreIllnessProbability.ToString();
+        UIController.Instance.IncubationMinDayInputField.text = settings.IncubationMinDay.ToString();
+        UIController.Instance.IncubationMaxDayInputField.text = settings.IncubationMaxDay.ToString();
+        UIController.Instance.SymptomsMinDayInputField.text = settings.SymptomsMinDay.ToString();
+        UIController.Instance.SymptomsMaxDayInputField.text = settings.SymptomsMaxDay.ToString();
+        UIController.Instance.InfectiousMinDayInputField.text = settings.InfectiousMinDay.ToString();
+        UIController.Instance.InfectiousMaxDayInputField.text = settings.InfectiousMaxDay.ToString();
+        UIController.Instance.RecoveringMinDayInputField.text = settings.RecoveringMinDay.ToString();
+        UIController.Instance.RecoveringMaxDayInputField.text = settings.RecoveringMaxDay.ToString();
+        UIController.Instance.FatalityRateTextInputField.text= settings.FatalityRate.ToString();
+        UIController.Instance.FatalityRatePreIllnessInputField.text = settings.FatalityRatePreIllness.ToString();
+        UIController.Instance.PreIllnessProbabilityInputField.text = settings.PreIllnessProbability.ToString();
 
     }
 

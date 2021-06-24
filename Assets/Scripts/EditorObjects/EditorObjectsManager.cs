@@ -172,7 +172,7 @@ namespace EditorObjects
             if (CurrentSelectedEntity != null)
             {
 
-                bool inputIsOkay = InputValidator.TryParseInputFields(ref infectionRisk,
+                bool inputIsOkay = InputValidator.TryParseLeftInputFields(ref infectionRisk,
                 ref capacity,
                 ref numberOfPeople,
                 ref carefulness,
