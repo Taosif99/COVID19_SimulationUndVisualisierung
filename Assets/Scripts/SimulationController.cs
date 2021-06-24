@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using GraphChart;
 using System;
+using UnityEngine.UI;
 
 class SimulationController : MonoBehaviour
 {
@@ -18,6 +19,9 @@ class SimulationController : MonoBehaviour
 
     [SerializeField]
     private TMP_Text _simulationDateTime;
+
+    [SerializeField]
+    private Button _virusButton;
 
     private int _currentDay;
     private event Action<bool> _onDayPassed; //TODO PROPER EVENT
@@ -111,6 +115,7 @@ class SimulationController : MonoBehaviour
             _isPaused = false;
             _controller = null;
            // SimulationMaster.Instance.Reset();
+            _virusButton.interactable = true;
         }
     }
     
@@ -120,7 +125,8 @@ class SimulationController : MonoBehaviour
         {
             return;
         }
-        
+       
         _controller.InfectRandomPerson();
+        _virusButton.interactable = false;
     }  
 }

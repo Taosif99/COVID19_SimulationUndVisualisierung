@@ -102,7 +102,6 @@ namespace Simulation.Runtime
 
         public void InfectRandomPerson()
         {
-            //TODO: Person should be validated if he is already infected.
             Household[] households = _entities.OfType<Household>().ToArray();
             if (households != null && households.Length > 0)
             {
@@ -121,7 +120,5 @@ namespace Simulation.Runtime
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             }
         }
-        
-        
     }
 }

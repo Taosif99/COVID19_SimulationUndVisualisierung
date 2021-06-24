@@ -12958,6 +12958,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _editorObjectsManager: {fileID: 807507761}
   _simulationDateTime: {fileID: 1161086785}
+  _virusButton: {fileID: 1858235996}
 --- !u!4 &1190257966
 Transform:
   m_ObjectHideFlags: 0
