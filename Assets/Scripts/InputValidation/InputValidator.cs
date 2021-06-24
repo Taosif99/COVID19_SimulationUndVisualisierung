@@ -12,7 +12,7 @@ namespace InputValidation
     /// </summary>
     public static class InputValidator
     {
-        //TODO InputHandler Class
+        
         /// <summary>
         /// Method which parses al inputfields in the simulation scene and which checks for correct value ranges.
         /// </summary>
@@ -23,7 +23,7 @@ namespace InputValidation
         /// <param name="percentageOfWorkers"></param>
         ///  /// <param name="currentSelectedEntity"></param>
         /// <returns>true if all requiered inputfields can be parsed to correct values, else false</returns>
-        public static bool TryParseInputFields(ref float infectionRisk, ref int capacity, ref byte numberOfPeople, ref float carefulness, ref float percentageOfWorkers, Entity currentSelectedEntity)
+        public static bool TryParseLeftInputFields(ref float infectionRisk, ref int capacity, ref byte numberOfPeople, ref float carefulness, ref float percentageOfWorkers, Entity currentSelectedEntity)
         {
             bool inputIsValid = true;
 
@@ -60,6 +60,10 @@ namespace InputValidation
 
             return inputIsValid;
         }
+
+
+
+
 
 
         /// <summary>
