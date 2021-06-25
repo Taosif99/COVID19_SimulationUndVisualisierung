@@ -107,46 +107,42 @@ namespace Simulation.Runtime
 
             if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
             {
-     
-
                 //Can be done better with if/else statements
 
                 if (daysSinceInfection >= settings.LatencyTime
                     && daysSinceInfection  
-                    <= (settings.EndDayInfectious))
+                    <= (settings.EndDayInfectious) && InfectionState == InfectionStates.Phase1)
                 {
-                    stateTransition = InfectionState != InfectionStates.Phase2;
-                    InfectionState = InfectionStates.Phase2; 
-                 
+                    stateTransition = true;
+                    InfectionState = InfectionStates.Phase2;
                 }
                
                 if (daysSinceInfection >= settings.IncubationTime
-                    && daysSinceInfection < settings.EndDaySymptoms)
+                    && daysSinceInfection < settings.EndDaySymptoms && InfectionState == InfectionStates.Phase2)
                 {
-
-                    stateTransition = InfectionState != InfectionStates.Phase3;
-                    InfectionState = InfectionStates.Phase3;  
+                    stateTransition = true;
+                    InfectionState = InfectionStates.Phase3;
                 }
 
-                if (daysSinceInfection == settings.EndDaySymptoms)
+                if (daysSinceInfection == settings.EndDaySymptoms && InfectionState == InfectionStates.Phase3)
                 {
-                    stateTransition = InfectionState != InfectionStates.Phase4;
+                    stateTransition = true;
                     InfectionState = InfectionStates.Phase4; 
                 }
 
-
-                if (daysSinceInfection > settings.EndDaySymptoms) 
+                if (daysSinceInfection > settings.EndDaySymptoms && InfectionState == InfectionStates.Phase4) 
                 {
-                    stateTransition = InfectionState != InfectionStates.Phase5;
+                    stateTransition = true;
                     InfectionState = InfectionStates.Phase5; 
                 }
-
 
                 if (stateTransition)
                 {
                     StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
                     stateTransitionEventArgs.newInfectionState = InfectionState;
                     OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
+                    
+                    Debug.Log($"Switching to {InfectionState}");
                 }
 
             }
