@@ -15,57 +15,46 @@ namespace EpidemiologicalCalculation
         private const int Tau4 = 4;
         private const int Tau7 = 7;
 
-        //R-Wert Berechnung bei einem seriellen Intervall von 4 Tagen
 
         /// <summary>
         /// This method calculates the "sensitive R-Value".
         /// </summary>
         /// <param name="currentSimulationDay"></param>
         /// <param name="simulationDays"></param>
-        /// <returns> TODO </returns>
+        /// <returns> The sensitive 4 days R-Value if it can be calculated, else -1 if cannot be calculated. </returns>
         public static float CalculateRValue(int currentSimulationDay, List<DayInfo> simulationDays)
         {
             float result = -1f;
 
-            //Atleast one week over ?
             if (currentSimulationDay > 7)
             {
-
-                //TODO ROUND VALUE
-
                 result = CalculateRatio(currentSimulationDay, Tau4, simulationDays);
                 if (float.IsInfinity(result) || float.IsNaN(result))
                 {
                     Debug.LogWarning("What the hell---, you destroyed the universe");
                     result = -1f;
-
                 }
-
             }
             return result;
         }
 
         /// <summary>
-        /// This method calculates the more stable 7-days R-Value
+        /// This method calculates the more stable 7-days R-Value according the formula
+        /// from the RKI. In difference to the RKI implemntation we do not date the value one day back.
         /// </summary>
         /// <param name="currentSimulationDay"></param>
         /// <param name="simulationDays"></param>
-        /// <returns><TODO/returns>
+        /// <returns>The stable 7 days R-Value if it can be calculated, else -1 if cannot be calculated.</returns>
         public static float CalculateRValue7(int currentSimulationDay, List<DayInfo> simulationDays)
         {
-
             float result = -1f;
-
-            //Atleast 10 days over ?
             if (currentSimulationDay > 10)
-            {
-                //TODO ROUND VALUE
-                result = CalculateRatio(currentSimulationDay - 1, Tau7, simulationDays);
+            {      
+                result = CalculateRatio(currentSimulationDay, Tau7, simulationDays);
                 if (float.IsInfinity(result) || float.IsNaN(result))
                 {
                     Debug.LogWarning("What the hell---, you destroyed the universe");
                     result = -1f;
-
                 }
             }
             return result;
@@ -102,16 +91,24 @@ namespace EpidemiologicalCalculation
         }
 
 
-
+        /// <summary>
+        /// Method which calculates the R-Value depending on the day and tau parameter.
+        /// Implements the sum of the RKI formula.
+        /// Difference: Indexing is started by 0.
+        /// </summary>
+        /// <param name="day"></param>
+        /// <param name="tau"></param>
+        /// <param name="dayInfos"></param>
+        /// <returns></returns>
         private static float CalculateRatio(int day, int tau, List<DayInfo> dayInfos)
         {
 
             int enumerator = 0;
             int denominator = 0;
-            for (int s = (day - tau + 1); s <= day; s++)
+            for (int s = (day - tau); s < day; s++)
             {
-                enumerator += dayInfos[s - 1].AmountNewInfections;
-                denominator += dayInfos[s - 1 - 4].AmountNewInfections;
+                enumerator += dayInfos[s].AmountNewInfections;
+                denominator += dayInfos[s - 4].AmountNewInfections;
             }
             return (float)enumerator / (float)denominator;
         }

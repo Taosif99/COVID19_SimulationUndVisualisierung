@@ -62,38 +62,15 @@ namespace InputValidation
         }
 
 
-
-
-
-
-        //Private ?
-
-        /*
-        public static bool TryParseMinMaxIntDay(TMP_InputField minInputField, TMP_InputField maxInputField,  ref int minInputValue, ref int maxInputValue) 
-        {
-            bool minInputOk = int.TryParse(minInputField.text,out minInputValue) && minInputValue > 0;
-            bool maxInputOk = int.TryParse(maxInputField.text, out maxInputValue) && maxInputValue > 0;
-            SetInputFieldColor(minInputField, minInputOk);
-            SetInputFieldColor(maxInputField, maxInputOk);
-
-            //TODO SHOW MESSAGE IF MIN > MAX
-            if (minInputValue > maxInputValue)
-            {
-                SetInputFieldColor(minInputField, false);
-                SetInputFieldColor(maxInputField, false);
-                return false;
-            }
-
-
-            return minInputOk && maxInputOk ;
-        }*/
-
-
-
-
+        /// <summary>
+        /// Method which checks if an inputfield text can be parsed to an integer value > 0
+        /// and which sets the color if condition not fulfilled.
+        /// </summary>
+        /// <param name="inputField"></param>
+        /// <param name="value"></param>
+        /// <returns>true if condition fulfilled, else false</returns>
         public static bool TryParseIntDayInputField(TMP_InputField inputField, ref int value)
         {
-
             bool inputOk = int.TryParse(inputField.text, out value) && value >= 0;
             SetInputFieldColor(inputField, inputOk);
             return inputOk;

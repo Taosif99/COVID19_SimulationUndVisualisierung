@@ -55,24 +55,21 @@ namespace EpidemiologicalCalculation
         
         }
 
-        //TODO UPDATE COMMENT
         /// <summary>
-        /// Method which updates the R-Value of a day.
+        /// Method which updates the R-Values and incidence of a day.
         /// </summary>
         /// <param name="currentSimulationDay">The current day since the start of the simulation, day = 1, day2 = 2,...</param>
-        /// <param name="playDate"> The real world date the simulation started.</param>
-        /// <returns>The calculated R-Value</returns>
+        /// <param name="rValue"></param>
+        /// <param name="rValue7"></param>
+        /// <param name="incidence"></param>
+        /// <param name="playDate">The real world date the simulation started.</param>
         public void UpdateRValueAndIncidence(int currentSimulationDay, out float rValue, out float rValue7 ,out float incidence, DateTime playDate)
         {
             rValue = EpidemiologicalCalculator.CalculateRValue(currentSimulationDay, _simulationDays);
+            rValue7 = EpidemiologicalCalculator.CalculateRValue7(currentSimulationDay, _simulationDays);
+            incidence = EpidemiologicalCalculator.CalculateIncidence(currentSimulationDay, _simulationDays);
             _simulationDays[currentSimulationDay - 1].RValue = rValue;
-            //Debug.Log("Calculated R-Value: (-1 is undefined): " + _simulationDays[currentSimulationDay - 1].RValue);
-           // rValue7 = EpidemiologicalCalculator.CalculateRValue7(currentSimulationDay, _simulationDays);
-            rValue7 = -1f; //bug
-            _simulationDays[currentSimulationDay - 1].RValue7 = rValue7;
-
-
-            incidence = EpidemiologicalCalculator.CalculateIncidence(currentSimulationDay,_simulationDays) ;
+            _simulationDays[currentSimulationDay - 1].RValue7 = rValue7;          
             _simulationDays[currentSimulationDay - 1].Incidence = incidence;
 
             //TODO Better write once all dayinfos at the end of the simulation
@@ -98,11 +95,6 @@ namespace EpidemiologicalCalculation
             {
                 Debug.Log(_simulationDays[i]);
             }
-
-
         }
-
- 
-
     }
 }
