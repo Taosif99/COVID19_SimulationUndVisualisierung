@@ -127,7 +127,7 @@ public class SimulationMaster : MonoBehaviour
                 _infectionStateCounter[Person.InfectionStates.Phase1] += 1;
                 //Decreasing amount uninfected
                 if(_infectionStateCounter[Person.InfectionStates.Uninfected] > 0)
-                _infectionStateCounter[Person.InfectionStates.Uninfected] -= 1; //suceptible
+                _infectionStateCounter[Person.InfectionStates.Uninfected] -= 1; //susceptible
                 break;
 
             case Person.InfectionStates.Phase2:
