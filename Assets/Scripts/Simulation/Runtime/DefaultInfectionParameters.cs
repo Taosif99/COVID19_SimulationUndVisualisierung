@@ -1,62 +1,70 @@
-using System;
-namespace Simulation.Runtime
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class DefaultInfectionParameters 
 {
-    public static class DefaultInfectionParameters
+    /// <summary>
+    /// The average values are taken from:
+    /// <see cref="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile"/>
+    /// </summary>
+    public static class InfectionsPhaseParameters
     {
 
-
-        //Infection state parameters
-
-        /// <summary>
-        /// "Die Inkubationszeit gibt die Zeit von der Ansteckung bis zum Beginn der Erkrankung an. Die mittlere Inkubationszeit(Median) wird in den meisten Studien mit 5-6 Tagen angegeben.
-        /// In verschiedenen Studien wurde berechnet, zu welchem Zeitpunkt 95% der Infizierten Symptome entwickelt hatten, dabei lag das 95. Perzentil der Inkubationszeit bei 10-14 Tagen."
-        /// Source: <see href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html;jsessionid=4F9C8FBD1A6B20D6B25BDFC1EBCC726B.internet082?nn=13490888#doc13776792bodyText5">RKI - Incubation period and serial interval</see> (website called on 05.06.2021)
-        /// </summary>
-        public const int IncubationMinDay = 5;
-        public const int IncubationMaxDay = 6;
-        public const int SymptomsMinDay = 10;
-        public const int SymptomsMaxDay = 14; //
+        //Following values are the averages of the RKI
 
         /// <summary>
-        /// "Zwei Studien geben Startpunkt der Infektiosität mit circa 2,5 Tagen vor Symptombeginn an an, mit einem Maximum an Viruslast also Infektiosität 0,6 Tage vor Symptombeginn."
-        /// Source: <see href="https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/">Sciencemediacente - Period of infectivity</see> (website called on 05.06.2021)
+        /// Amount days until a person becomes infectious.
         /// </summary>
-        public const int InfectiousMinDay = 7;
-        public const int InfectiousMaxDay = 11;
+        public const int LatencyTime = 3;
 
         /// <summary>
-        ///  "Nach 14 Tagen ab Symptombeginn kann die häusliche Quarantäne beendet werden, wenn der Patient für 48 Stunden symptomfrei war"
-        ///  Source: <see href="https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/">Sciencemediacente -  Time from first symptoms to recovery of mild cases</see> (website called on 05.06.2021)
+        /// Amount days a person IS infectious.
         /// </summary>
-        public const int RecoveringMinDay = 24;
-        public const int RecoveringMaxDay = 28; //
+        public const int AmountDaysInfectious = 10;
 
+        public const int EndDayInfectious = LatencyTime + AmountDaysInfectious - 1;
 
-
-
-        //Heath and DeathParameters
-
+        //Incubation Time, whether use the median or generate a value
 
         /// <summary>
-        /// Defines whether the person dies based on the physical state set.
-        ///"Das Sterberisiko steigt bei den meisten Vorerkrankungen um bis zu 87 Prozent."
-        /// Source: <see href="https://www.quarks.de/gesundheit/medizin/wie-viele-menschen-sterben-an-corona/">Quarks - Mortality risk for people with pre-existing conditions</see> (website called on 12.06.2021)
-        /// * "Insgesamt sind 2,6% aller Personen, für die bestätigte SARS-CoV-2-Infektionen in Deutschland übermittelt wurden, im Zusammenhang mit einer COVID-19-Erkrankung verstorben."
-        /// Source:  <see href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html;jsessionid=9380EA03621C1ECA856E7B2B4D5A9E4A.internet062?nn=13490888#doc13776792bodyText13">RKI - Case-fatality ratio, lethality</see> (website called on 12.06.2021)
+        /// Amount days until persons gets symptoms.
         /// </summary>
-        public const float FatalityRate = 0.026f;
-        public const float FatalityRatePreIllness = 0.87f;
+        public const int IncubationTime = 5;
 
         /// <summary>
-        /// "Etwa 36,5 Millionen Menschen in Deutschland haben danach ein erhöhtes Risiko für einen schweren COVID-19-Verlauf.Unter diesen gehören 21,6 Millionen Menschen zur Hochrisikogruppe."
-        /// PreIllness Probability:
-        /// 36.5 - 21.6 = 14.9
-        /// 21.6 / 36.5 ≈ 0.6 
-        /// 14.9 / 36.5 ≈ 0.4
-        /// 21.6 * 0.6 + 14.9 * 0.4 = 18.92
-        /// 18.92 / 83.02 (Einwohner Deutschlands)  = 0.22f
-        /// Source: https://www.rki.de/DE/Content/Gesundheitsmonitoring/Gesundheitsberichterstattung/GBEDownloadsJ/JoHM_S2_2021_Risikogruppen_COVID_19.pdf?__blob=publicationFile
+        /// Amount days person HAS symptoms. (If person must not go to an hospital)
         /// </summary>
-        public const float PreIllnessProbability = 0.22f;
+        public const int AmountDaysSymptoms = 9;
+
+        public const int EndDaySymptoms = IncubationTime + AmountDaysSymptoms - 1;
+
+
     }
+
+    /// <summary>
+    /// TODO USE IN HOSPITAL
+    /// </summary>
+    public static class HealthPhaseParameters 
+    {
+
+        /// <summary>
+        /// Probability that an infected person recovers,
+        /// else person must go to hospital !
+        /// </summary>
+        public const float RecoveringProbability = 0.955f;
+        /// <summary>
+        /// Probability that a person does recover in hospital,
+        /// else person must go to intensive care.
+        /// </summary>
+        public const float RecoveringInHospitalProbability = 0.75f;
+
+        /// <summary>
+        /// Person dies, if he/she does not survive in the intensive care.
+        /// </summary>
+        public const float PersonSurvivesIntensiveCareProbability = 0.5f;
+
+
+    }
+
 }

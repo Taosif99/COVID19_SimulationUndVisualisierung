@@ -74,9 +74,10 @@ namespace Simulation.Runtime
 
                 foreach (Person member in household.Members)
                 {
+                    
                     member.UpdateInfectionState(SimulationDate);
                     // TODO: member.UpdateHealthState(SimulationDate);
-                    
+
                     if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
                     {
                         if (!household.HasPersonHere(member))
@@ -107,8 +108,8 @@ namespace Simulation.Runtime
             {
                 Household randomHousehold = households[Random.Range(0, households.Length)];
                 Person randomPerson = randomHousehold.Members[Random.Range(0, randomHousehold.Members.Length)];
+                //randomPerson.SetInfected(SimulationDate);
                 randomPerson.SetInfected(SimulationDate);
-               
             }
             else 
             { 

@@ -40,8 +40,9 @@ namespace Simulation.Runtime
 
                     if (Random.Range(0f, 1f) <= infectionProbability)
                     {
+
+                       
                         p.SetInfected(simulationDate);
-           
                         Debug.Log("Person was infected.");
                     }
                 }

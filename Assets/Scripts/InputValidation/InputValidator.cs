@@ -67,6 +67,8 @@ namespace InputValidation
 
 
         //Private ?
+
+        /*
         public static bool TryParseMinMaxIntDay(TMP_InputField minInputField, TMP_InputField maxInputField,  ref int minInputValue, ref int maxInputValue) 
         {
             bool minInputOk = int.TryParse(minInputField.text,out minInputValue) && minInputValue > 0;
@@ -84,7 +86,20 @@ namespace InputValidation
 
 
             return minInputOk && maxInputOk ;
+        }*/
+
+
+
+
+        public static bool TryParseIntDayInputField(TMP_InputField inputField, ref int value)
+        {
+
+            bool inputOk = int.TryParse(inputField.text, out value) && value >= 0;
+            SetInputFieldColor(inputField, inputOk);
+            return inputOk;
         }
+
+
 
         public static bool TryParseFloatPercentageInputField(TMP_InputField inputField, ref float value)
         {

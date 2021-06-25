@@ -41,62 +41,43 @@ public class SimulationSettingsHandler : MonoBehaviour
         Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation;
         Simulation.Edit.AdjustableSimulationSettings currentSettings = simulation.SimulationOptions.AdjustableSimulationPrameters;
 
-        Simulation.Edit.AdjustableSimulationSettings settingsToSet = new Simulation.Edit.AdjustableSimulationSettings();
-
-        int incubationMinDay = currentSettings.IncubationMinDay;
-        int incubationMaxDay = currentSettings.IncubationMaxDay;
-        int symptomsMinDay = currentSettings.SymptomsMinDay;
-        int symptomsMaxDay = currentSettings.SymptomsMaxDay;
-        int infectiousMinDay = currentSettings.InfectiousMinDay;
-        int infectiousMaxDay = currentSettings.InfectiousMaxDay;
-        int recoveringMinDay = currentSettings.RecoveringMinDay;
-        int recoveringMaxDay = currentSettings.RecoveringMaxDay;
-        float fatalityRate = currentSettings.FatalityRate;
-        float fatalityRatePreIllness = currentSettings.FatalityRatePreIllness;
-        float preIllnessProbability = currentSettings.PreIllnessProbability;
+        Simulation.Edit.AdjustableSimulationSettings defaultSettings = new Simulation.Edit.AdjustableSimulationSettings();
 
 
-        bool validIncubationTime = InputValidator.TryParseMinMaxIntDay(UIController.Instance.IncubationMinDayInputField,
-                                   UIController.Instance.IncubationMaxDayInputField, ref incubationMinDay, ref incubationMaxDay);
+        int latencyTime = defaultSettings.LatencyTime;
+        int amountDaysInfectious = defaultSettings.AmountDaysInfectious;
+        int incubationTime = defaultSettings.IncubationTime;
+        int amountDaysSymptoms = defaultSettings.AmountDaysSymptoms;
 
-        bool validSymptomsTime = InputValidator.TryParseMinMaxIntDay(UIController.Instance.SymptomsMinDayInputField,
-                                 UIController.Instance.SymptomsMaxDayInputField, ref symptomsMinDay, ref symptomsMaxDay);
 
-        bool validInfectiousTime = InputValidator.TryParseMinMaxIntDay(UIController.Instance.InfectiousMinDayInputField,
-                                   UIController.Instance.InfectiousMaxDayInputField, ref infectiousMinDay, ref infectiousMaxDay);
+        bool latencyInputOk = InputValidator.TryParseIntDayInputField(UIController.Instance.LatencyInputField, ref latencyTime) ;
+        bool amountDaysInfectiousInputOk = InputValidator.TryParseIntDayInputField(UIController.Instance.AmountDaysInfectiousInputField, ref amountDaysInfectious);
+        bool incubationInputOk = InputValidator.TryParseIntDayInputField(UIController.Instance.IncubationTimeInputField, ref incubationTime);
+        bool amountDaysSymptomsInputOk = InputValidator.TryParseIntDayInputField(UIController.Instance.AmountDaysSymptomsInputField, ref amountDaysSymptoms);
 
-        bool validRecoveringTime = InputValidator.TryParseMinMaxIntDay(UIController.Instance.RecoveringMinDayInputField,
-                                   UIController.Instance.RecoveringMaxDayInputField, ref recoveringMinDay, ref recoveringMaxDay);
 
-        bool validFatalityRate = InputValidator.TryParseFloatPercentageInputField(UIController.Instance.FatalityRateTextInputField, ref fatalityRate);
-        bool validFatalityRatePreIllness = InputValidator.TryParseFloatPercentageInputField(UIController.Instance.FatalityRatePreIllnessInputField, ref fatalityRatePreIllness);
-        bool validPreIllnessProbability = InputValidator.TryParseFloatPercentageInputField(UIController.Instance.PreIllnessProbabilityInputField, ref preIllnessProbability);
-        if (validIncubationTime)
+        if (latencyInputOk)
         {
-            currentSettings.IncubationMinDay = incubationMinDay;
-            currentSettings.IncubationMaxDay = incubationMaxDay;
+            currentSettings.LatencyTime = latencyTime;
         }
-        if (validSymptomsTime)
+
+        if (amountDaysInfectiousInputOk)
         {
-            currentSettings.SymptomsMinDay = symptomsMinDay;
-            currentSettings.SymptomsMaxDay = symptomsMaxDay;
+            currentSettings.AmountDaysInfectious = amountDaysInfectious;
         }
-        if (validInfectiousTime)
+
+        if (incubationInputOk)
         {
-            currentSettings.InfectiousMinDay = infectiousMinDay;
-            currentSettings.InfectiousMaxDay = infectiousMaxDay;
+            currentSettings.IncubationTime = incubationTime;
         }
-        if (validRecoveringTime)
+
+        if (amountDaysSymptomsInputOk)
         {
-            currentSettings.RecoveringMinDay = recoveringMinDay;
-            currentSettings.RecoveringMaxDay = recoveringMaxDay;
+            currentSettings.AmountDaysSymptoms = amountDaysSymptoms;
         }
-        if(validFatalityRate)
-            currentSettings.FatalityRate = fatalityRate;
-        if(validFatalityRatePreIllness)
-            currentSettings.FatalityRatePreIllness = fatalityRate;
-        if(validPreIllnessProbability)
-            currentSettings.PreIllnessProbability = fatalityRatePreIllness;
+
+
+
     }
 
 
@@ -111,19 +92,10 @@ public class SimulationSettingsHandler : MonoBehaviour
 
     private void DisplaySettings(Simulation.Edit.AdjustableSimulationSettings settings)
     {
-
-
-        UIController.Instance.IncubationMinDayInputField.text = settings.IncubationMinDay.ToString();
-        UIController.Instance.IncubationMaxDayInputField.text = settings.IncubationMaxDay.ToString();
-        UIController.Instance.SymptomsMinDayInputField.text = settings.SymptomsMinDay.ToString();
-        UIController.Instance.SymptomsMaxDayInputField.text = settings.SymptomsMaxDay.ToString();
-        UIController.Instance.InfectiousMinDayInputField.text = settings.InfectiousMinDay.ToString();
-        UIController.Instance.InfectiousMaxDayInputField.text = settings.InfectiousMaxDay.ToString();
-        UIController.Instance.RecoveringMinDayInputField.text = settings.RecoveringMinDay.ToString();
-        UIController.Instance.RecoveringMaxDayInputField.text = settings.RecoveringMaxDay.ToString();
-        UIController.Instance.FatalityRateTextInputField.text = settings.FatalityRate.ToString();
-        UIController.Instance.FatalityRatePreIllnessInputField.text = settings.FatalityRatePreIllness.ToString();
-        UIController.Instance.PreIllnessProbabilityInputField.text = settings.PreIllnessProbability.ToString();
+        UIController.Instance.LatencyInputField.text = settings.LatencyTime.ToString();
+        UIController.Instance.AmountDaysInfectiousInputField.text = settings.AmountDaysInfectious.ToString();
+        UIController.Instance.IncubationTimeInputField.text = settings.IncubationTime.ToString();
+        UIController.Instance.AmountDaysSymptomsInputField.text = settings.AmountDaysSymptoms.ToString();
 
     }
 

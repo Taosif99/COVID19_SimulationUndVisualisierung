@@ -61,83 +61,7 @@ namespace Simulation.Runtime
             PreIllness
         }
 
-        /// <summary>
-        /// Calculates the difference between the current date and the infection date in days.
-        /// The difference determines in which infection states the person is. 
-        /// The infection status is stored in the attribute public InfectionStates _infectionStates.
-        /// </summary>
-        /// <param name="currentDate">Current simulations date</param>
-        public void UpdateInfectionState(DateTime currentDate)
-        {
-            int currentDay = currentDate.Day;
-            int currentMonth = currentDate.Month;
-            double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
-            bool stateTransition = false;
 
-            Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
-
-            if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
-            {
-
-                switch (InfectionState)
-                {
-                    case InfectionStates.Phase1:
-                        if (daysSinceInfection > _infectionStateDuration)
-                        {
-                            InfectionState = InfectionStates.Phase2;
-                            _infectionStateDuration = Random.Range(settings.InfectiousMinDay, settings.InfectiousMaxDay);
-                            stateTransition = true;
-                        }
-                       
-                        break;
-
-                    case InfectionStates.Phase2:
-                        if (daysSinceInfection > _infectionStateDuration)
-                        {
-                            InfectionState = InfectionStates.Phase3;
-                            _infectionStateDuration = Random.Range(settings.SymptomsMinDay, settings.SymptomsMaxDay);
-                            stateTransition = true;
-                        }
-
-                        break;
-
-                    case InfectionStates.Phase3:
-                        if (daysSinceInfection > _infectionStateDuration)
-                        {
-                            InfectionState = InfectionStates.Phase4;
-                            _infectionStateDuration = Random.Range(settings.RecoveringMinDay, settings.RecoveringMaxDay);
-                            stateTransition = true;
-
-                        }
-
-                        break;
-
-                    case InfectionStates.Phase4:
-
-                        if (daysSinceInfection > _infectionStateDuration)
-                        {
-                            InfectionState = InfectionStates.Phase5;
-                            _infectionStateDuration = int.MaxValue;
-                            stateTransition = true;
-
-                        }
-
-                        break;
-
-                    case InfectionStates.Phase5:
-                        break;
-                }
-
-                if (stateTransition)
-                {
-                    StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
-                    stateTransitionEventArgs.newInfectionState = InfectionState;
-                    OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
-                }
-                // Debug.Log("State: " + InfectionState);
-
-            }
-        }
 
         public bool HasActivityAt(DateTime dateTime) => GetActivityAt(dateTime) != null;
 
@@ -163,6 +87,71 @@ namespace Simulation.Runtime
             return null;
         }
 
+
+
+        /// <summary>
+        /// Calculates the difference between the current date and the infection date in days.
+        /// The difference determines in which infection states the person is. 
+        /// The infection status is stored in the attribute public InfectionStates _infectionStates.
+        /// </summary>
+        /// <param name="currentDate">Current simulations date</param>
+
+        public void UpdateInfectionState(DateTime currentDate)
+        {
+            int currentDay = currentDate.Day;
+            int currentMonth = currentDate.Month;
+            double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
+            bool stateTransition = false;
+
+            //Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+
+            if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
+            {
+     
+
+                //Can be done better with if/else statements
+
+                if (daysSinceInfection >= DefaultInfectionParameters.InfectionsPhaseParameters.LatencyTime
+                    && daysSinceInfection  
+                    <= (DefaultInfectionParameters.InfectionsPhaseParameters.EndDayInfectious))
+                {
+                    stateTransition = InfectionState != InfectionStates.Phase2;
+                    InfectionState = InfectionStates.Phase2; 
+                 
+                }
+               
+                if (daysSinceInfection >= DefaultInfectionParameters.InfectionsPhaseParameters.IncubationTime
+                    && daysSinceInfection < DefaultInfectionParameters.InfectionsPhaseParameters.EndDaySymptoms)
+                {
+
+                    stateTransition = InfectionState != InfectionStates.Phase3;
+                    InfectionState = InfectionStates.Phase3;  
+                }
+
+                if (daysSinceInfection == DefaultInfectionParameters.InfectionsPhaseParameters.EndDaySymptoms)
+                {
+                    stateTransition = InfectionState != InfectionStates.Phase4;
+                    InfectionState = InfectionStates.Phase4; 
+                }
+
+
+                if (daysSinceInfection > DefaultInfectionParameters.InfectionsPhaseParameters.EndDaySymptoms) 
+                {
+                    stateTransition = InfectionState != InfectionStates.Phase5;
+                    InfectionState = InfectionStates.Phase5; 
+                }
+
+
+                if (stateTransition)
+                {
+                    StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
+                    stateTransitionEventArgs.newInfectionState = InfectionState;
+                    OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
+                }
+
+            }
+        }
+
         /// <summary>
         /// Set the Infection state of a person to infected and set the current simulation date as the infection date of the person.
         /// In addition, an incubation time and the survive probability of the person are set. 
@@ -170,15 +159,15 @@ namespace Simulation.Runtime
         /// <param name="infectionDate">Current simulations date</param>
         public void SetInfected(DateTime infectionDate)
         {
-            Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+            //Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
             InfectionState = InfectionStates.Infected;
             _infectionDate = infectionDate;
-            _infectionStateDuration = Random.Range(settings.IncubationMinDay, settings.IncubationMaxDay);
+            //_infectionStateDuration = DefaultInfectionParameters2.InfectionsPhaseParameters.AmountDaysInfectious;
             StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
             stateTransitionEventArgs.newInfectionState = InfectionState;
             OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
             SimulationMaster.Instance.OnPersonInfected();
-            _healthState.SurviveProbability();
         }
+
     }
 }

@@ -85,17 +85,11 @@ public class UIController : MonoBehaviour
     private List<TMP_Dropdown> _leftDropDowns;
 
     [Header("Simulation Settings Inputfields")]
-    public TMP_InputField IncubationMinDayInputField;
-    public TMP_InputField IncubationMaxDayInputField;
-    public TMP_InputField SymptomsMinDayInputField;
-    public TMP_InputField SymptomsMaxDayInputField;
-    public TMP_InputField InfectiousMinDayInputField;
-    public TMP_InputField InfectiousMaxDayInputField;
-    public TMP_InputField RecoveringMinDayInputField;
-    public TMP_InputField RecoveringMaxDayInputField;
-    public TMP_InputField FatalityRateTextInputField;
-    public TMP_InputField FatalityRatePreIllnessInputField;
-    public TMP_InputField PreIllnessProbabilityInputField;
+    public TMP_InputField LatencyInputField;
+    public TMP_InputField AmountDaysInfectiousInputField;
+    public TMP_InputField IncubationTimeInputField;
+    public TMP_InputField AmountDaysSymptomsInputField;
+
 
 
     [Header("References to manager(s)")]

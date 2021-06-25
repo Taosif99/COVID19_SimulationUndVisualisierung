@@ -23,10 +23,12 @@ namespace Simulation.Runtime
         {
             float healthyProbability = Random.Range(0f, 1f);
             Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+            
+            /*
             if (healthyProbability <= settings.PreIllnessProbability)
             {
                 _preIllness = true;
-            }
+            }*/
         }
 
         /// <summary>
@@ -48,6 +50,8 @@ namespace Simulation.Runtime
             {
                 Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
 
+
+                /*
                 if (_preIllness == false)
                 {
                     if (_surviveProbability <= settings.FatalityRate)
@@ -57,7 +61,7 @@ namespace Simulation.Runtime
                 {
                     if (_surviveProbability <= settings.FatalityRatePreIllness)
                         _isDead = true;
-                }
+                }*/
             }
         }
     }
