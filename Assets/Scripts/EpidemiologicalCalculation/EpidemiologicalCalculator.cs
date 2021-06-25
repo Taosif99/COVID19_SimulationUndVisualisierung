@@ -90,7 +90,7 @@ namespace EpidemiologicalCalculation
         public static float CalculateIncidence(int simulationDay, List<DayInfo> simulationDays)
         {
             float amountNewInfectionsInDeltaT = 0f;
-            float riskPopulation = SimulationMaster.Instance.AmountUninfected;
+            float riskPopulation = SimulationMaster.Instance.AmountUninfected + SimulationMaster.Instance.AmountRecovered;
           
             if (riskPopulation == 0) return -1;
             for (int i = 0; i < simulationDay - 1; i++)

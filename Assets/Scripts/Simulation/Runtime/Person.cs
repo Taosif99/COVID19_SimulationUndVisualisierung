@@ -103,7 +103,7 @@ namespace Simulation.Runtime
             double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
             bool stateTransition = false;
 
-            //Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+            Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
 
             if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
             {
@@ -111,31 +111,31 @@ namespace Simulation.Runtime
 
                 //Can be done better with if/else statements
 
-                if (daysSinceInfection >= DefaultInfectionParameters.InfectionsPhaseParameters.LatencyTime
+                if (daysSinceInfection >= settings.LatencyTime
                     && daysSinceInfection  
-                    <= (DefaultInfectionParameters.InfectionsPhaseParameters.EndDayInfectious))
+                    <= (settings.EndDayInfectious))
                 {
                     stateTransition = InfectionState != InfectionStates.Phase2;
                     InfectionState = InfectionStates.Phase2; 
                  
                 }
                
-                if (daysSinceInfection >= DefaultInfectionParameters.InfectionsPhaseParameters.IncubationTime
-                    && daysSinceInfection < DefaultInfectionParameters.InfectionsPhaseParameters.EndDaySymptoms)
+                if (daysSinceInfection >= settings.IncubationTime
+                    && daysSinceInfection < settings.EndDaySymptoms)
                 {
 
                     stateTransition = InfectionState != InfectionStates.Phase3;
                     InfectionState = InfectionStates.Phase3;  
                 }
 
-                if (daysSinceInfection == DefaultInfectionParameters.InfectionsPhaseParameters.EndDaySymptoms)
+                if (daysSinceInfection == settings.EndDaySymptoms)
                 {
                     stateTransition = InfectionState != InfectionStates.Phase4;
                     InfectionState = InfectionStates.Phase4; 
                 }
 
 
-                if (daysSinceInfection > DefaultInfectionParameters.InfectionsPhaseParameters.EndDaySymptoms) 
+                if (daysSinceInfection > settings.EndDaySymptoms) 
                 {
                     stateTransition = InfectionState != InfectionStates.Phase5;
                     InfectionState = InfectionStates.Phase5; 
