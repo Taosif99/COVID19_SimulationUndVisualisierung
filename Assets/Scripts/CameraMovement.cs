@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,29 +10,62 @@ using UnityEngine.EventSystems;
 /// 
 /// Good Explanation for Interpolation: http://www.faustofonseca.com/tutorial/unity-vector3-lerp-vs-vector3-slerp
 /// </summary>
+[RequireComponent(typeof(Camera))]
 public class CameraMovement : MonoBehaviour
 {
-    [SerializeField] private Camera _mainCamera;
+    [Header("Camera Movement")]
     [SerializeField] private float cameraMovementSpeed = 5;
     //Lower = smoother, Factor used for interpolation
-    [SerializeField] private float _smoothFactor = 0.5f;
-    private bool _isMouseOverUi;
-    public bool IsMouseOverUi { get => _isMouseOverUi; set => _isMouseOverUi = value; }
+    [SerializeField] [Range(0, 1)] private float _smoothFactor = 0.5f;
+    
+    [Header("Camera Zoom")]
+    [SerializeField] [Range(0, 1)] private float _defaultZoom = 0.2f;
+    [SerializeField] [Range(0, 1)] private float _zoomSpeed = 0.05f;
+    [SerializeField] private float _minY = 12;
+    [SerializeField] private float _maxY = 40;
+    [SerializeField] private float _minAngle = 50;
+    [SerializeField] private float _maxAngle = 75;
+    
+    private Camera _mainCamera;
+    private float _currentZoomFactor;
 
-
+    public bool IsMouseOverUi { get; private set; }
 
     // Start is called before the first frame update
     private void Start()
     {
         //Getting the camera component
         _mainCamera = GetComponent<Camera>();
+        SetCameraZoom(_defaultZoom);
     }
 
     // Update is called once per frame
     private void Update()
     {
         IsMouseOverUi = IsMousePointerOverUIElement();
+        ZoomCamera();
         MoveCamera();
+    }
+
+    private void ZoomCamera()
+    {
+        SetCameraZoom(_currentZoomFactor - Input.mouseScrollDelta.y * _zoomSpeed);
+    }
+
+    private void SetCameraZoom(float zoomFactor)
+    {
+        zoomFactor = Mathf.Clamp(zoomFactor, 0, 1);
+        _currentZoomFactor = zoomFactor;
+
+        float y = Mathf.Lerp(_minY, _maxY, zoomFactor);
+        float angle = Mathf.Lerp(_minAngle, _maxAngle, zoomFactor);
+
+        var cameraTransform = _mainCamera.transform;
+        var position = cameraTransform.position;
+        cameraTransform.position = new Vector3(position.x, y, position.z);
+
+        var eulerAngles = cameraTransform.rotation.eulerAngles;
+        _mainCamera.transform.rotation = Quaternion.Euler(angle, eulerAngles.y, eulerAngles.z);
     }
 
     /// <summary>
@@ -38,19 +73,17 @@ public class CameraMovement : MonoBehaviour
     /// </summary>
     private void MoveCamera()
     {
-        //Check if 2D UI is not hit by the mouse
-       if(!_isMouseOverUi)
+        if (EventSystem.current.currentSelectedGameObject != null &&
+            EventSystem.current.currentSelectedGameObject.GetComponent<TMP_InputField>() != null)
         {
-
-            Vector3 inputVector = new Vector3(Input.GetAxis("Horizontal"), 0,
-                                                Input.GetAxis("Vertical"));
-            Vector3 targetPosition = _mainCamera.transform.position + inputVector * Time.deltaTime * cameraMovementSpeed;
-            _mainCamera.transform.position = Vector3.Lerp(transform.position, targetPosition, _smoothFactor);
-
-        }   
+            return;
+        }
+        
+        Vector3 inputVector = new Vector3(Input.GetAxis("Horizontal"), 0,
+            Input.GetAxis("Vertical"));
+        Vector3 targetPosition = _mainCamera.transform.position + inputVector * Time.deltaTime * cameraMovementSpeed;
+        _mainCamera.transform.position = Vector3.Lerp(transform.position, targetPosition, _smoothFactor);
     }
-
-
  
     /// <summary>
     /// Method to check if mouse points to main UI elements.
