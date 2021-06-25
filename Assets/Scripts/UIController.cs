@@ -52,9 +52,11 @@ public class UIController : MonoBehaviour
     public GameObject HospitalUI;
     public GameObject DeleteEntityGameObject;
     public TMP_Text RValueText;
+    public TMP_Text RValue7Text;
     public TMP_Text IncidenceText;
     public Toggle EpidemicInfoToggle;
     [SerializeField] private GameObject RValueGameObject;
+    [SerializeField] private GameObject RValue7GameObject;
     [SerializeField] private GameObject IncidenceGameObject;
     public Toggle CsvLogToggle;
     // All texts field which must be resettet will be cached in this list
@@ -293,7 +295,9 @@ public class UIController : MonoBehaviour
     {
         IncidenceText.text = "";
         RValueText.text = "";
+        RValue7Text.text = "";
         RValueGameObject.SetActive(EpidemicInfoToggle.isOn);
+        RValue7GameObject.SetActive(EpidemicInfoToggle.isOn);
         IncidenceGameObject.SetActive(EpidemicInfoToggle.isOn);
     
     }

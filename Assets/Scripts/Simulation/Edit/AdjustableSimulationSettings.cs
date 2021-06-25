@@ -18,8 +18,6 @@ namespace Simulation.Edit
 
         public  int EndDayInfectious  {get { return LatencyTime + AmountDaysInfectious - 1; } }
 
-        //Incubation Time, whether use the median or generate a value
-
         public int IncubationTime { get; set; }
         public  int AmountDaysSymptoms { get; set; }
 
@@ -36,15 +34,6 @@ namespace Simulation.Edit
             IncubationTime = DefaultInfectionParameters.InfectionsPhaseParameters.IncubationTime;
             AmountDaysSymptoms = DefaultInfectionParameters.InfectionsPhaseParameters.AmountDaysSymptoms;
 
-            
-            Debug.Log("Created simulation settings !");
-            Debug.Log(LatencyTime + ", " +
-                        AmountDaysInfectious + ", " +
-                        EndDayInfectious + ", " +
-                        IncubationTime + ", " +
-                        AmountDaysSymptoms + ", " +
-                        EndDaySymptoms);
-            
         }
 
 

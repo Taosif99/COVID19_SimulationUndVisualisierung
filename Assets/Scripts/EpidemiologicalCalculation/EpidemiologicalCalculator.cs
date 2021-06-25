@@ -50,8 +50,8 @@ namespace EpidemiologicalCalculation
         /// </summary>
         /// <param name="currentSimulationDay"></param>
         /// <param name="simulationDays"></param>
-        /// <returns></returns>
-        public static float CalculateR7Value(int currentSimulationDay, List<DayInfo> simulationDays)
+        /// <returns><TODO/returns>
+        public static float CalculateRValue7(int currentSimulationDay, List<DayInfo> simulationDays)
         {
 
             float result = -1f;
@@ -60,7 +60,7 @@ namespace EpidemiologicalCalculation
             if (currentSimulationDay > 10)
             {
                 //TODO ROUND VALUE
-                result = CalculateRatio(currentSimulationDay, Tau7, simulationDays);
+                result = CalculateRatio(currentSimulationDay - 1, Tau7, simulationDays);
                 if (float.IsInfinity(result) || float.IsNaN(result))
                 {
                     Debug.LogWarning("What the hell---, you destroyed the universe");

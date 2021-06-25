@@ -108,7 +108,6 @@ namespace Simulation.Runtime
             {
                 Household randomHousehold = households[Random.Range(0, households.Length)];
                 Person randomPerson = randomHousehold.Members[Random.Range(0, randomHousehold.Members.Length)];
-                //randomPerson.SetInfected(SimulationDate);
                 randomPerson.SetInfected(SimulationDate);
             }
             else 

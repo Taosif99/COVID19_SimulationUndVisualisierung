@@ -207,8 +207,9 @@ public class SimulationMaster : MonoBehaviour
     public void OnDayEnds()
     {
         float rValue;
+        float rValue7;
         float incidence;
-       _dayInfoHandler.UpdateRValueAndIncidence(CurrentDayOfSimulation,out rValue,out incidence,PlayDate);
+       _dayInfoHandler.UpdateRValueAndIncidence(CurrentDayOfSimulation,out rValue,out rValue7,out incidence,PlayDate);
 
 
         if (UIController.Instance.EpidemicInfoToggle.isOn)
@@ -219,15 +220,26 @@ public class SimulationMaster : MonoBehaviour
                 UIController.Instance.RValueText.text = "R-Value: ? ";
             else
             {
-                UIController.Instance.RValueText.text = $"R-Value: " + rValue;
+                UIController.Instance.RValueText.text = $"R-Value: " + rValue.ToString("0.00");
             }
+
+            if (rValue7 == -1f)
+            {
+                UIController.Instance.RValue7Text.text = "R-Value7: ? ";
+
+            }
+            else
+            {
+                UIController.Instance.RValue7Text.text = "R-Value7: " + rValue7.ToString("0.00");
+            }
+
             if (incidence == -1f)
             {
                 UIController.Instance.IncidenceText.text = "Incidence: ? ";
             }
             else
             {
-                UIController.Instance.IncidenceText.text = $"Incidence: {incidence} ";
+                UIController.Instance.IncidenceText.text = "Incidence: "+ incidence.ToString("0.00");
             }
         }
     }
