@@ -82,14 +82,13 @@ namespace Simulation.Runtime
                 {
                     _person.IsDead = true;
 
-                    //decrease amount of population 
+                    //TODO: decrease amount of population and simulation master counter
                     Debug.LogWarning("RIP");
                 }
                 
             
             }
-        
-        
+       
         }
 
 

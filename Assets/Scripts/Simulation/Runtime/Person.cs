@@ -17,7 +17,7 @@ namespace Simulation.Runtime
         //private int _infectionStateDuration;
         private HealthState _healthState;
 
-        private bool _isDead;
+        private bool _isDead = false;
         private double _daysSinceInfection;
 
         public Person(float carefulnessFactor, float risk, bool isWorker)
@@ -122,6 +122,10 @@ namespace Simulation.Runtime
                 Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
                 InfectionStates previousState = InfectionStates.Uninfected;
 
+
+         
+                
+
                 switch (InfectionState)
                 {
 
@@ -154,7 +158,12 @@ namespace Simulation.Runtime
                         }
                     case InfectionStates.Phase3:
                         {
-                           // _healthState.UpdateHealthState(currentDate, _infectionDate);
+
+                            //If person will die no recovering possible
+                            //TODO HANDLE PHASES OF DYING PERSONS
+                            if (_healthState.WillDieInIntensiveCare) return;
+
+                            // _healthState.UpdateHealthState(currentDate, _infectionDate);
                             if (_daysSinceInfection > settings.EndDayInfectious
                                 && _daysSinceInfection <= settings.EndDaySymptoms)
                             {
