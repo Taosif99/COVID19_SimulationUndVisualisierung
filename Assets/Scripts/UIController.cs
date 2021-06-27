@@ -178,9 +178,11 @@ public class UIController : MonoBehaviour
     /// <param name="button"></param>
     private void ModifyOutlineColor(Button button)
     {
+       
         var outline = button.GetComponent<Outline>();
-        outline.effectColor = OutlineColor;
         outline.enabled = true;
+        outline.effectColor = OutlineColor;
+      
     }
 
     /// <summary>

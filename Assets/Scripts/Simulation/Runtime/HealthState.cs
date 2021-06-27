@@ -62,21 +62,16 @@ namespace Simulation.Runtime
         public void UpdateHealthState()
         {
 
-
-
             if (_willDieInIntensiveCare)
             {
                 Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
-
 
                 if (_person.DaysSinceInfection >= (settings.IncubationTime + DefaultInfectionParameters.HealthPhaseParameters.DaysFromSymptomsBeginToDeath - 1))
                 {
                     _person.IsDead = true;
                     Debug.LogWarning("RIP");
                     SimulationMaster.Instance.OnPersonDies();
-                }
-                
-            
+                }            
             }
        
         }
