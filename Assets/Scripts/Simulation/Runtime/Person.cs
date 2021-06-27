@@ -22,7 +22,7 @@ namespace Simulation.Runtime
             CarefulnessFactor = carefulnessFactor;
             _risk = risk;
             IsWorker = isWorker;
-            _healthState = new HealthState();
+            _healthState = new HealthState(this);
         }
 
         public float CarefulnessFactor { get; }
@@ -112,7 +112,7 @@ namespace Simulation.Runtime
 
                     case InfectionStates.Phase1:
                         {
-                            _healthState.UpdateHealthState(currentDate, _infectionDate);
+                            //_healthState.UpdateHealthState(currentDate, _infectionDate);
                             if (daysSinceInfection >= settings.LatencyTime
                                 && daysSinceInfection <= settings.EndDayInfectious)
                             {
@@ -125,7 +125,7 @@ namespace Simulation.Runtime
 
                     case InfectionStates.Phase2:
                         {
-                            _healthState.UpdateHealthState(currentDate, _infectionDate);
+                            //_healthState.UpdateHealthState(currentDate, _infectionDate);
                             if (daysSinceInfection >= settings.IncubationTime
                                 && daysSinceInfection <= settings.EndDaySymptoms
                                 && daysSinceInfection <= settings.EndDayInfectious)
@@ -137,7 +137,7 @@ namespace Simulation.Runtime
                         }
                     case InfectionStates.Phase3:
                         {
-                            _healthState.UpdateHealthState(currentDate, _infectionDate);
+                           // _healthState.UpdateHealthState(currentDate, _infectionDate);
                             if (daysSinceInfection > settings.EndDayInfectious
                                 && daysSinceInfection <= settings.EndDaySymptoms)
                             {
@@ -160,7 +160,7 @@ namespace Simulation.Runtime
 
                     case InfectionStates.Phase4:
                         {
-                            _healthState.UpdateHealthState(currentDate, _infectionDate);
+                            //_healthState.UpdateHealthState(currentDate, _infectionDate);
                             if (daysSinceInfection > settings.EndDaySymptoms)
                             {
                                 stateTransition = true;
