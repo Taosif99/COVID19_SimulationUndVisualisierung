@@ -143,6 +143,18 @@ namespace Simulation.Runtime
                                 InfectionState = InfectionStates.Phase4;
                             }
 
+                            
+                            //Special case if EndDayInfectious == EndDaySymptoms
+                            if (settings.EndDayInfectious == settings.EndDaySymptoms 
+                                &&daysSinceInfection > settings.EndDayInfectious
+                                && daysSinceInfection > settings.EndDaySymptoms)
+                            {
+                                stateTransition = true;
+                                InfectionState = InfectionStates.Phase5;
+                            }
+
+
+
                             break;
                         }
 

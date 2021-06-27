@@ -11,15 +11,16 @@ namespace Simulation
         /// 
         /// The assumption is made, that EndDaySymptoms is >= endDayInfectious
         /// 
-        /// -->   IncubationTime + AmountDaysSymptoms - 1  >=LatencyTime + AmountDaysInfectious - 1 must be verified !
+        /// -->   IncubationTime + AmountDaysSymptoms - 1  >=LatencyTime + AmountDaysInfectious - 1
+        ///         IncubationTime + AmountDaysSymptoms   >=LatencyTime + AmountDaysInfectious 
+        ///             
+        ///          Must be verified !
         /// 
         /// We count the first day =1, second day = 2,...
         /// 
         /// </summary>
         public static class InfectionsPhaseParameters
         {
-
-            //Following values are the averages of the RKI
 
             /// <summary>
             /// Amount days until a person becomes infectious.

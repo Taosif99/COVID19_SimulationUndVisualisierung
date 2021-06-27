@@ -49,35 +49,13 @@ public class SimulationSettingsHandler : MonoBehaviour
         int incubationTime = defaultSettings.IncubationTime;
         int amountDaysSymptoms = defaultSettings.AmountDaysSymptoms;
 
-
-        bool latencyInputOk = InputValidator.TryParseIntDayInputField(UIController.Instance.LatencyInputField, ref latencyTime) ;
-        bool amountDaysInfectiousInputOk = InputValidator.TryParseIntDayInputField(UIController.Instance.AmountDaysInfectiousInputField, ref amountDaysInfectious);
-        bool incubationInputOk = InputValidator.TryParseIntDayInputField(UIController.Instance.IncubationTimeInputField, ref incubationTime);
-        bool amountDaysSymptomsInputOk = InputValidator.TryParseIntDayInputField(UIController.Instance.AmountDaysSymptomsInputField, ref amountDaysSymptoms);
-
-
-        if (latencyInputOk)
+        if (InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms))
         {
             currentSettings.LatencyTime = latencyTime;
-        }
-
-        if (amountDaysInfectiousInputOk)
-        {
             currentSettings.AmountDaysInfectious = amountDaysInfectious;
-        }
-
-        if (incubationInputOk)
-        {
             currentSettings.IncubationTime = incubationTime;
-        }
-
-        if (amountDaysSymptomsInputOk)
-        {
             currentSettings.AmountDaysSymptoms = amountDaysSymptoms;
         }
-
-
-
     }
 
 

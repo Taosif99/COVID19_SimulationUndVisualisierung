@@ -12,7 +12,7 @@ namespace InputValidation
     /// </summary>
     public static class InputValidator
     {
-        
+
         /// <summary>
         /// Method which parses al inputfields in the simulation scene and which checks for correct value ranges.
         /// </summary>
@@ -62,6 +62,57 @@ namespace InputValidation
         }
 
 
+
+        /// <summary>
+        /// Method which validated the simulation settings parameters.
+        /// It validates the parsing and if:
+        ///  IncubationTime + AmountDaysSymptoms   >=LatencyTime + AmountDaysInfectious 
+        /// </summary>
+        /// <param name="latencyTime"></param>
+        /// <param name="amountDaysInfectious"></param>
+        /// <param name="incubationTime"></param>
+        /// <param name="amountDaysSymptoms"></param>
+        /// <returns>true if inputs are valid, else false.</returns>
+        public static bool ValidateSimulationParameters(ref int latencyTime, ref int amountDaysInfectious, ref int incubationTime, ref int amountDaysSymptoms)
+        {
+
+            bool result = false;
+            bool latencyInputOk = TryParseIntDayInputField(UIController.Instance.LatencyInputField, ref latencyTime);
+            bool amountDaysInfectiousInputOk = TryParseIntDayInputField(UIController.Instance.AmountDaysInfectiousInputField, ref amountDaysInfectious);
+            bool incubationInputOk = TryParseIntDayInputField(UIController.Instance.IncubationTimeInputField, ref incubationTime);
+            bool amountDaysSymptomsInputOk = TryParseIntDayInputField(UIController.Instance.AmountDaysSymptomsInputField, ref amountDaysSymptoms);
+
+            result = latencyInputOk && amountDaysInfectiousInputOk && incubationInputOk && amountDaysSymptomsInputOk;
+
+            if (result == true)
+            {
+                result = incubationTime + amountDaysSymptoms >= latencyTime + amountDaysInfectious;
+
+                if (result == false)
+                {
+                    //All fields are wrong
+                    SetInputFieldColor(UIController.Instance.LatencyInputField, false);
+                    SetInputFieldColor(UIController.Instance.AmountDaysInfectiousInputField, false);
+                    SetInputFieldColor(UIController.Instance.IncubationTimeInputField, false);
+                    SetInputFieldColor(UIController.Instance.AmountDaysSymptomsInputField, false);
+                    //TODO DIALOGBOX WHICH EXPLAINS ERROR
+                }
+
+            }
+
+
+            return result;
+        }
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// Method which checks if an inputfield text can be parsed to an integer value > 0
         /// and which sets the color if condition not fulfilled.
@@ -109,13 +160,13 @@ namespace InputValidation
         /// <param name="inputField"></param>
         /// <returns>true if text of inputfield is not empty and does not only consist of whitespaces , false if string is empty or only consists of whitespaces
         /// inputfield will be colored white if true, else it will be colored white</returns>
-        public static bool BasicInputFieldValidation(TMP_InputField inputField) 
+        public static bool BasicInputFieldValidation(TMP_InputField inputField)
         {
             bool isInputOk = BasicInputValidation(inputField.text);
             SetInputFieldColor(inputField, isInputOk);
             return isInputOk;
         }
-        
+
         /// <summary>
         /// Method to set the color of an inputfield depending if its content 
         /// can be parsed.
