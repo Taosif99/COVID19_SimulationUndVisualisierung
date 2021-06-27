@@ -57,9 +57,10 @@ namespace Simulation.Runtime
             }
         }
 
-        public void RunUpdate(double simulationTimeStepInMinutes)
+        public void RunUpdate()
         {
-            SimulationDate = SimulationDate.AddMinutes(simulationTimeStepInMinutes);
+            SimulationDate = SimulationDate.AddMinutes(10);
+
             foreach (var venue in _entities.OfType<Venue>())
             {
                 venue.SimulateEncounters(SimulationDate);
@@ -74,7 +75,6 @@ namespace Simulation.Runtime
                     if (member.IsDead) continue;
 
                     member.UpdateInfectionState(SimulationDate);
-
                     member.UpdateHealthState();
 
                     if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
@@ -83,6 +83,7 @@ namespace Simulation.Runtime
                         {
                             household.MovePersonHere(member);  
                         }
+                        
                         continue;
                     }
                     
