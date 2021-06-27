@@ -57,9 +57,9 @@ namespace Simulation.Runtime
             }
         }
 
-        public void RunUpdate()
+        public void RunUpdate(double simulationTimeStepInMinutes)
         {
-            SimulationDate = SimulationDate.AddMinutes(10);
+            SimulationDate = SimulationDate.AddMinutes(simulationTimeStepInMinutes);
 
             foreach (var venue in _entities.OfType<Venue>())
             {
