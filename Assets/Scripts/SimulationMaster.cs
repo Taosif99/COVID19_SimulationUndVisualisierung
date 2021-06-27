@@ -119,9 +119,21 @@ public class SimulationMaster : MonoBehaviour
     /// <param name="infectionState">The new state after transition.</param>
     public void AddToGlobalCounter(Person.StateTransitionEventArgs eventArgs)
     {
-        Person.InfectionStates infectionState = eventArgs.newInfectionState;
+        Person.InfectionStates newInfectionState = eventArgs.newInfectionState;
+        Person.InfectionStates previousState = eventArgs.previousInfectionState;
 
-        switch (infectionState)
+        //Handle special case phase 5 -> phase1
+        if (previousState == Person.InfectionStates.Phase5 && newInfectionState == Person.InfectionStates.Phase1)
+        {
+            _infectionStateCounter[Person.InfectionStates.Phase5] -= 1;
+            _infectionStateCounter[Person.InfectionStates.Phase1] += 1;
+            return;
+        }
+
+
+
+
+        switch (newInfectionState)
         {
             case Person.InfectionStates.Phase1:
                 _infectionStateCounter[Person.InfectionStates.Phase1] += 1;
