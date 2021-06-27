@@ -28,7 +28,7 @@ class SimulationController : MonoBehaviour
 
     private bool _isInitialized = false;
     private bool _isPaused = false;
-    
+
     private Simulation.Runtime.SimulationController _controller;
     private float _lastSimulationUpdate;
 
@@ -56,12 +56,12 @@ class SimulationController : MonoBehaviour
             SimulationMaster.Instance.StartUninfectedCounting();
             SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
             SimulationMaster.Instance.PlayDate = DateTime.Now;
-            _isInitialized = true;    
+            _isInitialized = true;
         }
         else if (_isPaused == true)
         {
             _isPaused = false;
-        }    
+        }
     }
 
     private void Update()
@@ -73,24 +73,11 @@ class SimulationController : MonoBehaviour
 
         if (Time.time - _lastSimulationUpdate >= SimulationInterval)
         {
-            _controller.RunUpdate(10);
-            _simulationDateTime.text =
-                $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
-
-            
-            
-            //Update statistics each day
-            if (_currentDay != _controller.SimulationDate.Day) 
+            ApplySimulationStep();
+            if (_currentDay != _controller.SimulationDate.Day)
             {
-               
-                _currentDay = _controller.SimulationDate.Day;
-                _onDayPassed?.Invoke(true);
-                //10 min bias ???
-                SimulationMaster.Instance.OnDayEnds();
-                SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
-
+                OnDayChanges();
             }
-                 
             _lastSimulationUpdate = Time.time;
         }
     }
@@ -124,7 +111,19 @@ class SimulationController : MonoBehaviour
 
     public void ForwardSimulation()
     {
-        _controller.RunUpdate(1440);
+        //TODO DISABLE COUNTERS AND GRAPH TO AVOID BUTTON SPAMMING
+
+        if (!IsRunning)
+        {
+            return;
+        }
+
+        while (_currentDay == _controller.SimulationDate.Day)
+        {
+            ApplySimulationStep();
+        }
+
+        OnDayChanges();
     }
 
     public void InfectRandomPerson()
@@ -133,8 +132,26 @@ class SimulationController : MonoBehaviour
         {
             return;
         }
-       
+
         _controller.InfectRandomPerson();
         _virusButton.interactable = false;
-    }  
+    }
+
+
+    private void ApplySimulationStep()
+    {
+        _controller.RunUpdate();
+        _simulationDateTime.text =
+            $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
+    }
+
+    private void OnDayChanges()
+    {
+        _currentDay = _controller.SimulationDate.Day;
+        _onDayPassed?.Invoke(true);
+        //10 min bias ???
+        //Update statistics each day
+        SimulationMaster.Instance.OnDayEnds();
+        SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
+    }
 }

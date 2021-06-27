@@ -62,8 +62,6 @@ namespace Simulation.Runtime
         public void UpdateHealthState()
         {
 
-
-
             if (_willDieInIntensiveCare)
             {
                 Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
@@ -74,9 +72,7 @@ namespace Simulation.Runtime
                     _person.IsDead = true;
                     Debug.LogWarning("RIP");
                     SimulationMaster.Instance.OnPersonDies();
-                }
-                
-            
+                }            
             }
        
         }
