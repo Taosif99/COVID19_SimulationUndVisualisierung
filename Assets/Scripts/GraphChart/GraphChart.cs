@@ -29,7 +29,7 @@ namespace GraphChart
         private List<GameObject> _gameObjectList;
 
         // Values of the this graph
-        private List<int> _valueList;
+        //private List<int> _valueList;
 
         //Needed for for dynamic update
         private List<GameObject> _dotsOrBarsList; //Here we handle our dots and bars
@@ -104,11 +104,38 @@ namespace GraphChart
             _graphHeight = _graphContainer.sizeDelta.y;
 
             //Initialize lists
+            ReInitLists();
+        }
+
+        /// <summary>
+        /// Method which removes previous created GameObjects and reinitializes therefore
+        /// the internal gameObjects container lists.
+        /// </summary>
+        public void ReInitLists()
+        {
+
+            //Destroying objects of previous graph
+
+            if (_gameObjectList != null)
+            {
+                foreach (GameObject gameObject in _gameObjectList)
+                {
+                    Destroy(gameObject);
+                }
+                _gameObjectList.Clear();
+                _dotsOrBarsList.Clear();
+                _yLabelList.Clear();
+                _dotsConnectionList.Clear();
+                
+            }
+
             _gameObjectList = new List<GameObject>();
             _dotsOrBarsList = new List<GameObject>();
             _yLabelList = new List<RectTransform>();
             _dotsConnectionList = new List<GameObject>();
+
         }
+
 
 
         /// <summary>
@@ -170,8 +197,9 @@ namespace GraphChart
                 intValueList.Add(graphValue.Value);
             }
 
-            this._valueList = intValueList;
+            //this._valueList = intValueList;
 
+            
             InitializeLabels(getAxisLabelX, getAxisLabelY);
             //Destroying objects of previous graph
             foreach (GameObject gameObject in _gameObjectList)
@@ -182,8 +210,8 @@ namespace GraphChart
             _yLabelList.Clear();
             _dotsConnectionList.Clear();
             float yMax, yMin;
-            CalculateYScale(out yMin, out yMax);
-            float xSize = _graphWidth / (_valueList.Count + 1);
+            CalculateYScale(out yMin, out yMax, intValueList);
+            float xSize = _graphWidth / (intValueList.Count + 1);
             //Here we can do a if else statement to check for the graph type
             //I think using an enum makes the code less complicated
             GameObject lastDotGameObject = null;
@@ -220,7 +248,7 @@ namespace GraphChart
 
 
         /// <summary>
-        /// 
+        /// Method to shows and (re-)create a multiline graph.
         /// </summary>
         /// <param name="lines">Lines objects of the multiline graph</param>
         /// <param name="colors">>An list of colors which will be applied "clockwise" on the linegraphs.</param>
@@ -229,12 +257,12 @@ namespace GraphChart
         public void ShowMultiLineGraph(List<Line> lines, List<Color> colors = null, Func<int, string> getAxisLabelX = null, Func<float, string> getAxisLabelY = null)
         {
 
-
+            _typeOfGraph = GraphType.LineGraph;
             //Do this only if we have some values in the List<Lines> and not only empty list
             if (lines[0].Values.Count > 0)
             {
 
-                _typeOfGraph = GraphType.LineGraph;
+                
                 InitializeLabels(getAxisLabelX, getAxisLabelY);
                 //Destroying objects of previous graph
                 foreach (GameObject gameObject in _gameObjectList)
@@ -291,8 +319,6 @@ namespace GraphChart
                             float yPosition = ((valueList[i] - yMin) / (yMax - yMin)) * _graphHeight;
                             BuildDotLine(xPosition, yPosition, ref lastDotGameObject, color);
                         }
-
-                     
 
                     }
                     listCounter++;
@@ -422,6 +448,8 @@ namespace GraphChart
             rectTransform.pivot = new Vector2(.5f, 0f);
             return gameObject;
         }
+
+        /*
         private void HandleGraphType(int index, float xPosition, float yPosition, float xSize)
         {
 
@@ -444,12 +472,12 @@ namespace GraphChart
                 rectTransform.anchoredPosition = new Vector2(xPosition, 0f);
                 rectTransform.sizeDelta = new Vector2(xSize * barWidthMultiplier, yPosition);
             }
-        }
+        }*/
 
         //TODO REPLACE LATER LINEAR SEARCH WITH BETTER ALGORITHM
-        private void CalculateYScale(out float yMin, out float yMax)
+        private void CalculateYScale(out float yMin, out float yMax, List<int> valueList)
         {
-            CalculateYScaleMultiline(out yMin, out yMax, null, _valueList);
+            CalculateYScaleMultiline(out yMin, out yMax, null, valueList);
         }
 
 

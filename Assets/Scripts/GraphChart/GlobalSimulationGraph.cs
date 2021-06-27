@@ -15,7 +15,7 @@ namespace GraphChart
 
         [SerializeField] private GameObject _multiLineGraphGameObject;
         [SerializeField] private GameObject _barchartGameObject;
-
+        [SerializeField] private GameObject _fullScreenGraphGameObject;
 
         //Multiline
         private List<Line> _lines;
@@ -28,9 +28,6 @@ namespace GraphChart
         //To use the more performant update value of a barchart
         private bool _barChartCreated = false;
 
-
-        //private delegate void UpdateBarchartValues();
-        //private delegate void UpdateLinechartValues();
 
         public static GlobalSimulationGraph Instance;
 
@@ -59,13 +56,9 @@ namespace GraphChart
         // Start is called before the first frame update
         private void Start()
         {
-
             InitColorList();
             InitMultiLineGraph();
             InitBarChart();
-
-            //TODO START COROURINE OR USE EVENTS ONLY IF SIMULATION STARTED
-            //StartCoroutine(UpdateGraphsEachDay());
   
         }
 
@@ -86,6 +79,7 @@ namespace GraphChart
 
             if (BarchartGameObject.activeInHierarchy)
             {
+               
                 BarchartGameObject.GetComponent<GraphChart>().ShowGraph(_barchartValues, _colorList, _xLabelBarChart);
             }
 
@@ -95,6 +89,20 @@ namespace GraphChart
             }
 
         }
+
+       public void Reset()
+        {
+
+            BarchartGameObject.GetComponent<GraphChart>().ReInitLists();
+            MultiLineGraphGameObject.GetComponent<GraphChart>().ReInitLists();
+            _fullScreenGraphGameObject.GetComponent<GraphChart>().ReInitLists();
+            InitMultiLineGraph();
+            InitBarChart();
+        }
+
+
+
+
 
 
         private void InitColorList()
@@ -114,11 +122,21 @@ namespace GraphChart
 
         }
 
+   
         private void InitMultiLineGraph()
         {
 
+            if (_lines != null)
+            {
+                for (int i = 0; i < _lines.Count; i++)
+                {
+                    _lines[i].Values.Clear();
+                }
 
-            _xLabelMultilineGraph = delegate (int index)
+                _lines.Clear();
+            }
+                
+             _xLabelMultilineGraph = delegate (int index)
                 {
                     return (index + 1).ToString();
 
@@ -133,17 +151,7 @@ namespace GraphChart
             List<int> uninfectedValues = new List<int>();
             List<int> infectiousValues = new List<int>();
 
-            /*
-            _lines = new List<List<int>>();
-            _lines.Add(uninfectedValues);
-            _lines.Add(phase1Values);
-            _lines.Add(infectious);
-            //lines.Add(phase2Values);
-            //lines.Add(phase3Values);
-            //lines.Add(phase4Values);
-            _lines.Add(phase5Values);
-          
-            */
+
             Line phase1Line = new Line(phase1Values, true);
             Line phase2Line = new Line(phase2Values, true);
             Line phase3Line = new Line(phase3Values, true);
@@ -166,7 +174,8 @@ namespace GraphChart
 
         private void InitBarChart()
         {
-            //_barchartValues = new List<int>() { 0, 0, 0,0 };
+            if(_barchartValues != null)
+                _barchartValues.Clear();
             _barchartValues = new List<GraphValue>() 
             { 
              new GraphValue(0,true),
@@ -203,17 +212,7 @@ namespace GraphChart
             //Clear lists each 7 days / seven simulation time-step-units
             if (_lines[0].Values.Count == 8)
             {
-                /*
-                foreach (var line in _lines)
-                {
-                    _lines.Clear();
-                }*/
-                /*
-                _lines[0].Clear();
-                _lines[1].Clear();
-                _lines[2].Clear();
-                _lines[3].Clear();
-                */
+
                 _lines[0].Values.Clear();
                 _lines[1].Values.Clear();
                 _lines[2].Values.Clear();

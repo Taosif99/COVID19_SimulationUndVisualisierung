@@ -168,6 +168,7 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter[Person.InfectionStates.Phase3] = 0;
         _infectionStateCounter[Person.InfectionStates.Phase4] = 0;
         _infectionStateCounter[Person.InfectionStates.Phase5] = 0;
+        _infectionStateCounter[Person.InfectionStates.Infectious] = 0;
         //_infectionStateCounter[Person.InfectionStates.Uninfected] = ;
         _dayInfoHandler = new DayInfoHandler();
         _currentDayOfSimulation = 0;

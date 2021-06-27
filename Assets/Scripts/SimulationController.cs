@@ -118,13 +118,13 @@ class SimulationController : MonoBehaviour
             _editorObjectsManager.ReloadEditorObjects();
 
             SimulationMaster.Instance.Reset();
+            GlobalSimulationGraph.Instance.Reset();
         }
     }
 
     public void ForwardSimulation()
     {
-        _controller.SimulationDate = _controller.SimulationDate.AddDays(1);
-        //Debug.Log(_controller.SimulationDate);
+      //TODO
     }
 
     public void InfectRandomPerson()

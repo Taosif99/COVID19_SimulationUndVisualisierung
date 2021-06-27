@@ -4345,6 +4345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _multiLineGraphGameObject: {fileID: 6710811103308160233}
   _barchartGameObject: {fileID: 1574761055}
+  _fullScreenGraphGameObject: {fileID: 798117537}
   UninfectedToggle: {fileID: 577692798}
   InfectedToggle: {fileID: 1161563033}
   InfectiousToggle: {fileID: 221200478}
