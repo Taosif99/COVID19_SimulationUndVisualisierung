@@ -88,6 +88,8 @@ namespace EditorObjects
         /// <param name="spawnPosition"></param>
         public void LoadEditorObjectUI(Vector2Int gridCellPosition)
         {
+
+            UIController.Instance.DisableLeftGraphUI();
             UIController.Instance.SetEntityPropertiesVisible(true);
             
             GridCell gridCell = new GridCell(gridCellPosition.x, gridCellPosition.y);

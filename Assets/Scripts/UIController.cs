@@ -18,9 +18,9 @@ using GraphChart;
 public class UIController : MonoBehaviour
 {
     //References to buttons
-    public Button placeWorkplaceButton, placeHospitalButton, placeHouseholdButton, placeGraphButton;
+    public Button PlaceWorkplaceButton, PlaceHospitalButton, PlaceHouseholdButton, PlaceGraphButton;
     //Color to indicate which button is clicked
-    public Color outlineColor;
+    public Color OutlineColor;
 
     //To reset all buttons 
     private List<Button> buttonList;
@@ -46,11 +46,6 @@ public class UIController : MonoBehaviour
 
     //GameObject groups of editor object UI elements
     [Header("Right Image UI children")]
-    public GameObject VenueUI;
-    public GameObject HouseholdUI;
-    public GameObject WorkplaceUI;
-    public GameObject HospitalUI;
-    public GameObject DeleteEntityGameObject;
     public TMP_Text RValueText;
     public TMP_Text RValue7Text;
     public TMP_Text IncidenceText;
@@ -66,7 +61,13 @@ public class UIController : MonoBehaviour
     [Header("Left Image UI children")]
     [SerializeField]
     private RectTransform _entityPropertiesPanel;
-    
+
+    public GameObject VenueUI;
+    public GameObject HouseholdUI;
+    public GameObject WorkplaceUI;
+    public GameObject HospitalUI;
+    public GameObject DeleteEntityGameObject;
+
     //Venue elements
     public TMP_InputField ObjectNameInputField;
     public TMP_InputField InfectionRiskInputField; //TODO Slider
@@ -98,7 +99,7 @@ public class UIController : MonoBehaviour
     //Will be replaced
     [SerializeField] private EditorObjectsManager editorObjectsManager;
 
-
+    public Button LastClickedButton { get => _lastClickedButton; set => _lastClickedButton = value; }
 
     private void Awake()
     {
@@ -118,16 +119,16 @@ public class UIController : MonoBehaviour
 
         buttonList = new List<Button>
         {
-            placeWorkplaceButton,
-            placeHospitalButton,
-            placeHouseholdButton,
-            placeGraphButton
+            PlaceWorkplaceButton,
+            PlaceHospitalButton,
+            PlaceHouseholdButton,
+            PlaceGraphButton
         };
 
         _placementButtonDictionary = new Dictionary<PrefabName, Button>();
-        _placementButtonDictionary.Add(PrefabName.Workplace, placeWorkplaceButton);
-        _placementButtonDictionary.Add(PrefabName.Hospital, placeHospitalButton);
-        _placementButtonDictionary.Add(PrefabName.Household, placeHouseholdButton);
+        _placementButtonDictionary.Add(PrefabName.Workplace, PlaceWorkplaceButton);
+        _placementButtonDictionary.Add(PrefabName.Hospital, PlaceHospitalButton);
+        _placementButtonDictionary.Add(PrefabName.Household, PlaceHouseholdButton);
 
         // TODO: Remove
         /*foreach (PrefabName key in _placementButtonDictionary.Keys)
@@ -144,15 +145,15 @@ public class UIController : MonoBehaviour
         }*/
 
         // TODO: Remove
-        placeGraphButton.onClick.AddListener(() =>
+        PlaceGraphButton.onClick.AddListener(() =>
         {
             SetEntityPropertiesVisible(true);
             
             DisableButtonOutlineColors();
-            ModifyOutlineColor(placeGraphButton);
+            ModifyOutlineColor(PlaceGraphButton);
             //Here a Graph must be activated in the UI...
             SimulationGraphEnabler.EnableGraphSettings();
-            _lastClickedButton = placeGraphButton;
+            _lastClickedButton = PlaceGraphButton;
             DeactivateOldSettingsElements();
         });
 
@@ -178,7 +179,7 @@ public class UIController : MonoBehaviour
     private void ModifyOutlineColor(Button button)
     {
         var outline = button.GetComponent<Outline>();
-        outline.effectColor = outlineColor;
+        outline.effectColor = OutlineColor;
         outline.enabled = true;
     }
 
@@ -200,18 +201,18 @@ public class UIController : MonoBehaviour
     {
         ClearInputFields();
 
-        if (_lastClickedButton == placeWorkplaceButton)
+        if (_lastClickedButton == PlaceWorkplaceButton)
         {
             LoadWorkplaceUI();
         }
 
-        if (_lastClickedButton == placeHospitalButton)
+        if (_lastClickedButton == PlaceHospitalButton)
         {
             LoadHospitalUI();
         }
 
-        //Handle Graph related UI components
-        if (_lastClickedButton != placeGraphButton)
+        //Handle Graph related UI components, TODO REMOVE LATER
+        if (_lastClickedButton != PlaceGraphButton)
         {
             SimulationGraphEnabler.DisableGraphSettings();
         }
@@ -223,7 +224,7 @@ public class UIController : MonoBehaviour
             HospitalUI.SetActive(false);
         }
 
-        if (_lastClickedButton == placeHouseholdButton)
+        if (_lastClickedButton == PlaceHouseholdButton)
         {
             LoadHouseholdUI();
         }
@@ -236,6 +237,12 @@ public class UIController : MonoBehaviour
             inputField.text = "";
         }
     }
+
+    public void DisableLeftGraphUI()
+    {
+        SimulationGraphEnabler.DisableGraphSettings();
+    }
+
 
     //Methods for loading right properties
     public void LoadWorkplaceUI()

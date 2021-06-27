@@ -26,7 +26,7 @@ public class SimulationMaster : MonoBehaviour
 
     private int _currentDayOfSimulation = 0;
     private DayInfoHandler _dayInfoHandler = new DayInfoHandler();
-    
+    private int _amountPeopleDead = 0;
 
 
     /// <summary>
@@ -80,6 +80,7 @@ public class SimulationMaster : MonoBehaviour
         
     }
 
+    public int AmountPeopleDead { get => _amountPeopleDead; set => _amountPeopleDead = value; }
 
     private void Awake()
     {
@@ -115,6 +116,9 @@ public class SimulationMaster : MonoBehaviour
 
     /// <summary>
     /// Method which handles the counting of infection states if a state transition happens.
+    /// 
+    /// PROBLEM: All phases are counted distinct, apart of phase 1 which is the amount of infected people.
+    /// Continuity is kinda broken in our modelling.
     /// </summary>
     /// <param name="infectionState">The new state after transition.</param>
     public void AddToGlobalCounter(Person.StateTransitionEventArgs eventArgs)
@@ -129,9 +133,6 @@ public class SimulationMaster : MonoBehaviour
             _infectionStateCounter[Person.InfectionStates.Phase1] += 1;
             return;
         }
-
-
-
 
         switch (newInfectionState)
         {
@@ -148,15 +149,18 @@ public class SimulationMaster : MonoBehaviour
                 break;
 
             case Person.InfectionStates.Phase3:
+                _infectionStateCounter[Person.InfectionStates.Phase2] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase3] += 1;
+                //symptoms+=1
                 break;
 
             case Person.InfectionStates.Phase4:
 
                 //_infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
-                _infectionStateCounter[Person.InfectionStates.Phase2] -= 1;
+               // _infectionStateCounter[Person.InfectionStates.Phase2] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase3] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Infectious] -= 1;
+                //symptoms-=1
                 _infectionStateCounter[Person.InfectionStates.Phase4] += 1;
                 break;
 
@@ -171,7 +175,7 @@ public class SimulationMaster : MonoBehaviour
     }
 
     /// <summary>
-    /// Method which resets the count of the states. //TODO CALL
+    /// Method which resets the count of the states. 
     /// </summary>
     public void Reset()
     {
@@ -181,6 +185,7 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter[Person.InfectionStates.Phase4] = 0;
         _infectionStateCounter[Person.InfectionStates.Phase5] = 0;
         _infectionStateCounter[Person.InfectionStates.Infectious] = 0;
+        _amountPeopleDead = 0;
         //_infectionStateCounter[Person.InfectionStates.Uninfected] = ;
         _dayInfoHandler = new DayInfoHandler();
         _currentDayOfSimulation = 0;
@@ -261,5 +266,18 @@ public class SimulationMaster : MonoBehaviour
     {
         _dayInfoHandler.AddNewInfectionToCurrentDate(CurrentDayOfSimulation);
     }
+
+
+    public void OnPersonDies()
+    {
+        _amountPeopleDead++;
+        //Since the last infection phase of a dead Person is currently phase3 (TODO IMPROVE)
+        _infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
+        _infectionStateCounter[Person.InfectionStates.Phase3] -= 1;
+
+        Debug.Log("Dead: " + _amountPeopleDead);
+
+    }
+
 
 }
