@@ -1278,6 +1278,7 @@ GameObject:
   - component: {fileID: 163968328}
   - component: {fileID: 163968327}
   - component: {fileID: 163968326}
+  - component: {fileID: 163968325}
   m_Layer: 0
   m_Name: SaveAsButtonTMP
   m_TagString: Untagged
@@ -1305,6 +1306,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 90, y: 55.66199}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &163968325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163968323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Save the current simulation with the same or a different filename. Overriding
+    of other files than the current simulation file is not allowed.
 --- !u!114 &163968326
 MonoBehaviour:
   m_ObjectHideFlags: 0

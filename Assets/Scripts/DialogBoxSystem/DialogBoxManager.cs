@@ -9,9 +9,6 @@ namespace DialogBoxSystem {
     public class DialogBoxManager : MonoBehaviour
     {
 
-        //We will be possible to set up the  messages in the UI
-        //public DialogBox CurrentDialogBox;
-
         //TODO NOT NULL ASSERTIONS
         //References to UI Elements
         public GameObject OkButtonGB;
@@ -29,20 +26,16 @@ namespace DialogBoxSystem {
         //Action which will be triggered by the file handler
         //public static DialogBoxManager Instance;
         private DialogBox _currentDialogBox;
-
-
-
         public static DialogBoxManager Instance;
 
         
         private void Awake()
         {
             if (Instance == null) Instance = this;
-            
         }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             _dialogTitle = DialogTitleGB.GetComponent<TextMeshProUGUI>();
             _dialogText = DialogTextGB.GetComponent<TextMeshProUGUI>();

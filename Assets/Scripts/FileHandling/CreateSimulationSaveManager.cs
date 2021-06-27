@@ -9,7 +9,6 @@ namespace FileHandling
     /// Class which implements the functionality of
     /// creating new simulation data.
     /// 
-    /// TODO: REPLACE SIMULATION MOCK OBJECTS
     /// </summary>
     public class CreateSimulationSaveManager : MonoBehaviour
     {
@@ -34,14 +33,18 @@ namespace FileHandling
                     string msg = "File with the same name already exists. Do you want to overwrite this file?";
                     string name = "File already exists";
                     DialogBox dialogBox = new DialogBox(name, msg);
-                    dialogBox.OnConfirmationPressed += FileSaveExistsActionConfimation;
-                    DialogBoxManager.Instance.HandleDialogBox(dialogBox);
+                    dialogBox.OnConfirmationPressed += () =>
+                    {
+                        Simulation.Edit.Simulation simulation = FileHandler.GetDefaultSimulationMock();
+                        FileHandler.SaveData(simulation);
+                        SceneLoader.Instance.LoadSimulation();
+                    };
 
+                    DialogBoxManager.Instance.HandleDialogBox(dialogBox);
                     _nameInputField.image.color = Color.red;
                 }
                 else
                 {   //save normally
-                    //Default mock
                     Simulation.Edit.Simulation simulation = FileHandler.GetDefaultSimulationMock();
                     FileHandler.SaveData(simulation);
                     SceneLoader.Instance.LoadSimulation();
@@ -57,18 +60,6 @@ namespace FileHandling
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             }
         }
-        /// <summary>
-        /// Method which will be passed to the DialogBox confirmation action handler.
-        /// The simulation will be overweritten if user confirms it.
-        /// </summary>
-        private void FileSaveExistsActionConfimation()
-        {
-            Simulation.Edit.Simulation simulation = FileHandler.GetDefaultSimulationMock();
-            FileHandler.SaveData(simulation);
-            SceneLoader.Instance.LoadSimulation();
-
-        }
-
 
         public void CreateSimulationFromPrefab()
         {

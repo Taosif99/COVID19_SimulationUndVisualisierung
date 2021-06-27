@@ -36,7 +36,6 @@ namespace FileHandling
         /// <summary>
         /// Method which initiates the saving process of the program configuration.
         /// </summary>
-
         public void SaveToFile()
         {
             List<IEditorObject> editorObjects = editorObjectsManager.GetAllEditorObjects();
@@ -48,12 +47,8 @@ namespace FileHandling
                 entities[index] = entity;
                 index++;
             }
-            //TODO REPLACE MOCK WITH REAL SIMULATION
-            //Simulation.Edit.Simulation simulation = FileHandler.GetSimulationMock(entities);
-
             Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation ;
             simulation.Entities = entities;
-
             FileHandler.SaveData(simulation);
         }
 
@@ -63,26 +58,9 @@ namespace FileHandling
         public void LoadFromFile()
         {
 
-            //Clear old scene and load data -> can be removed
-
-            foreach (IEditorObject editorObject in editorObjectsManager.EditorObjectsDic.Values)
-            {
-
-                //TODO METHOD FOR THIS REPITITION
-                GameObject gameObject = editorObject.EditorGameObject;
-                Destroy(gameObject);
-            }
-
-            //reset naming counters 
-            editorObjectsManager.WorkPlaceCounter = 1;
-            editorObjectsManager.HospitalCounter = 1;
-            editorObjectsManager.HouseholdCounter = 1;
-            editorObjectsManager.EditorObjectsDic.Clear();
-            editorObjectsManager.CurrentSelectedEntity = null;
             //Load Simulation
             Simulation.Edit.Simulation simulation = FileHandler.LoadData();
-          
-            //Not Found dialog box Todo
+            //Not Found dialog box  / error Todo
             if (simulation != null)
             {
                 SimulationMaster.Instance.CurrentSimulation = simulation;
@@ -117,8 +95,6 @@ namespace FileHandling
                 //dialogBox.OnConfirmationPressed += SceneLoader.Instance.LoadMainMenu;
             */
             }
-
-
         }
 
 
@@ -131,7 +107,11 @@ namespace FileHandling
                 string msg = "Do you want to save your changes?";
                 string name = "Save file ?";
                 DialogBox dialogBox = new DialogBox(name, msg);
-                dialogBox.OnConfirmationPressed += ReturnToMainMenuSaveAction;
+                dialogBox.OnConfirmationPressed += () =>
+                {
+                    SaveToFile();
+                    SceneLoader.Instance.LoadMainMenu();
+                };
                 dialogBox.OnCancelPressed += SceneLoader.Instance.LoadMainMenu;
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             } // else TODO show some error
@@ -148,10 +128,13 @@ namespace FileHandling
             TMP_InputField inputfield = DialogBoxManager.Instance.InputfieldGB.GetComponent<TMP_InputField>();
             inputfield.text = FileHandler.SelectedFileName;
             inputfield.onValueChanged.AddListener(delegate { SaveAsInputFieldOnChange(); });
-            dialogBox.OnConfirmationPressed += SaveAsConfirmationAcion;
+            dialogBox.OnConfirmationPressed += () =>
+            {
+                FileHandler.SelectedFileName = DialogBoxManager.Instance.InputfieldGB.GetComponent<TMP_InputField>().text;
+                SaveToFile();
+            };
             DialogBoxManager.Instance.HandleDialogBox(dialogBox);
-            
-
+ 
         }
 
         private void SaveAsInputFieldOnChange()
@@ -170,19 +153,6 @@ namespace FileHandling
                 OkButton.SetActive(true);
                 inputfield.image.color = Color.white;
             }
-        }
-
-        private void SaveAsConfirmationAcion()
-        {
-            FileHandler.SelectedFileName = DialogBoxManager.Instance.InputfieldGB.GetComponent<TMP_InputField>().text;
-            SaveToFile();
-        }
-
-
-        private void ReturnToMainMenuSaveAction()
-        {
-            SaveToFile();
-            SceneLoader.Instance.LoadMainMenu();
         }
     }
 }
