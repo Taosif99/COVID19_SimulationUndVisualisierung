@@ -73,7 +73,7 @@ class SimulationController : MonoBehaviour
 
         if (Time.time - _lastSimulationUpdate >= SimulationInterval)
         {
-            _controller.RunUpdate();
+            _controller.RunUpdate(10);
             _simulationDateTime.text =
                 $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
 
@@ -124,7 +124,7 @@ class SimulationController : MonoBehaviour
 
     public void ForwardSimulation()
     {
-      //TODO
+        _controller.RunUpdate(1440);
     }
 
     public void InfectRandomPerson()

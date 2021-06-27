@@ -9,8 +9,6 @@ namespace Simulation.Runtime
 {
     class SimulationController
     {
-        private const double SimulationTimeStepInMinutes = 10;
-
         private List<Entity> _entities = new List<Entity>();
         
         public DateTime SimulationDate { get; set; } = new DateTime(2020, 1, 1);
@@ -59,9 +57,9 @@ namespace Simulation.Runtime
             }
         }
 
-        public void RunUpdate()
+        public void RunUpdate(double simulationTimeStepInMinutes)
         {
-            SimulationDate = SimulationDate.AddMinutes(SimulationTimeStepInMinutes);
+            SimulationDate = SimulationDate.AddMinutes(simulationTimeStepInMinutes);
 
             foreach (var venue in _entities.OfType<Venue>())
             {
