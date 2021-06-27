@@ -214,8 +214,6 @@ public class SimulationMaster : MonoBehaviour
 
         if (UIController.Instance.EpidemicInfoToggle.isOn)
         {
-
-            //We may set the R-Value here
             if (rValue == -1f)
                 UIController.Instance.RValueText.text = "R-Value: ? ";
             else

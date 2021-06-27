@@ -152,9 +152,6 @@ namespace Simulation.Runtime
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase5;
                             }
-
-
-
                             break;
                         }
 
