@@ -22,7 +22,7 @@ namespace Simulation.Runtime
             CarefulnessFactor = carefulnessFactor;
             _risk = risk;
             IsWorker = isWorker;
-            _healthState = new HealthState();
+            _healthState = new HealthState(this);
         }
 
         public float CarefulnessFactor { get; }
@@ -35,6 +35,7 @@ namespace Simulation.Runtime
         public class StateTransitionEventArgs : EventArgs
         {
             public InfectionStates newInfectionState;
+            public InfectionStates previousInfectionState;
         }
 
 
@@ -104,6 +105,7 @@ namespace Simulation.Runtime
             bool stateTransition = false;
 
             Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+            InfectionStates previousState = InfectionStates.Uninfected;
 
             if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
             {
@@ -112,12 +114,13 @@ namespace Simulation.Runtime
 
                     case InfectionStates.Phase1:
                         {
-                            _healthState.UpdateHealthState(currentDate, _infectionDate);
+                            //_healthState.UpdateHealthState(currentDate, _infectionDate);
                             if (daysSinceInfection >= settings.LatencyTime
                                 && daysSinceInfection <= settings.EndDayInfectious)
                             {
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase2;
+                                previousState = InfectionStates.Phase1;
                             }
 
                             break;
@@ -125,24 +128,26 @@ namespace Simulation.Runtime
 
                     case InfectionStates.Phase2:
                         {
-                            _healthState.UpdateHealthState(currentDate, _infectionDate);
+                            //_healthState.UpdateHealthState(currentDate, _infectionDate);
                             if (daysSinceInfection >= settings.IncubationTime
                                 && daysSinceInfection <= settings.EndDaySymptoms
                                 && daysSinceInfection <= settings.EndDayInfectious)
                             {
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase3;
+                                previousState = InfectionStates.Phase2;
                             }
                             break;
                         }
                     case InfectionStates.Phase3:
                         {
-                            _healthState.UpdateHealthState(currentDate, _infectionDate);
+                           // _healthState.UpdateHealthState(currentDate, _infectionDate);
                             if (daysSinceInfection > settings.EndDayInfectious
                                 && daysSinceInfection <= settings.EndDaySymptoms)
                             {
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase4;
+                                previousState = InfectionStates.Phase3;
                             }
 
                             
@@ -153,6 +158,7 @@ namespace Simulation.Runtime
                             {
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase5;
+                                previousState = InfectionStates.Phase3;
                             }
                             break;
                         }
@@ -160,11 +166,12 @@ namespace Simulation.Runtime
 
                     case InfectionStates.Phase4:
                         {
-                            _healthState.UpdateHealthState(currentDate, _infectionDate);
+                            //_healthState.UpdateHealthState(currentDate, _infectionDate);
                             if (daysSinceInfection > settings.EndDaySymptoms)
                             {
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase5;
+                                previousState = InfectionStates.Phase4;
                             }
 
                             break;
@@ -178,6 +185,7 @@ namespace Simulation.Runtime
                 {
                     StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
                     stateTransitionEventArgs.newInfectionState = InfectionState;
+                    stateTransitionEventArgs.previousInfectionState = previousState;
                     OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
                     Debug.Log($"Switching to {InfectionState}");
                 }
