@@ -1212,6 +1212,7 @@ GameObject:
   m_Component:
   - component: {fileID: 149304117}
   - component: {fileID: 149304118}
+  - component: {fileID: 149304119}
   m_Layer: 5
   m_Name: LegendItemInfected
   m_TagString: Untagged
@@ -1267,6 +1268,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &149304119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149304116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Show the amount of infected people in the charts.
 --- !u!1 &163968323
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,6 +1893,7 @@ GameObject:
   m_Component:
   - component: {fileID: 218225857}
   - component: {fileID: 218225858}
+  - component: {fileID: 218225859}
   m_Layer: 5
   m_Name: LegendItemRecovered
   m_TagString: Untagged
@@ -1933,6 +1949,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &218225859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218225856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Show the amount of recovered people in the charts.
 --- !u!1 &220387965
 GameObject:
   m_ObjectHideFlags: 0
@@ -2249,6 +2279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 235184812}
   - component: {fileID: 235184813}
+  - component: {fileID: 235184814}
   m_Layer: 5
   m_Name: LegendItemUnInfected
   m_TagString: Untagged
@@ -2304,6 +2335,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &235184814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235184811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Show the amount of uninfected people in the charts.
 --- !u!1 &236606755
 GameObject:
   m_ObjectHideFlags: 0
@@ -5843,6 +5888,7 @@ GameObject:
   m_Component:
   - component: {fileID: 599829913}
   - component: {fileID: 599829914}
+  - component: {fileID: 599829915}
   m_Layer: 5
   m_Name: LegendItemInfectious
   m_TagString: Untagged
@@ -5898,6 +5944,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &599829915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 599829912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Show the amount of infectious people in the charts.
 --- !u!1 &599960362
 GameObject:
   m_ObjectHideFlags: 0
@@ -14636,6 +14696,7 @@ GameObject:
   - component: {fileID: 1472784335}
   - component: {fileID: 1472784334}
   - component: {fileID: 1472784333}
+  - component: {fileID: 1472784336}
   m_Layer: 0
   m_Name: ForwardButtonTMP
   m_TagString: Untagged
@@ -14757,6 +14818,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1472784331}
   m_CullTransparentMesh: 1
+--- !u!114 &1472784336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472784331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Forward the simulation to the next day.
 --- !u!1 &1490182321
 GameObject:
   m_ObjectHideFlags: 0
@@ -18706,6 +18781,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1863120120}
   - component: {fileID: 1863120121}
+  - component: {fileID: 1863120122}
   m_Layer: 5
   m_Name: LegendItemDead
   m_TagString: Untagged
@@ -18761,6 +18837,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1863120122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863120119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Show the amount of dead people in the charts.
 --- !u!1 &1863743914
 GameObject:
   m_ObjectHideFlags: 0

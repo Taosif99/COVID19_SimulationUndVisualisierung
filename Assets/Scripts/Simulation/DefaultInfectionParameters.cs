@@ -86,7 +86,7 @@ namespace Simulation
 
             /// <summary>
             /// The amount days from the beginning of the symtoms
-            /// to the death say.
+            /// to the death day.
             /// 
             /// "Zeit von Symptombeginn bis zum Tod
             ///In einer multinationalen Fallserie wird die mittlere Dauer(Median) von Symptombeginn bis zum Tod mit 18 Tagen(176) 
