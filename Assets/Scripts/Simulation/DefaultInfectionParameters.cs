@@ -7,6 +7,14 @@ namespace Simulation
         /// The average values are taken from:
         /// <see cref="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile"/>
         /// <see cref="https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/"/>
+        /// 
+        /// 
+        /// The assumption is made, that EndDaySymptoms is >= endDayInfectious
+        /// 
+        /// -->   IncubationTime + AmountDaysSymptoms - 1  >=LatencyTime + AmountDaysInfectious - 1 must be verified !
+        /// 
+        /// We count the first day =1, second day = 2,...
+        /// 
         /// </summary>
         public static class InfectionsPhaseParameters
         {
@@ -23,6 +31,9 @@ namespace Simulation
             /// </summary>
             public const int AmountDaysInfectious = 10;
 
+            /// <summary>
+            /// The last day a person is infectious.
+            /// </summary>
             public const int EndDayInfectious = LatencyTime + AmountDaysInfectious - 1;
 
             //Incubation Time, whether use the median or generate a value
@@ -34,9 +45,13 @@ namespace Simulation
 
             /// <summary>
             /// Amount days a person HAS symptoms. (If person must not go to an hospital)
+            /// We use the assumption that most persons will be recovered when there are no symptoms.
             /// </summary>
             public const int AmountDaysSymptoms = 9;
 
+            /// <summary>
+            /// The last day a person has symptoms.
+            /// </summary>
             public const int EndDaySymptoms = IncubationTime + AmountDaysSymptoms - 1;
 
 

@@ -31,7 +31,7 @@ namespace Simulation.Runtime
         public List<Activity> Activities { get; } = new List<Activity>();
         public Venue CurrentLocation { get; set; }
 
-        public event Action <StateTransitionEventArgs> OnStateTrasitionHandler;
+        public event Action<StateTransitionEventArgs> OnStateTrasitionHandler;
         public class StateTransitionEventArgs : EventArgs
         {
             public InfectionStates newInfectionState;
@@ -107,33 +107,60 @@ namespace Simulation.Runtime
 
             if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
             {
-                //Can be done better with if/else statements
+                switch (InfectionState)
+                {
 
-                if (daysSinceInfection >= settings.LatencyTime
-                    && daysSinceInfection  
-                    <= (settings.EndDayInfectious) && InfectionState == InfectionStates.Phase1)
-                {
-                    stateTransition = true;
-                    InfectionState = InfectionStates.Phase2;
-                }
-               
-                if (daysSinceInfection >= settings.IncubationTime
-                    && daysSinceInfection < settings.EndDaySymptoms && InfectionState == InfectionStates.Phase2)
-                {
-                    stateTransition = true;
-                    InfectionState = InfectionStates.Phase3;
-                }
+                    case InfectionStates.Phase1:
+                        {
+                            if (daysSinceInfection >= settings.LatencyTime
+                                && daysSinceInfection <= settings.EndDayInfectious)
+                            {
+                                stateTransition = true;
+                                InfectionState = InfectionStates.Phase2;
+                            }
 
-                if (daysSinceInfection == settings.EndDaySymptoms && InfectionState == InfectionStates.Phase3)
-                {
-                    stateTransition = true;
-                    InfectionState = InfectionStates.Phase4; 
-                }
+                            break;
+                        }
 
-                if (daysSinceInfection > settings.EndDaySymptoms && InfectionState == InfectionStates.Phase4) 
-                {
-                    stateTransition = true;
-                    InfectionState = InfectionStates.Phase5; 
+                    case InfectionStates.Phase2:
+                        {
+                            if (daysSinceInfection >= settings.IncubationTime
+                                && daysSinceInfection <= settings.EndDaySymptoms
+                                && daysSinceInfection <= settings.EndDayInfectious)
+                            {
+                                stateTransition = true;
+                                InfectionState = InfectionStates.Phase3;
+                            }
+                            break;
+                        }
+                    case InfectionStates.Phase3:
+                        {
+
+                            if (daysSinceInfection > settings.EndDayInfectious
+                                && daysSinceInfection <= settings.EndDaySymptoms)
+                            {
+                                stateTransition = true;
+                                InfectionState = InfectionStates.Phase4;
+                            }
+
+                            break;
+                        }
+
+
+                    case InfectionStates.Phase4:
+                        {
+
+                            if (daysSinceInfection > settings.EndDaySymptoms)
+                            {
+                                stateTransition = true;
+                                InfectionState = InfectionStates.Phase5;
+                            }
+
+                            break;
+                        }
+
+                    default:
+                        break;
                 }
 
                 if (stateTransition)
@@ -141,10 +168,8 @@ namespace Simulation.Runtime
                     StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
                     stateTransitionEventArgs.newInfectionState = InfectionState;
                     OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
-                    
                     Debug.Log($"Switching to {InfectionState}");
                 }
-
             }
         }
 
