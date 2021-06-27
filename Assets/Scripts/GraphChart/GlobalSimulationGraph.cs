@@ -41,7 +41,7 @@ namespace GraphChart
         public Toggle InfectedToggle;
         public Toggle InfectiousToggle;
         public Toggle RecoveredToggle;
-
+        public Toggle DeadToggle;
 
 
         private void Awake()
@@ -100,11 +100,6 @@ namespace GraphChart
             InitBarChart();
         }
 
-
-
-
-
-
         private void InitColorList()
         {
       
@@ -112,13 +107,14 @@ namespace GraphChart
             Color infectedColor = Color.yellow;
             Color infectiousColor = Color.red;
             Color recoveredColor = Color.green;
+            Color deadColor = Color.black;
 
             _colorList = new List<Color>();
             _colorList.Add(uninfectedColor);
             _colorList.Add(infectedColor);
             _colorList.Add(infectiousColor);
             _colorList.Add(recoveredColor);
-
+            _colorList.Add(deadColor);
 
         }
 
@@ -150,7 +146,7 @@ namespace GraphChart
             List<int> phase5Values = new List<int>();
             List<int> uninfectedValues = new List<int>();
             List<int> infectiousValues = new List<int>();
-
+            List<int>  deadValues = new List<int>();
 
             Line phase1Line = new Line(phase1Values, true);
             Line phase2Line = new Line(phase2Values, true);
@@ -159,6 +155,7 @@ namespace GraphChart
             Line phase5Line = new Line(phase5Values, true);
             Line uninfectedLine = new Line(uninfectedValues, true);
             Line infectiousLine = new Line(infectiousValues,true);
+            Line deadLine = new Line(deadValues, true);
             _lines = new List<Line>();
             _lines.Add(uninfectedLine);
             _lines.Add(phase1Line);
@@ -167,8 +164,8 @@ namespace GraphChart
             //_lines.Add(phase3Line);
             //_lines.Add(phase4Line);
             _lines.Add(phase5Line);
-           
-        
+            _lines.Add(deadLine);
+
         }
 
 
@@ -182,6 +179,7 @@ namespace GraphChart
              new GraphValue(0,true),
              new GraphValue(0,true),
              new GraphValue(0,true),
+              new GraphValue(0,true)
             };
             
             _xLabelBarChart = delegate (int index)
@@ -196,6 +194,8 @@ namespace GraphChart
                         return "Infectious";
                     case 3:
                         return "Recovered";
+                    case 4:
+                        return "Dead";
                     default:
                         return "undefined";
                 }
@@ -217,7 +217,7 @@ namespace GraphChart
                 _lines[1].Values.Clear();
                 _lines[2].Values.Clear();
                 _lines[3].Values.Clear();
-
+                _lines[4].Values.Clear();
                 //Add the cleared day
                 AddValuesToLinesList();
            
@@ -238,7 +238,7 @@ namespace GraphChart
             _lines[1].Values.Add(SimulationMaster.Instance.AmountInfected);
             _lines[2].Values.Add(SimulationMaster.Instance.AmountInfectious);
             _lines[3].Values.Add(SimulationMaster.Instance.AmountRecovered);
-
+            _lines[4].Values.Add(SimulationMaster.Instance.AmountPeopleDead);
 
         }
 
@@ -262,23 +262,9 @@ namespace GraphChart
             _barchartValues[1].Value = SimulationMaster.Instance.AmountInfected;
             _barchartValues[2].Value = SimulationMaster.Instance.AmountInfectious;
             _barchartValues[3].Value = SimulationMaster.Instance.AmountRecovered;
+            _barchartValues[4].Value = SimulationMaster.Instance.AmountPeopleDead;
         }
 
-
-        //TODO USING ACTION FROM SIMULATION CONTROLLER ???
-      
-        
-        /*
-        private IEnumerator UpdateGraphsEachDay()
-        {
-            for (; ; )
-            {
-                //A day takes approx. 8 seconds
-                //TODO CALCULATE DAY LENGTH VIA CODE         
-                yield return new WaitForSeconds(8f);
-                UpdateValuesAndShowGraphs(true);
-            }
-        }*/
 
 
         
@@ -288,18 +274,19 @@ namespace GraphChart
             bool infectedOn = InfectedToggle.isOn;
             bool infectiousOn = InfectiousToggle.isOn;
             bool recoveredOn = RecoveredToggle.isOn;
-
+            bool deadOn = DeadToggle.isOn;
 
             _barchartValues[0].IsEnabled = uninfectedOn;
             _barchartValues[1].IsEnabled = infectedOn;
             _barchartValues[2].IsEnabled = infectiousOn;
             _barchartValues[3].IsEnabled = recoveredOn;
+            _barchartValues[4].IsEnabled = deadOn;
 
             _lines[0].IsEnabled = uninfectedOn;
             _lines[1].IsEnabled = infectedOn;
             _lines[2].IsEnabled = infectiousOn;
             _lines[3].IsEnabled = recoveredOn;
-
+            _lines[4].IsEnabled = deadOn;
             UpdateValuesAndShowGraphs(false);
         }
 

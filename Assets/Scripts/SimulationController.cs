@@ -124,7 +124,10 @@ class SimulationController : MonoBehaviour
 
     public void ForwardSimulation()
     {
-        _controller.RunUpdate(1440);
+        for (int counter = 0; counter < 144; counter++)
+        {
+            _controller.RunUpdate(10);
+        }
     }
 
     public void InfectRandomPerson()

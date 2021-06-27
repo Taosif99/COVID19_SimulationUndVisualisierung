@@ -8,14 +8,17 @@ namespace Simulation.Runtime
     // TODO: Separate statistical fields
     public class Person
     {
-        private PhysicalCondition _physicalCondition;
+        //private PhysicalCondition _physicalCondition;
         private float _risk;
-        private int _encounters;
-        private int _amountOfPeopleInfected;
-        private bool _isVaccinated;
+        //private int _encounters;
+        //private int _amountOfPeopleInfected;
+        //private bool _isVaccinated;
         private DateTime _infectionDate;
-        private int _infectionStateDuration;
+        //private int _infectionStateDuration;
         private HealthState _healthState;
+
+        private bool _isDead = false;
+        private double _daysSinceInfection;
 
         public Person(float carefulnessFactor, float risk, bool isWorker)
         {
@@ -30,6 +33,8 @@ namespace Simulation.Runtime
         public bool IsWorker { get; }
         public List<Activity> Activities { get; } = new List<Activity>();
         public Venue CurrentLocation { get; set; }
+        public bool IsDead { get => _isDead; set => _isDead = value; }
+        public double DaysSinceInfection { get => _daysSinceInfection; set => _daysSinceInfection = value; }
 
         public event Action<StateTransitionEventArgs> OnStateTrasitionHandler;
         public class StateTransitionEventArgs : EventArgs
@@ -88,6 +93,11 @@ namespace Simulation.Runtime
             return null;
         }
 
+        public void UpdateHealthState()
+        {
+            _healthState.UpdateHealthState();
+        }
+
 
 
         /// <summary>
@@ -99,24 +109,31 @@ namespace Simulation.Runtime
 
         public void UpdateInfectionState(DateTime currentDate)
         {
-            int currentDay = currentDate.Day;
-            int currentMonth = currentDate.Month;
-            double daysSinceInfection = (currentDate - _infectionDate).TotalDays;
-            bool stateTransition = false;
+        
 
-            Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
-            InfectionStates previousState = InfectionStates.Uninfected;
+           
 
             if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
             {
+                int currentDay = currentDate.Day;
+                int currentMonth = currentDate.Month;
+                _daysSinceInfection = (currentDate - _infectionDate).TotalDays;
+                bool stateTransition = false;
+                Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+                InfectionStates previousState = InfectionStates.Uninfected;
+
+
+         
+                
+
                 switch (InfectionState)
                 {
 
                     case InfectionStates.Phase1:
                         {
                             //_healthState.UpdateHealthState(currentDate, _infectionDate);
-                            if (daysSinceInfection >= settings.LatencyTime
-                                && daysSinceInfection <= settings.EndDayInfectious)
+                            if (_daysSinceInfection >= settings.LatencyTime
+                                && _daysSinceInfection <= settings.EndDayInfectious)
                             {
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase2;
@@ -129,9 +146,9 @@ namespace Simulation.Runtime
                     case InfectionStates.Phase2:
                         {
                             //_healthState.UpdateHealthState(currentDate, _infectionDate);
-                            if (daysSinceInfection >= settings.IncubationTime
-                                && daysSinceInfection <= settings.EndDaySymptoms
-                                && daysSinceInfection <= settings.EndDayInfectious)
+                            if (_daysSinceInfection >= settings.IncubationTime
+                                && _daysSinceInfection <= settings.EndDaySymptoms
+                                && _daysSinceInfection <= settings.EndDayInfectious)
                             {
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase3;
@@ -141,9 +158,14 @@ namespace Simulation.Runtime
                         }
                     case InfectionStates.Phase3:
                         {
-                           // _healthState.UpdateHealthState(currentDate, _infectionDate);
-                            if (daysSinceInfection > settings.EndDayInfectious
-                                && daysSinceInfection <= settings.EndDaySymptoms)
+
+                            //If person will die no recovering possible
+                            //TODO HANDLE PHASES OF DYING PERSONS
+                            if (_healthState.WillDieInIntensiveCare) return;
+
+                            // _healthState.UpdateHealthState(currentDate, _infectionDate);
+                            if (_daysSinceInfection > settings.EndDayInfectious
+                                && _daysSinceInfection <= settings.EndDaySymptoms)
                             {
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase4;
@@ -153,8 +175,8 @@ namespace Simulation.Runtime
                             
                             //Special case if EndDayInfectious == EndDaySymptoms
                             if (settings.EndDayInfectious == settings.EndDaySymptoms 
-                                &&daysSinceInfection > settings.EndDayInfectious
-                                && daysSinceInfection > settings.EndDaySymptoms)
+                                &&_daysSinceInfection > settings.EndDayInfectious
+                                && _daysSinceInfection > settings.EndDaySymptoms)
                             {
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase5;
@@ -167,7 +189,7 @@ namespace Simulation.Runtime
                     case InfectionStates.Phase4:
                         {
                             //_healthState.UpdateHealthState(currentDate, _infectionDate);
-                            if (daysSinceInfection > settings.EndDaySymptoms)
+                            if (_daysSinceInfection > settings.EndDaySymptoms)
                             {
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase5;
@@ -200,11 +222,13 @@ namespace Simulation.Runtime
         public void SetInfected(DateTime infectionDate)
         {
             //Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+            InfectionStates previousState = InfectionState;
             InfectionState = InfectionStates.Infected;
             _infectionDate = infectionDate;
             //_infectionStateDuration = DefaultInfectionParameters2.InfectionsPhaseParameters.AmountDaysInfectious;
             StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
             stateTransitionEventArgs.newInfectionState = InfectionState;
+            stateTransitionEventArgs.previousInfectionState = previousState;
             OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
             SimulationMaster.Instance.OnPersonInfected();
         }
