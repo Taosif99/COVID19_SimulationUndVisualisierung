@@ -73,11 +73,24 @@ class SimulationController : MonoBehaviour
 
         if (Time.time - _lastSimulationUpdate >= SimulationInterval)
         {
-            ApplySimulationStep(); 
+            _controller.RunUpdate(10);
+            _simulationDateTime.text =
+                $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
+
+            
+            
+            //Update statistics each day
             if (_currentDay != _controller.SimulationDate.Day) 
             {
-                OnDayChanges();
-            }        
+               
+                _currentDay = _controller.SimulationDate.Day;
+                _onDayPassed?.Invoke(true);
+                //10 min bias ???
+                SimulationMaster.Instance.OnDayEnds();
+                SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
+
+            }
+                 
             _lastSimulationUpdate = Time.time;
         }
     }
@@ -111,19 +124,10 @@ class SimulationController : MonoBehaviour
 
     public void ForwardSimulation()
     {
-        //TODO DISABLE COUNTERS AND GRAPH TO AVOID BUTTON SPAMMING
-
-        if (!IsRunning)
+        for (int counter = 0; counter < 144; counter++)
         {
-            return;
+            _controller.RunUpdate(10);
         }
-
-        while (_currentDay == _controller.SimulationDate.Day)
-        {
-            ApplySimulationStep();
-        }
-
-        OnDayChanges();
     }
 
     public void InfectRandomPerson()
@@ -135,25 +139,5 @@ class SimulationController : MonoBehaviour
        
         _controller.InfectRandomPerson();
         _virusButton.interactable = false;
-    }
-
-
-    private void ApplySimulationStep()
-    {
-        _controller.RunUpdate();
-        _simulationDateTime.text =
-            $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
-    }
-
-    private void OnDayChanges()
-    {
-        _currentDay = _controller.SimulationDate.Day;
-        _onDayPassed?.Invoke(true);
-        //10 min bias ???
-        //Update statistics each day
-        SimulationMaster.Instance.OnDayEnds();
-        SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
-    }
-
-
+    }  
 }
