@@ -80,6 +80,19 @@ namespace Simulation
             /// </summary>
             public const float PersonSurvivesIntensiveCareProbability = 0.5f;
 
+            /// <summary>
+            /// The amount days from the beginning of the symtoms
+            /// to the death say.
+            /// 
+            /// "Zeit von Symptombeginn bis zum Tod
+            ///In einer multinationalen Fallserie wird die mittlere Dauer(Median) von Symptombeginn bis zum Tod mit 18 Tagen(176) 
+            ///und in einer Uebersichtsarbeit mit 16 Tagen angeben(177). Waehrend der ersten COVID-19-Welle in Deutschland betrug 
+            ///diese Zeitspanne im Mittel(Median) 11 Tage(169).""
+            ///<see cref="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html"/>
+            /// We use the average of the three above values.
+            /// </summary>
+            public const int DaysFromSymptomsBeginToDeath = 15;
+
 
         }
 

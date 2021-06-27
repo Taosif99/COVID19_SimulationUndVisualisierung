@@ -44,6 +44,7 @@ namespace Simulation.Runtime
                        
                         p.SetInfected(simulationDate);
                         Debug.Log("Person was infected.");
+
                     }
                 }
             }

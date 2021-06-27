@@ -21,9 +21,13 @@ namespace Simulation.Runtime
         private bool _willRecoverFromCoViD;
         private bool _willRecoverInHosptal;
         private bool _willDieInIntensiveCare;
+
+        private int _deathDay;
+
         public bool WillRecoverFromCoViD { get => _willRecoverFromCoViD; set => _willRecoverFromCoViD = value; }
         public bool WillRecoverInHosptal { get => _willRecoverInHosptal; set => _willRecoverInHosptal = value; }
         public bool WillDieInIntensiveCare { get => _willDieInIntensiveCare; set => _willDieInIntensiveCare = value; }
+        public int DeathDay { get => _deathDay; set => _deathDay = value; }
 
         public HealthState(Person person)
         {
@@ -64,12 +68,26 @@ namespace Simulation.Runtime
         }
 
 
-        public void UpdateHealthState(int daysSinceInfection)
-        { 
-        
-        
-        
-            //TODO
+        public void UpdateHealthState()
+        {
+
+
+
+            if (_willDieInIntensiveCare)
+            {
+                Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+
+
+                if (_person.DaysSinceInfection >= (settings.IncubationTime + DefaultInfectionParameters.HealthPhaseParameters.DaysFromSymptomsBeginToDeath - 1))
+                {
+                    _person.IsDead = true;
+
+                    //decrease amount of population 
+                    Debug.LogWarning("RIP");
+                }
+                
+            
+            }
         
         
         }

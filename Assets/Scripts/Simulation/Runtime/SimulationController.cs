@@ -74,10 +74,11 @@ namespace Simulation.Runtime
 
                 foreach (Person member in household.Members)
                 {
-                    
+                    if (member.IsDead) continue;
+
                     member.UpdateInfectionState(SimulationDate);
                     // TODO: member.UpdateHealthState(SimulationDate);
-
+                    member.UpdateHealthState();
                     if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
                     {
                         if (!household.HasPersonHere(member))
