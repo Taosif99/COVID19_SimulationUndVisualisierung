@@ -22653,6 +22653,7 @@ GameObject:
   - component: {fileID: 513563931320973841}
   - component: {fileID: 513563931320973854}
   - component: {fileID: 513563931320973855}
+  - component: {fileID: 513563931320973856}
   m_Layer: 5
   m_Name: RestoreButton
   m_TagString: Untagged
@@ -22746,6 +22747,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &513563931320973856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513563931320973853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Restores average values for infection parameters.
 --- !u!1 &513563931326909328
 GameObject:
   m_ObjectHideFlags: 0
@@ -23521,6 +23536,7 @@ GameObject:
   - component: {fileID: 513563931650465413}
   - component: {fileID: 513563931650465415}
   - component: {fileID: 513563931650465412}
+  - component: {fileID: 513563931650465411}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -23528,6 +23544,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &513563931650465411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513563931650465410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Amount days to pass until a person gets symptoms.
 --- !u!114 &513563931650465412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24809,6 +24839,7 @@ GameObject:
   - component: {fileID: 513563931989674905}
   - component: {fileID: 513563931989674907}
   - component: {fileID: 513563931989674904}
+  - component: {fileID: 513563931989674983}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -24816,6 +24847,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &513563931989674983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513563931989674982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Amount days a person has symptoms.
 --- !u!114 &513563932011816385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25210,6 +25255,7 @@ GameObject:
   - component: {fileID: 513563932181019278}
   - component: {fileID: 513563932181019264}
   - component: {fileID: 513563932181019265}
+  - component: {fileID: 513563932181019280}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -25217,6 +25263,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &513563932181019280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513563932181019279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Amount days a person is infectious.
 --- !u!1 &513563932320262022
 GameObject:
   m_ObjectHideFlags: 0
@@ -25610,6 +25670,7 @@ GameObject:
   - component: {fileID: 513563932372819087}
   - component: {fileID: 513563932372819073}
   - component: {fileID: 513563932372819086}
+  - component: {fileID: 513563932372819085}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -25617,6 +25678,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &513563932372819085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513563932372819084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Amount days until a person becomes infectious.
 --- !u!114 &513563932372819086
 MonoBehaviour:
   m_ObjectHideFlags: 0
