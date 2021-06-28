@@ -26,15 +26,15 @@ namespace EditorObjects
         private Dictionary<GridCell, IEditorObject> _editorObjects = new Dictionary<GridCell, IEditorObject>();
         private Entity _currentSelectedEntity;
 
-
-        //private HashSet<string> _usedUiNames = new HashSet<string>(); //TODO DIALOG BOX WHEN NAME USED TWICE
-        //private string _currentEditorObjectUIName = "";
-
         //counters for unique mock naming
         private int _workPlaceCounter = 1;
         private int _hospitalCounter = 1;
         private int _householdCounter = 1;
         private int _amountPeople = 0;
+        /// <summary>
+        /// Variable to lock save process if object is just loaded to the ui
+        /// </summary>
+        private bool _saveLock = false;
 
         public Entity CurrentSelectedEntity { get => _currentSelectedEntity; set => _currentSelectedEntity = value; }
         public int WorkPlaceCounter { get => _workPlaceCounter; set => _workPlaceCounter = value; }
@@ -52,31 +52,25 @@ namespace EditorObjects
         {
             IEditorObject editorObject = null;
             GridCell gridCell = new GridCell(gridCellPosition.x, gridCellPosition.y);
-            string uiName = "";
             //TODO DEFINE LOGICAL DEFAULT CONSTRUCTOR FOR ENTITES / OR DEFAULT VALUES IN GENERAL
             switch (prefabName)
             {
                 case PrefabName.Workplace:
-                    uiName = "Workplace Mock " + WorkPlaceCounter++;
                     Workplace workplace = new Workplace(gridCell, 0.2f, WorkplaceType.Other, 200);
-                    editorObject = EditorObjectFactory.Create(workplace, uiName);
+                    editorObject = EditorObjectFactory.Create(workplace);
                     break;
                 case PrefabName.Hospital:
-                    uiName = "Hospital Mock " + HospitalCounter++;
                     Hospital hospital = new Hospital(gridCell, 0.1f, WorkplaceType.Hospital, 299, HospitalScale.Large, WorkerAvailability.Low);
-                    editorObject = EditorObjectFactory.Create(hospital, uiName);
+                    editorObject = EditorObjectFactory.Create(hospital);
                     break;
                 case PrefabName.Household:
-                    uiName = "Household Mock " + HouseholdCounter++;
                     Household household = new Household(gridCell, 0.6f, 12, 0.7f, 0.5f, 0.3f, 2, 5);
-                    editorObject = EditorObjectFactory.Create(household, uiName);
+                    editorObject = EditorObjectFactory.Create(household);
                     break;
                 default:
                     Debug.LogError("Unknown prefab name");
                     break;
             }
-            // _usedUiNames.Add(uiName);
-    
             AddEditorObjectToCollection(gridCell, editorObject);
             LoadEditorObjectUI(gridCellPosition);
             return editorObject.EditorGameObject;
@@ -88,40 +82,31 @@ namespace EditorObjects
         /// <param name="spawnPosition"></param>
         public void LoadEditorObjectUI(Vector2Int gridCellPosition)
         {
-
+            _saveLock = true;
             UIController.Instance.DisableLeftGraphUI();
             UIController.Instance.SetEntityPropertiesVisible(true);
             
             GridCell gridCell = new GridCell(gridCellPosition.x, gridCellPosition.y);
             IEditorObject editorObject = _editorObjects[gridCell];
             
+
             if (editorObject == null)
             {
                 return;
             }
 
             CurrentSelectedEntity = editorObject.EditorEntity;
-                
-            UIController.Instance.IsEntitySelectedUI(true);
-            UIController.Instance.ObjectNameInputField.text = editorObject.UIName;
-                
-            // _currentEditorObjectUIName = editorObject.UIName;
-            //Check if Graph....TODO WHEN GRAPH IS UI ELEMENT IN WORLD
             if (!(CurrentSelectedEntity is Venue venue))
             {
                 return;
             }
-
-            UIController.Instance.InfectionRiskInputField.text = venue.InfectionRisk.ToString(); //TODO ROUND VALUES
-            
+            UIController.Instance.InfectionRiskInputField.text = venue.InfectionRisk.ToString();            
             switch (CurrentSelectedEntity)
             {
                 case Workplace workplace:
                 {
                     UIController.Instance.LoadWorkplaceUI();
-
                     UIController.Instance.WorkerCapacityInputField.text = workplace.WorkerCapacity.ToString();
-
                     if (workplace is Hospital hospital)
                     {
                         UIController.Instance.LoadHospitalUI();
@@ -148,15 +133,16 @@ namespace EditorObjects
                     break;
                 }
             }
+            _saveLock = false;
         }
 
-        //TODO UI Name must be unique !
         /// <summary>
         /// 
         /// Method which saves changes  to editor
         /// objects. The enums are parsed with the Enum.Parse()
         /// method which may cause an exception if something goes wrong.
-        /// 
+        /// This case can only apply if the possible dropdown values are configured wrong.
+        /// (Configuration is done in the Unity Inspector)
         /// TODO Load save values to runtime entity
         /// Enum parsing looks ugly
         /// </summary>
@@ -168,7 +154,7 @@ namespace EditorObjects
             float carefulness = 0f;
             float percentageOfWorkers = 0f;
 
-            if (CurrentSelectedEntity != null)
+            if (CurrentSelectedEntity != null && !_saveLock)
             {
 
                 bool inputIsOkay = InputValidator.TryParseLeftInputFields(ref infectionRisk,
@@ -182,21 +168,12 @@ namespace EditorObjects
 
                     IEditorObject editorObject = _editorObjects[CurrentSelectedEntity.Position];
                     if (editorObject != null)
-                    {
-                        //Remove old and add new one
-                        editorObject.UIName = UIController.Instance.ObjectNameInputField.text;
-                        //_usedUiNames.Remove(_currentEditorObjectUIName);
-                        //_usedUiNames.Add(editorObject.UIName);
-                        //UIController.Instance.ObjectNameInputField.text = editorObject.UIName;
-                        
-                        if (CurrentSelectedEntity is Venue)
+                    {                      
+                        if (CurrentSelectedEntity is Venue venue)
                         {
-                            Venue venue = (Venue)CurrentSelectedEntity;
                             venue.InfectionRisk = infectionRisk;
-                            if (CurrentSelectedEntity is Workplace)
+                            if (CurrentSelectedEntity is Workplace workplace)
                             {
-                                Workplace workplace = (Workplace)CurrentSelectedEntity;
-
                                 if (!(CurrentSelectedEntity is Hospital))
                                 {
                                     WorkplaceType workplaceType = (WorkplaceType)Enum.Parse(typeof(WorkplaceType), UIController.Instance.WorkplaceTypeDropdown.options[UIController.Instance.WorkplaceTypeDropdown.value].text);
@@ -204,20 +181,19 @@ namespace EditorObjects
                                     workplace.Type = workplaceType;
                                 }
 
-                                if (CurrentSelectedEntity is Hospital)
+                                if (CurrentSelectedEntity is Hospital hospital)
                                 {
-                                    Hospital hospital = (Hospital)CurrentSelectedEntity;
                                     hospital.Type = WorkplaceType.Hospital;
                                     HospitalScale hospitalScale = (HospitalScale)Enum.Parse(typeof(HospitalScale), UIController.Instance.HospitalScaleDropdown.options[UIController.Instance.HospitalScaleDropdown.value].text);
                                     WorkerAvailability workerAvailability = (WorkerAvailability)Enum.Parse(typeof(WorkerAvailability), UIController.Instance.WorkerAvailabilityDropdown.options[UIController.Instance.WorkerAvailabilityDropdown.value].text);
                                     hospital.Scale = hospitalScale;
                                     hospital.WorkerAvailability = workerAvailability;
+                                    hospital.WorkerCapacity = capacity;
                                 }
 
                             }
-                            else if (CurrentSelectedEntity is Household)
+                            else if (CurrentSelectedEntity is Household household)
                             {
-                                Household household = (Household)CurrentSelectedEntity;
                                 _amountPeople -= household.NumberOfPeople;
                                 _amountPeople += numberOfPeople;
                                 household.NumberOfPeople = numberOfPeople;
@@ -228,8 +204,6 @@ namespace EditorObjects
 
                     }
                 }
-
-
             }
         }
 
@@ -246,7 +220,6 @@ namespace EditorObjects
                     //Destroy the gameObject in the scene
                     GameObject gameObject = editorObject.EditorGameObject;
                     Destroy(gameObject);
-                    //_usedUiNames.Remove(editorObject.UIName);
                     _editorObjects.Remove(CurrentSelectedEntity.Position);
                     CurrentSelectedEntity = null;
                     UIController.Instance.IsEntitySelectedUI(false);
@@ -282,7 +255,7 @@ namespace EditorObjects
 
                 Destroy(editorObject.EditorGameObject);
 
-                reloadedEditorObject = EditorObjectFactory.Create(editorObject.EditorEntity, editorObject.UIName);
+                reloadedEditorObject = EditorObjectFactory.Create(editorObject.EditorEntity);
                 _gridManager.PositionObjectInGrid(reloadedEditorObject.EditorGameObject, position.ToVector2Int());
 
                 newEditorObjects[position] = reloadedEditorObject;
@@ -310,7 +283,7 @@ namespace EditorObjects
         }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             _gridManager.OnEditorObjectClicked += LoadEditorObjectUI;
         }

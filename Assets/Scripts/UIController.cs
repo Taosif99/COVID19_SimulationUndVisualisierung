@@ -69,7 +69,6 @@ public class UIController : MonoBehaviour
     public GameObject DeleteEntityGameObject;
 
     //Venue elements
-    public TMP_InputField ObjectNameInputField;
     public TMP_InputField InfectionRiskInputField; //TODO Slider
                                                  
     //Household elements
@@ -84,7 +83,7 @@ public class UIController : MonoBehaviour
     public TMP_Dropdown WorkerAvailabilityDropdown;
     
     //inputfields and dropdowns of left image
-    private List<TMP_InputField> _leftInputFields; //TODO PRIVATE
+    private List<TMP_InputField> _leftInputFields; 
     private List<TMP_Dropdown> _leftDropDowns;
 
     [Header("Simulation Settings Inputfields")]
@@ -112,7 +111,7 @@ public class UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _leftInputFields = new List<TMP_InputField> {ObjectNameInputField,InfectionRiskInputField,NumberOfPeopleInputField,
+        _leftInputFields = new List<TMP_InputField> {InfectionRiskInputField,NumberOfPeopleInputField,
           Instance.PercantageOfWorkersInputField,CarefulnessInputField,WorkerCapacityInputField};
         _leftDropDowns = new List<TMP_Dropdown> {WorkplaceTypeDropdown, HospitalScaleDropdown,WorkerAvailabilityDropdown };
         //Adding listeners to left UI

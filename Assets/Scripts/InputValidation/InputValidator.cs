@@ -26,11 +26,6 @@ namespace InputValidation
         public static bool TryParseLeftInputFields(ref float infectionRisk, ref int capacity, ref byte numberOfPeople, ref float carefulness, ref float percentageOfWorkers, Entity currentSelectedEntity)
         {
             bool inputIsValid = true;
-
-            bool uiNameIsValid = BasicInputValidation(UIController.Instance.ObjectNameInputField.text);
-            SetInputFieldColor(UIController.Instance.ObjectNameInputField, uiNameIsValid);
-            inputIsValid = inputIsValid && uiNameIsValid;
-
             if (currentSelectedEntity is Venue)
             {
                 bool infectionRiskIsValid = float.TryParse(UIController.Instance.InfectionRiskInputField.text, out infectionRisk) && IsValidPercentage(infectionRisk);

@@ -7,14 +7,12 @@ namespace EditorObjects
     {
 
         public GameObject EditorGameObject { get; set; }
-        public string UIName { get; set; }
         public Entity EditorEntity { get; set; }
 
-        public WorkplaceEditorObject(GameObject gameObject, Workplace editorWorkplace, string name)
+        public WorkplaceEditorObject(GameObject gameObject, Workplace editorWorkplace)
         {
            EditorGameObject = gameObject;
            EditorEntity = editorWorkplace;
-           UIName = name;
         }
 
     }

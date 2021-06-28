@@ -17,11 +17,5 @@ namespace EditorObjects
         //Reference to the editor Entity
         Entity EditorEntity { get; set; }
 
-        //Saving the position on the Grid
-        //Vector2Int GridPosition { get; set; }
-
-        //Unique name of the object, not the prefab type name of the game object. Must be set in the scene.
-        string UIName { get; set; }
-
     }
 }

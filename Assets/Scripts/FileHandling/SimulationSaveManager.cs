@@ -69,7 +69,7 @@ namespace FileHandling
                 {
                     foreach (Entity entity in entities)
                     {
-                        IEditorObject editorObject = EditorObjectFactory.Create(entity, "serialized mock text");
+                        IEditorObject editorObject = EditorObjectFactory.Create(entity);
                         editorObjectsManager.AddEditorObjectToCollection(entity.Position, editorObject);
                         Vector2Int gridCellPosition = new Vector2Int(entity.Position.X, entity.Position.Y);
                         //Spawn in position-> spawn handler or manager
