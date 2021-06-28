@@ -49,12 +49,25 @@ public class SimulationSettingsHandler : MonoBehaviour
         int incubationTime = defaultSettings.IncubationTime;
         int amountDaysSymptoms = defaultSettings.AmountDaysSymptoms;
 
-        if (InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms))
+        float recoveringProbability = defaultSettings.RecoveringProbability;
+        float recoveringInHospitalProbability = defaultSettings.RecoveringInHospitalProbability;
+        float personSurvivesIntensiveCareProbability = defaultSettings.PersonSurvivesIntensiveCareProbability;
+        int daysFromSymptomsBeginToDeath = defaultSettings.DaysFromSymptomsBeginToDeath;
+
+
+        bool infectionPhaseParametersAreValid = InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms);
+        bool healthPhaseParametersAreValid = InputValidator.ValidateHealthPhaseParameters(ref recoveringProbability, ref recoveringInHospitalProbability, ref personSurvivesIntensiveCareProbability, ref daysFromSymptomsBeginToDeath);
+
+        if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid)
         {
             currentSettings.LatencyTime = latencyTime;
             currentSettings.AmountDaysInfectious = amountDaysInfectious;
             currentSettings.IncubationTime = incubationTime;
             currentSettings.AmountDaysSymptoms = amountDaysSymptoms;
+            currentSettings.RecoveringProbability = recoveringProbability;
+            currentSettings.RecoveringInHospitalProbability = recoveringInHospitalProbability;
+            currentSettings.PersonSurvivesIntensiveCareProbability = personSurvivesIntensiveCareProbability;
+            currentSettings.DaysFromSymptomsBeginToDeath = daysFromSymptomsBeginToDeath;
         }
     }
 
@@ -74,7 +87,10 @@ public class SimulationSettingsHandler : MonoBehaviour
         UIController.Instance.AmountDaysInfectiousInputField.text = settings.AmountDaysInfectious.ToString();
         UIController.Instance.IncubationTimeInputField.text = settings.IncubationTime.ToString();
         UIController.Instance.AmountDaysSymptomsInputField.text = settings.AmountDaysSymptoms.ToString();
-
+        UIController.Instance.RecoverInputField.text = settings.RecoveringProbability.ToString();
+        UIController.Instance.RecoverInHospitalInputField.text = settings.RecoveringInHospitalProbability.ToString();
+        UIController.Instance.SurviveIntensiveCareInputField.text = settings.PersonSurvivesIntensiveCareProbability.ToString();
+        UIController.Instance.AmountDaysToDeathInputField.text = settings.DaysFromSymptomsBeginToDeath.ToString();
     }
 
 }

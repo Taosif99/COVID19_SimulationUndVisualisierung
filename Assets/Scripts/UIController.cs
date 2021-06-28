@@ -92,7 +92,10 @@ public class UIController : MonoBehaviour
     public TMP_InputField AmountDaysInfectiousInputField;
     public TMP_InputField IncubationTimeInputField;
     public TMP_InputField AmountDaysSymptomsInputField;
-
+    public TMP_InputField RecoverInputField;
+    public TMP_InputField RecoverInHospitalInputField;
+    public TMP_InputField SurviveIntensiveCareInputField;
+    public TMP_InputField AmountDaysToDeathInputField;
 
 
     [Header("References to manager(s)")]

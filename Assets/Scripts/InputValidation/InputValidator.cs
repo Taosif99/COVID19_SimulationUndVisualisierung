@@ -99,13 +99,29 @@ namespace InputValidation
                 }
 
             }
-
-
             return result;
         }
 
+        /// <summary>
+        /// Method which validates the health phase parameters.
+        /// </summary>
+        /// <param name="recoveringProbability"></param>
+        /// <param name="recoveringInHospitalProbability"></param>
+        /// <param name="personSurvivesIntensiveCareProbability"></param>
+        /// <param name="daysFromSymptomsBeginToDeath"></param>
+        /// <returns>true if all parameters are valid, else false</returns>
+        public static bool ValidateHealthPhaseParameters(ref float recoveringProbability, ref float recoveringInHospitalProbability, ref float personSurvivesIntensiveCareProbability , ref int daysFromSymptomsBeginToDeath)
+        {
+            bool result = false;
 
+            bool recoveringProbabilityInputOk = TryParseFloatPercentageInputField(UIController.Instance.RecoverInputField, ref recoveringProbability);
+            bool recoveringProbabilityInHospitalInputOk = TryParseFloatPercentageInputField(UIController.Instance.RecoverInHospitalInputField, ref recoveringInHospitalProbability);
+            bool personSurvivesIntensiveCareInputOk = TryParseFloatPercentageInputField(UIController.Instance.SurviveIntensiveCareInputField, ref personSurvivesIntensiveCareProbability);
+            bool daysFromSymptomsBeginToDeathInputOk = TryParseIntDayInputField(UIController.Instance.AmountDaysToDeathInputField, ref daysFromSymptomsBeginToDeath);
 
+            result = recoveringProbabilityInputOk && recoveringProbabilityInHospitalInputOk && personSurvivesIntensiveCareInputOk && daysFromSymptomsBeginToDeathInputOk;
+            return result;
+        }
 
 
 

@@ -23,9 +23,10 @@ namespace Simulation.Runtime
         public HealthState(Person person)
         {
             _person = person;
+            Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
 
             float probabilityToRecover = Random.Range(0f, 1f);
-            if (probabilityToRecover <= DefaultInfectionParameters.HealthPhaseParameters.RecoveringProbability)
+            if (probabilityToRecover <= settings.RecoveringProbability)
             {
                 _willRecoverFromCoViD = true;
             }
@@ -35,7 +36,7 @@ namespace Simulation.Runtime
                 _willRecoverFromCoViD = false;
                 float probabilityToRecoverInHospital = Random.Range(0f, 1f);
 
-                if (probabilityToRecoverInHospital <= DefaultInfectionParameters.HealthPhaseParameters.RecoveringInHospitalProbability)
+                if (probabilityToRecoverInHospital <= settings.RecoveringInHospitalProbability)
                 {
                     _willRecoverInHosptal = true;
                 }
@@ -43,7 +44,7 @@ namespace Simulation.Runtime
                 {
                     _willRecoverInHosptal = false;
                     float probabilityToSurviveIntensiveCare = Random.Range(0f, 1f);
-                    if (probabilityToSurviveIntensiveCare <= DefaultInfectionParameters.HealthPhaseParameters.PersonSurvivesIntensiveCareProbability)
+                    if (probabilityToSurviveIntensiveCare <= settings.PersonSurvivesIntensiveCareProbability)
                     {
                         _willDieInIntensiveCare = false;
 
@@ -65,9 +66,7 @@ namespace Simulation.Runtime
             if (_willDieInIntensiveCare)
             {
                 Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
-
-
-                if (_person.DaysSinceInfection >= (settings.IncubationTime + DefaultInfectionParameters.HealthPhaseParameters.DaysFromSymptomsBeginToDeath - 1))
+                if (_person.DaysSinceInfection >= (settings.IncubationTime + settings.DaysFromSymptomsBeginToDeath - 1))
                 {
                     _person.IsDead = true;
                     Debug.LogWarning("RIP");

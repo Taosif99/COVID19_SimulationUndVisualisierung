@@ -134,6 +134,15 @@ public class SimulationMaster : MonoBehaviour
             return;
         }
 
+        //Handle special case phase 3 -> phase5
+        if (previousState == Person.InfectionStates.Phase3 && newInfectionState == Person.InfectionStates.Phase5)
+        {
+            _infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
+            _infectionStateCounter[Person.InfectionStates.Phase3] -= 1;
+            _infectionStateCounter[Person.InfectionStates.Phase5] += 1;
+            return;
+        }
+
         switch (newInfectionState)
         {
             case Person.InfectionStates.Phase1:

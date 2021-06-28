@@ -70,22 +70,22 @@ namespace Simulation
             /// </summary>
             public const float RecoveringProbability = 0.955f;
 
-            //public const float RecoveringProbability = 0.2f;
+         
             /// <summary>
             /// Probability that a person does recover in hospital,
             /// else person must go to intensive care.
             /// </summary>
             public const float RecoveringInHospitalProbability = 0.75f;
-            //public const float RecoveringInHospitalProbability = 0.2f;
+          
 
             /// <summary>
             /// Person dies, if he/she does not survive in the intensive care.
             /// </summary>
             public const float PersonSurvivesIntensiveCareProbability = 0.5f;
-            //public const float PersonSurvivesIntensiveCareProbability = 0f;
+           
 
             /// <summary>
-            /// The amount days from the beginning of the symtoms
+            /// The amount days from the beginning of the symptoms
             /// to the death day.
             /// 
             /// "Zeit von Symptombeginn bis zum Tod
@@ -96,7 +96,7 @@ namespace Simulation
             /// We use the average of the three above values.
             /// </summary>
             public const int DaysFromSymptomsBeginToDeath = 15;
-            //public const int DaysFromSymptomsBeginToDeath = 3;
+           
 
         }
 
