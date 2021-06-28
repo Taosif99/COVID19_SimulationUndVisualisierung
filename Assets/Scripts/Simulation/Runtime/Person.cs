@@ -194,6 +194,9 @@ namespace Simulation.Runtime
                                 stateTransition = true;
                                 InfectionState = InfectionStates.Phase5;
                                 previousState = InfectionStates.Phase4;
+
+                                //Here we may update the infection risk if person recovers
+
                             }
 
                             break;

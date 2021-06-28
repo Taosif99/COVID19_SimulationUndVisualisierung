@@ -1597,6 +1597,7 @@ GameObject:
   - component: {fileID: 181692758}
   - component: {fileID: 181692757}
   - component: {fileID: 181692759}
+  - component: {fileID: 181692760}
   m_Layer: 5
   m_Name: InfectionRiskInputFieldTMP
   m_TagString: Untagged
@@ -1760,6 +1761,21 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &181692760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181692755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Enter a number between 0 and 1 with "," as a decimal separator. For example
+    0,2
 --- !u!1 &186941991
 GameObject:
   m_ObjectHideFlags: 0
@@ -2713,6 +2729,7 @@ GameObject:
   - component: {fileID: 250470350}
   - component: {fileID: 250470349}
   - component: {fileID: 250470348}
+  - component: {fileID: 250470351}
   m_Layer: 5
   m_Name: PercantageOfWorkersInputFieldTMP
   m_TagString: Untagged
@@ -2876,6 +2893,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 250470346}
   m_CullTransparentMesh: 1
+--- !u!114 &250470351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250470346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Enter a number between 0 and 1 with "," as a decimal separator. For example
+    0,2
 --- !u!1 &251351801
 GameObject:
   m_ObjectHideFlags: 0
@@ -7877,6 +7909,7 @@ GameObject:
   - component: {fileID: 697823807}
   - component: {fileID: 697823806}
   - component: {fileID: 697823805}
+  - component: {fileID: 697823808}
   m_Layer: 5
   m_Name: CarefulnessInputFieldTMP
   m_TagString: Untagged
@@ -8040,6 +8073,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 697823803}
   m_CullTransparentMesh: 1
+--- !u!114 &697823808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697823803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d6c1174a0f4c5aa4d0ba3e15fbebb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
+  _text: Enter a number between 0 and 1 with "," as a decimal separator. For example
+    0,2
 --- !u!1 &703249835
 GameObject:
   m_ObjectHideFlags: 0
@@ -20092,7 +20140,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 79.99993, y: -41.648384}
+  m_AnchoredPosition: {x: 80, y: -41.648384}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1833106465
