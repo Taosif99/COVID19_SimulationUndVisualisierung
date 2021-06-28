@@ -32,7 +32,6 @@ namespace Simulation.Runtime
             }
             else
             {
-
                 _willRecoverFromCoViD = false;
                 float probabilityToRecoverInHospital = Random.Range(0f, 1f);
 
@@ -54,15 +53,12 @@ namespace Simulation.Runtime
                         _willDieInIntensiveCare = true;
                         Debug.LogWarning("I will die !");
                     }
-
                 }
             }
         }
 
-
         public void UpdateHealthState()
         {
-
             if (_willDieInIntensiveCare)
             {
                 Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
@@ -73,7 +69,6 @@ namespace Simulation.Runtime
                     SimulationMaster.Instance.OnPersonDies();
                 }            
             }
-       
         }
     }
 }
