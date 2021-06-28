@@ -73,7 +73,10 @@ class SimulationController : MonoBehaviour
 
         if (Time.time - _lastSimulationUpdate >= SimulationInterval)
         {
-            ApplySimulationStep();
+            _controller.RunUpdate();
+            _simulationDateTime.text =
+                $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
+            
             if (_currentDay != _controller.SimulationDate.Day)
             {
                 OnDayChanges();
@@ -120,7 +123,7 @@ class SimulationController : MonoBehaviour
 
         while (_currentDay == _controller.SimulationDate.Day)
         {
-            ApplySimulationStep();
+            _controller.RunUpdate();
         }
 
         OnDayChanges();
@@ -135,14 +138,6 @@ class SimulationController : MonoBehaviour
 
         _controller.InfectRandomPerson();
         _virusButton.interactable = false;
-    }
-
-
-    private void ApplySimulationStep()
-    {
-        _controller.RunUpdate();
-        _simulationDateTime.text =
-            $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
     }
 
     private void OnDayChanges()
