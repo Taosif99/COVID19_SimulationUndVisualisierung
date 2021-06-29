@@ -4,7 +4,7 @@ using System;
 namespace Simulation.Edit
 {
     /// <summary>
-    /// Class which encapsulates the adjustable Simulation settings.
+    /// Class which encapsulates the adjustable simulation settings.
     /// </summary>
     [Serializable]
     public class AdjustableSimulationSettings

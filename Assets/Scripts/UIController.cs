@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using EditorObjects;
-using Grid;
 using TMPro;
 using GraphChart;
 
@@ -12,12 +11,16 @@ using GraphChart;
 /// enabling and disabling of UI elements.
 /// 
 /// 
-/// TODO IMPROVE SINGLETON
 /// 
 /// </summary>
 public class UIController : MonoBehaviour
 {
-    //References to buttons
+    [Header("UI Messages")]
+    public GameObject NotEnoughBedsMessage;
+    public GameObject NotEnoughIntensiveBedsMessage;
+
+    
+    [Header("placement button")]
     public Button PlaceWorkplaceButton, PlaceHospitalButton, PlaceHouseholdButton, PlaceGraphButton;
     //Color to indicate which button is clicked
     public Color OutlineColor;
@@ -46,6 +49,8 @@ public class UIController : MonoBehaviour
 
     //GameObject groups of editor object UI elements
     [Header("Right Image UI children")]
+
+
     public TMP_Text RValueText;
     public TMP_Text RValue7Text;
     public TMP_Text IncidenceText;
@@ -66,21 +71,21 @@ public class UIController : MonoBehaviour
     public GameObject HouseholdUI;
     public GameObject WorkplaceUI;
     public GameObject HospitalUI;
-    public GameObject DeleteEntityGameObject;
+
 
     //Venue elements
-    public TMP_InputField InfectionRiskInputField; //TODO Slider
+    public TMP_InputField InfectionRiskInputField; 
                                                  
     //Household elements
     public TMP_InputField NumberOfPeopleInputField;
-    public TMP_InputField PercantageOfWorkersInputField; //TODO Slider
-    public TMP_InputField CarefulnessInputField; //TODO Slider
+    public TMP_InputField PercantageOfWorkersInputField; 
+    public TMP_InputField CarefulnessInputField; 
     //Workplace elements
     public TMP_Dropdown WorkplaceTypeDropdown;
     public TMP_InputField WorkerCapacityInputField;
     //Hospital elements
-    public TMP_Dropdown HospitalScaleDropdown;
-    public TMP_Dropdown WorkerAvailabilityDropdown;
+    public TMP_InputField AmountNormalBedsInputField;
+    public TMP_InputField AmountIntensiveCareInputField;
     
     //inputfields and dropdowns of left image
     private List<TMP_InputField> _leftInputFields; 
@@ -113,7 +118,7 @@ public class UIController : MonoBehaviour
     {
         _leftInputFields = new List<TMP_InputField> {InfectionRiskInputField,NumberOfPeopleInputField,
           Instance.PercantageOfWorkersInputField,CarefulnessInputField,WorkerCapacityInputField};
-        _leftDropDowns = new List<TMP_Dropdown> {WorkplaceTypeDropdown, HospitalScaleDropdown,WorkerAvailabilityDropdown };
+        _leftDropDowns = new List<TMP_Dropdown> {WorkplaceTypeDropdown};
         //Adding listeners to left UI
         AddOnChangeListenersToLeftUI();
 
@@ -275,21 +280,6 @@ public class UIController : MonoBehaviour
         HospitalUI.SetActive(false);
     }
 
-    /// <summary>
-    ///Method which disables UI elements when no entity is selected 
-    /// </summary>
-    /// <param name="isSelected"></param>
-    public void IsEntitySelectedUI(bool isSelected)
-    {
-        DeleteEntityGameObject.SetActive(isSelected);
-        if (!isSelected)
-        {
-            VenueUI.SetActive(false);
-            HouseholdUI.SetActive(false);
-            WorkplaceUI.SetActive(false);
-            HospitalUI.SetActive(false);
-        }
-    }
 
     /// <summary>
     /// Set whether or not the entity properties should be visible.
@@ -328,5 +318,11 @@ public class UIController : MonoBehaviour
         {
             dropdown.onValueChanged.AddListener(delegate { editorObjectsManager.SaveToEntity(); });
         }
+    }
+
+    public void DisableBedMessages()
+    {
+        NotEnoughBedsMessage.SetActive(false);
+        NotEnoughIntensiveBedsMessage.SetActive(false);
     }
 }

@@ -77,7 +77,6 @@ namespace FileHandling
                         _gridManager.PositionObjectInGrid(gameObject, gridCellPosition);
                     }
                     
-                    UIController.Instance.IsEntitySelectedUI(false);
                 }
                 else Debug.Log("No entities !");
             }

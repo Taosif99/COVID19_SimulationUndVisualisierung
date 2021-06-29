@@ -31,7 +31,7 @@ namespace EpidemiologicalCalculation
                 result = CalculateRatio(currentSimulationDay, Tau4, simulationDays);
                 if (float.IsInfinity(result) || float.IsNaN(result))
                 {
-                    Debug.LogWarning("What the hell---, you destroyed the universe");
+                    //Debug.LogWarning("What the hell---, you destroyed the universe");
                     result = -1f;
                 }
             }
@@ -53,7 +53,7 @@ namespace EpidemiologicalCalculation
                 result = CalculateRatio(currentSimulationDay, Tau7, simulationDays);
                 if (float.IsInfinity(result) || float.IsNaN(result))
                 {
-                    Debug.LogWarning("What the hell---, you destroyed the universe");
+                    //Debug.LogWarning("What the hell---, you destroyed the universe");
                     result = -1f;
                 }
             }
@@ -86,7 +86,6 @@ namespace EpidemiologicalCalculation
             {
                 amountNewInfectionsInDeltaT += simulationDays[i].AmountNewInfections;
             }
-            Debug.Log($"RiskPop:{riskPopulation} amount new inf: {amountNewInfectionsInDeltaT}");
             return amountNewInfectionsInDeltaT / riskPopulation;
         }
 

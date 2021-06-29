@@ -16,6 +16,8 @@ namespace Simulation.Runtime
                 Person person = new Person(editorEntity.CarefulnessTendency, editorEntity.RiskTendency, i < numberOfWorkers);
                 person.OnStateTrasitionHandler += SimulationMaster.Instance.AddToGlobalCounter;
                 Members[i] = person;
+                //At the begnning everyone is at home
+                this.MovePersonHere(person);
             }
         }
 

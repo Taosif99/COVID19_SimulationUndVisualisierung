@@ -7,15 +7,23 @@ namespace Simulation.Edit
     {
 
 
-        public HospitalScale Scale { get ; set; }
-        public WorkerAvailability WorkerAvailability { get ; set; }
 
+        /*
         public Hospital(GridCell position, float infectionRisk, WorkplaceType type, int workerCapacity, HospitalScale scale, WorkerAvailability workerAvailability) : base(position, infectionRisk, type, workerCapacity)
         {
             Scale = scale;
             WorkerAvailability = workerAvailability;
+        }*/
+
+        public Hospital(int amountBeds,int amountIntensiveCareBeds,GridCell position, float infectionRisk, WorkplaceType type, int workerCapacity) : base(position, infectionRisk, type, workerCapacity)
+        {
+            AmountRegularBeds = amountBeds;
+            AmountIntensiveCareBeds = amountIntensiveCareBeds; 
         }
 
-      
+
+        public int AmountRegularBeds { get; set; }
+        public int AmountIntensiveCareBeds { get; set; }
+
     }
 }

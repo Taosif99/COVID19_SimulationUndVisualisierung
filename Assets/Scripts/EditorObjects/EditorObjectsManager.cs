@@ -27,9 +27,12 @@ namespace EditorObjects
         private Entity _currentSelectedEntity;
 
         //counters for unique mock naming
+        /*
         private int _workPlaceCounter = 1;
         private int _hospitalCounter = 1;
         private int _householdCounter = 1;
+        */
+
         private int _amountPeople = 0;
         /// <summary>
         /// Variable to lock save process if object is just loaded to the ui
@@ -37,9 +40,13 @@ namespace EditorObjects
         private bool _saveLock = false;
 
         public Entity CurrentSelectedEntity { get => _currentSelectedEntity; set => _currentSelectedEntity = value; }
+        
+        /*
         public int WorkPlaceCounter { get => _workPlaceCounter; set => _workPlaceCounter = value; }
         public int HospitalCounter { get => _hospitalCounter; set => _hospitalCounter = value; }
         public int HouseholdCounter { get => _householdCounter; set => _householdCounter = value; }
+        */
+
         public Dictionary<GridCell, IEditorObject> EditorObjectsDic { get => _editorObjects; set => _editorObjects = value; }
         public int AmountPeople { get => _amountPeople; set => _amountPeople = value; }
 
@@ -60,7 +67,7 @@ namespace EditorObjects
                     editorObject = EditorObjectFactory.Create(workplace);
                     break;
                 case PrefabName.Hospital:
-                    Hospital hospital = new Hospital(gridCell, 0.1f, WorkplaceType.Hospital, 299, HospitalScale.Large, WorkerAvailability.Low);
+                    Hospital hospital = new Hospital(3,1,gridCell, 0.1f, WorkplaceType.Hospital, 299);
                     editorObject = EditorObjectFactory.Create(hospital);
                     break;
                 case PrefabName.Household:
@@ -88,7 +95,7 @@ namespace EditorObjects
             
             GridCell gridCell = new GridCell(gridCellPosition.x, gridCellPosition.y);
             IEditorObject editorObject = _editorObjects[gridCell];
-            
+            InputValidator.ResetAllLeftInputToWhite();
 
             if (editorObject == null)
             {
@@ -100,6 +107,7 @@ namespace EditorObjects
             {
                 return;
             }
+            
             UIController.Instance.InfectionRiskInputField.text = venue.InfectionRisk.ToString();            
             switch (CurrentSelectedEntity)
             {
@@ -109,11 +117,10 @@ namespace EditorObjects
                     UIController.Instance.WorkerCapacityInputField.text = workplace.WorkerCapacity.ToString();
                     if (workplace is Hospital hospital)
                     {
-                        UIController.Instance.LoadHospitalUI();
-                        List<string> availableHospitalScaleOptions = UIController.Instance.HospitalScaleDropdown.options.Select(option => option.text).ToList();
-                        List<string> availableWorkerAvailabilityOptions = UIController.Instance.WorkerAvailabilityDropdown.options.Select(option => option.text).ToList();
-                        UIController.Instance.HospitalScaleDropdown.value = availableHospitalScaleOptions.IndexOf(hospital.Scale.ToString());
-                        UIController.Instance.WorkerAvailabilityDropdown.value = availableWorkerAvailabilityOptions.IndexOf(hospital.WorkerAvailability.ToString());
+                       UIController.Instance.LoadHospitalUI();   
+                       UIController.Instance.AmountNormalBedsInputField.text = hospital.AmountRegularBeds.ToString();
+                       UIController.Instance.AmountIntensiveCareInputField.text = hospital.AmountIntensiveCareBeds.ToString();
+
                     }
                     else
                     {
@@ -153,6 +160,8 @@ namespace EditorObjects
             byte numberOfPeople = 0;
             float carefulness = 0f;
             float percentageOfWorkers = 0f;
+            int amountBeds = 0;
+            int amountIntensiveCareBeds = 0;
 
             if (CurrentSelectedEntity != null && !_saveLock)
             {
@@ -161,7 +170,9 @@ namespace EditorObjects
                 ref capacity,
                 ref numberOfPeople,
                 ref carefulness,
-                ref percentageOfWorkers,
+                ref percentageOfWorkers, 
+                ref amountBeds, 
+                ref amountIntensiveCareBeds,
                 CurrentSelectedEntity);
                 if (inputIsOkay)
                 {
@@ -183,12 +194,12 @@ namespace EditorObjects
 
                                 if (CurrentSelectedEntity is Hospital hospital)
                                 {
-                                    hospital.Type = WorkplaceType.Hospital;
-                                    HospitalScale hospitalScale = (HospitalScale)Enum.Parse(typeof(HospitalScale), UIController.Instance.HospitalScaleDropdown.options[UIController.Instance.HospitalScaleDropdown.value].text);
-                                    WorkerAvailability workerAvailability = (WorkerAvailability)Enum.Parse(typeof(WorkerAvailability), UIController.Instance.WorkerAvailabilityDropdown.options[UIController.Instance.WorkerAvailabilityDropdown.value].text);
-                                    hospital.Scale = hospitalScale;
-                                    hospital.WorkerAvailability = workerAvailability;
-                                    hospital.WorkerCapacity = capacity;
+                                   hospital.Type = WorkplaceType.Hospital;
+                                   hospital.WorkerCapacity = capacity;
+                                   hospital.AmountRegularBeds = amountBeds;
+                                   hospital.AmountIntensiveCareBeds = amountIntensiveCareBeds;
+                                    
+                                    
                                 }
 
                             }
@@ -222,7 +233,7 @@ namespace EditorObjects
                     Destroy(gameObject);
                     _editorObjects.Remove(CurrentSelectedEntity.Position);
                     CurrentSelectedEntity = null;
-                    UIController.Instance.IsEntitySelectedUI(false);
+                    UIController.Instance.SetEntityPropertiesVisible(false);
                 }
             }
         }
@@ -260,7 +271,7 @@ namespace EditorObjects
 
                 newEditorObjects[position] = reloadedEditorObject;
             }
-
+            UIController.Instance.SetEntityPropertiesVisible(false);
             _editorObjects = newEditorObjects;
         }
         

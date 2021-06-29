@@ -111,7 +111,7 @@ public class SimulationMaster : MonoBehaviour
     void Update()
     {
         
-        //DebugPrintOfCounterValues();
+       // DebugPrintOfCounterValues();
     }
 
     /// <summary>
@@ -199,6 +199,7 @@ public class SimulationMaster : MonoBehaviour
         _dayInfoHandler = new DayInfoHandler();
         _currentDayOfSimulation = 0;
 
+
     }
 
     //Must be called before the simulation starts and after the file is loaded
@@ -211,6 +212,8 @@ public class SimulationMaster : MonoBehaviour
     private void DebugPrintOfCounterValues()
     {
 
+     
+        /*
         string debugText = $"<color=yellow>Infected/Phase 1: {   _infectionStateCounter[Person.InfectionStates.Phase1] } </color>" +
             $"<color=red> Infected,Infectious/Phase 2:{   _infectionStateCounter[Person.InfectionStates.Phase2] } </color>" +
             $"<color=brown> Infected,Infectious,Symptoms/Phase 3:{   _infectionStateCounter[Person.InfectionStates.Phase3] } </color>" +
@@ -218,7 +221,7 @@ public class SimulationMaster : MonoBehaviour
             $"<color=green>Amount Recovered/Phase 5:{   _infectionStateCounter[Person.InfectionStates.Phase5] }</color>" +
             $"<color=gray>Amount uninfected:{_infectionStateCounter[Person.InfectionStates.Uninfected] }</color>";
         Debug.Log(debugText);
-    
+    */
     }
 
 
@@ -283,8 +286,7 @@ public class SimulationMaster : MonoBehaviour
         //Since the last infection phase of a dead Person is currently phase3 (TODO IMPROVE)
         _infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
         _infectionStateCounter[Person.InfectionStates.Phase3] -= 1;
-
-        Debug.Log("Dead: " + _amountPeopleDead);
+        _infectionStateCounter[Person.InfectionStates.Infectious] -= 1;
 
     }
 

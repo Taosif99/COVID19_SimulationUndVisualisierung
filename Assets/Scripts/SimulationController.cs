@@ -56,6 +56,7 @@ class SimulationController : MonoBehaviour
             SimulationMaster.Instance.StartUninfectedCounting();
             SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
             SimulationMaster.Instance.PlayDate = DateTime.Now;
+           
             _isInitialized = true;
         }
         else if (_isPaused == true)
@@ -109,6 +110,7 @@ class SimulationController : MonoBehaviour
 
             SimulationMaster.Instance.Reset();
             GlobalSimulationGraph.Instance.Reset();
+            UIController.Instance.DisableBedMessages();
         }
     }
 
@@ -137,7 +139,7 @@ class SimulationController : MonoBehaviour
         }
 
         _controller.InfectRandomPerson();
-        _virusButton.interactable = false;
+        //_virusButton.interactable = false;
     }
 
     private void OnDayChanges()

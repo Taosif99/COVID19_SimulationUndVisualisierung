@@ -2,6 +2,7 @@ using UnityEngine;
 using Simulation.Edit;
 using TMPro;
 using System.Linq;
+using System;
 
 namespace InputValidation
 {
@@ -13,17 +14,24 @@ namespace InputValidation
     public static class InputValidator
     {
 
+
+
+
         /// <summary>
-        /// Method which parses al inputfields in the simulation scene and which checks for correct value ranges.
+        ///  Method which parses al inputfields in the simulation scene and which checks for correct value ranges.
+        ///  TODO: This method has way too much parameters !
         /// </summary>
         /// <param name="infectionRisk"></param>
         /// <param name="capacity"></param>
         /// <param name="numberOfPeople"></param>
         /// <param name="carefulness"></param>
         /// <param name="percentageOfWorkers"></param>
-        ///  /// <param name="currentSelectedEntity"></param>
+        /// <param name="amountBeds"></param>
+        /// <param name="amountIntensiveCareBeds"></param>
+        /// <param name="currentSelectedEntity"></param>
         /// <returns>true if all requiered inputfields can be parsed to correct values, else false</returns>
-        public static bool TryParseLeftInputFields(ref float infectionRisk, ref int capacity, ref byte numberOfPeople, ref float carefulness, ref float percentageOfWorkers, Entity currentSelectedEntity)
+        public static bool TryParseLeftInputFields(ref float infectionRisk, ref int capacity, ref byte numberOfPeople, ref float carefulness, ref float percentageOfWorkers, ref int amountBeds,
+                ref int amountIntensiveCareBeds, Entity currentSelectedEntity)
         {
             bool inputIsValid = true;
             if (currentSelectedEntity is Venue)
@@ -37,6 +45,18 @@ namespace InputValidation
                     bool capacityIsValid = int.TryParse(UIController.Instance.WorkerCapacityInputField.text, out capacity) && capacity >= 0;
                     SetInputFieldColor(UIController.Instance.WorkerCapacityInputField, capacityIsValid);
                     inputIsValid = inputIsValid && capacityIsValid;
+
+                    if (currentSelectedEntity is Hospital)
+                    {
+
+                        bool amountBedsValid = int.TryParse(UIController.Instance.AmountNormalBedsInputField.text, out amountBeds) && amountBeds >= 0;
+                        bool amountIntensiveCareBedsValid = int.TryParse(UIController.Instance.AmountIntensiveCareInputField.text, out amountIntensiveCareBeds) && amountIntensiveCareBeds >= 0;
+                        SetInputFieldColor(UIController.Instance.AmountNormalBedsInputField,amountBedsValid);
+                        SetInputFieldColor(UIController.Instance.AmountIntensiveCareInputField, amountIntensiveCareBedsValid);
+                        inputIsValid = inputIsValid && amountBedsValid && amountIntensiveCareBedsValid;
+
+                    }
+
                 }
                 else if (currentSelectedEntity is Household)
                 {
@@ -56,6 +76,7 @@ namespace InputValidation
             return inputIsValid;
         }
 
+ 
 
 
         /// <summary>
@@ -96,6 +117,11 @@ namespace InputValidation
             }
             return result;
         }
+
+
+
+
+
 
         /// <summary>
         /// Method which validates the health phase parameters.
@@ -178,6 +204,21 @@ namespace InputValidation
             return isInputOk;
         }
 
+
+        public static void ResetAllLeftInputToWhite()
+        {
+
+            UIController.Instance.InfectionRiskInputField.image.color = Color.white;
+            UIController.Instance.WorkerCapacityInputField.image.color = Color.white;
+            UIController.Instance.AmountNormalBedsInputField.image.color = Color.white;
+            UIController.Instance.AmountIntensiveCareInputField.image.color = Color.white;
+            UIController.Instance.NumberOfPeopleInputField.image.color = Color.white;
+            UIController.Instance.CarefulnessInputField.image.color = Color.white;
+            UIController.Instance.PercantageOfWorkersInputField.image.color = Color.white;
+        }
+
+
+
         /// <summary>
         /// Method to set the color of an inputfield depending if its content 
         /// can be parsed.
@@ -205,5 +246,7 @@ namespace InputValidation
         {
             return value >= 0f && value <= 1f;
         }
+
+
     }
 }

@@ -9,16 +9,23 @@ namespace Simulation.Runtime
 {
     class SimulationController
     {
+        /// <summary>
+        /// Counts how many times we tried to assign a person to a regular / intensive care bed
+        /// </summary>
+        private int _hospitalRegularBedAssignmentsCounter;
+        private int _hospitalIntensiveCareBedAssignmentsCounter;
+
         private const double SimulationStepsMinutes = 10;
-        
+
         private List<Entity> _entities = new List<Entity>();
-        
+
         public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
+
 
         public void Initialize(List<Entity> entities)
         {
             _entities = entities;
-            
+
             List<WorkShift> workShifts = _entities.OfType<Workplace>()
                 .SelectMany(w => w.WorkShifts)
                 .ToList();
@@ -79,16 +86,37 @@ namespace Simulation.Runtime
                     member.UpdateInfectionState(SimulationDate);
                     member.UpdateHealthState();
 
+
+
+                    //Hospital logic
+                    if (member.MustBeTransferredToHospital())
+                    {
+                        TryAssignPersonToRegularBed(member);
+                    }
+
+                    //Know checking if person must go to intensive care
+                    //code is in this place because user can configure the world so that there are more intensive beds 
+                    //even though this would not be realistic.
+                    if (member.MustBeTransferredToIntensiveCare())
+                    {
+                        TryAssignPersonToIntensiveBed(member);
+                    }
+
+                    if (member.IsInHospital) continue;
+
+
+
+                    //Infectious persons stay at home
                     if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
                     {
                         if (!household.HasPersonHere(member))
                         {
-                            household.MovePersonHere(member);  
+                            household.MovePersonHere(member);
                         }
-                        
                         continue;
                     }
-                    
+
+                    //Activities of a person
                     if (member.TryGetActivityAt(SimulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
                     {
                         activity.Location.MovePersonHere(member);
@@ -102,6 +130,7 @@ namespace Simulation.Runtime
             }
         }
 
+
         public void InfectRandomPerson()
         {
             Household[] households = _entities.OfType<Household>().ToArray();
@@ -111,8 +140,8 @@ namespace Simulation.Runtime
                 Person randomPerson = randomHousehold.Members[Random.Range(0, randomHousehold.Members.Length)];
                 randomPerson.SetInfected(SimulationDate);
             }
-            else 
-            { 
+            else
+            {
                 Debug.Log("No households");
                 string msg = "Atleast one household with one person is requiered to infect one person!";
                 string name = "No households";
@@ -121,5 +150,139 @@ namespace Simulation.Runtime
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             }
         }
+
+        /// <summary>
+        /// Method which tries to assign a person to a regular bed.
+        /// Firstly round robin is used, if round robin fails a linear search
+        /// is done to search a free regular bed.
+        /// </summary>
+        /// <param name="person"></param>
+        private void TryAssignPersonToRegularBed(Person person)
+        {
+            Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
+         
+            if (hospitals != null && hospitals.Length > 0)
+            {
+                int amountHospitals = hospitals.Length;
+                Hospital hospital = hospitals[_hospitalRegularBedAssignmentsCounter % amountHospitals];
+                if (hospital.PatientsInRegularBeds.Count < hospital.AmountRegularBeds)
+                {
+                    AssignPersonToRegularBed(person, hospital);
+                }
+                else
+                {
+                    Debug.Log("No more placees in this hospital, try next hospitals");
+                    for (int i = 0; i < amountHospitals; i++)
+                    {
+                        if (hospitals[i].PatientsInRegularBeds.Count < hospitals[i].AmountRegularBeds)
+                        {
+                            AssignPersonToRegularBed(person, hospitals[i]);
+                            break;
+                        }
+                    }
+                }
+
+                //At this point we may check if a person is in hospital,if yes the probabilities stay the same, else reduce atleast survive probability
+                //or show message that there was no place for a person in the hospital
+                if (!person.HasRegularBed)
+                {
+                    UIController.Instance.NotEnoughBedsMessage.SetActive(true);
+                
+                }
+
+
+                _hospitalRegularBedAssignmentsCounter++;
+            }
+        }
+
+        private void DebugHospitalPatients(Hospital hospital)
+        {
+            Debug.Log("Amount patients in regular beds:" + hospital.PatientsInRegularBeds.Count);
+            Debug.Log("Amount patients in intensive beds:" + hospital.PatientsInIntensiveCareBeds.Count);
+
+        }
+
+        private void AssignPersonToRegularBed(Person person, Hospital hospital)
+        {
+            hospital.PatientsInRegularBeds.Add(person);
+            hospital.MovePersonHere(person);
+            person.IsInHospital = true;
+            person.HasRegularBed = true;
+            DebugHospitalPatients(hospital);
+        }
+
+        /// Method which tries to assign an intensive care bed to a person.
+        /// Firstly round robin is used, if round robin fails a linear search,
+        /// if linear search also failed the person still maintains its
+        /// previous regular bed. If assignment is successful the regular bed
+        ///  will no longer be used.
+        /// 
+        /// <param name="person"></param>
+        private void TryAssignPersonToIntensiveBed(Person person)
+        {
+            //Save the old bed temporary if it changes it will be deleted
+            Hospital oldHospital = null;
+            if (person.HasRegularBed)
+            {
+                if (person.CurrentLocation is Hospital hospital)
+                {
+                    oldHospital = hospital;
+                }
+            }
+            //Assign a free intensive care bed in our simulation world, if this fails we have to assign a regular bed (again)
+            Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
+           
+            if (hospitals != null && hospitals.Length > 0)
+            {
+                int amountHospitals = hospitals.Length;
+                //Use round robin first 
+                Hospital hospital = hospitals[_hospitalIntensiveCareBedAssignmentsCounter % amountHospitals];
+                //Check amount normal beds
+                if (hospital.PatientsInIntensiveCareBeds.Count < hospital.AmountIntensiveCareBeds)
+                {
+                    AssignPersonToIntensiveBed(person, hospital, oldHospital);
+                }
+                else
+                {
+                    Debug.Log("No more placees in this hospital, try next hospitals");
+                    // if round robin fails, try search for a free hospital place linearly
+                    for (int i = 0; i < amountHospitals; i++)
+                    {
+                        if (hospitals[i].PatientsInIntensiveCareBeds.Count < hospitals[i].AmountIntensiveCareBeds)
+                        {
+                            AssignPersonToIntensiveBed(person, hospitals[i], oldHospital);
+                            break;
+                        }
+                    }
+                }
+
+                //At this point we may check if a person is in hospital,if yes the probabilities stay the same, else reduce survive probability
+                //or show message that there was no place for a person in the hospital
+                if (!person.IsInIntensiveCare)
+                {
+                    UIController.Instance.NotEnoughIntensiveBedsMessage.SetActive(true);
+
+                }
+                _hospitalRegularBedAssignmentsCounter++;
+            }
+
+        }
+
+        private void AssignPersonToIntensiveBed(Person person, Hospital hospital, Hospital oldHospital)
+        {
+            //Remove person from old Hospital normal bed
+            if (oldHospital != null)
+            {
+                oldHospital.PatientsInRegularBeds.Remove(person);
+                person.HasRegularBed = false;
+            }
+            hospital.PatientsInIntensiveCareBeds.Add(person);
+            hospital.MovePersonHere(person);
+            person.IsInHospital = true;
+            person.IsInIntensiveCare = true;
+            //person.HasIntensiveCareBed = true;
+            DebugHospitalPatients(hospital);
+        }
+
     }
 }

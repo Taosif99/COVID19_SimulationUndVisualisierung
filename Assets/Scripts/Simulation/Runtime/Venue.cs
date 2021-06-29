@@ -29,7 +29,7 @@ namespace Simulation.Runtime
 
                 foreach (Person i in _currentPeopleAtVenue)
                 {
-                    if (!i.InfectionState.HasFlag(Person.InfectionStates.Infectious))
+                    if (!i.InfectionState.HasFlag(Person.InfectionStates.Infectious) || p.IsInHospital)
                     {
                         continue;
                     }
@@ -68,6 +68,7 @@ namespace Simulation.Runtime
             }
 
             person.CurrentLocation?.RemovePerson(person);
+         
 
             person.CurrentLocation = this;
             _currentPeopleAtVenue.Add(person);

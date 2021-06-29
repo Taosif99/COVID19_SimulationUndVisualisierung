@@ -15,11 +15,15 @@ namespace Grid
         private float _eulerAngleX = 30f;
         //Reference to the counter which can be modified
         private TextMeshProUGUI _counterText;
+        private TextMeshProUGUI _hospitalCounterText;
         private int _amountInfectious;
         private int _amountInfected;
         private int _amountNotInfected;
 
         public GameObject CounterGameObject { get; set; }
+
+        public GameObject HospitalCounterGameObject { get; set; }
+
         public Venue Venue { get; set; }
 
         // Update is called once per frame
@@ -45,6 +49,7 @@ namespace Grid
                 {
                     _amountNotInfected++;
                 }
+
             }
             
             UpdateText();
@@ -59,17 +64,35 @@ namespace Grid
             GameObject counterPrefab = ModelSelector.Instance.CounterPrefab;
             
             CounterGameObject = Instantiate(counterPrefab, gameObject.transform);
-
             CounterGameObject.transform.localPosition = new Vector3(0, verticalOffset, 0);
             CounterGameObject.transform.rotation = Quaternion.Euler(_eulerAngleX, 0, 0);
-            
             CounterGameObject.name = "CounterCanvas";
-            _counterText = CounterGameObject.GetComponentInChildren<TextMeshProUGUI>();   
+            _counterText = CounterGameObject.GetComponentInChildren<TextMeshProUGUI>();
+
+            if (Venue is Hospital)
+            {
+                HospitalCounterGameObject = Instantiate(counterPrefab, gameObject.transform);
+                HospitalCounterGameObject.transform.localPosition = new Vector3(0, verticalOffset * 1.5f, 0);
+                HospitalCounterGameObject.transform.rotation = Quaternion.Euler(_eulerAngleX, 0, 0);
+                HospitalCounterGameObject.name = "HospitalCounterCanvas";
+                _hospitalCounterText = HospitalCounterGameObject.GetComponentInChildren<TextMeshProUGUI>();
+                string counterString = $"<color=#6495ED>0/0</color> / <#9FE2BF>0/0</color>";
+                _hospitalCounterText.SetText(counterString);
+            }
+
         }
 
         private void UpdateText()
         {
             _counterText.SetText($"<color=green>{_amountNotInfected}</color> / <color=orange>{_amountInfected}</color> / <color=red>{_amountInfectious}</color>");
+
+
+
+            if (Venue is Hospital hospital)
+            {
+                _hospitalCounterText.SetText($"<color=#6495ED>{hospital.AmountPeopleInRegularBeds}/{hospital.AmountRegularBeds}</color> / <#9FE2BF>{hospital.AmountPeopleInIntensiveBeds}/{hospital.AmountIntensiveCareBeds}</color>");
+            }
+
         }
     }
 }

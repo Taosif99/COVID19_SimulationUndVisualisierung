@@ -93,11 +93,69 @@ namespace Simulation
             ///und in einer Uebersichtsarbeit mit 16 Tagen angeben(177). Waehrend der ersten COVID-19-Welle in Deutschland betrug 
             ///diese Zeitspanne im Mittel(Median) 11 Tage(169).""
             ///<see cref="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html"/>
-            /// We use the average of the three above values.
+            /// We use the average of the three above values. (16 + 18 + 11) / 3 = 15
             /// </summary>
             public const int DaysFromSymptomsBeginToDeath = 15;
-           
 
+            //TODO ADD TO SETTINGS IN UI EVENTUALLY
+
+            //Days in intensive care must be a subset of days in hospital !!! (Our Assumption)
+
+            //Hospital
+
+            /// <summary>
+            /// Amount days a person must stay in the hospital, if he/she
+            /// is there because of CoViD.
+            /// </summary>
+            public const int DaysInHospital = 14;
+
+            /// <summary>
+            /// Amount days from symptoms beginn to transferring a person to a hospital
+            /// </summary>
+            public const int DurationOfSymtombeginToHospitalization = 4;
+
+            /// <summary>
+            /// The day a person must go to the hospital.
+            /// </summary>
+            public const int DayAPersonMustGoToHospital = InfectionsPhaseParameters.IncubationTime + DurationOfSymtombeginToHospitalization - 1;
+
+            /// <summary>
+            /// The first day a person can leave the hospital
+            /// </summary>
+            public const int DayAPersonCanLeaveTheHospital = DayAPersonMustGoToHospital + DaysInHospital;
+
+
+            //Intensive Care
+            /// <summary>
+            /// Amount days a person must must stay in intensive care.
+            /// </summary>
+            public const int DaysInIntensiveCare = 10;
+
+            /// <summary>
+            /// The amount days which have to pass from hospitalization to intensive care.
+            /// </summary>
+            public const int DurationOfHospitalizationToIntensiveCare = 1;
+
+            /// <summary>
+            /// The day a person must go to the intensive care.
+            /// </summary>
+            public const int DayAPersonMustGoToIntensiveCare = DayAPersonMustGoToHospital + DurationOfHospitalizationToIntensiveCare;
+
+            /// <summary>
+            /// The day a person can leave the intensive care.
+            /// </summary>
+            public const int DayAPersonCanLeaveIntensiveCare = DayAPersonMustGoToIntensiveCare + DaysInIntensiveCare;
+
+
+            /// <summary>
+            /// The Probability that a recovered person will be infected again.
+            /// 
+            /// "Basierend auf ihren Daten schätzten die Autorinnen und Autoren das Risiko, 
+            /// sich nach einer ersten Infektion erneut anzustecken, auf 0,02 Prozent." (Study which has been made in Qatar)
+            /// <see cref="https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html"/>
+            /// 
+            /// </summary>
+            public const float InfectionRiskIfRecovered = 0.02f;
         }
 
     }
