@@ -139,7 +139,7 @@ class SimulationController : MonoBehaviour
         }
 
         _controller.InfectRandomPerson();
-        //_virusButton.interactable = false;
+        _virusButton.interactable = false;
     }
 
     private void OnDayChanges()
