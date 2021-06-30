@@ -257,6 +257,9 @@ namespace EditorObjects
                 editorObject = pair.Value;
                 position = pair.Key;
 
+                StateCounter counter = editorObject.EditorGameObject.GetComponent<StateCounter>();
+                counter.StopAllCoroutines();
+
                 Destroy(editorObject.EditorGameObject);
 
                 reloadedEditorObject = EditorObjectFactory.Create(editorObject.EditorEntity);

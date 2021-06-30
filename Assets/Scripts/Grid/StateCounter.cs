@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using Simulation.Runtime;
+using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Grid
 {
@@ -26,34 +24,13 @@ namespace Grid
 
         public Venue Venue { get; set; }
 
-        // Update is called once per frame
-        private void Update()
+
+
+        private void Start()
         {
-            //TODO Getting values from Simulation Controller add modify text element of counter
-
-            _amountInfectious = 0;
-            _amountInfected = 0;
-            _amountNotInfected = 0;
-            
-            foreach (var person in Venue.GetPeopleAtVenue())
-            {
-                if (person.InfectionState.HasFlag(Person.InfectionStates.Infectious))
-                {
-                    _amountInfectious++;
-                }
-                else if (person.InfectionState.HasFlag(Person.InfectionStates.Infected))
-                {
-                    _amountInfected++;
-                }
-                else
-                {
-                    _amountNotInfected++;
-                }
-
-            }
-            
-            UpdateText();
+            StartCoroutine(UpdateRoutine());
         }
+
 
         /// <summary>
         /// Method to instinatiate the counter prefab above a venue model after its creation.
@@ -93,6 +70,47 @@ namespace Grid
                 _hospitalCounterText.SetText($"<color=#6495ED>{hospital.AmountPeopleInRegularBeds}/{hospital.AmountRegularBeds}</color> / <#9FE2BF>{hospital.AmountPeopleInIntensiveBeds}/{hospital.AmountIntensiveCareBeds}</color>");
             }
 
+        }
+        /// <summary>
+        /// Using an asynchronous coroutine to update the counter values every second.
+        /// This shall increase the speed in the program.
+        /// </summary>
+        
+        private IEnumerator UpdateRoutine()
+        {
+
+            for (; ; )
+            {
+
+                if (!SimulationMaster.Instance.IsForwardingSimulation)
+                {
+
+                    _amountInfectious = 0;
+                    _amountInfected = 0;
+                    _amountNotInfected = 0;
+
+                    foreach (var person in Venue.GetPeopleAtVenue())
+                    {
+                        if (person.InfectionState.HasFlag(Person.InfectionStates.Infectious))
+                        {
+                            _amountInfectious++;
+                        }
+                        else if (person.InfectionState.HasFlag(Person.InfectionStates.Infected))
+                        {
+                            _amountInfected++;
+                        }
+                        else
+                        {
+                            _amountNotInfected++;
+                        }
+
+                    }
+
+                    UpdateText();
+
+                }
+                yield return new WaitForSeconds(1f);
+            }
         }
     }
 }

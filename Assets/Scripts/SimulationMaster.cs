@@ -19,6 +19,9 @@ public class SimulationMaster : MonoBehaviour
     public static SimulationMaster Instance;
     public Simulation.Edit.Simulation CurrentSimulation { get; set; }
     
+    public bool IsForwardingSimulation { get; set; }
+
+
     /// <summary>
     /// The real world date the simulation started.
     /// </summary>
@@ -95,6 +98,7 @@ public class SimulationMaster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        IsForwardingSimulation = false;
         _infectionStateCounter.Add(Person.InfectionStates.Phase1, 0); 
         _infectionStateCounter.Add(Person.InfectionStates.Phase2, 0);
         _infectionStateCounter.Add(Person.InfectionStates.Phase3, 0);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using EditorObjects;
 using RuntimeObjects;
@@ -33,7 +34,7 @@ class SimulationController : MonoBehaviour
     private float _lastSimulationUpdate;
 
     private bool IsRunning => _isInitialized && _isPaused == false;
-
+    private int _amountDaysToForward = 1;
     private void Awake()
     {
         Assert.IsNotNull(_editorObjectsManager);
@@ -111,25 +112,22 @@ class SimulationController : MonoBehaviour
             SimulationMaster.Instance.Reset();
             GlobalSimulationGraph.Instance.Reset();
             UIController.Instance.DisableBedMessages();
+            StopAllCoroutines();
         }
     }
 
+
+
     public void ForwardSimulation()
     {
-        //TODO DISABLE COUNTERS AND GRAPH TO AVOID BUTTON SPAMMING
-
         if (!IsRunning)
         {
             return;
         }
-
-        while (_currentDay == _controller.SimulationDate.Day)
-        {
-            _controller.RunUpdate();
-        }
-
-        OnDayChanges();
+        StartCoroutine(ForwardSimulationRoutine());
     }
+
+
 
     public void InfectRandomPerson()
     {
@@ -150,5 +148,26 @@ class SimulationController : MonoBehaviour
         //Update statistics each day
         SimulationMaster.Instance.OnDayEnds();
         SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
+    }
+
+    /// <summary>
+    /// Using a coroutine to avoid program lagging if button is spammed.
+    /// </summary>
+    /// 
+    private IEnumerator ForwardSimulationRoutine()
+    {
+        SimulationMaster.Instance.IsForwardingSimulation = true;
+
+        for (int i = 0; i < _amountDaysToForward; i++)
+        {
+            while (_currentDay == _controller.SimulationDate.Day)
+            {
+                _controller.RunUpdate();
+                yield return null;
+            }
+
+            OnDayChanges();
+        }
+        SimulationMaster.Instance.IsForwardingSimulation = false;
     }
 }
