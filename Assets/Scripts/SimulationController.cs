@@ -56,7 +56,7 @@ class SimulationController : MonoBehaviour
             SimulationMaster.Instance.StartUninfectedCounting();
             SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
             SimulationMaster.Instance.PlayDate = DateTime.Now;
-           
+            GlobalSimulationGraph.Instance.AmountHorizontalLineUpdater();
             _isInitialized = true;
         }
         else if (_isPaused == true)

@@ -14,7 +14,6 @@ namespace EditorObjects
     /// <summary>
     /// This class maintains the editor Objects during the Runtime
     ///
-    /// TODO: Remove UI Name eventually
     /// 
     /// Currently working with mock editor objects
     /// </summary>
@@ -26,12 +25,6 @@ namespace EditorObjects
         private Dictionary<GridCell, IEditorObject> _editorObjects = new Dictionary<GridCell, IEditorObject>();
         private Entity _currentSelectedEntity;
 
-        //counters for unique mock naming
-        /*
-        private int _workPlaceCounter = 1;
-        private int _hospitalCounter = 1;
-        private int _householdCounter = 1;
-        */
 
         private int _amountPeople = 0;
         /// <summary>

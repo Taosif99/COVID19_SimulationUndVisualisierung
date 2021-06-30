@@ -150,7 +150,7 @@ namespace Simulation
             /// <summary>
             /// The Probability that a recovered person will be infected again.
             /// 
-            /// "Basierend auf ihren Daten schätzten die Autorinnen und Autoren das Risiko, 
+            /// "Basierend auf ihren Daten schaetzten die Autorinnen und Autoren das Risiko, 
             /// sich nach einer ersten Infektion erneut anzustecken, auf 0,02 Prozent." (Study which has been made in Qatar)
             /// <see cref="https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html"/>
             /// 

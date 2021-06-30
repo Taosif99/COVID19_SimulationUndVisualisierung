@@ -27,6 +27,7 @@ namespace GraphChart
         private Func<int, string> _xLabelBarChart;
         //To use the more performant update value of a barchart
         private bool _barChartCreated = false;
+        private int _defaultAmountGraphHorizontalLines;
 
 
         public static GlobalSimulationGraph Instance;
@@ -59,7 +60,8 @@ namespace GraphChart
             InitColorList();
             InitMultiLineGraph();
             InitBarChart();
-  
+            _defaultAmountGraphHorizontalLines = _barchartGameObject.GetComponent<GraphChart>().AmountHorizontalLines;
+           
         }
 
         /// <summary>
@@ -68,7 +70,6 @@ namespace GraphChart
         /// <param name="shouldUpdateValues">If the infection values should be updated, e.g. after a day, a week...</param>
         public void UpdateValuesAndShowGraphs(bool shouldUpdateValues)
         {
-
 
             if (shouldUpdateValues)
             {
@@ -89,7 +90,9 @@ namespace GraphChart
             }
 
         }
-
+        /// <summary>
+        /// Method which resets all graphs
+        /// </summary>
        public void Reset()
         {
 
@@ -288,8 +291,24 @@ namespace GraphChart
             _lines[3].IsEnabled = recoveredOn;
             _lines[4].IsEnabled = deadOn;
             UpdateValuesAndShowGraphs(false);
+            
         }
 
+        /// <summary>
+        /// Method which sets the amount of horizontal lines depending on the population size.
+        /// </summary>
+        public void AmountHorizontalLineUpdater()
+        {
+            int amountPeople = SimulationMaster.Instance.GetAmountAllPeople();
+            if (amountPeople < _defaultAmountGraphHorizontalLines)
+            {
+
+                _barchartGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople;
+                _multiLineGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople; 
+                _fullScreenGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople;
+            }
+
+        }
 
     }
 }

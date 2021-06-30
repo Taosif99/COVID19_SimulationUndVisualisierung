@@ -66,6 +66,14 @@ namespace Simulation.Runtime
             }
         }
 
+        /// <summary>
+        /// Method in which our main simulation process logic is implemented.
+        /// Here are methods called which deal with:
+        ///  - How and how often people encounter
+        ///  - Health/Hospital states of each member of a household
+        ///  - What a person does if she/he is infectious
+        ///  - Moving persons to diffent locations if they have a activity
+        /// </summary>
         public void RunUpdate()
         {
             SimulationDate = SimulationDate.AddMinutes(SimulationStepsMinutes);
@@ -102,7 +110,18 @@ namespace Simulation.Runtime
                         TryAssignPersonToIntensiveBed(member);
                     }
 
-                    if (member.IsInHospital) continue;
+                    if (member.IsInHospital)
+                        {
+
+                        //Check if member can leave intensive care an go to a normal bed
+                        if (member.CanLeaveIntensiveCare())
+                        {
+                            TryAssignPersonToRegularBed(member);
+
+                        }
+
+                        continue;
+                        }
 
 
 
@@ -154,13 +173,17 @@ namespace Simulation.Runtime
         /// <summary>
         /// Method which tries to assign a person to a regular bed.
         /// Firstly round robin is used, if round robin fails a linear search
-        /// is done to search a free regular bed.
+        /// is done to search a free regular bed. If person leaves intensive car this method also seareches a 
+        /// free regular bed for the person and removes the person from the location with the intensive care bed.
         /// </summary>
         /// <param name="person"></param>
         private void TryAssignPersonToRegularBed(Person person)
         {
             Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
-         
+
+            Venue lastLocation = person.CurrentLocation;
+
+
             if (hospitals != null && hospitals.Length > 0)
             {
                 int amountHospitals = hospitals.Length;
@@ -187,6 +210,15 @@ namespace Simulation.Runtime
                 if (!person.HasRegularBed)
                 {
                     UIController.Instance.NotEnoughBedsMessage.SetActive(true);
+                
+                }
+
+                //Handle case if person leaves sensitive bed and gets a normal bed again
+                if (person.IsInIntensiveCare && person.HasRegularBed)
+                {
+                    Hospital oldHospital = (Hospital)lastLocation;
+                    oldHospital.PatientsInIntensiveCareBeds.Remove(person);
+                    person.IsInIntensiveCare = false;
                 
                 }
 

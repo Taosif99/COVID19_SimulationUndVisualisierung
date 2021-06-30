@@ -1,7 +1,6 @@
 ﻿using System;
-using UnityEngine;
 using System.Collections.Generic;
-using Random = UnityEngine.Random;
+
 
 namespace Simulation.Runtime
 {
@@ -54,7 +53,7 @@ namespace Simulation.Runtime
         [Flags]
         public enum InfectionStates
         {
-            Uninfected = 0,
+            Uninfected = 0, //susceptible
             Infected = 1,
             Infectious = 2,
             Symptoms = 4,
@@ -224,10 +223,7 @@ namespace Simulation.Runtime
             InfectionStates previousState = InfectionState;
             InfectionState = InfectionStates.Infected;
             _infectionDate = infectionDate;
-            StateTransitionEventArgs stateTransitionEventArgs = new StateTransitionEventArgs();
-            stateTransitionEventArgs.newInfectionState = InfectionState;
-            stateTransitionEventArgs.previousInfectionState = previousState;
-            OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
+            OnStateTransition(InfectionStates.Infected, previousState);
             SimulationMaster.Instance.OnPersonInfected();
         }
 
@@ -249,6 +245,14 @@ namespace Simulation.Runtime
         public bool MustBeTransferredToIntensiveCare()
         {
             return (!IsInIntensiveCare && _healthState.MustBeInIntensiveCare());
+        }
+
+
+        public bool CanLeaveIntensiveCare()
+        {
+
+            return IsInIntensiveCare && !_healthState.MustBeInIntensiveCare();
+        
         }
 
         /// <summary>

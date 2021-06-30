@@ -6,7 +6,8 @@ using EpidemiologicalCalculation;
 using System;
 
 /// <summary>
-/// Class which handles simulation specific properties and settings.
+/// Class which handles simulation global background simulation tasks
+/// like global infection state counting and  passing calculations.
 /// </summary>
 public class SimulationMaster : MonoBehaviour
 {
@@ -80,7 +81,7 @@ public class SimulationMaster : MonoBehaviour
         
     }
 
-    public int AmountPeopleDead { get => _amountPeopleDead; set => _amountPeopleDead = value; }
+    public int AmountPeopleDead { get => _amountPeopleDead; }
 
     private void Awake()
     {
@@ -94,16 +95,14 @@ public class SimulationMaster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _infectionStateCounter.Add(Person.InfectionStates.Phase1, 0); //Infected
+        _infectionStateCounter.Add(Person.InfectionStates.Phase1, 0); 
         _infectionStateCounter.Add(Person.InfectionStates.Phase2, 0);
         _infectionStateCounter.Add(Person.InfectionStates.Phase3, 0);
         _infectionStateCounter.Add(Person.InfectionStates.Phase4, 0);
-        _infectionStateCounter.Add(Person.InfectionStates.Phase5, 0); //Recovered
-
-        //TODO rename uninfected to suspicipus or something
-        //TODO GET ALL UNINFECRED
+        _infectionStateCounter.Add(Person.InfectionStates.Phase5, 0); 
         _infectionStateCounter.Add(Person.InfectionStates.Uninfected, 0);
         _infectionStateCounter.Add(Person.InfectionStates.Infectious, 0);
+        _amountPeopleDead = 0;
 
     }
 
@@ -117,8 +116,7 @@ public class SimulationMaster : MonoBehaviour
     /// <summary>
     /// Method which handles the counting of infection states if a state transition happens.
     /// 
-    /// PROBLEM: All phases are counted distinct, apart of phase 1 which is the amount of infected people.
-    /// Continuity is kinda broken in our modelling.
+    /// TO CONSIDER : All phases are counted distinct, apart of phase 1 which is the amount of infected people.
     /// </summary>
     /// <param name="infectionState">The new state after transition.</param>
     public void AddToGlobalCounter(Person.StateTransitionEventArgs eventArgs)
@@ -126,7 +124,7 @@ public class SimulationMaster : MonoBehaviour
         Person.InfectionStates newInfectionState = eventArgs.newInfectionState;
         Person.InfectionStates previousState = eventArgs.previousInfectionState;
 
-        //Handle special case phase 5 -> phase1
+        //Handle special case phase 5 -> phase 1 
         if (previousState == Person.InfectionStates.Phase5 && newInfectionState == Person.InfectionStates.Phase1)
         {
             _infectionStateCounter[Person.InfectionStates.Phase5] -= 1;
@@ -134,22 +132,23 @@ public class SimulationMaster : MonoBehaviour
             return;
         }
 
-        //Handle special case phase 3 -> phase5
+        //Handle special case phase 3 -> phase 5
         if (previousState == Person.InfectionStates.Phase3 && newInfectionState == Person.InfectionStates.Phase5)
         {
             _infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
             _infectionStateCounter[Person.InfectionStates.Phase3] -= 1;
             _infectionStateCounter[Person.InfectionStates.Phase5] += 1;
+            _infectionStateCounter[Person.InfectionStates.Infectious] -= 1;
+            //symptoms-=1
             return;
         }
-
+        //Handles regular phase change
         switch (newInfectionState)
         {
             case Person.InfectionStates.Phase1:
                 _infectionStateCounter[Person.InfectionStates.Phase1] += 1;
-                //Decreasing amount uninfected
-                if(_infectionStateCounter[Person.InfectionStates.Uninfected] > 0)
-                _infectionStateCounter[Person.InfectionStates.Uninfected] -= 1; //susceptible
+                if(_infectionStateCounter[Person.InfectionStates.Uninfected] > 0 && previousState == Person.InfectionStates.Uninfected)
+                _infectionStateCounter[Person.InfectionStates.Uninfected] -= 1; 
                 break;
 
             case Person.InfectionStates.Phase2:
@@ -164,9 +163,6 @@ public class SimulationMaster : MonoBehaviour
                 break;
 
             case Person.InfectionStates.Phase4:
-
-                //_infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
-               // _infectionStateCounter[Person.InfectionStates.Phase2] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase3] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Infectious] -= 1;
                 //symptoms-=1
@@ -175,7 +171,7 @@ public class SimulationMaster : MonoBehaviour
 
 
             case Person.InfectionStates.Phase5:
-                _infectionStateCounter[Person.InfectionStates.Phase1] -= 1; //added
+                _infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase4] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase5] += 1;
                 break;
@@ -195,7 +191,6 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter[Person.InfectionStates.Phase5] = 0;
         _infectionStateCounter[Person.InfectionStates.Infectious] = 0;
         _amountPeopleDead = 0;
-        //_infectionStateCounter[Person.InfectionStates.Uninfected] = ;
         _dayInfoHandler = new DayInfoHandler();
         _currentDayOfSimulation = 0;
 
@@ -208,6 +203,10 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter[Person.InfectionStates.Uninfected] = editorObjectsManager.AmountPeople;
     }
 
+    public int GetAmountAllPeople()
+    {
+        return editorObjectsManager.AmountPeople;
+    }
 
     private void DebugPrintOfCounterValues()
     {

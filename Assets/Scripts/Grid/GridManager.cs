@@ -114,7 +114,7 @@ namespace Grid
         /// returns true if provided gridcell is in _placedPositions
         /// </summary>
         /// <param name="gridcell"></param>
-        /// <returns></returns>
+        /// <returns>true if cell is used, else false</returns>
         public bool IsCellUsed(Vector2Int gridcell)
         {
             if(_placedPositions.Contains(gridcell))

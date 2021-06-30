@@ -15,7 +15,7 @@ namespace Simulation.Runtime
         private bool _willRecoverInHosptal;
         private bool _willGoToIntensiveCare;
         private bool _willDie;
-       
+        private Simulation.Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
         public bool WillDieInIntensiveCare { get => _willDie; set => _willDie = value; }
 
         /// <summary>
@@ -64,15 +64,17 @@ namespace Simulation.Runtime
                 }
             }
         }
-
+        /// <summary>
+        /// Method which mainly handles the case a person recovers in hospital or dies anywhere in the world. 
+        /// </summary>
         public void UpdateHealthState()
         {
 
-            Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+            
             if (_willDie)
             {
                 
-                if (_person.DaysSinceInfection >= (settings.IncubationTime + settings.DaysFromSymptomsBeginToDeath - 1))
+                if (_person.DaysSinceInfection >= (_settings.IncubationTime + _settings.DaysFromSymptomsBeginToDeath - 1))
                 {
                     if (_person.CurrentLocation is Hospital hospital)
                     {
@@ -123,16 +125,12 @@ namespace Simulation.Runtime
                     }
                 }*/
 
-                //We can sum up both cases above since we use Hashsetzs
+                //We can sum up both cases above since we use Hashsets
                 if (_willRecoverInHosptal)
                 {
-                    //In continued released we may use also therefore the settings
-                    int dayAPersonCanLeaveHospital = settings.IncubationTime +
-                                                     DefaultInfectionParameters.HealthPhaseParameters.DurationOfSymtombeginToHospitalization - 1
-                                                     + DefaultInfectionParameters.HealthPhaseParameters.DaysInHospital;
-                                        
+                
 
-                    if (_person.DaysSinceInfection >= dayAPersonCanLeaveHospital)
+                    if (_person.DaysSinceInfection >= _settings.DayAPersonCanLeaveTheHospital)
                     {
                         Hospital hospital = (Hospital)_person.CurrentLocation;
                         hospital.PatientsInRegularBeds.Remove(_person);
@@ -140,13 +138,11 @@ namespace Simulation.Runtime
                         _person.IsInHospital = false;
                         _person.HasRegularBed = false;
                         _person.OnStateTransition(InfectionStates.Phase5, _person.InfectionState);
-                        _person.InfectionState = Person.InfectionStates.Phase5;
+                        _person.InfectionState = InfectionStates.Phase5;
 
                     }
+
                 }
-
-
-
             }
             
         }
@@ -162,8 +158,8 @@ namespace Simulation.Runtime
 
        public bool MustBeInHospital()
         {
-            return (_person.DaysSinceInfection >= DefaultInfectionParameters.HealthPhaseParameters.DayAPersonMustGoToHospital)
-                    && _person.DaysSinceInfection < DefaultInfectionParameters.HealthPhaseParameters.DayAPersonCanLeaveTheHospital;
+            return _person.DaysSinceInfection >= _settings.DayAPersonMustGoToHospital 
+                    && _person.DaysSinceInfection < _settings.DayAPersonCanLeaveTheHospital;
         }
 
         /// <summary>
@@ -172,8 +168,8 @@ namespace Simulation.Runtime
         /// <returns>true if person must be in intensive care, else false</returns>
         public bool MustBeInIntensiveCare()
         {
-            return _person.DaysSinceInfection >= DefaultInfectionParameters.HealthPhaseParameters.DayAPersonMustGoToIntensiveCare
-                 && _person.DaysSinceInfection < DefaultInfectionParameters.HealthPhaseParameters.DayAPersonCanLeaveIntensiveCare
+            return _person.DaysSinceInfection >= _settings.DayAPersonMustGoToIntensiveCare
+                 && _person.DaysSinceInfection < _settings.DayAPersonCanLeaveIntensiveCare
                  &&_willGoToIntensiveCare;
         }
 

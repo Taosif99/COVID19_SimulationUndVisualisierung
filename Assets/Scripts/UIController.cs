@@ -325,4 +325,7 @@ public class UIController : MonoBehaviour
         NotEnoughBedsMessage.SetActive(false);
         NotEnoughIntensiveBedsMessage.SetActive(false);
     }
+
+
+
 }
