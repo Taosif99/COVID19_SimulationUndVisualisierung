@@ -111,9 +111,9 @@ namespace Simulation.Runtime
                     }
 
                     if (member.IsInHospital)
-                        {
+                    {
 
-                        //Check if member can leave intensive care an go to a normal bed
+                        //Check if member can leave intensive care and go to a normal bed
                         if (member.CanLeaveIntensiveCare())
                         {
                             TryAssignPersonToRegularBed(member);
@@ -121,7 +121,7 @@ namespace Simulation.Runtime
                         }
 
                         continue;
-                        }
+                    }
 
 
 
@@ -210,7 +210,7 @@ namespace Simulation.Runtime
                 if (!person.HasRegularBed)
                 {
                     UIController.Instance.NotEnoughBedsMessage.SetActive(true);
-                
+
                 }
 
                 //Handle case if person leaves sensitive bed and gets a normal bed again
@@ -219,7 +219,7 @@ namespace Simulation.Runtime
                     Hospital oldHospital = (Hospital)lastLocation;
                     oldHospital.PatientsInIntensiveCareBeds.Remove(person);
                     person.IsInIntensiveCare = false;
-                
+
                 }
 
 
@@ -263,7 +263,7 @@ namespace Simulation.Runtime
             }
             //Assign a free intensive care bed in our simulation world, if this fails we have to assign a regular bed (again)
             Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
-           
+
             if (hospitals != null && hospitals.Length > 0)
             {
                 int amountHospitals = hospitals.Length;
