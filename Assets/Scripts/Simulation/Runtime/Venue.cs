@@ -29,13 +29,15 @@ namespace Simulation.Runtime
 
                 foreach (Person i in _currentPeopleAtVenue)
                 {
-                    if (!i.InfectionState.HasFlag(Person.InfectionStates.Infectious) || p.IsInHospital)
+                    if (!i.InfectionState.HasFlag(Person.InfectionStates.Infectious) || p.IsInHospitalization)
                     {
                         continue;
                     }
 
                     float infectionProbability = InfectionRisk * (1 - (p.CarefulnessFactor + i.CarefulnessFactor) / 2) * GeneralInfectionProbabilityFactor;
                     
+                   
+
                     Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
 
                     if (Random.Range(0f, 1f) <= infectionProbability)
