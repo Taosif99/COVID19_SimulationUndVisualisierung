@@ -74,6 +74,11 @@ namespace Simulation.Runtime
             PreIllness
         }
 
+        public void SetReInfectionRisk()
+        {
+            _risk = Simulation.DefaultInfectionParameters.InfectionPhaseParameters.ReinfectionRisk;
+        }
+
         public bool HasActivityAt(DateTime dateTime) => GetActivityAt(dateTime) != null;
 
         public bool TryGetActivityAt(DateTime dateTime, out Activity activity)
@@ -194,10 +199,8 @@ namespace Simulation.Runtime
 
                                 //Here we may update the infection risk if person recovers
                                 _infectionDate = new DateTime(); //restore undefined infection date
-
-                             
-
-
+                                SetReInfectionRisk();
+                                _healthState = new HealthState(this);
                             }
 
                             break;

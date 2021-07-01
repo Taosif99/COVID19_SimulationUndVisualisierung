@@ -7,7 +7,8 @@ namespace Simulation
         /// The average values are taken from:
         /// <see cref="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile"/>
         /// <see cref="https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/"/>
-        /// 
+        /// <see cref=" https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html"/>
+        /// <see cref="https://academic.oup.com/cid/advance-article/doi/10.1093/cid/ciaa1846/6033728"/>
         /// 
         /// The assumption is made, that EndDaySymptoms is >= endDayInfectious
         /// 
@@ -56,7 +57,10 @@ namespace Simulation
             /// </summary>
             public const int EndDaySymptoms = IncubationTime + AmountDaysSymptoms - 1;
 
-
+            /// <summary>
+            ///  The probability of becoming infected again after the first infection.
+            /// </summary>
+            public const float ReinfectionRisk = 0.02f;
         }
 
   
