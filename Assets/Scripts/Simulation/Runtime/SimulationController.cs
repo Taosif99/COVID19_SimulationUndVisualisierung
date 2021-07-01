@@ -110,7 +110,7 @@ namespace Simulation.Runtime
                         TryAssignPersonToIntensiveBed(member);
                     }
 
-                    if (member.IsInHospital)
+                    if (member.IsInHospitalization)
                     {
 
                         //Check if member can leave intensive care and go to a normal bed
@@ -194,7 +194,7 @@ namespace Simulation.Runtime
                 }
                 else
                 {
-                    Debug.Log("No more placees in this hospital, try next hospitals");
+                   // Debug.Log("No more placees in this hospital, try next hospitals");
                     for (int i = 0; i < amountHospitals; i++)
                     {
                         if (hospitals[i].PatientsInRegularBeds.Count < hospitals[i].AmountRegularBeds)
@@ -238,9 +238,9 @@ namespace Simulation.Runtime
         {
             hospital.PatientsInRegularBeds.Add(person);
             hospital.MovePersonHere(person);
-            person.IsInHospital = true;
+            person.IsInHospitalization = true;
             person.HasRegularBed = true;
-            DebugHospitalPatients(hospital);
+            //DebugHospitalPatients(hospital);
         }
 
         /// Method which tries to assign an intensive care bed to a person.
@@ -310,10 +310,9 @@ namespace Simulation.Runtime
             }
             hospital.PatientsInIntensiveCareBeds.Add(person);
             hospital.MovePersonHere(person);
-            person.IsInHospital = true;
+            person.IsInHospitalization = true;
             person.IsInIntensiveCare = true;
-            //person.HasIntensiveCareBed = true;
-            DebugHospitalPatients(hospital);
+          //  DebugHospitalPatients(hospital);
         }
 
     }

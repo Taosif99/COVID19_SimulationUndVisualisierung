@@ -14,12 +14,13 @@ namespace Simulation
         /// -->   IncubationTime + AmountDaysSymptoms - 1  >=LatencyTime + AmountDaysInfectious - 1
         ///         IncubationTime + AmountDaysSymptoms   >=LatencyTime + AmountDaysInfectious 
         ///             
+        ///         EndDaySymptoms >= EndDayInfectious
         ///          Must be verified !
         /// 
-        /// We count the first day =1, second day = 2,...
+        /// 
         /// 
         /// </summary>
-        public static class InfectionsPhaseParameters
+        public static class InfectionPhaseParameters
         {
 
             /// <summary>
@@ -58,9 +59,7 @@ namespace Simulation
 
         }
 
-        /// <summary>
-        /// TODO USE IN HOSPITAL
-        /// </summary>
+  
         public static class HealthPhaseParameters
         {
 
@@ -97,9 +96,11 @@ namespace Simulation
             /// </summary>
             public const int DaysFromSymptomsBeginToDeath = 15;
 
-            //TODO ADD TO SETTINGS IN UI EVENTUALLY
 
-            //Days in intensive care must be a subset of days in hospital !!! (Our Assumption)
+            public const int DeathDay = InfectionPhaseParameters.IncubationTime + DaysFromSymptomsBeginToDeath - 1;
+
+
+            //Days in intensive care must be a subset of days in hospital (hospitalization) !!! (Our Assumption)
 
             //Hospital
 
@@ -109,15 +110,17 @@ namespace Simulation
             /// </summary>
             public const int DaysInHospital = 14;
 
+
+           
             /// <summary>
             /// Amount days from symptoms beginn to transferring a person to a hospital
             /// </summary>
             public const int DurationOfSymtombeginToHospitalization = 4;
 
             /// <summary>
-            /// The day a person must go to the hospital.
+            /// The day a person must go to the hospital.  (Must be smaller than end day symptoms ! and greater  incubation time)
             /// </summary>
-            public const int DayAPersonMustGoToHospital = InfectionsPhaseParameters.IncubationTime + DurationOfSymtombeginToHospitalization - 1;
+            public const int DayAPersonMustGoToHospital = InfectionPhaseParameters.IncubationTime + DurationOfSymtombeginToHospitalization - 1;
 
             /// <summary>
             /// The first day a person can leave the hospital
@@ -137,12 +140,12 @@ namespace Simulation
             public const int DurationOfHospitalizationToIntensiveCare = 1;
 
             /// <summary>
-            /// The day a person must go to the intensive care.
+            /// The day a person must go to the intensive care. (must be greater day a person must go to hospital and smaller day a person can leave the hospital)
             /// </summary>
             public const int DayAPersonMustGoToIntensiveCare = DayAPersonMustGoToHospital + DurationOfHospitalizationToIntensiveCare;
 
             /// <summary>
-            /// The day a person can leave the intensive care.
+            /// The day a person can leave the intensive care. (must be smaller a person can leave the hospital)
             /// </summary>
             public const int DayAPersonCanLeaveIntensiveCare = DayAPersonMustGoToIntensiveCare + DaysInIntensiveCare;
 
@@ -155,7 +158,7 @@ namespace Simulation
             /// <see cref="https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html"/>
             /// 
             /// </summary>
-            public const float InfectionRiskIfRecovered = 0.02f;
+            public const float InfectionRiskIfRecovered = 0.0002f;
         }
 
     }

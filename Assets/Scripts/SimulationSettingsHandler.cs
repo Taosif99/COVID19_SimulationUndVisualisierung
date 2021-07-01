@@ -1,24 +1,29 @@
 using UnityEngine;
 using InputValidation;
-
-
+using Simulation.Edit;
+using DialogBoxSystem;
+/// <summary>
+/// Class which implemenets the functionality to adjust simulation settings
+/// </summary>
 public class SimulationSettingsHandler : MonoBehaviour
 {
 
 
     public GameObject SimulationSettingsGameObject;
+    private bool _saveLock = false;
+
 
     public void LoadSettings()
     {
         SimulationSettingsGameObject.SetActive(true);
 
         Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation;
-        Simulation.Edit.AdjustableSimulationSettings settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
+        AdjustableSimulationSettings settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
 
         //Case to fix old broken saves, TODO REMOVE IN NEWER VERSIONS
         if (settings == null)
         {
-            simulation.SimulationOptions.AdjustableSimulationPrameters = new Simulation.Edit.AdjustableSimulationSettings();
+            simulation.SimulationOptions.AdjustableSimulationPrameters = new AdjustableSimulationSettings();
             settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
             Debug.Log("Repair old save");
         }
@@ -39,10 +44,10 @@ public class SimulationSettingsHandler : MonoBehaviour
 
 
         Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation;
-        Simulation.Edit.AdjustableSimulationSettings currentSettings = simulation.SimulationOptions.AdjustableSimulationPrameters;
+        AdjustableSimulationSettings currentSettings = simulation.SimulationOptions.AdjustableSimulationPrameters;
 
-        Simulation.Edit.AdjustableSimulationSettings defaultSettings = new Simulation.Edit.AdjustableSimulationSettings();
-
+        AdjustableSimulationSettings defaultSettings = new AdjustableSimulationSettings();
+        AdjustableSimulationSettings settingsToSet = new AdjustableSimulationSettings();
 
         int latencyTime = defaultSettings.LatencyTime;
         int amountDaysInfectious = defaultSettings.AmountDaysInfectious;
@@ -54,34 +59,72 @@ public class SimulationSettingsHandler : MonoBehaviour
         float personSurvivesIntensiveCareProbability = defaultSettings.PersonSurvivesIntensiveCareProbability;
         int daysFromSymptomsBeginToDeath = defaultSettings.DaysFromSymptomsBeginToDeath;
 
+        int daysInHospital = defaultSettings.DaysInHospital;
+        int durationOfSymptomsbeginToHospitalization = defaultSettings.DurationOfSymtombeginToHospitalization;
+        int daysInIntensiveCare = defaultSettings.DaysInIntensiveCare;
+        int durationOfHospitalizationToIntensiveCare = defaultSettings.DurationOfHospitalizationToIntensiveCare;
 
         bool infectionPhaseParametersAreValid = InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms);
         bool healthPhaseParametersAreValid = InputValidator.ValidateHealthPhaseParameters(ref recoveringProbability, ref recoveringInHospitalProbability, ref personSurvivesIntensiveCareProbability, ref daysFromSymptomsBeginToDeath);
+        bool hospitalParametersAreValid = InputValidator.ValidateHospitalParameters(ref daysInHospital, ref durationOfSymptomsbeginToHospitalization, ref daysInIntensiveCare, ref durationOfHospitalizationToIntensiveCare);
+        
 
-        if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid)
+        if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid && hospitalParametersAreValid)
         {
-            currentSettings.LatencyTime = latencyTime;
-            currentSettings.AmountDaysInfectious = amountDaysInfectious;
-            currentSettings.IncubationTime = incubationTime;
-            currentSettings.AmountDaysSymptoms = amountDaysSymptoms;
-            currentSettings.RecoveringProbability = recoveringProbability;
-            currentSettings.RecoveringInHospitalProbability = recoveringInHospitalProbability;
-            currentSettings.PersonSurvivesIntensiveCareProbability = personSurvivesIntensiveCareProbability;
-            currentSettings.DaysFromSymptomsBeginToDeath = daysFromSymptomsBeginToDeath;
+
+            settingsToSet.LatencyTime = latencyTime;
+            settingsToSet.AmountDaysInfectious = amountDaysInfectious;
+            settingsToSet.IncubationTime = incubationTime;
+            settingsToSet.AmountDaysSymptoms = amountDaysSymptoms;
+            settingsToSet.RecoveringProbability = recoveringProbability;
+            settingsToSet.RecoveringInHospitalProbability = recoveringInHospitalProbability;
+            settingsToSet.PersonSurvivesIntensiveCareProbability = personSurvivesIntensiveCareProbability;
+            settingsToSet.DaysFromSymptomsBeginToDeath = daysFromSymptomsBeginToDeath;
+
+
+
+
+            settingsToSet.DaysInHospital = daysInHospital;
+            settingsToSet.DurationOfSymtombeginToHospitalization = durationOfSymptomsbeginToHospitalization;
+            settingsToSet.DaysInIntensiveCare = daysInIntensiveCare;
+            settingsToSet.DurationOfHospitalizationToIntensiveCare = durationOfHospitalizationToIntensiveCare;
+
+            if (settingsToSet.RangesAreValid())
+            {
+                simulation.SimulationOptions.AdjustableSimulationPrameters = settingsToSet;
+
+            }
+            else if(!_saveLock)
+            {
+                Debug.Log("Wrong ranges!");
+                string msg = "Change not  saved! Please make sure that the ranges are correct (see tooltips)";
+                string name = "Wrong ranges!";
+                DialogBox dialogBox = new DialogBox(name, msg);
+                dialogBox.OnConfirmationPressed += () =>
+                {
+                    DisplaySettings(currentSettings);
+                };
+                dialogBox.HasCancelButon = false;
+                DialogBoxManager.Instance.HandleDialogBox(dialogBox);
+            }
+
+
         }
     }
 
 
     public void ResetDefaultSettings()
     {
+        _saveLock = true;
         Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation;
-        Simulation.Edit.AdjustableSimulationSettings settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
-        settings = new Simulation.Edit.AdjustableSimulationSettings();
+        AdjustableSimulationSettings settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
+        settings = new AdjustableSimulationSettings();
         DisplaySettings(settings);
+        _saveLock = false;
     }
 
 
-    private void DisplaySettings(Simulation.Edit.AdjustableSimulationSettings settings)
+    private void DisplaySettings(AdjustableSimulationSettings settings)
     {
         UIController.Instance.LatencyInputField.text = settings.LatencyTime.ToString();
         UIController.Instance.AmountDaysInfectiousInputField.text = settings.AmountDaysInfectious.ToString();
@@ -91,6 +134,10 @@ public class SimulationSettingsHandler : MonoBehaviour
         UIController.Instance.RecoverInHospitalInputField.text = settings.RecoveringInHospitalProbability.ToString();
         UIController.Instance.SurviveIntensiveCareInputField.text = settings.PersonSurvivesIntensiveCareProbability.ToString();
         UIController.Instance.AmountDaysToDeathInputField.text = settings.DaysFromSymptomsBeginToDeath.ToString();
-    }
+        UIController.Instance.DaysInHosputalInputField.text = settings.DaysInHospital.ToString();
+        UIController.Instance.DaysSymptomsBeginToHospitalizationInputField.text = settings.DurationOfSymtombeginToHospitalization.ToString();
+        UIController.Instance.DaysIntensiveCareInputField.text = settings.DaysInIntensiveCare.ToString();
+        UIController.Instance.DaysRegularToIntensiveInputField.text = settings.DurationOfHospitalizationToIntensiveCare.ToString();
+}
 
 }

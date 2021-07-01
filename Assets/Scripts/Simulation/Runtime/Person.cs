@@ -17,7 +17,7 @@ namespace Simulation.Runtime
         private HealthState _healthState;
 
         private bool _isDead = false;
-        private bool _isInHospital = false;
+        private bool _isInHospitalization = false;
         private bool _isInIntensiveCare = false;
         private bool _hasRegularBed = false;
     
@@ -38,7 +38,7 @@ namespace Simulation.Runtime
         public Venue CurrentLocation { get; set; }
         public bool IsDead { get => _isDead; set => _isDead = value; }
         public double DaysSinceInfection { get => _daysSinceInfection; set => _daysSinceInfection = value; }
-        public bool IsInHospital { get => _isInHospital; set => _isInHospital = value; }
+        public bool IsInHospitalization { get => _isInHospitalization; set => _isInHospitalization = value; }
         public bool IsInIntensiveCare { get => _isInIntensiveCare; set => _isInIntensiveCare = value; }
         public bool HasRegularBed { get => _hasRegularBed; set => _hasRegularBed = value; }
 
@@ -53,7 +53,7 @@ namespace Simulation.Runtime
         [Flags]
         public enum InfectionStates
         {
-            Uninfected = 0, //susceptible
+            Uninfected = 0, //susceptible TODO RENAME
             Infected = 1,
             Infectious = 2,
             Symptoms = 4,
@@ -126,7 +126,7 @@ namespace Simulation.Runtime
                 Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
                 InfectionStates previousState = InfectionState;
 
-                if (IsInHospital) return; //Hospital case is handled in healthState
+                if (IsInHospitalization) return; //Hospital case is handled in healthState
 
                 switch (InfectionState)
                 {
@@ -160,7 +160,7 @@ namespace Simulation.Runtime
                             //If person will die and no hospital is free
                             //person will die "regularly" at home instead
                             //Here one may handle phases of dying
-                            if (_healthState.WillDieInIntensiveCare)
+                            if (_healthState.WillDie)
                             {
                                 return;
                             }
@@ -234,7 +234,7 @@ namespace Simulation.Runtime
         /// <returns>true if person must be tranferred to a hospital, else false</returns>
         public bool MustBeTransferredToHospital()
         {
-            return (!IsInHospital && _healthState.MustBeInHospital());
+            return (!IsInHospitalization && _healthState.MustBeInHospital());
 
         }
 
@@ -244,14 +244,14 @@ namespace Simulation.Runtime
         /// <returns>true if person must be tranferred to intensive care, else false</returns>
         public bool MustBeTransferredToIntensiveCare()
         {
-            return (!IsInIntensiveCare && _healthState.MustBeInIntensiveCare());
+            return (!_isInIntensiveCare && _healthState.MustBeInIntensiveCare());
         }
 
 
         public bool CanLeaveIntensiveCare()
         {
 
-            return IsInIntensiveCare && !_healthState.MustBeInIntensiveCare();
+            return _isInIntensiveCare && !_healthState.MustBeInIntensiveCare();
         
         }
 
