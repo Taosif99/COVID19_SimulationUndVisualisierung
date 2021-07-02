@@ -51,7 +51,7 @@ namespace Grid
             //If the simulation is running, skip the code to ensure that GO's are not editable while runtime
             if (SimulationController.Instance.WasStarted == true)
             {
-                UIController.Instance.SetEntityPropertiesVisible(false);
+                UIController.Instance.SetEntityPropertiesPanelVisible(false);
                 return; 
             }
 
@@ -64,7 +64,7 @@ namespace Grid
                 //Check if we hit something
                 if (!Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _groundMask))
                 {
-                    UIController.Instance.SetEntityPropertiesVisible(false);
+                    UIController.Instance.SetEntityPropertiesPanelVisible(false);
                     return;
                 }
                 
@@ -78,7 +78,7 @@ namespace Grid
                 }
                 else
                 {
-                    UIController.Instance.SetEntityPropertiesVisible(false);
+                    UIController.Instance.SetEntityPropertiesPanelVisible(false);
                 }
             }
         }

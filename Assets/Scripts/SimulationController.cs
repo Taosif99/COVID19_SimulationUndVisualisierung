@@ -81,6 +81,7 @@ class SimulationController : MonoBehaviour
             SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
             SimulationMaster.Instance.PlayDate = DateTime.Now;
             GlobalSimulationGraph.Instance.AmountHorizontalLineUpdater();
+            UIController.Instance.SetEntitiesPanelVisible(false);
 
             _isInitialized = true;
         }
@@ -142,6 +143,7 @@ class SimulationController : MonoBehaviour
             SimulationMaster.Instance.Reset();
             GlobalSimulationGraph.Instance.Reset();
             UIController.Instance.DisableBedMessages();
+            UIController.Instance.SetEntitiesPanelVisible(true);
             StopAllCoroutines();
         }
     }

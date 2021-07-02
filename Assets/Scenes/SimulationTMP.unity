@@ -30452,6 +30452,7 @@ MonoBehaviour:
   - {fileID: 697823805}
   - {fileID: 1399270295}
   _entityPropertiesPanel: {fileID: 615847773}
+  _entitiesPanel: {fileID: 1243824800}
   VenueUI: {fileID: 2134757431}
   HouseholdUI: {fileID: 1285273493}
   WorkplaceUI: {fileID: 1909716065}

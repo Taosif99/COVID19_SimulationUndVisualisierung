@@ -19,7 +19,6 @@ public class UIController : MonoBehaviour
     public GameObject NotEnoughBedsMessage;
     public GameObject NotEnoughIntensiveBedsMessage;
 
-    
     [Header("placement button")]
     public Button PlaceWorkplaceButton, PlaceHospitalButton, PlaceHouseholdButton, PlaceGraphButton;
     //Color to indicate which button is clicked
@@ -40,7 +39,6 @@ public class UIController : MonoBehaviour
     public Toggle BarChartToggle;
     public Toggle LineChartToggle;
 
-
     public static UIController Instance;
 
     [Header("To disable workplace type at hospital")]
@@ -49,7 +47,6 @@ public class UIController : MonoBehaviour
 
     //GameObject groups of editor object UI elements
     [Header("Right Image UI children")]
-
 
     public TMP_Text RValueText;
     public TMP_Text RValue7Text;
@@ -67,11 +64,15 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private RectTransform _entityPropertiesPanel;
 
+    //Right Image UI Elements
+    [Header("Right Image UI children")]
+    [SerializeField]
+    private RectTransform _entitiesPanel;
+
     public GameObject VenueUI;
     public GameObject HouseholdUI;
     public GameObject WorkplaceUI;
     public GameObject HospitalUI;
-
 
     //Venue elements
     public TMP_InputField InfectionRiskInputField; 
@@ -155,7 +156,7 @@ public class UIController : MonoBehaviour
         // TODO: Remove
         PlaceGraphButton.onClick.AddListener(() =>
         {
-            SetEntityPropertiesVisible(true);
+            SetEntityPropertiesPanelVisible(true);
             
             DisableButtonOutlineColors();
             ModifyOutlineColor(PlaceGraphButton);
@@ -251,7 +252,6 @@ public class UIController : MonoBehaviour
         SimulationGraphEnabler.DisableGraphSettings();
     }
 
-
     //Methods for loading right properties
     public void LoadWorkplaceUI()
     {
@@ -285,9 +285,18 @@ public class UIController : MonoBehaviour
     /// Set whether or not the entity properties should be visible.
     /// </summary>
     /// <param name="isVisible">True to show the entity properties, false to hide them</param>
-    public void SetEntityPropertiesVisible(bool isVisible)
+    public void SetEntityPropertiesPanelVisible(bool isVisible)
     {
         _entityPropertiesPanel.gameObject.SetActive(isVisible);
+    }
+
+    /// <summary>
+    /// Set whether or not the entities panel should be visible.
+    /// </summary>
+    /// <param name="isVisible"></param>
+    public void SetEntitiesPanelVisible(bool isVisible)
+    {
+        _entitiesPanel.gameObject.SetActive(isVisible);  
     }
  
     public void OnEpidemicInfoToggleChange()
@@ -298,10 +307,8 @@ public class UIController : MonoBehaviour
         RValueGameObject.SetActive(EpidemicInfoToggle.isOn);
         RValue7GameObject.SetActive(EpidemicInfoToggle.isOn);
         IncidenceGameObject.SetActive(EpidemicInfoToggle.isOn);
-    
     }
     
-
     /// <summary>
     /// Method to add on change listeners for better usability.
     /// </summary>
@@ -325,7 +332,4 @@ public class UIController : MonoBehaviour
         NotEnoughBedsMessage.SetActive(false);
         NotEnoughIntensiveBedsMessage.SetActive(false);
     }
-
-
-
 }

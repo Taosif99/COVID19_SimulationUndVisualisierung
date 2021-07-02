@@ -84,7 +84,7 @@ namespace EditorObjects
         {
             _saveLock = true;
             UIController.Instance.DisableLeftGraphUI();
-            UIController.Instance.SetEntityPropertiesVisible(true);
+            UIController.Instance.SetEntityPropertiesPanelVisible(true);
             
             GridCell gridCell = new GridCell(gridCellPosition.x, gridCellPosition.y);
             IEditorObject editorObject = _editorObjects[gridCell];
@@ -226,7 +226,7 @@ namespace EditorObjects
                     Destroy(gameObject);
                     _editorObjects.Remove(CurrentSelectedEntity.Position);
                     CurrentSelectedEntity = null;
-                    UIController.Instance.SetEntityPropertiesVisible(false);
+                    UIController.Instance.SetEntityPropertiesPanelVisible(false);
                 }
             }
         }
@@ -267,7 +267,7 @@ namespace EditorObjects
 
                 newEditorObjects[position] = reloadedEditorObject;
             }
-            UIController.Instance.SetEntityPropertiesVisible(false);
+            UIController.Instance.SetEntityPropertiesPanelVisible(false);
             _editorObjects = newEditorObjects;
         }
         

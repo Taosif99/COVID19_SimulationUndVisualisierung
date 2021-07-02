@@ -99,7 +99,6 @@ namespace Simulation.Runtime
 
                 //foreach (Person member in household.Members)
                 for(int memberIndex = 0; memberIndex < household.Members.Length; memberIndex++)
-                
                 {
                     Person member = household.Members[memberIndex];
 
@@ -107,8 +106,6 @@ namespace Simulation.Runtime
 
                     member.UpdateInfectionState(SimulationDate);
                     member.UpdateHealthState();
-
-
 
                     //Hospital logic
                     if (member.MustBeTransferredToHospital())
@@ -136,8 +133,6 @@ namespace Simulation.Runtime
 
                         continue;
                     }
-
-
 
                     //Infectious persons stay at home
                     if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
@@ -219,8 +214,6 @@ namespace Simulation.Runtime
                     }
                 }
 
-       
-
                 //Handle case if person leaves sensitive bed and gets a normal bed again
                 if (person.IsInIntensiveCare && person.HasRegularBed)
                 {
@@ -229,7 +222,6 @@ namespace Simulation.Runtime
                     person.IsInIntensiveCare = false;
 
                 }
-
 
                 _hospitalRegularBedAssignmentsCounter++;
             }
