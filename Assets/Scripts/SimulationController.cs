@@ -137,6 +137,7 @@ class SimulationController : MonoBehaviour
             GlobalSimulationGraph.Instance.Reset();
             UIController.Instance.DisableBedMessages();
             StopAllCoroutines();
+            _forwardProgressSliderGameObject.SetActive(false);
         }
     }
 

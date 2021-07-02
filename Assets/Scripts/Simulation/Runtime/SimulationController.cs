@@ -115,6 +115,7 @@ namespace Simulation.Runtime
                     if (member.MustBeTransferredToHospital())
                     {
                         TryAssignPersonToRegularBed(member);
+                       
                     }
 
                     //Know checking if person must go to intensive care
@@ -123,6 +124,7 @@ namespace Simulation.Runtime
                     if (member.MustBeTransferredToIntensiveCare())
                     {
                         TryAssignPersonToIntensiveBed(member);
+                        
                     }
 
                     if (member.IsInHospitalization)
@@ -220,19 +222,23 @@ namespace Simulation.Runtime
                     }
                 }
 
-       
+
 
                 //Handle case if person leaves sensitive bed and gets a normal bed again
                 if (person.IsInIntensiveCare && person.HasRegularBed)
                 {
-                    Hospital oldHospital = (Hospital)lastLocation;
-                    oldHospital.PatientsInIntensiveCareBeds.Remove(person);
-                    person.IsInIntensiveCare = false;
+                    if (lastLocation is Hospital)
+                    {
+                        Hospital oldHospital = (Hospital)lastLocation;
+                        oldHospital.PatientsInIntensiveCareBeds.Remove(person);
+                        person.IsInIntensiveCare = false;
 
+                    }
+                    
                 }
+                
 
-
-                _hospitalRegularBedAssignmentsCounter++;
+                    _hospitalRegularBedAssignmentsCounter++;
             }
 
             //At this point we may check if a person is in hospital,if yes the probabilities stay the same, else reduce atleast survive probability
@@ -293,7 +299,7 @@ namespace Simulation.Runtime
                 }
                 else
                 {
-                    Debug.Log("No more placees in this hospital, try next hospitals");
+                    //Debug.Log("No more placees in this hospital, try next hospitals");
                     // if round robin fails, try search for a free hospital place linearly
                     for (int i = 0; i < amountHospitals; i++)
                     {
@@ -304,7 +310,6 @@ namespace Simulation.Runtime
                         }
                     }
                 }
-
 
                 _hospitalRegularBedAssignmentsCounter++;
             }
@@ -325,13 +330,14 @@ namespace Simulation.Runtime
             if (oldHospital != null)
             {
                 oldHospital.PatientsInRegularBeds.Remove(person);
-                person.HasRegularBed = false;
+               
             }
             hospital.PatientsInIntensiveCareBeds.Add(person);
             hospital.MovePersonHere(person);
             person.IsInHospitalization = true;
             person.IsInIntensiveCare = true;
-          //  DebugHospitalPatients(hospital);
+            person.HasRegularBed = false;
+            //  DebugHospitalPatients(hospital);
         }
 
     }
