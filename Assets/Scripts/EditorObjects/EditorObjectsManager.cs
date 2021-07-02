@@ -138,7 +138,7 @@ namespace EditorObjects
 
         /// <summary>
         /// 
-        /// Method which saves changes  to editor
+        /// Method which saves changes to editor
         /// objects. The enums are parsed with the Enum.Parse()
         /// method which may cause an exception if something goes wrong.
         /// This case can only apply if the possible dropdown values are configured wrong.

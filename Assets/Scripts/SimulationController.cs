@@ -9,7 +9,7 @@ using UnityEngine.Assertions;
 using GraphChart;
 using System;
 using UnityEngine.UI;
-
+using System.Collections.Generic;
 
 class SimulationController : MonoBehaviour
 {
@@ -29,6 +29,8 @@ class SimulationController : MonoBehaviour
     private event Action<bool> _onDayPassed; //TODO PROPER EVENT
 
     private bool _isInitialized = false;
+    //for accessing from outside
+    public bool WasStarted => _isInitialized;
     private bool _isPaused = false;
 
     private Simulation.Runtime.SimulationController _controller;
@@ -37,7 +39,6 @@ class SimulationController : MonoBehaviour
     private bool IsRunning => _isInitialized && _isPaused == false;
     private int _defaultAmountDaysToForward = 1;
 
-    
     private float _forwardingProgress;
     [SerializeField]
     private Slider _forwardProgressSlider;
@@ -51,8 +52,13 @@ class SimulationController : MonoBehaviour
     [SerializeField]
     private TMP_InputField _forwardInputField;
 
+    //Singleton
+    public static SimulationController Instance { get; private set; }
+
     private void Awake()
     {
+        Assert.IsNull(Instance);
+        Instance = this;
         Assert.IsNotNull(_editorObjectsManager);
         Assert.IsNotNull(_simulationDateTime);
         _onDayPassed += GlobalSimulationGraph.Instance.UpdateValuesAndShowGraphs;
@@ -75,6 +81,7 @@ class SimulationController : MonoBehaviour
             SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
             SimulationMaster.Instance.PlayDate = DateTime.Now;
             GlobalSimulationGraph.Instance.AmountHorizontalLineUpdater();
+
             _isInitialized = true;
         }
         else if (_isPaused == true)
@@ -110,7 +117,6 @@ class SimulationController : MonoBehaviour
 
     }
 
-
     public void Pause()
     {
         if (!IsRunning)
@@ -140,8 +146,6 @@ class SimulationController : MonoBehaviour
         }
     }
 
-
-
     public void ForwardSimulation()
     {
         if (!IsRunning)
@@ -165,8 +169,6 @@ class SimulationController : MonoBehaviour
         
     }
 
-
-
     public void InfectRandomPerson()
     {
         if (!IsRunning)
@@ -177,7 +179,6 @@ class SimulationController : MonoBehaviour
         _controller.InfectRandomPerson();
         _virusButton.interactable = false;
     }
-
 
     //TODO REMOVE
     public void ForwardSimulationBlocking()
@@ -193,7 +194,6 @@ class SimulationController : MonoBehaviour
         }
         OnDayChanges();
     }
-
 
     /// <summary>
     /// Using a coroutine to avoiding program lagging if many days are forwarded spammed.
@@ -230,7 +230,6 @@ class SimulationController : MonoBehaviour
         _forwardButton.interactable = true;
     }
 
-
     private void OnDayChanges()
     {
         _currentDay = _controller.SimulationDate.Day;
@@ -246,5 +245,4 @@ class SimulationController : MonoBehaviour
         _currentMonth = _controller.SimulationDate.Month;
         //TODO SET UP MULTILINEGRAPH TO UPDATE EVENTUALLY
     }
-
 }

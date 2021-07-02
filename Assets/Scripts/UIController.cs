@@ -125,8 +125,6 @@ public class UIController : MonoBehaviour
         //Adding listeners to left UI
         AddOnChangeListenersToLeftUI();
 
-
-
         buttonList = new List<Button>
         {
             PlaceWorkplaceButton,
@@ -282,7 +280,6 @@ public class UIController : MonoBehaviour
         WorkplaceUI.SetActive(false);
         HospitalUI.SetActive(false);
     }
-
 
     /// <summary>
     /// Set whether or not the entity properties should be visible.

@@ -17,7 +17,6 @@ namespace Simulation.Runtime
 
         private const double SimulationStepsMinutes = 10;
 
-
         private Entity[] _entities;
         private Venue[] _venues;
         private Household[] _households;
@@ -333,6 +332,5 @@ namespace Simulation.Runtime
             person.IsInIntensiveCare = true;
           //  DebugHospitalPatients(hospital);
         }
-
     }
 }
