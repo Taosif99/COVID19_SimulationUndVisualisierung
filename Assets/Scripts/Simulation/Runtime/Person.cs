@@ -76,7 +76,7 @@ namespace Simulation.Runtime
 
         public void SetReInfectionRisk()
         {
-            _risk = Simulation.DefaultInfectionParameters.InfectionPhaseParameters.ReinfectionRisk;
+            _risk = Simulation.DefaultInfectionParameters.HealthPhaseParameters.InfectionRiskIfRecovered;
         }
 
         public bool HasActivityAt(DateTime dateTime) => GetActivityAt(dateTime) != null;

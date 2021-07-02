@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using EditorObjects;
 using RuntimeObjects;
@@ -36,7 +35,7 @@ class SimulationController : MonoBehaviour
     private float _lastSimulationUpdate;
 
     private bool IsRunning => _isInitialized && _isPaused == false;
-    private int _amountDaysToForward = 100;
+    private int _defaultAmountDaysToForward = 1;
 
     
     private float _forwardingProgress;
@@ -49,6 +48,8 @@ class SimulationController : MonoBehaviour
     private Button _forwardButton;
     [SerializeField]
     private TMP_Text _forwardProgressText;
+    [SerializeField]
+    private TMP_InputField _forwardInputField;
 
     private void Awake()
     {
@@ -150,17 +151,17 @@ class SimulationController : MonoBehaviour
 
         _forwardButton.interactable = false;
 
-        if (_amountDaysToForward > 0)
+        int amountDaysToForward;
+        bool forwardInputOk = int.TryParse(_forwardInputField.text, out amountDaysToForward);
+        if (!forwardInputOk) amountDaysToForward = _defaultAmountDaysToForward;         
+        
+
+        if (amountDaysToForward > 0)
         {
             _forwardProgressSliderGameObject.SetActive(true);
         }
-        else
-        {
-            _forwardProgressSliderGameObject.SetActive(false);
-        }
-
-        StartCoroutine(ForwardSimulationRoutine()); //This is lame
-        // ForwardSimulationBlocking(); //This is blocking
+        StartCoroutine(ForwardSimulationRoutine(amountDaysToForward)); //This is lame
+        // ForwardSimulationBlocking(); //This is blocking which worse
         
     }
 
@@ -198,13 +199,12 @@ class SimulationController : MonoBehaviour
     /// Using a coroutine to avoiding program lagging if many days are forwarded spammed.
     /// </summary>
     /// 
-    private IEnumerator ForwardSimulationRoutine()
+    private IEnumerator ForwardSimulationRoutine(int amountDaysToForward)
     {
         _forwardingProgress = 0f;
         Pause();
         SimulationMaster.Instance.IsForwardingSimulation = true;
-
-        for (int i = 1; i <= _amountDaysToForward; i++)
+        for (int i = 1; i <= amountDaysToForward; i++)
         {
             while (_currentDay == _controller.SimulationDate.Day)
             {
@@ -219,9 +219,9 @@ class SimulationController : MonoBehaviour
                 OnMonthChanges();
             }
 
-            _forwardingProgress = i /(float)_amountDaysToForward ;
+            _forwardingProgress = i /(float)amountDaysToForward ;
             _forwardProgressSlider.value = _forwardingProgress;
-            _forwardProgressText.SetText((_forwardingProgress * 100).ToString() + "%");
+            _forwardProgressText.SetText((_forwardingProgress * 100).ToString("00.00") + "%");
         }
         
         SimulationMaster.Instance.IsForwardingSimulation = false;
@@ -244,7 +244,7 @@ class SimulationController : MonoBehaviour
     private void OnMonthChanges()
     {
         _currentMonth = _controller.SimulationDate.Month;
-        //TODO SET UP MULTILINEGRAPH TO UPDATE
+        //TODO SET UP MULTILINEGRAPH TO UPDATE EVENTUALLY
     }
 
 }

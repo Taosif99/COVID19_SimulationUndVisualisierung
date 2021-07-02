@@ -249,7 +249,7 @@ namespace InputValidation
         /// </summary>
         /// <param name="inputField"></param>
         /// <param name="contentIsCorrect"></param>
-        private static void SetInputFieldColor(TMP_InputField inputField, bool contentIsCorrect)
+       public static void SetInputFieldColor(TMP_InputField inputField, bool contentIsCorrect)
         {
             if (!contentIsCorrect)
             {

@@ -57,10 +57,6 @@ namespace Simulation
             /// </summary>
             public const int EndDaySymptoms = IncubationTime + AmountDaysSymptoms - 1;
 
-            /// <summary>
-            ///  The probability of becoming infected again after the first infection.
-            /// </summary>
-            public const float ReinfectionRisk = 0.02f;
         }
 
   
