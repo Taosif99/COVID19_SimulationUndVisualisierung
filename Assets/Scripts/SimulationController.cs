@@ -35,6 +35,7 @@ class SimulationController : MonoBehaviour
 
     private bool IsRunning => _isInitialized && _isPaused == false;
     private int _amountDaysToForward = 1;
+
     private void Awake()
     {
         Assert.IsNotNull(_editorObjectsManager);
@@ -74,7 +75,7 @@ class SimulationController : MonoBehaviour
         }
 
         if (Time.time - _lastSimulationUpdate >= SimulationInterval)
-        {
+        {  
             _controller.RunUpdate();
             _simulationDateTime.text =
                 $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
@@ -94,7 +95,7 @@ class SimulationController : MonoBehaviour
             return;
         }
 
-        _isPaused = true;
+       _isPaused = true;
     }
 
     public void Stop()

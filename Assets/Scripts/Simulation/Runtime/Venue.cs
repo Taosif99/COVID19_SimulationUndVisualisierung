@@ -18,6 +18,7 @@ namespace Simulation.Runtime
 
         public float InfectionRisk { get; }
         
+        //TODO Comment
         public void SimulateEncounters(DateTime simulationDate)
         {
             foreach (Person p in _currentPeopleAtVenue)
@@ -36,12 +37,12 @@ namespace Simulation.Runtime
 
                     float infectionProbability = InfectionRisk * (1 - (p.CarefulnessFactor + i.CarefulnessFactor) / 2) * GeneralInfectionProbabilityFactor;
                     
-                    Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
+                    //Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
 
                     if (Random.Range(0f, 1f) <= infectionProbability)
                     {
                         p.SetInfected(simulationDate);
-                        Debug.Log("Person was infected.");
+                        //Debug.Log("Person was infected.");
                     }
                 }
             }

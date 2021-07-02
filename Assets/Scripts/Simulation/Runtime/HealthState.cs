@@ -12,7 +12,7 @@ namespace Simulation.Runtime
     {
         private Person _person;
         private bool _willRecoverFromCoViDWithoutHospital;
-        private bool _willRecoverInHosptal;
+        private bool _willRecoverInHospital;
         private bool _willGoToIntensiveCare;
         private bool _willDie;
         private Simulation.Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
@@ -43,7 +43,7 @@ namespace Simulation.Runtime
 
                 if (probabilityToRecoverInHospital <= settings.RecoveringInHospitalProbability)
                 {
-                    _willRecoverInHosptal = true;
+                    _willRecoverInHospital = true;
                     _willGoToIntensiveCare = false;
                 }
                 else
@@ -52,12 +52,12 @@ namespace Simulation.Runtime
                     float probabilityToSurviveIntensiveCare = Random.Range(0f, 1f);
                     if (probabilityToSurviveIntensiveCare <= settings.PersonSurvivesIntensiveCareProbability)
                     {
-                        _willRecoverInHosptal = true;
+                        _willRecoverInHospital = true;
                         _willDie = false;
                     }
                     else
                     {
-                        _willRecoverInHosptal = false;
+                        _willRecoverInHospital = false;
                         _willDie = true;
                         Debug.Log("I will die !");
                     }
@@ -126,10 +126,8 @@ namespace Simulation.Runtime
                 }*/
 
                 //We can sum up both cases above since we use Hashsets
-                if (_willRecoverInHosptal)
+                if (_willRecoverInHospital)
                 {
-                
-
                     if (_person.DaysSinceInfection >= _settings.DayAPersonCanLeaveTheHospital)
                     {
                         Hospital hospital = (Hospital)_person.CurrentLocation;
@@ -139,9 +137,7 @@ namespace Simulation.Runtime
                         _person.HasRegularBed = false;
                         _person.OnStateTransition(InfectionStates.Phase5, _person.InfectionState);
                         _person.InfectionState = InfectionStates.Phase5;
-
                     }
-
                 }
             }
             

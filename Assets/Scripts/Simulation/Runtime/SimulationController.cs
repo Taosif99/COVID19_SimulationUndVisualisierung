@@ -94,8 +94,6 @@ namespace Simulation.Runtime
                     member.UpdateInfectionState(SimulationDate);
                     member.UpdateHealthState();
 
-
-
                     //Hospital logic
                     if (member.MustBeTransferredToHospital())
                     {
@@ -112,21 +110,34 @@ namespace Simulation.Runtime
 
                     if (member.IsInHospital)
                     {
-
                         //Check if member can leave intensive care and go to a normal bed
                         if (member.CanLeaveIntensiveCare())
                         {
                             TryAssignPersonToRegularBed(member);
 
                         }
-
                         continue;
                     }
 
-
+                    //case to leave quarantine
+                    if (member.EndDateOfQuarantine.Equals(SimulationDate))
+                    {
+                        Debug.Log(member.EndDateOfQuarantine + "     " + SimulationDate.Date);
+                        if (member.InfectionState.HasFlag(Person.InfectionStates.Recovered))
+                        {
+                            member.IsInQuarantine = false;
+                        }
+                        else
+                        {
+                            member.EndDateOfQuarantine = SimulationDate.AddDays(7);
+                            Debug.Log("Extend qu");
+                            //member.EndDateofQuarantine must be extended
+                        }
+                            
+                    }
 
                     //Infectious persons stay at home
-                    if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
+                    if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms) || member.IsInQuarantine)
                     {
                         if (!household.HasPersonHere(member))
                         {
@@ -139,6 +150,20 @@ namespace Simulation.Runtime
                     if (member.TryGetActivityAt(SimulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
                     {
                         activity.Location.MovePersonHere(member);
+                        //the hospital checks very thursday the personal
+                        //The personal has to be checked with symptoms too
+                        if ((activity.Location.ToString().Equals("Simulation.Runtime.Hospital") && !member.IsInQuarantine 
+                            && SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday)) || member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
+                        {   
+                                if (member.InfectionState.HasFlag(Person.InfectionStates.Infected))
+                                {
+                                    member.IsInQuarantine = true;
+                                    member.EndDateOfQuarantine = SimulationDate.AddDays(14);
+                                    Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
+                                    household.MovePersonHere(member);
+                                    AssignHousholdToQuarantine(household, member.EndDateOfQuarantine);
+                                }
+                        }
                     }
 
                     if (!household.HasPersonHere(member) && !member.HasActivityAt(SimulationDate))
@@ -149,9 +174,32 @@ namespace Simulation.Runtime
             }
         }
 
+        private void AssignHousholdToQuarantine(Household household, DateTime endDayOfQuarantine)
+        {
+            foreach (Person member in household.Members)
+            {
+                //Check if person is not in quarantine
+                if (!member.IsInQuarantine)
+                {
+                    member.IsInQuarantine = true;
+                    member.EndDateOfQuarantine = SimulationDate.AddDays(14);
+                    Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
+                    if (!household.HasPersonHere(member))
+                    {
+                        household.MovePersonHere(member);
+                    }
+                }
+            }
+        }
 
         public void InfectRandomPerson()
         {
+            //1. Neues Feld machen
+            //1.1 if Bedingung umändern, sodass household.length > Anzahl der Personen im Haushalt & Personen im Haushalt > Anzahl der Personen im Haushalt
+            //2. Zahl aus dem Feld entnehemn. --> Es muss gecheckt werden, dass da auch eine Zahl ist
+            //3. Schleife machen
+            //4. Gucken, dass die Person auch nicht infiziert ist
+            //5. Nach drücken von Virus Inputfield unsichtbar machen
             Household[] households = _entities.OfType<Household>().ToArray();
             if (households != null && households.Length > 0)
             {
@@ -165,7 +213,7 @@ namespace Simulation.Runtime
                 string msg = "Atleast one household with one person is requiered to infect one person!";
                 string name = "No households";
                 DialogBox dialogBox = new DialogBox(name, msg);
-                dialogBox.HasCancelButon = false;
+                dialogBox.HasCancelButton = false;
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             }
         }
@@ -194,7 +242,7 @@ namespace Simulation.Runtime
                 }
                 else
                 {
-                    Debug.Log("No more placees in this hospital, try next hospitals");
+                    //Debug.Log("No more places in this hospital, try next hospitals");
                     for (int i = 0; i < amountHospitals; i++)
                     {
                         if (hospitals[i].PatientsInRegularBeds.Count < hospitals[i].AmountRegularBeds)

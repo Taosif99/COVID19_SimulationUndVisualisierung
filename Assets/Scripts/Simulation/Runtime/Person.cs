@@ -23,6 +23,9 @@ namespace Simulation.Runtime
     
         private double _daysSinceInfection;
 
+        private bool _isInQuarantine = false;
+        private DateTime _endDateOfQuarantine;
+
         public Person(float carefulnessFactor, float risk, bool isWorker)
         {
             CarefulnessFactor = carefulnessFactor;
@@ -40,8 +43,9 @@ namespace Simulation.Runtime
         public double DaysSinceInfection { get => _daysSinceInfection; set => _daysSinceInfection = value; }
         public bool IsInHospital { get => _isInHospital; set => _isInHospital = value; }
         public bool IsInIntensiveCare { get => _isInIntensiveCare; set => _isInIntensiveCare = value; }
+        public bool IsInQuarantine { get => _isInQuarantine; set => _isInQuarantine = value; }
         public bool HasRegularBed { get => _hasRegularBed; set => _hasRegularBed = value; }
-
+        public DateTime EndDateOfQuarantine { get => _endDateOfQuarantine; set => _endDateOfQuarantine = value; }
 
         public event Action<StateTransitionEventArgs> OnStateTrasitionHandler;
         public class StateTransitionEventArgs : EventArgs
@@ -94,7 +98,6 @@ namespace Simulation.Runtime
                     }
                 }
             }
-
             return null;
         }
 
@@ -194,10 +197,6 @@ namespace Simulation.Runtime
 
                                 //Here we may update the infection risk if person recovers
                                 _infectionDate = new DateTime(); //restore undefined infection date
-
-                             
-
-
                             }
 
                             break;
