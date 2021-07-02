@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using UnityEngine;
 using Random = UnityEngine.Random;
 using DialogBoxSystem;
+using Debug = UnityEngine.Debug;
 
 namespace Simulation.Runtime
 {
@@ -83,34 +84,32 @@ namespace Simulation.Runtime
         public void RunUpdate()
         {
             SimulationDate = SimulationDate.AddMinutes(SimulationStepsMinutes);
-
-            // foreach (var venue in _entities.OfType<Venue>())
-            //{
-
-            for (int venueIndex = 0; venueIndex < _venues.Length; venueIndex++)
+            
+            foreach (Venue venue in _venues)
             {
-                Venue venue = _venues[venueIndex];
-
                 venue.SimulateEncounters(SimulationDate);
 
                 if (!(venue is Household household))
                 {
                     continue;
                 }
-
-                //foreach (Person member in household.Members)
-                for (int memberIndex = 0; memberIndex < household.Members.Length; memberIndex++)
-
+                
+                foreach (Person member in household.Members)
                 {
-                    Person member = household.Members[memberIndex];
-
-                    if (member.IsDead) continue;
+                    if (member.IsDead)
+                    {
+                        continue;
+                    }
 
                     member.UpdateInfectionState(SimulationDate);
                     member.UpdateHealthState();
-
-
-
+                    
+                    // TODO: Having this twice is kinda bad, but this is needed as the person might have deceased during this health state update
+                    if (member.IsDead)
+                    {
+                        continue;
+                    }
+                    
                     //Hospital logic
                     if (member.MustBeTransferredToHospital())
                     {
@@ -124,7 +123,6 @@ namespace Simulation.Runtime
                     {
                         TryAssignPersonToIntensiveBed(member);
                     }
-
                     if (member.IsInHospitalization)
                     {
                         //Check if member can leave intensive care and go to a normal bed
@@ -134,8 +132,6 @@ namespace Simulation.Runtime
                         }
                         continue;
                     }
-
-
 
                     //Infectious persons stay at home
                     if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
