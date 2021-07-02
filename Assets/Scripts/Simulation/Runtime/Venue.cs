@@ -29,6 +29,8 @@ namespace Simulation.Runtime
 
                 foreach (Person i in _currentPeopleAtVenue)
                 {
+                    if(p == i) continue;
+
                     if (!i.InfectionState.HasFlag(Person.InfectionStates.Infectious) || i.IsInHospitalization)
                     {
                         continue;

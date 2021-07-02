@@ -17,22 +17,28 @@ namespace Simulation.Runtime
 
         private const double SimulationStepsMinutes = 10;
 
-        private List<Entity> _entities = new List<Entity>();
 
+        private Entity[] _entities;
+        private Venue[] _venues;
+        private Household[] _households;
+        private Hospital[] _hospitals;
         public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
 
 
-        public void Initialize(List<Entity> entities)
+        public void Initialize(Entity[] entities)
         {
             _entities = entities;
+            _venues = _entities.OfType<Venue>().ToArray();
+            _households = _entities.OfType<Household>().ToArray();
+            _hospitals = _entities.OfType<Hospital>().ToArray();
 
-            List<WorkShift> workShifts = _entities.OfType<Workplace>()
+            WorkShift[] workShifts = _entities.OfType<Workplace>()
                 .SelectMany(w => w.WorkShifts)
-                .ToList();
+                .ToArray();
 
             int workShiftIndex = 0;
 
-            foreach (var household in _entities.OfType<Household>())
+            foreach (var household in _households)
             {
                 foreach (Person member in household.Members)
                 {
@@ -50,7 +56,7 @@ namespace Simulation.Runtime
                         shift.Workplace
                     ));
 
-                    workShiftIndex = (workShiftIndex + 1) % workShifts.Count;
+                    workShiftIndex = (workShiftIndex + 1) % workShifts.Length;
                 }
 
                 var editorHousehold = household.GetEditorEntity<Edit.Household>();
@@ -78,8 +84,13 @@ namespace Simulation.Runtime
         {
             SimulationDate = SimulationDate.AddMinutes(SimulationStepsMinutes);
 
-            foreach (var venue in _entities.OfType<Venue>())
+           // foreach (var venue in _entities.OfType<Venue>())
+            //{
+
+           for(int venueIndex = 0; venueIndex < _venues.Length; venueIndex++)
             {
+                Venue venue = _venues[venueIndex];
+
                 venue.SimulateEncounters(SimulationDate);
 
                 if (!(venue is Household household))
@@ -87,8 +98,12 @@ namespace Simulation.Runtime
                     continue;
                 }
 
-                foreach (Person member in household.Members)
+                //foreach (Person member in household.Members)
+                for(int memberIndex = 0; memberIndex < household.Members.Length; memberIndex++)
+                
                 {
+                    Person member = household.Members[memberIndex];
+
                     if (member.IsDead) continue;
 
                     member.UpdateInfectionState(SimulationDate);
@@ -179,15 +194,15 @@ namespace Simulation.Runtime
         /// <param name="person"></param>
         private void TryAssignPersonToRegularBed(Person person)
         {
-            Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
+            //Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
 
             Venue lastLocation = person.CurrentLocation;
 
 
-            if (hospitals != null && hospitals.Length > 0)
+            if (_hospitals != null && _hospitals.Length > 0)
             {
-                int amountHospitals = hospitals.Length;
-                Hospital hospital = hospitals[_hospitalRegularBedAssignmentsCounter % amountHospitals];
+                int amountHospitals = _hospitals.Length;
+                Hospital hospital = _hospitals[_hospitalRegularBedAssignmentsCounter % amountHospitals];
                 if (hospital.PatientsInRegularBeds.Count < hospital.AmountRegularBeds)
                 {
                     AssignPersonToRegularBed(person, hospital);
@@ -197,21 +212,15 @@ namespace Simulation.Runtime
                    // Debug.Log("No more placees in this hospital, try next hospitals");
                     for (int i = 0; i < amountHospitals; i++)
                     {
-                        if (hospitals[i].PatientsInRegularBeds.Count < hospitals[i].AmountRegularBeds)
+                        if (_hospitals[i].PatientsInRegularBeds.Count < _hospitals[i].AmountRegularBeds)
                         {
-                            AssignPersonToRegularBed(person, hospitals[i]);
+                            AssignPersonToRegularBed(person, _hospitals[i]);
                             break;
                         }
                     }
                 }
 
-                //At this point we may check if a person is in hospital,if yes the probabilities stay the same, else reduce atleast survive probability
-                //or show message that there was no place for a person in the hospital
-                if (!person.HasRegularBed)
-                {
-                    UIController.Instance.NotEnoughBedsMessage.SetActive(true);
-
-                }
+       
 
                 //Handle case if person leaves sensitive bed and gets a normal bed again
                 if (person.IsInIntensiveCare && person.HasRegularBed)
@@ -224,6 +233,14 @@ namespace Simulation.Runtime
 
 
                 _hospitalRegularBedAssignmentsCounter++;
+            }
+
+            //At this point we may check if a person is in hospital,if yes the probabilities stay the same, else reduce atleast survive probability
+            //or show message that there was no place for a person in the hospital
+            if (!person.HasRegularBed)
+            {
+                UIController.Instance.NotEnoughBedsMessage.SetActive(true);
+
             }
         }
 
@@ -262,13 +279,13 @@ namespace Simulation.Runtime
                 }
             }
             //Assign a free intensive care bed in our simulation world, if this fails we have to assign a regular bed (again)
-            Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
+            //Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
 
-            if (hospitals != null && hospitals.Length > 0)
+            if (_hospitals != null && _hospitals.Length > 0)
             {
-                int amountHospitals = hospitals.Length;
+                int amountHospitals = _hospitals.Length;
                 //Use round robin first 
-                Hospital hospital = hospitals[_hospitalIntensiveCareBedAssignmentsCounter % amountHospitals];
+                Hospital hospital = _hospitals[_hospitalIntensiveCareBedAssignmentsCounter % amountHospitals];
                 //Check amount normal beds
                 if (hospital.PatientsInIntensiveCareBeds.Count < hospital.AmountIntensiveCareBeds)
                 {
@@ -280,22 +297,24 @@ namespace Simulation.Runtime
                     // if round robin fails, try search for a free hospital place linearly
                     for (int i = 0; i < amountHospitals; i++)
                     {
-                        if (hospitals[i].PatientsInIntensiveCareBeds.Count < hospitals[i].AmountIntensiveCareBeds)
+                        if (_hospitals[i].PatientsInIntensiveCareBeds.Count < _hospitals[i].AmountIntensiveCareBeds)
                         {
-                            AssignPersonToIntensiveBed(person, hospitals[i], oldHospital);
+                            AssignPersonToIntensiveBed(person, _hospitals[i], oldHospital);
                             break;
                         }
                     }
                 }
 
-                //At this point we may check if a person is in hospital,if yes the probabilities stay the same, else reduce survive probability
-                //or show message that there was no place for a person in the hospital
-                if (!person.IsInIntensiveCare)
-                {
-                    UIController.Instance.NotEnoughIntensiveBedsMessage.SetActive(true);
 
-                }
                 _hospitalRegularBedAssignmentsCounter++;
+            }
+
+            //At this point we may check if a person is in hospital,if yes the probabilities stay the same, else reduce survive probability
+            //or show message that there was no place for a person in the hospital
+            if (!person.IsInIntensiveCare)
+            {
+                UIController.Instance.NotEnoughIntensiveBedsMessage.SetActive(true);
+
             }
 
         }
