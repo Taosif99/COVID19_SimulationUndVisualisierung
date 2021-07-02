@@ -53,6 +53,8 @@ namespace Grid
                 HospitalCounterGameObject.transform.rotation = Quaternion.Euler(_eulerAngleX, 0, 0);
                 HospitalCounterGameObject.name = "HospitalCounterCanvas";
                 _hospitalCounterText = HospitalCounterGameObject.GetComponentInChildren<TextMeshProUGUI>();
+                string counterString = $"<color=#6495ED>0/0</color> / <#9FE2BF>0/0</color>";
+                _hospitalCounterText.SetText(counterString);
             }
 
         }
@@ -65,23 +67,7 @@ namespace Grid
 
             if (Venue is Hospital hospital)
             {
-                string textToShow = "";
-
-                if (hospital.AmountPeopleInRegularBeds > 0 && hospital.AmountPeopleInIntensiveBeds > 0)
-                {
-                    textToShow = $"<color=#6495ED>{hospital.AmountPeopleInRegularBeds}/{hospital.AmountRegularBeds}</color> / <#9FE2BF>{hospital.AmountPeopleInIntensiveBeds}/{hospital.AmountIntensiveCareBeds}</color>";
-                }
-
-                else if(hospital.AmountPeopleInRegularBeds> 0)
-                {
-                    textToShow = $"<color=#6495ED>{hospital.AmountPeopleInRegularBeds}/{hospital.AmountRegularBeds}</color>";
-                }
-                else if (hospital.AmountPeopleInIntensiveBeds > 0)
-                { 
-                    textToShow =  $"<#9FE2BF>{hospital.AmountPeopleInIntensiveBeds}/{hospital.AmountIntensiveCareBeds}</color>";
-                
-                }
-                _hospitalCounterText.SetText(textToShow);
+                _hospitalCounterText.SetText($"<color=#6495ED>{hospital.AmountPeopleInRegularBeds}/{hospital.AmountRegularBeds}</color> / <#9FE2BF>{hospital.AmountPeopleInIntensiveBeds}/{hospital.AmountIntensiveCareBeds}</color>");
             }
 
         }

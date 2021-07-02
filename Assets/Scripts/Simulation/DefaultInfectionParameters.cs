@@ -7,21 +7,19 @@ namespace Simulation
         /// The average values are taken from:
         /// <see cref="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile"/>
         /// <see cref="https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/"/>
-        /// <see cref=" https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html"/>
-        /// <see cref="https://academic.oup.com/cid/advance-article/doi/10.1093/cid/ciaa1846/6033728"/>
+        /// 
         /// 
         /// The assumption is made, that EndDaySymptoms is >= endDayInfectious
         /// 
         /// -->   IncubationTime + AmountDaysSymptoms - 1  >=LatencyTime + AmountDaysInfectious - 1
         ///         IncubationTime + AmountDaysSymptoms   >=LatencyTime + AmountDaysInfectious 
         ///             
-        ///         EndDaySymptoms >= EndDayInfectious
         ///          Must be verified !
         /// 
-        /// 
+        /// We count the first day =1, second day = 2,...
         /// 
         /// </summary>
-        public static class InfectionPhaseParameters
+        public static class InfectionsPhaseParameters
         {
 
             /// <summary>
@@ -57,9 +55,12 @@ namespace Simulation
             /// </summary>
             public const int EndDaySymptoms = IncubationTime + AmountDaysSymptoms - 1;
 
+
         }
 
-  
+        /// <summary>
+        /// TODO USE IN HOSPITAL
+        /// </summary>
         public static class HealthPhaseParameters
         {
 
@@ -96,11 +97,9 @@ namespace Simulation
             /// </summary>
             public const int DaysFromSymptomsBeginToDeath = 15;
 
+            //TODO ADD TO SETTINGS IN UI EVENTUALLY
 
-            public const int DeathDay = InfectionPhaseParameters.IncubationTime + DaysFromSymptomsBeginToDeath - 1;
-
-
-            //Days in intensive care must be a subset of days in hospital (hospitalization) !!! (Our Assumption)
+            //Days in intensive care must be a subset of days in hospital !!! (Our Assumption)
 
             //Hospital
 
@@ -110,17 +109,15 @@ namespace Simulation
             /// </summary>
             public const int DaysInHospital = 14;
 
-
-           
             /// <summary>
             /// Amount days from symptoms beginn to transferring a person to a hospital
             /// </summary>
             public const int DurationOfSymtombeginToHospitalization = 4;
 
             /// <summary>
-            /// The day a person must go to the hospital.  (Must be smaller than end day symptoms ! and greater  incubation time)
+            /// The day a person must go to the hospital.
             /// </summary>
-            public const int DayAPersonMustGoToHospital = InfectionPhaseParameters.IncubationTime + DurationOfSymtombeginToHospitalization - 1;
+            public const int DayAPersonMustGoToHospital = InfectionsPhaseParameters.IncubationTime + DurationOfSymtombeginToHospitalization - 1;
 
             /// <summary>
             /// The first day a person can leave the hospital
@@ -140,12 +137,12 @@ namespace Simulation
             public const int DurationOfHospitalizationToIntensiveCare = 1;
 
             /// <summary>
-            /// The day a person must go to the intensive care. (must be greater day a person must go to hospital and smaller day a person can leave the hospital)
+            /// The day a person must go to the intensive care.
             /// </summary>
             public const int DayAPersonMustGoToIntensiveCare = DayAPersonMustGoToHospital + DurationOfHospitalizationToIntensiveCare;
 
             /// <summary>
-            /// The day a person can leave the intensive care. (must be smaller a person can leave the hospital)
+            /// The day a person can leave the intensive care.
             /// </summary>
             public const int DayAPersonCanLeaveIntensiveCare = DayAPersonMustGoToIntensiveCare + DaysInIntensiveCare;
 
@@ -158,7 +155,7 @@ namespace Simulation
             /// <see cref="https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html"/>
             /// 
             /// </summary>
-            public const float InfectionRiskIfRecovered = 0.0002f;
+            public const float InfectionRiskIfRecovered = 0.02f;
         }
 
     }

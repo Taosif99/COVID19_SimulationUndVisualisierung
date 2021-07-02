@@ -17,7 +17,7 @@ namespace Simulation.Runtime
         private HealthState _healthState;
 
         private bool _isDead = false;
-        private bool _isInHospitalization = false;
+        private bool _isInHospital = false;
         private bool _isInIntensiveCare = false;
         private bool _hasRegularBed = false;
     
@@ -41,12 +41,11 @@ namespace Simulation.Runtime
         public Venue CurrentLocation { get; set; }
         public bool IsDead { get => _isDead; set => _isDead = value; }
         public double DaysSinceInfection { get => _daysSinceInfection; set => _daysSinceInfection = value; }
-        public bool IsInHospitalization { get => _isInHospitalization; set => _isInHospitalization = value; }
+        public bool IsInHospital { get => _isInHospital; set => _isInHospital = value; }
         public bool IsInIntensiveCare { get => _isInIntensiveCare; set => _isInIntensiveCare = value; }
         public bool IsInQuarantine { get => _isInQuarantine; set => _isInQuarantine = value; }
         public bool HasRegularBed { get => _hasRegularBed; set => _hasRegularBed = value; }
         public DateTime EndDateOfQuarantine { get => _endDateOfQuarantine; set => _endDateOfQuarantine = value; }
-        public DateTime InfectionDate { get => _infectionDate; set => _infectionDate = value; }
 
         public event Action<StateTransitionEventArgs> OnStateTrasitionHandler;
         public class StateTransitionEventArgs : EventArgs
@@ -58,7 +57,7 @@ namespace Simulation.Runtime
         [Flags]
         public enum InfectionStates
         {
-            Uninfected = 0, //susceptible TODO RENAME
+            Uninfected = 0, //susceptible
             Infected = 1,
             Infectious = 2,
             Symptoms = 4,
@@ -77,11 +76,6 @@ namespace Simulation.Runtime
         {
             Healthy,
             PreIllness
-        }
-
-        public void SetReInfectionRisk()
-        {
-            _risk = Simulation.DefaultInfectionParameters.HealthPhaseParameters.InfectionRiskIfRecovered;
         }
 
         public bool HasActivityAt(DateTime dateTime) => GetActivityAt(dateTime) != null;
@@ -135,7 +129,7 @@ namespace Simulation.Runtime
                 Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
                 InfectionStates previousState = InfectionState;
 
-                if (IsInHospitalization) return; //Hospital case is handled in healthState, until recovering they are in in phase 3
+                if (IsInHospital) return; //Hospital case is handled in healthState
 
                 switch (InfectionState)
                 {
@@ -169,7 +163,7 @@ namespace Simulation.Runtime
                             //If person will die and no hospital is free
                             //person will die "regularly" at home instead
                             //Here one may handle phases of dying
-                            if (_healthState.WillDie)
+                            if (_healthState.WillDieInIntensiveCare)
                             {
                                 return;
                             }
@@ -203,9 +197,8 @@ namespace Simulation.Runtime
 
                                 //Here we may update the infection risk if person recovers
                                 _infectionDate = new DateTime(); //restore undefined infection date
-                                SetReInfectionRisk();
-                                _healthState = new HealthState(this);
                             }
+
                             break;
                         }
                 }
@@ -240,7 +233,7 @@ namespace Simulation.Runtime
         /// <returns>true if person must be tranferred to a hospital, else false</returns>
         public bool MustBeTransferredToHospital()
         {
-            return (!IsInHospitalization && _healthState.MustBeInHospital());
+            return (!IsInHospital && _healthState.MustBeInHospital());
 
         }
 
@@ -250,14 +243,14 @@ namespace Simulation.Runtime
         /// <returns>true if person must be tranferred to intensive care, else false</returns>
         public bool MustBeTransferredToIntensiveCare()
         {
-            return (!_isInIntensiveCare && _healthState.MustBeInIntensiveCare());
+            return (!IsInIntensiveCare && _healthState.MustBeInIntensiveCare());
         }
 
 
         public bool CanLeaveIntensiveCare()
         {
 
-            return _isInIntensiveCare && !_healthState.MustBeInIntensiveCare();
+            return IsInIntensiveCare && !_healthState.MustBeInIntensiveCare();
         
         }
 

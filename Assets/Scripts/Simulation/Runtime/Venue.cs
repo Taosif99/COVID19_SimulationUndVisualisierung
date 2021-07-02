@@ -30,9 +30,7 @@ namespace Simulation.Runtime
 
                 foreach (Person i in _currentPeopleAtVenue)
                 {
-                   
-
-                    if (!i.InfectionState.HasFlag(Person.InfectionStates.Infectious) || i.IsInHospitalization)
+                    if (!i.InfectionState.HasFlag(Person.InfectionStates.Infectious) || p.IsInHospital)
                     {
                         continue;
                     }

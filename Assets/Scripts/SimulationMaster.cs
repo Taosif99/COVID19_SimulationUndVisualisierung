@@ -197,8 +197,8 @@ public class SimulationMaster : MonoBehaviour
         _amountPeopleDead = 0;
         _dayInfoHandler = new DayInfoHandler();
         _currentDayOfSimulation = 0;
-        UIController.Instance.RValueText.text = "";
-        UIController.Instance.RValue7Text.text = "";
+
+
     }
 
     //Must be called before the simulation starts and after the file is loaded
