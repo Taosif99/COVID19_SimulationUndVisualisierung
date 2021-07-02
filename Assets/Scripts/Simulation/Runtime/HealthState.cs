@@ -60,7 +60,7 @@ namespace Simulation.Runtime
                     {
                         _willRecoverInHosptal = false;
                         _willDie = true;
-                        Debug.Log("I will die !");
+                        Debug.Log("I will not survive");
                     }
                 }
             }
@@ -86,6 +86,8 @@ namespace Simulation.Runtime
                     //TODO REMOVE PERSON FROM MEMBER OF HOUSEHOLD
                     _person.IsDead = true;
                     SimulationMaster.Instance.OnPersonDies();
+                    
+                    Debug.Log("Person deceased");
                 }            
             }
 
