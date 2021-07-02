@@ -84,10 +84,10 @@ namespace Simulation.Runtime
         {
             SimulationDate = SimulationDate.AddMinutes(SimulationStepsMinutes);
 
-           // foreach (var venue in _entities.OfType<Venue>())
+            // foreach (var venue in _entities.OfType<Venue>())
             //{
 
-           for(int venueIndex = 0; venueIndex < _venues.Length; venueIndex++)
+            for (int venueIndex = 0; venueIndex < _venues.Length; venueIndex++)
             {
                 Venue venue = _venues[venueIndex];
 
@@ -99,8 +99,8 @@ namespace Simulation.Runtime
                 }
 
                 //foreach (Person member in household.Members)
-                for(int memberIndex = 0; memberIndex < household.Members.Length; memberIndex++)
-                
+                for (int memberIndex = 0; memberIndex < household.Members.Length; memberIndex++)
+
                 {
                     Person member = household.Members[memberIndex];
 
@@ -115,7 +115,6 @@ namespace Simulation.Runtime
                     if (member.MustBeTransferredToHospital())
                     {
                         TryAssignPersonToRegularBed(member);
-                       
                     }
 
                     //Know checking if person must go to intensive care
@@ -124,19 +123,15 @@ namespace Simulation.Runtime
                     if (member.MustBeTransferredToIntensiveCare())
                     {
                         TryAssignPersonToIntensiveBed(member);
-                        
                     }
 
                     if (member.IsInHospitalization)
                     {
-
                         //Check if member can leave intensive care and go to a normal bed
                         if (member.CanLeaveIntensiveCare())
                         {
                             TryAssignPersonToRegularBed(member);
-
                         }
-
                         continue;
                     }
 
@@ -196,11 +191,8 @@ namespace Simulation.Runtime
         /// <param name="person"></param>
         private void TryAssignPersonToRegularBed(Person person)
         {
-            //Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
 
             Venue lastLocation = person.CurrentLocation;
-
-
             if (_hospitals != null && _hospitals.Length > 0)
             {
                 int amountHospitals = _hospitals.Length;
@@ -211,7 +203,6 @@ namespace Simulation.Runtime
                 }
                 else
                 {
-                   // Debug.Log("No more placees in this hospital, try next hospitals");
                     for (int i = 0; i < amountHospitals; i++)
                     {
                         if (_hospitals[i].PatientsInRegularBeds.Count < _hospitals[i].AmountRegularBeds)
@@ -221,24 +212,14 @@ namespace Simulation.Runtime
                         }
                     }
                 }
-
-
-
                 //Handle case if person leaves sensitive bed and gets a normal bed again
                 if (person.IsInIntensiveCare && person.HasRegularBed)
-                {
-                    if (lastLocation is Hospital)
-                    {
+                {                  
                         Hospital oldHospital = (Hospital)lastLocation;
                         oldHospital.PatientsInIntensiveCareBeds.Remove(person);
                         person.IsInIntensiveCare = false;
-
-                    }
-                    
                 }
-                
-
-                    _hospitalRegularBedAssignmentsCounter++;
+                _hospitalRegularBedAssignmentsCounter++;
             }
 
             //At this point we may check if a person is in hospital,if yes the probabilities stay the same, else reduce atleast survive probability
@@ -279,10 +260,7 @@ namespace Simulation.Runtime
             Hospital oldHospital = null;
             if (person.HasRegularBed)
             {
-                if (person.CurrentLocation is Hospital hospital)
-                {
-                    oldHospital = hospital;
-                }
+                    oldHospital = (Hospital) person.CurrentLocation;
             }
             //Assign a free intensive care bed in our simulation world, if this fails we have to assign a regular bed (again)
             //Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
@@ -330,7 +308,7 @@ namespace Simulation.Runtime
             if (oldHospital != null)
             {
                 oldHospital.PatientsInRegularBeds.Remove(person);
-               
+
             }
             hospital.PatientsInIntensiveCareBeds.Add(person);
             hospital.MovePersonHere(person);

@@ -41,7 +41,7 @@ namespace Simulation.Runtime
         public bool IsInHospitalization { get => _isInHospitalization; set => _isInHospitalization = value; }
         public bool IsInIntensiveCare { get => _isInIntensiveCare; set => _isInIntensiveCare = value; }
         public bool HasRegularBed { get => _hasRegularBed; set => _hasRegularBed = value; }
-
+        public DateTime InfectionDate { get => _infectionDate; set => _infectionDate = value; }
 
         public event Action<StateTransitionEventArgs> OnStateTrasitionHandler;
         public class StateTransitionEventArgs : EventArgs
@@ -131,7 +131,7 @@ namespace Simulation.Runtime
                 Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
                 InfectionStates previousState = InfectionState;
 
-                if (IsInHospitalization) return; //Hospital case is handled in healthState
+                if (IsInHospitalization) return; //Hospital case is handled in healthState, until recovering they are in in phase 3
 
                 switch (InfectionState)
                 {

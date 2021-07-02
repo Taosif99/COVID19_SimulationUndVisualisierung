@@ -1,6 +1,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 using static Simulation.Runtime.Person;
+using System;
 
 namespace Simulation.Runtime
 {
@@ -92,44 +93,10 @@ namespace Simulation.Runtime
             if (_person.IsInHospitalization)
             {
 
-                /*
-                //For simplification, if person survies, just check if person can leave hospital
-                if (WillRecoverInHospitalNoIntensiveCare())
-                {
-                    //TODO USE SETTINGS
-                    if (_person.DaysSinceInfection >= DefaultInfectionParameters.HealthPhaseParameters.DayAPersonCanLeaveTheHospital)
-                    {
-                        Hospital hospital = (Hospital)_person.CurrentLocation;
-                        hospital.PatientsInRegularBeds.Remove(_person);
-                        _person.IsInHospital = false;
-                        _person.HasRegularBed = false;
-                        _person.OnStateTransition(InfectionStates.Phase5, _person.InfectionState);
-                        _person.InfectionState = Person.InfectionStates.Phase5;
-                    }
-                }
-
-
-                if (WillRecoverInHospitalIntensiveCare())
-                {
-                    if (_person.DaysSinceInfection >= DefaultInfectionParameters.HealthPhaseParameters.DayAPersonCanLeaveTheHospital)
-                    {
-                        Hospital hospital = (Hospital)_person.CurrentLocation;
-                        //Just removing in which bed the patient is, since we us a HashSet we can sum up both cases
-                        hospital.PatientsInRegularBeds.Remove(_person);
-                        hospital.PatientsInIntensiveCareBeds.Remove(_person);
-                        _person.IsInHospital = false;
-                        _person.HasRegularBed = false;
-                        _person.OnStateTransition(InfectionStates.Phase5, _person.InfectionState);
-                        _person.InfectionState = Person.InfectionStates.Phase5;
-
-                    }
-                }*/
-
-                //We can sum up both cases above since we use Hashsets
+                //We can sum up both cases (intensive care and simple hospitalization) above since we use Hashsets
                 if (_willRecoverInHosptal)
                 {
-                
-
+               
                     if (_person.DaysSinceInfection >= _settings.DayAPersonCanLeaveTheHospital)
                     {
                         Hospital hospital = (Hospital)_person.CurrentLocation;
@@ -137,8 +104,12 @@ namespace Simulation.Runtime
                         hospital.PatientsInIntensiveCareBeds.Remove(_person);
                         _person.IsInHospitalization = false;
                         _person.HasRegularBed = false;
+                        _person.IsInIntensiveCare = false;
                         _person.OnStateTransition(InfectionStates.Phase5, _person.InfectionState);
                         _person.InfectionState = InfectionStates.Phase5;
+                        _person.InfectionDate= new DateTime(); 
+
+                        //CONSIDER HERE THE PERSON ALSO RECOVERS !!!
 
                     }
 
@@ -159,7 +130,7 @@ namespace Simulation.Runtime
        public bool MustBeInHospital()
         {
             return _person.DaysSinceInfection >= _settings.DayAPersonMustGoToHospital 
-                    && _person.DaysSinceInfection < _settings.DayAPersonCanLeaveTheHospital;
+                    && _person.DaysSinceInfection < _settings.DayAPersonCanLeaveTheHospital && !_willRecoverFromCoViDWithoutHospital;
         }
 
         /// <summary>
