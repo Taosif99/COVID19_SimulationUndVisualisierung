@@ -1,6 +1,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 using static Simulation.Runtime.Person;
+using System;
 
 namespace Simulation.Runtime
 {
@@ -16,7 +17,7 @@ namespace Simulation.Runtime
         private bool _willGoToIntensiveCare;
         private bool _willDie;
         private Simulation.Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
-        public bool WillDieInIntensiveCare { get => _willDie; set => _willDie = value; }
+        public bool WillDie { get => _willDie; set => _willDie = value; }
 
         /// <summary>
         /// The constructor creates a healthState object which determines 
@@ -74,7 +75,7 @@ namespace Simulation.Runtime
             if (_willDie)
             {
                 
-                if (_person.DaysSinceInfection >= (_settings.IncubationTime + _settings.DaysFromSymptomsBeginToDeath - 1))
+                if (_person.DaysSinceInfection >= (_settings.DeathDay))
                 {
                     if (_person.CurrentLocation is Hospital hospital)
                     {
@@ -89,9 +90,8 @@ namespace Simulation.Runtime
             }
 
             //Handling case if person is in hospital
-            if (_person.IsInHospital)
+            if (_person.IsInHospitalization)
             {
-
                 /*
                 //For simplification, if person survies, just check if person can leave hospital
                 if (WillRecoverInHospitalNoIntensiveCare())
@@ -128,15 +128,24 @@ namespace Simulation.Runtime
                 //We can sum up both cases above since we use Hashsets
                 if (_willRecoverInHospital)
                 {
+                //We can sum up both cases (intensive care and simple hospitalization) above since we use Hashsets
+                if (_willRecoverInHosptal)
+                {
+               
                     if (_person.DaysSinceInfection >= _settings.DayAPersonCanLeaveTheHospital)
                     {
                         Hospital hospital = (Hospital)_person.CurrentLocation;
                         hospital.PatientsInRegularBeds.Remove(_person);
                         hospital.PatientsInIntensiveCareBeds.Remove(_person);
-                        _person.IsInHospital = false;
+                        _person.IsInHospitalization = false;
                         _person.HasRegularBed = false;
+                        _person.IsInIntensiveCare = false;
                         _person.OnStateTransition(InfectionStates.Phase5, _person.InfectionState);
                         _person.InfectionState = InfectionStates.Phase5;
+                        _person.InfectionDate= new DateTime(); 
+
+                        //CONSIDER HERE THE PERSON ALSO RECOVERS !!!
+
                     }
                 }
             }
@@ -155,7 +164,7 @@ namespace Simulation.Runtime
        public bool MustBeInHospital()
         {
             return _person.DaysSinceInfection >= _settings.DayAPersonMustGoToHospital 
-                    && _person.DaysSinceInfection < _settings.DayAPersonCanLeaveTheHospital;
+                    && _person.DaysSinceInfection < _settings.DayAPersonCanLeaveTheHospital && !_willRecoverFromCoViDWithoutHospital;
         }
 
         /// <summary>

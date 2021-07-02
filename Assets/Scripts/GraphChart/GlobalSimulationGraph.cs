@@ -212,9 +212,11 @@ namespace GraphChart
         private void UpdateLineGraphValues()
         {
             AddValuesToLinesList();
-            //Clear lists each 7 days / seven simulation time-step-units
-            if (_lines[0].Values.Count == 8)
-            {
+            //Clear lists each 30 days / seven simulation time-step-units
+            
+            
+            if (_lines[0].Values.Count == 30)
+           {
 
                 _lines[0].Values.Clear();
                 _lines[1].Values.Clear();
