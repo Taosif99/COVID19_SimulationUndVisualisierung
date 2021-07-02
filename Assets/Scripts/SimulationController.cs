@@ -150,20 +150,22 @@ class SimulationController : MonoBehaviour
             return;
         }
 
+        
         _forwardButton.interactable = false;
 
         int amountDaysToForward;
         bool forwardInputOk = int.TryParse(_forwardInputField.text, out amountDaysToForward);
         if (!forwardInputOk) amountDaysToForward = _defaultAmountDaysToForward;         
         
-
+        
         if (amountDaysToForward > 0)
         {
             _forwardProgressSliderGameObject.SetActive(true);
         }
-        StartCoroutine(ForwardSimulationRoutine(amountDaysToForward)); //This is lame
-        // ForwardSimulationBlocking(); //This is blocking which worse
         
+        StartCoroutine(ForwardSimulationRoutine(amountDaysToForward)); //This is lame
+        
+        // ForwardSimulationBlocking(amountDaysToForward); //This is blocking which worse
     }
 
 
@@ -181,18 +183,21 @@ class SimulationController : MonoBehaviour
 
 
     //TODO REMOVE
-    public void ForwardSimulationBlocking()
+    public void ForwardSimulationBlocking(int numberOfDays)
     {
         if (!IsRunning)
         {
             return;
         }
 
-        while (_currentDay == _controller.SimulationDate.Day)
+        for (int i = 0; i < numberOfDays; i++)
         {
-            _controller.RunUpdate();
+            while (_currentDay == _controller.SimulationDate.Day)
+            {
+                _controller.RunUpdate();
+            }
+            OnDayChanges();   
         }
-        OnDayChanges();
     }
 
 
@@ -210,7 +215,6 @@ class SimulationController : MonoBehaviour
             while (_currentDay == _controller.SimulationDate.Day)
             {
                 _controller.RunUpdate();
-                yield return null;
             }
 
             OnDayChanges();
@@ -223,6 +227,8 @@ class SimulationController : MonoBehaviour
             _forwardingProgress = i /(float)amountDaysToForward ;
             _forwardProgressSlider.value = _forwardingProgress;
             _forwardProgressText.SetText((_forwardingProgress * 100).ToString("00.00") + "%");
+
+            yield return new WaitForEndOfFrame();
         }
         
         SimulationMaster.Instance.IsForwardingSimulation = false;
@@ -230,8 +236,7 @@ class SimulationController : MonoBehaviour
         Play();
         _forwardButton.interactable = true;
     }
-
-
+    
     private void OnDayChanges()
     {
         _currentDay = _controller.SimulationDate.Day;
