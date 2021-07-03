@@ -21,7 +21,6 @@ namespace Simulation
         /// </summary>
         public static class InfectionsPhaseParameters
         {
-
             /// <summary>
             /// Amount days until a person becomes infectious.
             /// </summary>
@@ -56,6 +55,18 @@ namespace Simulation
             public const int EndDaySymptoms = IncubationTime + AmountDaysSymptoms - 1;
 
 
+        }
+
+        /// <summary>
+        /// This class stores default quarantine values for the simulation.
+        /// <see cref="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html;jsessionid=CE16F99FB237ECBAC11C55AB8020F12F.internet111?nn=13490888#a325"
+        /// </summary>
+        public static class QuarantineParameters
+        {
+            /// <summary>
+            /// Amount days a person must be in quarantine.
+            /// </summary>
+            public const int QuarantineDays = 14;
         }
 
         /// <summary>
@@ -157,6 +168,5 @@ namespace Simulation
             /// </summary>
             public const float InfectionRiskIfRecovered = 0.02f;
         }
-
     }
 }

@@ -144,6 +144,19 @@ namespace InputValidation
             return result;
         }
 
+        /// <summary>
+        /// Method which validates the quarantine parameters.
+        /// </summary>
+        /// <param name="quarantineDays"></param>
+        /// <returns>true if all parameters are valid, else false</returns>
+        public static bool ValidateQuarantineParameters(ref int quarantineDays)
+        {
+            bool result = false;
+
+            bool quarantineDaysInputOk = TryParseIntDayInputField(UIController.Instance.QuarantineDaysInputField, ref quarantineDays);
+            result = quarantineDaysInputOk;
+            return result;
+        }
 
 
 
@@ -172,11 +185,6 @@ namespace InputValidation
             SetInputFieldColor(inputField, validPercentage);
             return validPercentage;
         }
-
-
-
-
-
 
 
         /// <summary>

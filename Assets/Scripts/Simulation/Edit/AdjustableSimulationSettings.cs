@@ -11,9 +11,10 @@ namespace Simulation.Edit
     [Serializable]
     public class AdjustableSimulationSettings
     {
+        //Quarantine parameters
+        public int AmountDaysQuarantine { get; set; }
 
         //Infection states, using floats better ???
-
         public int LatencyTime { get; set; }
 
         public int AmountDaysInfectious { get; set; }
@@ -112,9 +113,7 @@ namespace Simulation.Edit
             PersonSurvivesIntensiveCareProbability = DefaultInfectionParameters.HealthPhaseParameters.PersonSurvivesIntensiveCareProbability;
             DaysFromSymptomsBeginToDeath = DefaultInfectionParameters.HealthPhaseParameters.DaysFromSymptomsBeginToDeath;
 
-
+            AmountDaysQuarantine = DefaultInfectionParameters.QuarantineParameters.QuarantineDays;
         }
-
-
     }
 }

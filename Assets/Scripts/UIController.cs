@@ -100,7 +100,7 @@ public class UIController : MonoBehaviour
     public TMP_InputField RecoverInHospitalInputField;
     public TMP_InputField SurviveIntensiveCareInputField;
     public TMP_InputField AmountDaysToDeathInputField;
-
+    public TMP_InputField QuarantineDaysInputField;
 
     [Header("References to manager(s)")]
     //Will be replaced

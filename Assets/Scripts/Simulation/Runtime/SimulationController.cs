@@ -23,6 +23,8 @@ namespace Simulation.Runtime
 
         private List<Person> _persons = new List<Person>();
 
+        private Simulation.Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
+
         public void Initialize(List<Entity> entities)
         {
             _entities = entities;
@@ -133,10 +135,9 @@ namespace Simulation.Runtime
                         }
                         else
                         {
-                            member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + 14);
+                            member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + _settings.AmountDaysQuarantine);
                             Debug.Log("Extend qu: " + member.EndDateOfQuarantine);
                         }
-                            
                     }
 
                     //Infectious persons stay at home
@@ -155,21 +156,10 @@ namespace Simulation.Runtime
                         activity.Location.MovePersonHere(member);
                         //the hospital checks every thursday the personal
                         //The personal has to be checked with symptoms too
-                        if ((activity.Location.ToString().Equals("Simulation.Runtime.Hospital") && !member.IsInQuarantine
-                            && SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday)) || member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
+                        if ((SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday) && activity.Location is Simulation.Runtime.Hospital
+                            && !member.IsInQuarantine) || member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
                         {
-                            
-                                if (member.InfectionState.HasFlag(Person.InfectionStates.Infected))
-                                {
-                                    Debug.Log("Test positiv");
-                                    member.IsInQuarantine = true;
-                                    member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + 14);
-                                    Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
-                                    household.MovePersonHere(member);
-                                    AssignHousholdToQuarantine(household, member.EndDateOfQuarantine);
-                                }
-                                else
-                                    Debug.Log("Test negativ");
+                            CoronaTest(member, household);
                         }
                     }
 
@@ -181,6 +171,24 @@ namespace Simulation.Runtime
             }
         }
 
+        private void CoronaTest(Person member, Household household)
+        {
+            if (member.InfectionState.HasFlag(Person.InfectionStates.Infected))
+            {
+                Debug.Log("Test positiv");
+                member.IsInQuarantine = true;
+                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + _settings.AmountDaysQuarantine);
+                Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
+                household.MovePersonHere(member);
+                AssignHousholdToQuarantine(household, member.EndDateOfQuarantine);
+            }
+            else
+            {
+                Debug.Log("Test negativ");
+            }
+
+        }
+
         private void AssignHousholdToQuarantine(Household household, DateTime endDayOfQuarantine)
         {
             foreach (Person member in household.Members)
@@ -189,7 +197,7 @@ namespace Simulation.Runtime
                 if (!member.IsInQuarantine)
                 {
                     member.IsInQuarantine = true;
-                    member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + 14);
+                    member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + _settings.AmountDaysQuarantine);
                     Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
                     if (!household.HasPersonHere(member))
                     {
@@ -201,12 +209,12 @@ namespace Simulation.Runtime
 
         public void InfectRandomPerson(int personsToBeInfected)
         {
-            if(_persons.Count > 0)
+            if (_persons.Count > 0)
             {
                 //All persons get infected
-                if(_persons.Count <= personsToBeInfected)
+                if (_persons.Count <= personsToBeInfected)
                 {
-                    foreach(Person member in _persons)
+                    foreach (Person member in _persons)
                     {
                         member.SetInfected(SimulationDate);
                     }

@@ -4,8 +4,6 @@ using InputValidation;
 
 public class SimulationSettingsHandler : MonoBehaviour
 {
-
-
     public GameObject SimulationSettingsGameObject;
 
     public void LoadSettings()
@@ -36,8 +34,6 @@ public class SimulationSettingsHandler : MonoBehaviour
 
     public void SaveSettingsToSimulation()
     {
-
-
         Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation;
         Simulation.Edit.AdjustableSimulationSettings currentSettings = simulation.SimulationOptions.AdjustableSimulationPrameters;
 
@@ -54,11 +50,13 @@ public class SimulationSettingsHandler : MonoBehaviour
         float personSurvivesIntensiveCareProbability = defaultSettings.PersonSurvivesIntensiveCareProbability;
         int daysFromSymptomsBeginToDeath = defaultSettings.DaysFromSymptomsBeginToDeath;
 
+        int amountDaysQuarantine = defaultSettings.AmountDaysQuarantine;
 
         bool infectionPhaseParametersAreValid = InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms);
         bool healthPhaseParametersAreValid = InputValidator.ValidateHealthPhaseParameters(ref recoveringProbability, ref recoveringInHospitalProbability, ref personSurvivesIntensiveCareProbability, ref daysFromSymptomsBeginToDeath);
+        bool quarantineParametersAreValid = InputValidator.ValidateQuarantineParameters(ref amountDaysQuarantine);
 
-        if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid)
+        if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid && quarantineParametersAreValid)
         {
             currentSettings.LatencyTime = latencyTime;
             currentSettings.AmountDaysInfectious = amountDaysInfectious;
@@ -68,6 +66,7 @@ public class SimulationSettingsHandler : MonoBehaviour
             currentSettings.RecoveringInHospitalProbability = recoveringInHospitalProbability;
             currentSettings.PersonSurvivesIntensiveCareProbability = personSurvivesIntensiveCareProbability;
             currentSettings.DaysFromSymptomsBeginToDeath = daysFromSymptomsBeginToDeath;
+            currentSettings.AmountDaysQuarantine = amountDaysQuarantine;
         }
     }
 
@@ -91,6 +90,7 @@ public class SimulationSettingsHandler : MonoBehaviour
         UIController.Instance.RecoverInHospitalInputField.text = settings.RecoveringInHospitalProbability.ToString();
         UIController.Instance.SurviveIntensiveCareInputField.text = settings.PersonSurvivesIntensiveCareProbability.ToString();
         UIController.Instance.AmountDaysToDeathInputField.text = settings.DaysFromSymptomsBeginToDeath.ToString();
+        UIController.Instance.QuarantineDaysInputField.text = settings.AmountDaysQuarantine.ToString();
     }
 
 }
