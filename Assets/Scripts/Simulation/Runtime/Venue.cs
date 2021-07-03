@@ -36,10 +36,10 @@ namespace Simulation.Runtime
                         continue;
                     }
 
-                    float infectionProbability = InfectionRisk * (1 - (p.CarefulnessFactor + i.CarefulnessFactor) / 2) * GeneralInfectionProbabilityFactor;
-                    
+                    float linearInterpolatedCarefulnessFactor = Mathf.Lerp(1.5f, 0.5f, (p.CarefulnessFactor + i.CarefulnessFactor) / 2);
                    
-
+                    float infectionProbability = this.InfectionRisk * linearInterpolatedCarefulnessFactor * GeneralInfectionProbabilityFactor;
+                    
                     Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
 
                     if (Random.Range(0f, 1f) <= infectionProbability)

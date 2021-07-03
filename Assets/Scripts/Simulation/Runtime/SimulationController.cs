@@ -18,13 +18,11 @@ namespace Simulation.Runtime
 
         private const double SimulationStepsMinutes = 10;
 
-
         private Entity[] _entities;
         private Venue[] _venues;
         private Household[] _households;
         private Hospital[] _hospitals;
         public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
-
 
         public void Initialize(Entity[] entities)
         {
@@ -116,7 +114,6 @@ namespace Simulation.Runtime
                 }
             }
         }
-
 
         public void InfectRandomPerson()
         {
@@ -266,7 +263,6 @@ namespace Simulation.Runtime
             if (!person.HasRegularBed)
             {
                 UIController.Instance.NotEnoughBedsMessage.SetActive(true);
-
             }
         }
 
@@ -274,7 +270,6 @@ namespace Simulation.Runtime
         {
             Debug.Log("Amount patients in regular beds:" + hospital.PatientsInRegularBeds.Count);
             Debug.Log("Amount patients in intensive beds:" + hospital.PatientsInIntensiveCareBeds.Count);
-
         }
 
         private void AssignPersonToRegularBed(Person person, Hospital hospital)
@@ -301,6 +296,7 @@ namespace Simulation.Runtime
             {
                     oldHospital = (Hospital) person.CurrentLocation;
             }
+
             //Assign a free intensive care bed in our simulation world, if this fails we have to assign a regular bed (again)
             if (_hospitals != null && _hospitals.Length > 0)
             {
@@ -334,9 +330,7 @@ namespace Simulation.Runtime
             if (!person.IsInIntensiveCare)
             {
                 UIController.Instance.NotEnoughIntensiveBedsMessage.SetActive(true);
-
             }
-
         }
 
         private void AssignPersonToIntensiveBed(Person person, Hospital hospital, Hospital oldHospital)
@@ -354,6 +348,5 @@ namespace Simulation.Runtime
             person.HasRegularBed = false;
             //  DebugHospitalPatients(hospital);
         }
-
     }
 }

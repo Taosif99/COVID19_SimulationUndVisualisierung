@@ -32,7 +32,6 @@ namespace Grid
         //if we clicked on an already existing object
         public Action<Vector2Int> OnEditorObjectClicked;
 
-
         public CameraMovement CameraController;
 
         private void Awake()
@@ -49,6 +48,13 @@ namespace Grid
         // TODO: Move to EditorObjectsManager
         private void Update()
         {
+            //If the simulation is running, skip the code to ensure that GO's are not editable while runtime
+            if (SimulationController.Instance.WasStarted == true)
+            {
+                UIController.Instance.SetEntityPropertiesPanelVisible(false);
+                return; 
+            }
+
             //Check if left mouse button clicked and UI not clicked, rethink prefab.None for UI logic
             if (Input.GetMouseButtonDown(0) && !CameraController.IsMouseOverUi)
             {
@@ -58,7 +64,7 @@ namespace Grid
                 //Check if we hit something
                 if (!Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _groundMask))
                 {
-                    UIController.Instance.SetEntityPropertiesVisible(false);
+                    UIController.Instance.SetEntityPropertiesPanelVisible(false);
                     return;
                 }
                 
@@ -72,7 +78,7 @@ namespace Grid
                 }
                 else
                 {
-                    UIController.Instance.SetEntityPropertiesVisible(false);
+                    UIController.Instance.SetEntityPropertiesPanelVisible(false);
                 }
             }
         }

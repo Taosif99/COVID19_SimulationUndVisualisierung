@@ -11,28 +11,22 @@ using System;
 /// </summary>
 public class SimulationMaster : MonoBehaviour
 {
-
-
     [SerializeField] private EditorObjectsManager editorObjectsManager;
-
 
     public static SimulationMaster Instance;
     public Simulation.Edit.Simulation CurrentSimulation { get; set; }
     
     public bool IsForwardingSimulation { get; set; }
 
-
     /// <summary>
     /// The real world date the simulation started.
     /// </summary>
     public DateTime PlayDate { get; set; }
 
-
     private int _currentDayOfSimulation = 0;
     private int _amountDaysOfCurrentMonth;
     private DayInfoHandler _dayInfoHandler = new DayInfoHandler();
     private int _amountPeopleDead = 0;
-
 
     /// <summary>
     /// Dictionary which is used as global counter to count the infection states.
@@ -55,7 +49,6 @@ public class SimulationMaster : MonoBehaviour
         }
     }
 
-
     public int AmountInfectious
     {
         get
@@ -63,7 +56,6 @@ public class SimulationMaster : MonoBehaviour
             return _infectionStateCounter[Person.InfectionStates.Infectious];
         }
     }
-
 
     public int AmountRecovered
     {
@@ -81,7 +73,6 @@ public class SimulationMaster : MonoBehaviour
         { 
             return CurrentSimulation.SimulationOptions.AdjustableSimulationPrameters; 
         }
-        
     }
 
     public int AmountPeopleDead { get => _amountPeopleDead; }
@@ -108,13 +99,11 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter.Add(Person.InfectionStates.Uninfected, 0);
         _infectionStateCounter.Add(Person.InfectionStates.Infectious, 0);
         _amountPeopleDead = 0;
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        
        // DebugPrintOfCounterValues();
     }
 
@@ -148,6 +137,7 @@ public class SimulationMaster : MonoBehaviour
             //symptoms-=1
             return;
         }
+
         //Handles regular phase change
         switch (newInfectionState)
         {
@@ -175,14 +165,12 @@ public class SimulationMaster : MonoBehaviour
                 _infectionStateCounter[Person.InfectionStates.Phase4] += 1;
                 break;
 
-
             case Person.InfectionStates.Phase5:
                 _infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase4] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase5] += 1;
                 break;
         }
-
     }
 
     /// <summary>
@@ -216,8 +204,6 @@ public class SimulationMaster : MonoBehaviour
 
     private void DebugPrintOfCounterValues()
     {
-
-     
         /*
         string debugText = $"<color=yellow>Infected/Phase 1: {   _infectionStateCounter[Person.InfectionStates.Phase1] } </color>" +
             $"<color=red> Infected,Infectious/Phase 2:{   _infectionStateCounter[Person.InfectionStates.Phase2] } </color>" +
@@ -228,9 +214,6 @@ public class SimulationMaster : MonoBehaviour
         Debug.Log(debugText);
     */
     }
-
-
-
 
     //wrapping also DayInfoHandler
     public void OnDayBegins(DateTime date)
@@ -246,7 +229,6 @@ public class SimulationMaster : MonoBehaviour
         float incidence;
        _dayInfoHandler.UpdateRValueAndIncidence(_currentDayOfSimulation,out rValue,out rValue7,out incidence,PlayDate);
 
-
         if (UIController.Instance.EpidemicInfoToggle.isOn)
         {
             if (rValue == -1f)
@@ -259,7 +241,6 @@ public class SimulationMaster : MonoBehaviour
             if (rValue7 == -1f)
             {
                 UIController.Instance.RValue7Text.text = "R-Value7: ? ";
-
             }
             else
             {
@@ -277,13 +258,10 @@ public class SimulationMaster : MonoBehaviour
         }
     }
 
-
-
     public void OnPersonInfected()
     {
         _dayInfoHandler.AddNewInfectionToCurrentDate(_currentDayOfSimulation);
     }
-
 
     public void OnPersonDies()
     {
@@ -294,6 +272,4 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter[Person.InfectionStates.Infectious] -= 1;
 
     }
-
-
 }

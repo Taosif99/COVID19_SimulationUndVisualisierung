@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace Simulation.Runtime
 {
     // TODO: Separate statistical fields
@@ -37,6 +36,7 @@ namespace Simulation.Runtime
         public DateTime InfectionDate { get; set; }
 
         public event Action<StateTransitionEventArgs> OnStateTrasitionHandler;
+
         public class StateTransitionEventArgs : EventArgs
         {
             public InfectionStates newInfectionState;
@@ -95,7 +95,6 @@ namespace Simulation.Runtime
 
             return null;
         }
-
 
         /// <summary>
         /// Method which updates the current health state of a person.
@@ -228,7 +227,6 @@ namespace Simulation.Runtime
             SimulationMaster.Instance.OnPersonInfected();
         }
 
-
         /// <summary>
         /// Method to check if a person must be transferred to a hospital
         /// </summary>
@@ -236,7 +234,6 @@ namespace Simulation.Runtime
         public bool MustBeTransferredToHospital()
         {
             return (!IsInHospitalization && _healthState.MustBeInHospital());
-
         }
 
         /// <summary>
@@ -272,6 +269,5 @@ namespace Simulation.Runtime
             stateTransitionEventArgs.previousInfectionState = previousState;
             OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
         }
-
     }
 }

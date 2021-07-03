@@ -35,7 +35,7 @@ namespace RuntimeObjects
         {
             //The GameObject of the Editor object
             GameObject graphRuntimeGameObject = graphEditorObject.EditorGameObject;
-
+            
             //We may add here the required monobehaviours
             //...gameObject.AddComponent
 
@@ -48,7 +48,7 @@ namespace RuntimeObjects
         {
             //The GameObject of the Editor object
             GameObject hospitalRuntimeGameObject = hospitalEditorObject.EditorGameObject;
-
+            
             //We may add here the required monobehaviours
             //...gameObject.AddComponent
 
@@ -62,7 +62,7 @@ namespace RuntimeObjects
         {
             //The GameObject of the Editor object
             GameObject householdRuntimeGameObject = householdEditorObject.EditorGameObject;
-
+           
             //We may add here the required monobehaviours
             //...gameObject.AddComponent
 
@@ -76,7 +76,7 @@ namespace RuntimeObjects
         {
             //The GameObject of the Editor object
             GameObject workplaceRuntimeGameObject = workplaceEditorObject.EditorGameObject;
-
+            
             //We may add here the required monobehaviours
             //...gameObject.AddComponent
 
