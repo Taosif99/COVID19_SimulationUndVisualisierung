@@ -109,51 +109,10 @@ namespace Simulation.Runtime
                     {
                         continue;
                     }
-                    
-                    //Hospital logic
-                    if (member.MustBeTransferredToHospital())
-                    {
-                        TryAssignPersonToRegularBed(member);
-                    }
-
-                    //Know checking if person must go to intensive care
-                    //code is in this place because user can configure the world so that there are more intensive beds 
-                    //even though this would not be realistic.
-                    if (member.MustBeTransferredToIntensiveCare())
-                    {
-                        TryAssignPersonToIntensiveBed(member);
-                    }
-                    if (member.IsInHospitalization)
-                    {
-                        //Check if member can leave intensive care and go to a normal bed
-                        if (member.CanLeaveIntensiveCare())
-                        {
-                            TryAssignPersonToRegularBed(member);
-                        }
-                        continue;
-                    }
-
-                    //Infectious persons stay at home
-                    if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
-                    {
-                        if (!household.HasPersonHere(member))
-                        {
-                            household.MovePersonHere(member);
-                        }
-                        continue;
-                    }
-
-                    //Move person to activity if it exists and person not already there
-                    if (member.TryGetActivityAt(SimulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
-                    {
-                        activity.Location.MovePersonHere(member);
-                    }
-
-                    //Move person back to household if there are no activities
-                    if (!household.HasPersonHere(member) && !member.HasActivityAt(SimulationDate))
-                    {
-                        household.MovePersonHere(member);
-                    }
+                    if (HandleHospitalLogic(member)) continue;
+                    if (MoveInfectiousPersonToHome(member, household)) continue;
+                    TryMovePersonToItsActivity(member);
+                    TryMovePersonBackToHome(member, household);
                 }
             }
         }
@@ -178,6 +137,89 @@ namespace Simulation.Runtime
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             }
         }
+
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="member"></param>
+        /// <returns>true if member is in Hospital and further logic can be skipped, else false</returns>
+        private bool HandleHospitalLogic(Person member)
+        {
+
+            if (member.MustBeTransferredToHospital())
+            {
+                TryAssignPersonToRegularBed(member);
+            }
+
+            //Know checking if person must go to intensive care
+            //code is in this place because user can configure the world so that there are more intensive beds 
+            //even though this would not be realistic.
+            if (member.MustBeTransferredToIntensiveCare())
+            {
+                TryAssignPersonToIntensiveBed(member);
+            }
+            if (member.IsInHospitalization)
+            {
+                //Check if member can leave intensive care and go to a normal bed
+                if (member.CanLeaveIntensiveCare())
+                {
+                    TryAssignPersonToRegularBed(member);
+                }
+                return true;
+            }
+
+
+            return false;
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="household"></param>
+        /// <returns>true if further simulation logic can be skipped since person is at home, else false</returns>
+        private bool MoveInfectiousPersonToHome(Person member, Household household)
+        {
+
+            if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
+            {
+                if (!household.HasPersonHere(member))
+                {
+                    household.MovePersonHere(member);
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Moves person to activity if it exists and person not already there
+        /// </summary>
+        private void TryMovePersonToItsActivity(Person member)
+        {
+            if (member.TryGetActivityAt(SimulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
+            {
+                activity.Location.MovePersonHere(member);
+            }
+        }
+
+        /// <summary>
+        /// Moves person back to household if person has no activities to fulfill.
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="household"></param>
+        private void TryMovePersonBackToHome(Person member, Household household)
+        {
+
+            if (!household.HasPersonHere(member) && !member.HasActivityAt(SimulationDate))
+            {
+                household.MovePersonHere(member);
+            }
+        }
+
+
 
         /// <summary>
         /// Method which tries to assign a person to a regular bed.
