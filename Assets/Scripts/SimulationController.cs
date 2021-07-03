@@ -33,7 +33,7 @@ class SimulationController : MonoBehaviour
     private Simulation.Runtime.SimulationController _controller;
     private float _lastSimulationUpdate;
 
-    private bool IsRunning => _isInitialized && _isPaused == false;
+    public bool IsRunning => _isInitialized && _isPaused == false; //TODO Set private
     private int _amountDaysToForward = 1;
 
     private void Awake()
@@ -130,14 +130,9 @@ class SimulationController : MonoBehaviour
 
 
 
-    public void InfectRandomPerson()
+    public void InfectRandomPerson(int personsToBeInfected)
     {
-        if (!IsRunning)
-        {
-            return;
-        }
-
-        _controller.InfectRandomPerson();
+        _controller.InfectRandomPerson(personsToBeInfected);
         _virusButton.interactable = false;
     }
 
