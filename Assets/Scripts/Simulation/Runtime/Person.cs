@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace Simulation.Runtime
 {
     // TODO: Separate statistical fields
@@ -42,8 +41,8 @@ namespace Simulation.Runtime
         public bool IsInIntensiveCare { get => _isInIntensiveCare; set => _isInIntensiveCare = value; }
         public bool HasRegularBed { get => _hasRegularBed; set => _hasRegularBed = value; }
 
-
         public event Action<StateTransitionEventArgs> OnStateTrasitionHandler;
+
         public class StateTransitionEventArgs : EventArgs
         {
             public InfectionStates newInfectionState;
@@ -103,7 +102,6 @@ namespace Simulation.Runtime
             return null;
         }
 
-
         /// <summary>
         /// Method which updates the current health state of a person.
         /// </summary>
@@ -120,8 +118,6 @@ namespace Simulation.Runtime
         /// <param name="currentDate">Current simulations date</param>
         public void UpdateInfectionState(DateTime currentDate)
         {
-     
-
             if (!_infectionDate.Equals(new DateTime())) //Without this all persons will be "recovered"
             {
                 int currentDay = currentDate.Day;
@@ -135,7 +131,6 @@ namespace Simulation.Runtime
 
                 switch (InfectionState)
                 {
-
                     case InfectionStates.Phase1:
                         {
                             if (_daysSinceInfection >= settings.LatencyTime
@@ -189,7 +184,6 @@ namespace Simulation.Runtime
                             break;
                         }
 
-
                     case InfectionStates.Phase4:
                         {
                             if (_daysSinceInfection > settings.EndDaySymptoms)
@@ -230,7 +224,6 @@ namespace Simulation.Runtime
             SimulationMaster.Instance.OnPersonInfected();
         }
 
-
         /// <summary>
         /// Method to check if a person must be transferred to a hospital
         /// </summary>
@@ -238,7 +231,6 @@ namespace Simulation.Runtime
         public bool MustBeTransferredToHospital()
         {
             return (!IsInHospitalization && _healthState.MustBeInHospital());
-
         }
 
         /// <summary>
@@ -250,12 +242,10 @@ namespace Simulation.Runtime
             return (!_isInIntensiveCare && _healthState.MustBeInIntensiveCare());
         }
 
-
         public bool CanLeaveIntensiveCare()
         {
 
             return _isInIntensiveCare && !_healthState.MustBeInIntensiveCare();
-        
         }
 
         /// <summary>
@@ -270,6 +260,5 @@ namespace Simulation.Runtime
             stateTransitionEventArgs.previousInfectionState = previousState;
             OnStateTrasitionHandler?.Invoke(stateTransitionEventArgs);
         }
-
     }
 }

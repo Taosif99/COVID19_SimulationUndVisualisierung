@@ -23,7 +23,6 @@ namespace Simulation.Runtime
         private Hospital[] _hospitals;
         public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
 
-
         public void Initialize(Entity[] entities)
         {
             _entities = entities;
@@ -158,7 +157,6 @@ namespace Simulation.Runtime
             }
         }
 
-
         public void InfectRandomPerson()
         {
             Household[] households = _entities.OfType<Household>().ToArray();
@@ -191,7 +189,6 @@ namespace Simulation.Runtime
             //Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
 
             Venue lastLocation = person.CurrentLocation;
-
 
             if (_hospitals != null && _hospitals.Length > 0)
             {
@@ -231,7 +228,6 @@ namespace Simulation.Runtime
             if (!person.HasRegularBed)
             {
                 UIController.Instance.NotEnoughBedsMessage.SetActive(true);
-
             }
         }
 
@@ -239,7 +235,6 @@ namespace Simulation.Runtime
         {
             Debug.Log("Amount patients in regular beds:" + hospital.PatientsInRegularBeds.Count);
             Debug.Log("Amount patients in intensive beds:" + hospital.PatientsInIntensiveCareBeds.Count);
-
         }
 
         private void AssignPersonToRegularBed(Person person, Hospital hospital)
@@ -269,9 +264,9 @@ namespace Simulation.Runtime
                     oldHospital = hospital;
                 }
             }
+
             //Assign a free intensive care bed in our simulation world, if this fails we have to assign a regular bed (again)
             //Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
-
             if (_hospitals != null && _hospitals.Length > 0)
             {
                 int amountHospitals = _hospitals.Length;
@@ -296,7 +291,6 @@ namespace Simulation.Runtime
                     }
                 }
 
-
                 _hospitalRegularBedAssignmentsCounter++;
             }
 
@@ -305,9 +299,7 @@ namespace Simulation.Runtime
             if (!person.IsInIntensiveCare)
             {
                 UIController.Instance.NotEnoughIntensiveBedsMessage.SetActive(true);
-
             }
-
         }
 
         private void AssignPersonToIntensiveBed(Person person, Hospital hospital, Hospital oldHospital)
