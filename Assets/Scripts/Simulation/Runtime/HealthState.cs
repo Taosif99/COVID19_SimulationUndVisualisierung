@@ -16,7 +16,7 @@ namespace Simulation.Runtime
         private bool _willRecoverInHosptal;
         private bool _willGoToIntensiveCare;
         private bool _willDie;
-        private Simulation.Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
+        private Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
         public bool WillDie { get => _willDie; set => _willDie = value; }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Simulation.Runtime
             if (_person.IsInHospitalization)
             {
 
-                //We can sum up both cases (intensive care and simple hospitalization) above since we use Hashsets
+                //We can sum up both cases (intensive care and simple hospitalization)  since we use Hashsets
                 if (_willRecoverInHosptal)
                 {
                
@@ -109,7 +109,7 @@ namespace Simulation.Runtime
                         _person.IsInIntensiveCare = false;
                         _person.OnStateTransition(InfectionStates.Phase5, _person.InfectionState);
                         _person.InfectionState = InfectionStates.Phase5;
-                        _person.InfectionDate= new DateTime(); 
+                        _person.InfectionDate= default; 
 
                         //CONSIDER HERE THE PERSON ALSO RECOVERS !!!
 
@@ -145,20 +145,5 @@ namespace Simulation.Runtime
                  && _person.DaysSinceInfection < _settings.DayAPersonCanLeaveIntensiveCare
                  &&_willGoToIntensiveCare;
         }
-
-        /*
-        private  bool WillRecoverInHospitalNoIntensiveCare()
-        {
-            return _willRecoverInHosptal && !_willGoToIntensiveCare;
-        
-        }
-
-        private  bool WillRecoverInHospitalIntensiveCare()
-        {
-            return _willRecoverInHosptal && _willGoToIntensiveCare;
-
-        }*/
-
-
     }
 }

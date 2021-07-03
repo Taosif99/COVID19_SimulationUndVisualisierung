@@ -29,6 +29,7 @@ public class SimulationMaster : MonoBehaviour
 
 
     private int _currentDayOfSimulation = 0;
+    private int _amountDaysOfCurrentMonth;
     private DayInfoHandler _dayInfoHandler = new DayInfoHandler();
     private int _amountPeopleDead = 0;
 
@@ -72,8 +73,7 @@ public class SimulationMaster : MonoBehaviour
         }
     }
 
-    public int CurrentDayOfSimulation { get => _currentDayOfSimulation; set => _currentDayOfSimulation = value; }
-
+    public int CurrentDayOfSimulation { get => _currentDayOfSimulation; private  set => _currentDayOfSimulation = value; }
 
     public Simulation.Edit.AdjustableSimulationSettings AdjustableSettings
     {
@@ -85,6 +85,7 @@ public class SimulationMaster : MonoBehaviour
     }
 
     public int AmountPeopleDead { get => _amountPeopleDead; }
+   
 
     private void Awake()
     {
@@ -121,6 +122,7 @@ public class SimulationMaster : MonoBehaviour
     /// Method which handles the counting of infection states if a state transition happens.
     /// 
     /// TO CONSIDER : All phases are counted distinct, apart of phase 1 which is the amount of infected people.
+    /// States like infectious and uninfected are also counted.
     /// </summary>
     /// <param name="infectionState">The new state after transition.</param>
     public void AddToGlobalCounter(Person.StateTransitionEventArgs eventArgs)
@@ -242,7 +244,7 @@ public class SimulationMaster : MonoBehaviour
         float rValue;
         float rValue7;
         float incidence;
-       _dayInfoHandler.UpdateRValueAndIncidence(CurrentDayOfSimulation,out rValue,out rValue7,out incidence,PlayDate);
+       _dayInfoHandler.UpdateRValueAndIncidence(_currentDayOfSimulation,out rValue,out rValue7,out incidence,PlayDate);
 
 
         if (UIController.Instance.EpidemicInfoToggle.isOn)
@@ -279,7 +281,7 @@ public class SimulationMaster : MonoBehaviour
 
     public void OnPersonInfected()
     {
-        _dayInfoHandler.AddNewInfectionToCurrentDate(CurrentDayOfSimulation);
+        _dayInfoHandler.AddNewInfectionToCurrentDate(_currentDayOfSimulation);
     }
 
 

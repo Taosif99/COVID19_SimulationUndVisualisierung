@@ -211,22 +211,25 @@ namespace GraphChart
         //E.g called each day or each state transition
         private void UpdateLineGraphValues()
         {
-            AddValuesToLinesList();
-            //Clear lists each 30 days / seven simulation time-step-units
-            
-            
-            if (_lines[0].Values.Count == 30)
-           {
+
+            //TODO UPDATE EACH MONTH
+            if (_lines[0].Values.Count < 30)
+            {
+
+                AddValuesToLinesList();
+            }
+            else
+            {
 
                 _lines[0].Values.Clear();
                 _lines[1].Values.Clear();
                 _lines[2].Values.Clear();
                 _lines[3].Values.Clear();
                 _lines[4].Values.Clear();
-                //Add the cleared day
                 AddValuesToLinesList();
-           
+
             }
+            
 
         }
 

@@ -143,12 +143,13 @@ namespace Simulation.Runtime
                         continue;
                     }
 
-                    //Activities of a person
+                    //Move person to activity if it exists and person not already there
                     if (member.TryGetActivityAt(SimulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
                     {
                         activity.Location.MovePersonHere(member);
                     }
 
+                    //Move person back to household if there are no activities
                     if (!household.HasPersonHere(member) && !member.HasActivityAt(SimulationDate))
                     {
                         household.MovePersonHere(member);
@@ -259,8 +260,6 @@ namespace Simulation.Runtime
                     oldHospital = (Hospital) person.CurrentLocation;
             }
             //Assign a free intensive care bed in our simulation world, if this fails we have to assign a regular bed (again)
-            //Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
-
             if (_hospitals != null && _hospitals.Length > 0)
             {
                 int amountHospitals = _hospitals.Length;

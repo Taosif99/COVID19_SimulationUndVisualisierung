@@ -25,7 +25,7 @@ class SimulationController : MonoBehaviour
     private Button _virusButton;
 
     private int _currentDay;
-    private int _currentMonth;
+
     private event Action<bool> _onDayPassed; //TODO PROPER EVENT
 
     private bool _isInitialized = false;
@@ -70,11 +70,11 @@ class SimulationController : MonoBehaviour
             _controller.Initialize(entities);
 
             _currentDay = _controller.SimulationDate.Day;
-            _currentMonth = _controller.SimulationDate.Month;
             SimulationMaster.Instance.StartUninfectedCounting();
             SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
             SimulationMaster.Instance.PlayDate = DateTime.Now;
             GlobalSimulationGraph.Instance.AmountHorizontalLineUpdater();
+
             _isInitialized = true;
         }
         else if (_isPaused == true)
@@ -95,16 +95,14 @@ class SimulationController : MonoBehaviour
             _controller.RunUpdate();
             _simulationDateTime.text =
                 $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
-            
+
+
+
             if (_currentDay != _controller.SimulationDate.Day)
             {
                 OnDayChanges();
             }
 
-            if (_currentMonth != _controller.SimulationDate.Month)
-            {
-                OnMonthChanges();
-            }
             _lastSimulationUpdate = Time.time;
         }
 
@@ -165,7 +163,7 @@ class SimulationController : MonoBehaviour
         
         StartCoroutine(ForwardSimulationRoutine(amountDaysToForward)); //This is lame
         
-        // ForwardSimulationBlocking(amountDaysToForward); //This is blocking which worse
+        // ForwardSimulationBlocking(amountDaysToForward); //This is blocking which  is worse
     }
 
 
@@ -217,12 +215,9 @@ class SimulationController : MonoBehaviour
                 _controller.RunUpdate();
             }
 
+
             OnDayChanges();
 
-            if (_currentMonth != _controller.SimulationDate.Month)
-            { 
-                OnMonthChanges();
-            }
 
             _forwardingProgress = i /(float)amountDaysToForward ;
             _forwardProgressSlider.value = _forwardingProgress;
@@ -239,6 +234,7 @@ class SimulationController : MonoBehaviour
     
     private void OnDayChanges()
     {
+        //Debug.Log("Day Changes");
         _currentDay = _controller.SimulationDate.Day;
         _onDayPassed?.Invoke(true);
         //10 min bias ???
@@ -246,11 +242,4 @@ class SimulationController : MonoBehaviour
         SimulationMaster.Instance.OnDayEnds();
         SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
     }
-
-    private void OnMonthChanges()
-    {
-        _currentMonth = _controller.SimulationDate.Month;
-        //TODO SET UP MULTILINEGRAPH TO UPDATE EVENTUALLY
-    }
-
 }

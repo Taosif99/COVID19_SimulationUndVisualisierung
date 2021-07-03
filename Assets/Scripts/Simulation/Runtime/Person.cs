@@ -162,7 +162,7 @@ namespace Simulation.Runtime
                 case InfectionStates.Phase3:
                 {
                     //If person will die and no hospital is free
-                    //person will die "regularly" at home instead
+                    //person will die "regularly" in phase3 at home instead
                     //Here one may handle phases of dying
                     if (_healthState.WillDie)
                     {
@@ -197,7 +197,7 @@ namespace Simulation.Runtime
                         InfectionState = InfectionStates.Phase5;
 
                         //Here we may update the infection risk if person recovers
-                        InfectionDate = new DateTime(); //restore undefined infection date
+                        InfectionDate = default;//restore undefined infection date
                         SetReInfectionRisk();
                         _healthState = new HealthState(this);
                     }
@@ -249,6 +249,10 @@ namespace Simulation.Runtime
         }
 
 
+        /// <summary>
+        /// Method to check if a person can leave intensive care
+        /// </summary>
+        /// <returns>true if person can leave intensive care, else false</returns>
         public bool CanLeaveIntensiveCare()
         {
 
