@@ -1435,8 +1435,12 @@ MonoBehaviour:
     attributes which you can define yourself. You can also save the simulation so
     that you have not to set everything again when you restart the program.\r\nAbove
     each venue there is an indication of how many are healthy (<color=green>green</color>),
-    infected (<color=orange>orange</color>) and infectious (<color=red>red</color>).\r\n\r\nThere
-    are two types of workplaces: store and other. \r\n\nA store has four work shifts:\r\n1.\tWork
+    infected (<color=orange>orange</color>) and infectious (<color=red>red</color>).\r\nFor
+    the hospitals, the number of normal beds (<color=green>??</color>) and intensive
+    care beds (<color=green>??</color>) and how many of them are occupied are also
+    displayed.\r\nIn our simulation we try to ensure that a normal patient gets a
+    normal bed and an intensive care patient gets an intensive care bed. If the \u2026\r\n\r\n\r\nThere
+    are two types of workplaces: store and other. \r\n\r\nA store has four work shifts:\r\n1.\tWork
     shift: Monday-Saturday from 8 a.m. to 4 p.m.\r\n2.\tWork shift: Monday-Friday
     from 8 a.m. to 4 p.m. \r\n3.\tWork shift: Monday-Saturday from 12 p.m. to 8 p.m.\r\n4.\tWork
     shift: Monday-Friday from 12 p.m. to 8 p.m.\r\n\r\nOther workplaces have one
@@ -1445,15 +1449,16 @@ MonoBehaviour:
     shift: Monday-Sunday 12 a.m. to 8 a.m.\r\n2.\tWork shift: Monday-Sunday 8 a.m.
     to 4 p.m.\r\n3.\tWork shift: Monday-Sunday 4 p.m. to 12 a.m. \r\n\r\nWhen a person
     becomes infected with CoViD19, the person goes through the following stages if
-    the person does not die.\r\n\nPhase 1: The person is infected.\r\nPhase 2: The
-    person is infected and infectious. (This phase can entry between the 7. or 11.
-    day)\r\nPhase 3: The person is infected, infectious and has symptoms. (Entry
-    3 days after phase 2)\r\nPhase 4: The person is infected, has symptoms and is
-    starting with recovery. (F\xE4ngt 10 Tage nach Phase 3 an) <color=red>Problem
-    here, because RKI says \u201ENach derzeitigem Kenntnisstand geht bei leichter
-    bis moderater Erkrankung die Kontagiosit\xE4t 10 Tage nach Symptombeginn deutlich
-    zur\xFCck\u201C </color>\r\nPhase 5: The person is recovered. (Entry 14 days
-    after phase 3)\r\n\r\nWe used the following sources for our research:\r\n\r\nhttps://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html;jsessionid=4F9C8FBD1A6B20D6B25BDFC1EBCC726B.internet082?nn=13490888#doc13776792bodyText5\r\n\r\nhttps://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/\r"
+    the person does not die.\r\n\r\nPhase 1: The person is infected.\r\nPhase 2:
+    The person is infected and infectious. This phase begins three days after the
+    infection.\r\nPhase 3: The person is infected, infectious and has symptoms. This
+    phase begins five days after infection and the Phase 2 ends.\r\nPhase 4: The
+    person is infected, has symptoms and is starting with recovery. This phase begins
+    13 days after infection and the Phase 3 ends.\r\nPhase 5: The person is considered
+    recovered 16 days after infection.\r\n\r\nWe used the following sources for our
+    research:\r\nhttps://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html;jsessionid=CE16F99FB237ECBAC11C55AB8020F12F.internet111?nn=13490888#a325
+    \r\n\r\nhttps://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile
+    \r\n\r\nhttps://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
