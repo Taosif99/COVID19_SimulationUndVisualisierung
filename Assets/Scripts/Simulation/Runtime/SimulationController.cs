@@ -85,14 +85,10 @@ namespace Simulation.Runtime
                             shift.Days,
                             shift.StartTime,
                             shift.StartTime + shift.Duration,
-                            shift.Workplace
+                            shift.Workplace,
+                            true
                         ));
-                        member.Activities.Add(new Activity(
-                                   shift.Days,
-                                   shift.StartTime,
-                                   shift.StartTime + shift.Duration,
-                                   shift.Workplace
-                               ));
+
 
                         workShiftIndex = (workShiftIndex + 1) % workShifts.Length;
                         shift.Workplace.AmountAssignedWorkers += 1;
