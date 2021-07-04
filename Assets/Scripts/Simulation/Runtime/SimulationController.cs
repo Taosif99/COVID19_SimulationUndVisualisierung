@@ -22,6 +22,8 @@ namespace Simulation.Runtime
         private Venue[] _venues;
         private Household[] _households;
         private Hospital[] _hospitals;
+        private List<Person> _persons = new List<Person>();
+        private Simulation.Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
         public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
 
         public void Initialize(Entity[] entities)
@@ -33,12 +35,12 @@ namespace Simulation.Runtime
             
             WorkShift[] workShifts = _entities.OfType<Workplace>()
                 .SelectMany(w => w.WorkShifts)
-                .ToArray();
+                .ToList();
 
             int workShiftIndex = 0;
             bool workplaceCapacityReached = false;
 
-            foreach (var household in _households)
+            foreach (var household in _entities.OfType<Household>())
             {
                 if (!workplaceCapacityReached)
                 {
@@ -46,6 +48,8 @@ namespace Simulation.Runtime
                     {
                         foreach (Person member in household.Members)
                         {
+                            _persons.Add(member);
+
                             if (!member.IsWorker)
                             {
                                 continue;
@@ -93,6 +97,7 @@ namespace Simulation.Runtime
                     } while (false);
                 }
             }
+            //Debug.Log(_persons.Count);
         }
 
         /// <summary>
@@ -102,6 +107,7 @@ namespace Simulation.Runtime
         ///  - Health/Hospital states of each member of a household
         ///  - What a person does if she/he is infectious
         ///  - Moving persons to diffent locations if they have a activity
+        ///  - Rapid antigen tests in hospitals
         /// </summary>
         public void RunUpdate()
         {
@@ -131,31 +137,115 @@ namespace Simulation.Runtime
                     {
                         continue;
                     }
+
                     if (HandleHospitalLogic(member)) continue;
+
+                    /*
+                    //case to leave quarantine
+                    if (member.EndDateOfQuarantine.Equals(SimulationDate))
+                    {
+                        if (member.InfectionState.HasFlag(Person.InfectionStates.Recovered))
+                        {
+                            member.IsInQuarantine = false;
+                        }
+                        else
+                        {
+                            member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + _settings.AmountDaysQuarantine);
+                            Debug.Log("Extend qu: " + member.EndDateOfQuarantine);
+                        }
+                    }*/
+
                     if (MoveInfectiousPersonToHome(member, household)) continue;
                     TryMovePersonToItsActivity(member);
+                    //Person Activity & at work => Corona Test
+                    /*
+                    //Activities of a person
+                    if (member.TryGetActivityAt(SimulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
+                    {
+                        activity.Location.MovePersonHere(member);
+                        //the hospital checks every thursday the personal
+                        //The personal has to be checked with symptoms too
+                        if ((SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday) && activity.Location is Simulation.Runtime.Hospital
+                            && !member.IsInQuarantine) || member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
+                        {
+                            CoronaTest(member, household);
+                        }
+                    }*/
                     //HERE DO WORK TESTING
                     TryMovePersonBackToHome(member, household);
                 }
             }
         }
 
-        public void InfectRandomPerson()
+        private void CoronaTest(Person member, Household household)
         {
-            Household[] households = _entities.OfType<Household>().ToArray();
-            if (households != null && households.Length > 0)
+            if (member.InfectionState.HasFlag(Person.InfectionStates.Infected))
             {
-                Household randomHousehold = households[Random.Range(0, households.Length)];
-                Person randomPerson = randomHousehold.Members[Random.Range(0, randomHousehold.Members.Length)];
-                randomPerson.SetInfected(SimulationDate);
+                Debug.Log("Test positiv");
+                member.IsInQuarantine = true;
+                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + _settings.AmountDaysQuarantine);
+                Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
+                household.MovePersonHere(member);
+                AssignHousholdToQuarantine(household, member.EndDateOfQuarantine);
             }
             else
             {
-                Debug.Log("No households");
+                Debug.Log("Test negativ");
+            }
+        }
+
+        private void AssignHousholdToQuarantine(Household household, DateTime endDayOfQuarantine)
+        {
+            foreach (Person member in household.Members)
+            {
+                //Check if person is not in quarantine
+                if (!member.IsInQuarantine)
+                {
+                    member.IsInQuarantine = true;
+                    member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + _settings.AmountDaysQuarantine);
+                    Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
+                    if (!household.HasPersonHere(member))
+                    {
+                        household.MovePersonHere(member);
+                    }
+                }
+            }
+        }
+
+        public void InfectRandomPerson(int personsToBeInfected)
+        {
+            if (_persons.Count > 0)
+            {
+                //All persons get infected
+                if (_persons.Count <= personsToBeInfected)
+                {
+                    foreach (Person member in _persons)
+                    {
+                        member.SetInfected(SimulationDate);
+                    }
+                }
+                else
+                {
+                    int infectedPersons = 0;
+                    do
+                    {
+                        Person randomPerson = _persons[Random.Range(0, _persons.Count)];
+                        if (randomPerson.InfectionState.Equals(Simulation.Runtime.Person.InfectionStates.Uninfected))
+                        {
+                            randomPerson.SetInfected(SimulationDate);
+                            infectedPersons++;
+                        }
+                    } while (infectedPersons < personsToBeInfected);
+                    //Debug.Log(infectedPersons + "   " + personsToBeInfected);
+                }
+            }
+            else
+            {
+                Debug.Log("No persons");
                 string msg = "Atleast one household with one person is requiered to infect one person!";
-                string name = "No households";
+                string name = "No persons";
                 DialogBox dialogBox = new DialogBox(name, msg);
-                dialogBox.HasCancelButon = false;
+                dialogBox.HasCancelButton = false;
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             }
         }
@@ -253,36 +343,48 @@ namespace Simulation.Runtime
         /// <param name="person"></param>
         private void TryAssignPersonToRegularBed(Person person)
         {
+            Hospital[] hospitals = _entities.OfType<Hospital>().ToArray();
 
             Venue lastLocation = person.CurrentLocation;
-            if (_hospitals != null && _hospitals.Length > 0)
+
+
+            if (hospitals != null && hospitals.Length > 0)
             {
-                int amountHospitals = _hospitals.Length;
-                Hospital hospital = _hospitals[_hospitalRegularBedAssignmentsCounter % amountHospitals];
+                int amountHospitals = hospitals.Length;
+                Hospital hospital = hospitals[_hospitalRegularBedAssignmentsCounter % amountHospitals];
                 if (hospital.PatientsInRegularBeds.Count < hospital.AmountRegularBeds)
                 {
                     AssignPersonToRegularBed(person, hospital);
                 }
                 else
                 {
+                    //Debug.Log("No more places in this hospital, try next hospitals");
                     for (int i = 0; i < amountHospitals; i++)
                     {
-                        if (_hospitals[i].PatientsInRegularBeds.Count < _hospitals[i].AmountRegularBeds)
+                        if (hospitals[i].PatientsInRegularBeds.Count < hospitals[i].AmountRegularBeds)
                         {
-                            AssignPersonToRegularBed(person, _hospitals[i]);
+                            AssignPersonToRegularBed(person, hospitals[i]);
                             break;
                         }
                     }
                 }
+
+                //At this point we may check if a person is in hospital,if yes the probabilities stay the same, else reduce atleast survive probability
+                //or show message that there was no place for a person in the hospital
+                if (!person.HasRegularBed)
+                {
+                    UIController.Instance.NotEnoughBedsMessage.SetActive(true);
+
+                }
+
                 //Handle case if person leaves sensitive bed and gets a normal bed again
                 if (person.IsInIntensiveCare && person.HasRegularBed)
-                {                  
-                        Hospital oldHospital = (Hospital)lastLocation;
-                        oldHospital.PatientsInIntensiveCareBeds.Remove(person);
-                        person.IsInIntensiveCare = false;
+                {
+                    Hospital oldHospital = (Hospital)lastLocation;
+                    oldHospital.PatientsInIntensiveCareBeds.Remove(person);
+                    person.IsInIntensiveCare = false;
+
                 }
-                _hospitalRegularBedAssignmentsCounter++;
-            }
 
             //At this point we may check if a person is in hospital,if yes the probabilities stay the same, else reduce atleast survive probability
             //or show message that there was no place for a person in the hospital
@@ -302,7 +404,7 @@ namespace Simulation.Runtime
         {
             hospital.PatientsInRegularBeds.Add(person);
             hospital.MovePersonHere(person);
-            person.IsInHospitalization = true;
+            person.IsInHospital = true;
             person.HasRegularBed = true;
         }
 
@@ -319,15 +421,18 @@ namespace Simulation.Runtime
             Hospital oldHospital = null;
             if (person.HasRegularBed)
             {
-                    oldHospital = (Hospital) person.CurrentLocation;
+                if (person.CurrentLocation is Hospital hospital)
+                {
+                    oldHospital = hospital;
+                }
             }
 
             //Assign a free intensive care bed in our simulation world, if this fails we have to assign a regular bed (again)
             if (_hospitals != null && _hospitals.Length > 0)
             {
-                int amountHospitals = _hospitals.Length;
+                int amountHospitals = hospitals.Length;
                 //Use round robin first 
-                Hospital hospital = _hospitals[_hospitalIntensiveCareBedAssignmentsCounter % amountHospitals];
+                Hospital hospital = hospitals[_hospitalIntensiveCareBedAssignmentsCounter % amountHospitals];
                 //Check amount normal beds
                 if (hospital.PatientsInIntensiveCareBeds.Count < hospital.AmountIntensiveCareBeds)
                 {
@@ -335,18 +440,17 @@ namespace Simulation.Runtime
                 }
                 else
                 {
-                    //Debug.Log("No more placees in this hospital, try next hospitals");
+                    Debug.Log("No more placees in this hospital, try next hospitals");
                     // if round robin fails, try search for a free hospital place linearly
                     for (int i = 0; i < amountHospitals; i++)
                     {
-                        if (_hospitals[i].PatientsInIntensiveCareBeds.Count < _hospitals[i].AmountIntensiveCareBeds)
+                        if (hospitals[i].PatientsInIntensiveCareBeds.Count < hospitals[i].AmountIntensiveCareBeds)
                         {
-                            AssignPersonToIntensiveBed(person, _hospitals[i], oldHospital);
+                            AssignPersonToIntensiveBed(person, hospitals[i], oldHospital);
                             break;
                         }
                     }
                 }
-
                 _hospitalRegularBedAssignmentsCounter++;
             }
 
@@ -364,11 +468,11 @@ namespace Simulation.Runtime
             if (oldHospital != null)
             {
                 oldHospital.PatientsInRegularBeds.Remove(person);
-
+                person.HasRegularBed = false;
             }
             hospital.PatientsInIntensiveCareBeds.Add(person);
             hospital.MovePersonHere(person);
-            person.IsInHospitalization = true;
+            person.IsInHospital = true;
             person.IsInIntensiveCare = true;
             person.HasRegularBed = false;
         }

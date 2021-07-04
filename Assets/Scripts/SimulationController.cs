@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using EditorObjects;
 using RuntimeObjects;
@@ -10,6 +11,7 @@ using GraphChart;
 using System;
 using UnityEngine.UI;
 using System.Collections.Generic;
+
 
 class SimulationController : MonoBehaviour
 {
@@ -68,9 +70,9 @@ class SimulationController : MonoBehaviour
     {
         if (_isInitialized == false)
         {
-            Entity[] entities = _editorObjectsManager.GetAllEditorObjects()
+            List<Entity> entities = _editorObjectsManager.GetAllEditorObjects()
                 .Select(RuntimeObjectFactory.Create)
-                .ToArray();
+                .ToList();
 
             _controller = new Simulation.Runtime.SimulationController();
             _controller.Initialize(entities);
@@ -98,7 +100,7 @@ class SimulationController : MonoBehaviour
         }
 
         if (Time.time - _lastSimulationUpdate >= SimulationInterval)
-        {
+        {  
             _controller.RunUpdate();
             _simulationDateTime.text =
                 $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
@@ -109,10 +111,8 @@ class SimulationController : MonoBehaviour
             {
                 OnDayChanges();
             }
-
             _lastSimulationUpdate = Time.time;
         }
-
     }
 
     public void Pause()
@@ -122,7 +122,7 @@ class SimulationController : MonoBehaviour
             return;
         }
 
-        _isPaused = true;
+       _isPaused = true;
     }
 
     public void Stop()
@@ -142,7 +142,6 @@ class SimulationController : MonoBehaviour
             UIController.Instance.DisableBedMessages();
             UIController.Instance.SetEntitiesPanelVisible(true);
             StopAllCoroutines();
-            _forwardProgressSliderGameObject.SetActive(false);
         }
     }
 
@@ -153,7 +152,6 @@ class SimulationController : MonoBehaviour
             return;
         }
 
-        
         _forwardButton.interactable = false;
 
         int amountDaysToForward;
@@ -171,14 +169,9 @@ class SimulationController : MonoBehaviour
         // ForwardSimulationBlocking(amountDaysToForward); //This is blocking which  is worse
     }
 
-    public void InfectRandomPerson()
+    public void InfectRandomPerson(int personsToBeInfected)
     {
-        if (!IsRunning)
-        {
-            return;
-        }
-
-        _controller.InfectRandomPerson();
+        _controller.InfectRandomPerson(personsToBeInfected);
         _virusButton.interactable = false;
     }
 
@@ -201,15 +194,14 @@ class SimulationController : MonoBehaviour
     }
 
     /// <summary>
-    /// Using a coroutine to avoiding program lagging if many days are forwarded spammed.
+    /// Using a coroutine to avoid program lagging if button is spammed.
     /// </summary>
     /// 
-    private IEnumerator ForwardSimulationRoutine(int amountDaysToForward)
+    private IEnumerator ForwardSimulationRoutine()
     {
-        _forwardingProgress = 0f;
-        Pause();
         SimulationMaster.Instance.IsForwardingSimulation = true;
-        for (int i = 1; i <= amountDaysToForward; i++)
+
+        for (int i = 0; i < _amountDaysToForward; i++)
         {
             while (_currentDay == _controller.SimulationDate.Day)
             {
@@ -219,18 +211,13 @@ class SimulationController : MonoBehaviour
 
             OnDayChanges();
 
-
             _forwardingProgress = i /(float)amountDaysToForward ;
             _forwardProgressSlider.value = _forwardingProgress;
             _forwardProgressText.SetText((_forwardingProgress * 100).ToString("00.00") + "%");
 
             yield return new WaitForEndOfFrame();
         }
-        
         SimulationMaster.Instance.IsForwardingSimulation = false;
-        _forwardProgressSliderGameObject.SetActive(false);
-        Play();
-        _forwardButton.interactable = true;
     }
 
     private void OnDayChanges()

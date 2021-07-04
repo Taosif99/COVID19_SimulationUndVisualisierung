@@ -76,12 +76,13 @@ namespace InputValidation
             return inputIsValid;
         }
 
-       
-
+ 
 
 
         /// <summary>
         /// Method which validated the simulation settings parameters.
+        /// It validates the parsing and if:
+        ///  IncubationTime + AmountDaysSymptoms   >=LatencyTime + AmountDaysInfectious 
         /// </summary>
         /// <param name="latencyTime"></param>
         /// <param name="amountDaysInfectious"></param>
@@ -99,7 +100,6 @@ namespace InputValidation
 
             result = latencyInputOk && amountDaysInfectiousInputOk && incubationInputOk && amountDaysSymptomsInputOk;
 
-            /*
             if (result == true)
             {
                 result = incubationTime + amountDaysSymptoms >= latencyTime + amountDaysInfectious;
@@ -114,9 +114,7 @@ namespace InputValidation
                     //TODO DIALOGBOX WHICH EXPLAINS ERROR
                 }
 
-            }*/
-
-
+            }
             return result;
         }
 
@@ -135,7 +133,7 @@ namespace InputValidation
         /// <returns>true if all parameters are valid, else false</returns>
         public static bool ValidateHealthPhaseParameters(ref float recoveringProbability, ref float recoveringInHospitalProbability, ref float personSurvivesIntensiveCareProbability , ref int daysFromSymptomsBeginToDeath)
         {
-            bool result;
+            bool result = false;
 
             bool recoveringProbabilityInputOk = TryParseFloatPercentageInputField(UIController.Instance.RecoverInputField, ref recoveringProbability);
             bool recoveringProbabilityInHospitalInputOk = TryParseFloatPercentageInputField(UIController.Instance.RecoverInHospitalInputField, ref recoveringInHospitalProbability);
@@ -146,26 +144,17 @@ namespace InputValidation
             return result;
         }
 
-
-
         /// <summary>
-        /// Method which validates the health phase parameters which define the hospitalizatiom process.
+        /// Method which validates the quarantine parameters.
         /// </summary>
-        /// <param name="daysInHospital"></param>
-        /// <param name="durationOfSymptomsbeginToHospitalization"></param>
-        /// <param name="daysInIntensiveCare"></param>
-        /// <param name="durationOfHospitalizationToIntensiveCare"></param>
-        ///<returns>true if all parameters are valid, else false</returns>
-        public static bool ValidateHospitalParameters(ref int daysInHospital, ref int durationOfSymptomsbeginToHospitalization, ref int daysInIntensiveCare, ref int durationOfHospitalizationToIntensiveCare)
+        /// <param name="quarantineDays"></param>
+        /// <returns>true if all parameters are valid, else false</returns>
+        public static bool ValidateQuarantineParameters(ref int quarantineDays)
         {
             bool result = false;
-            bool daysInHospitalInputOk = TryParseIntDayInputField(UIController.Instance.DaysInHosputalInputField, ref daysInHospital);
-            bool durationOfSymptomsbeginToHospitalizationInputOk = TryParseIntDayInputField(UIController.Instance.DaysSymptomsBeginToHospitalizationInputField, ref durationOfSymptomsbeginToHospitalization);
-            bool daysInIntensiveCareInputOk = TryParseIntDayInputField(UIController.Instance.DaysIntensiveCareInputField, ref daysInIntensiveCare);
-            bool durationOfHospitalizationToIntensiveCareInputOk = TryParseIntDayInputField(UIController.Instance.DaysRegularToIntensiveInputField, ref durationOfHospitalizationToIntensiveCare);
 
-            result = daysInHospitalInputOk && durationOfSymptomsbeginToHospitalizationInputOk && daysInIntensiveCareInputOk && durationOfHospitalizationToIntensiveCareInputOk;
-
+            bool quarantineDaysInputOk = TryParseIntDayInputField(UIController.Instance.QuarantineDaysInputField, ref quarantineDays);
+            result = quarantineDaysInputOk;
             return result;
         }
 
@@ -196,11 +185,6 @@ namespace InputValidation
             SetInputFieldColor(inputField, validPercentage);
             return validPercentage;
         }
-
-
-
-
-
 
 
         /// <summary>
@@ -249,7 +233,7 @@ namespace InputValidation
         /// </summary>
         /// <param name="inputField"></param>
         /// <param name="contentIsCorrect"></param>
-       public static void SetInputFieldColor(TMP_InputField inputField, bool contentIsCorrect)
+        private static void SetInputFieldColor(TMP_InputField inputField, bool contentIsCorrect)
         {
             if (!contentIsCorrect)
             {
