@@ -24,7 +24,6 @@ public class SimulationMaster : MonoBehaviour
     public DateTime PlayDate { get; set; }
 
     private int _currentDayOfSimulation = 0;
-    private int _amountDaysOfCurrentMonth;
     private DayInfoHandler _dayInfoHandler = new DayInfoHandler();
     private int _amountPeopleDead = 0;
 

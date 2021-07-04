@@ -21,8 +21,6 @@ class SimulationController : MonoBehaviour
     [SerializeField]
     private TMP_Text _simulationDateTime;
 
-    [SerializeField]
-    private Button _virusButton;
 
     private int _currentDay;
 
@@ -51,6 +49,15 @@ class SimulationController : MonoBehaviour
     private TMP_Text _forwardProgressText;
     [SerializeField]
     private TMP_InputField _forwardInputField;
+
+    [SerializeField]
+    private Button _virusButton;
+
+    [SerializeField]
+    private Button _playButton;
+    [SerializeField]
+    private Button _pauseButton;
+
 
     //Singleton
     public static SimulationController Instance { get; private set; }
@@ -144,6 +151,9 @@ class SimulationController : MonoBehaviour
             UIController.Instance.SetEntitiesPanelVisible(true);
             StopAllCoroutines();
             _forwardProgressSliderGameObject.SetActive(false);
+            _forwardButton.interactable = true;
+            _playButton.interactable = true;
+            _pauseButton.interactable = true;
         }
     }
 
@@ -156,6 +166,9 @@ class SimulationController : MonoBehaviour
 
 
         _forwardButton.interactable = false;
+        _playButton.interactable = false;
+        _pauseButton.interactable = false;
+       // _stopButton.interactable = false;
 
         int amountDaysToForward;
         bool forwardInputOk = int.TryParse(_forwardInputField.text, out amountDaysToForward);
@@ -169,7 +182,7 @@ class SimulationController : MonoBehaviour
 
         StartCoroutine(ForwardSimulationRoutine(amountDaysToForward)); //This is lame
 
-        // ForwardSimulationBlocking(amountDaysToForward); //This is blocking which  is worse
+  
     }
 
     public void InfectRandomPerson(int personsToBeInfected)
@@ -178,23 +191,6 @@ class SimulationController : MonoBehaviour
         _virusButton.interactable = false;
     }
 
-    //TODO REMOVE
-    public void ForwardSimulationBlocking(int numberOfDays)
-    {
-        if (!IsRunning)
-        {
-            return;
-        }
-
-        for (int i = 0; i < numberOfDays; i++)
-        {
-            while (_currentDay == _controller.SimulationDate.Day)
-            {
-                _controller.RunUpdate();
-            }
-            OnDayChanges();
-        }
-    }
 
     /// <summary>
     /// Using a coroutine to avoiding program lagging if many days are forwarded spammed.
@@ -227,6 +223,8 @@ class SimulationController : MonoBehaviour
         _forwardProgressSliderGameObject.SetActive(false);
         Play();
         _forwardButton.interactable = true;
+        _playButton.interactable = true;
+        _pauseButton.interactable = true;
     }
 
     private void OnDayChanges()

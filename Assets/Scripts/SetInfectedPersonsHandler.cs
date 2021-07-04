@@ -1,9 +1,12 @@
 using UnityEngine;
 using TMPro;
-using System;
 using UnityEngine.UI;
 using DialogBoxSystem;
+using InputValidation;
 
+/// <summary>
+/// TODO DESCRIPTION
+/// </summary>
 public class SetInfectedPersonsHandler : MonoBehaviour
 {
     public GameObject SetInfectedPersonsGameObject;
@@ -58,6 +61,8 @@ public class SetInfectedPersonsHandler : MonoBehaviour
             DialogBox dialogBox = new DialogBox(name, msg);
             dialogBox.HasCancelButton = false;
             DialogBoxManager.Instance.HandleDialogBox(dialogBox);
+            //TODO GET INPUT FIELD AND SET COLOR
+            //InputValidator.SetInputFieldColor(false);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Simulation.Runtime
         private Household[] _households;
         private Hospital[] _hospitals;
         private List<Person> _persons = new List<Person>();
-        private Simulation.Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
+        private Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
         public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
 
         public void Initialize(Entity[] entities)
@@ -32,6 +32,7 @@ namespace Simulation.Runtime
             _venues = _entities.OfType<Venue>().ToArray();
             _households = _entities.OfType<Household>().ToArray();
             _hospitals = _entities.OfType<Hospital>().ToArray();
+
 
             WorkShift[] workShifts = _entities.OfType<Workplace>()
                 .SelectMany(w => w.WorkShifts)
@@ -99,7 +100,7 @@ namespace Simulation.Runtime
             }
         }
 
-        /// <summary>
+        /// <summary> TODO ADD DESCRIPTION FOR TESTING
         /// Method in which our main simulation process logic is implemented.
         /// Here are methods called which deal with:
         ///  - How and how often people encounter
@@ -137,9 +138,12 @@ namespace Simulation.Runtime
                     }
                     if (HandleHospitalLogic(member)) continue;
 
+
+
+                    //TODO METHOD HANDLE QUARANTINE Method
                     if (member.EndDateOfQuarantine.Equals(SimulationDate))
                     {
-                        if (!CanLeaveQuarantine(member)) continue;
+                        if (!CanLeaveQuarantine(member)) continue; 
                     }
 
                     if (member.IsInQuarantine) continue;
@@ -152,10 +156,11 @@ namespace Simulation.Runtime
 
                     TryMovePersonToItsActivity(member);
 
+                    //TODO METHOD FOR TESTING
                     if (!member.IsInQuarantine && member.TryGetActivityAt(SimulationDate, out Activity activity) && activity.IsWork
                         && SimulationDate.Equals(new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day, activity.StartTime, 0, 0)))
                     {
-                        if (activity.Location is Simulation.Runtime.Hospital && SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday))
+                        if (activity.Location is Hospital && SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday))
                         {
                             Debug.Log("Hospital");
                             CoronaTest(member, household);
@@ -163,7 +168,7 @@ namespace Simulation.Runtime
                                 continue;
                         }
 
-                        if (activity.Location is Simulation.Runtime.Workplace && (SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday)
+                        if (activity.Location is Workplace && (SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday)
                             || SimulationDate.DayOfWeek.Equals(DayOfWeek.Wednesday)))
                         {
                             Debug.Log("Workplace");
@@ -184,6 +189,9 @@ namespace Simulation.Runtime
         /// <returns>true if member can leave quarantine, else false and further logic can be skipped</returns>
         private bool CanLeaveQuarantine(Person member)
         {
+            //TODO METHOD CAUSES EXCEPTION !!! Day Must be in valid month range !!!
+
+            /*
             if (member.InfectionState.HasFlag(Person.InfectionStates.Recovered))
             {
                 member.IsInQuarantine = false;
@@ -195,7 +203,8 @@ namespace Simulation.Runtime
                 member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + 7);
                 Debug.Log("Extend qu: " + member.EndDateOfQuarantine);
                 return false;
-            }
+            }*/
+            return true;
         }
 
         /// <summary>
@@ -261,7 +270,7 @@ namespace Simulation.Runtime
                     do
                     {
                         Person randomPerson = _persons[Random.Range(0, _persons.Count)];
-                        if (randomPerson.InfectionState.Equals(Simulation.Runtime.Person.InfectionStates.Uninfected))
+                        if (randomPerson.InfectionState.Equals(Person.InfectionStates.Uninfected))
                         {
                             randomPerson.SetInfected(SimulationDate);
                             infectedPersons++;

@@ -106,7 +106,7 @@ namespace Simulation.Edit
         /// - A Person only can go to a hospital if he/she has symptoms
         /// - That intensive care is a "subset" of hospitalization !
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true if ranges are valid, else false</returns>
         public bool RangesAreValid()
         {
 
@@ -115,8 +115,6 @@ namespace Simulation.Edit
                                             && DayAPersonMustGoToHospital >= IncubationTime;
             bool validHealthPhaseHospitalParameters = DayAPersonMustGoToIntensiveCare >= DayAPersonMustGoToHospital
                                                      && DayAPersonCanLeaveIntensiveCare <= DayAPersonCanLeaveTheHospital;
-
-
             return validSimulationPhases && validHealthPhaseParameters && validHealthPhaseHospitalParameters;
         }
     }

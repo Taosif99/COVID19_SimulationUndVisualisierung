@@ -63,16 +63,19 @@ public class UIController : MonoBehaviour
     [Header("Left Image UI children")]
     [SerializeField]
     private RectTransform _entityPropertiesPanel;
-
+    [SerializeField]
+    private GameObject DeleteVenueButton;
     //Right Image UI Elements
     [Header("Right Image UI children")]
     [SerializeField]
     private RectTransform _entitiesPanel;
 
+
     public GameObject VenueUI;
     public GameObject HouseholdUI;
     public GameObject WorkplaceUI;
     public GameObject HospitalUI;
+   
 
     //Venue elements
     public TMP_InputField InfectionRiskInputField;
@@ -158,7 +161,7 @@ public class UIController : MonoBehaviour
         PlaceGraphButton.onClick.AddListener(() =>
         {
             SetEntityPropertiesPanelVisible(true);
-
+            DeleteVenueButton.SetActive(false);
             DisableButtonOutlineColors();
             ModifyOutlineColor(PlaceGraphButton);
             //Here a Graph must be activated in the UI...
@@ -289,6 +292,7 @@ public class UIController : MonoBehaviour
     public void SetEntityPropertiesPanelVisible(bool isVisible)
     {
         _entityPropertiesPanel.gameObject.SetActive(isVisible);
+        DeleteVenueButton.SetActive(true);
     }
 
     /// <summary>

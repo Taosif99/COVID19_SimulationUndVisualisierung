@@ -53,19 +53,15 @@ public class SimulationSettingsHandler : MonoBehaviour
         int amountDaysInfectious = defaultSettings.AmountDaysInfectious;
         int incubationTime = defaultSettings.IncubationTime;
         int amountDaysSymptoms = defaultSettings.AmountDaysSymptoms;
-
         float recoveringProbability = defaultSettings.RecoveringProbability;
         float recoveringInHospitalProbability = defaultSettings.RecoveringInHospitalProbability;
         float personSurvivesIntensiveCareProbability = defaultSettings.PersonSurvivesIntensiveCareProbability;
         int daysFromSymptomsBeginToDeath = defaultSettings.DaysFromSymptomsBeginToDeath;
-
         int daysInHospital = defaultSettings.DaysInHospital;
         int durationOfSymptomsbeginToHospitalization = defaultSettings.DurationOfSymtombeginToHospitalization;
         int daysInIntensiveCare = defaultSettings.DaysInIntensiveCare;
         int durationOfHospitalizationToIntensiveCare = defaultSettings.DurationOfHospitalizationToIntensiveCare;
-
         int amountDaysQuarantine = defaultSettings.AmountDaysQuarantine;
-
         bool infectionPhaseParametersAreValid = InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms);
         bool healthPhaseParametersAreValid = InputValidator.ValidateHealthPhaseParameters(ref recoveringProbability, ref recoveringInHospitalProbability, ref personSurvivesIntensiveCareProbability, ref daysFromSymptomsBeginToDeath);
         bool hospitalParametersAreValid = InputValidator.ValidateHospitalParameters(ref daysInHospital, ref durationOfSymptomsbeginToHospitalization, ref daysInIntensiveCare, ref durationOfHospitalizationToIntensiveCare);
