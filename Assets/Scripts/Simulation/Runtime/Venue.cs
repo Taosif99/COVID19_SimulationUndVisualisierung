@@ -40,7 +40,7 @@ namespace Simulation.Runtime
                    
                     float infectionProbability = this.InfectionRisk * linearInterpolatedCarefulnessFactor * GeneralInfectionProbabilityFactor * p.InfectionRiskFactor;
                     
-                    Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
+                    //Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
 
                     if (Random.Range(0f, 1f) <= infectionProbability)
                     {
