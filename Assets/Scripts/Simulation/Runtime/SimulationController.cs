@@ -30,10 +30,10 @@ namespace Simulation.Runtime
             _venues = _entities.OfType<Venue>().ToArray();
             _households = _entities.OfType<Household>().ToArray();
             _hospitals = _entities.OfType<Hospital>().ToArray();
-
+            /*
             WorkShift[] workShifts = _entities.OfType<Workplace>()
                 .SelectMany(w => w.WorkShifts)
-                .ToArray();
+                .ToArray();*/
 
             int workShiftIndex = 0;
 
@@ -45,7 +45,7 @@ namespace Simulation.Runtime
                     {
                         continue;
                     }
-
+                    /*
                     WorkShift shift = workShifts[workShiftIndex];
 
                     member.Activities.Add(new Activity(
@@ -55,7 +55,55 @@ namespace Simulation.Runtime
                         shift.Workplace
                     ));
 
-                    workShiftIndex = (workShiftIndex + 1) % workShifts.Length;
+                    workShiftIndex = (workShiftIndex + 1) % workShifts.Length;*/
+
+
+                    /*
+                    Algorithm Description:
+                    - Get each workshifts of workplaces with enough worker capacity
+                    - If, there are workplaces, use a modified round robin to assign a person a shift
+                    - If workplace has full worker capacity, workshifts in the next assignment decreased
+                    - Since it can be that more than one workshift is removed, the next assignment must not start
+                      in the first index of the workshifts array-
+
+                    */
+
+                    //TODO/Consider, see if this costs to much performance, if yes, programm it iteratively instead of using lambda expression
+                    //Workshifts from Workplaces without enough worker capacity can be removed each assignment --> round robin is not guaranteedanymore
+
+                    WorkShift[] workShifts = _entities.OfType<Workplace>()
+                    .SelectMany(w => w.WorkShifts).Where(w => w.Workplace.AmountAssignedWorkers < w.Workplace.WorkerCapacity)
+                    .ToArray();
+
+                    if (workShifts != null && workShifts.Length > 0)
+                    {
+                        workShiftIndex = workShiftIndex % workShifts.Length;
+
+                        WorkShift shift = workShifts[workShiftIndex];
+
+                        member.Activities.Add(new Activity(
+                            shift.Days,
+                            shift.StartTime,
+                            shift.StartTime + shift.Duration,
+                            shift.Workplace
+                        ));
+                        member.Activities.Add(new Activity(
+                                   shift.Days,
+                                   shift.StartTime,
+                                   shift.StartTime + shift.Duration,
+                                   shift.Workplace
+                               ));
+
+                        workShiftIndex = (workShiftIndex + 1) % workShifts.Length;
+                        shift.Workplace.AmountAssignedWorkers += 1;
+
+                        workShiftIndex += 1;
+                    }
+                    else
+                    {
+                        break; // No more possible shifts to assign
+                    }
+
                 }
 
                 var editorHousehold = household.GetEditorEntity<Edit.Household>();
@@ -138,7 +186,7 @@ namespace Simulation.Runtime
 
 
         /// <summary>
-        /// TODO
+        /// Method which encapsulates the simulation logic for hispitalization.
         /// </summary>
         /// <param name="member"></param>
         /// <returns>true if member is in Hospital and further logic can be skipped, else false</returns>
@@ -172,7 +220,8 @@ namespace Simulation.Runtime
         }
 
         /// <summary>
-        /// TODO
+        /// Method encapsulates the simulation logic for moving a person to its home
+        /// if the person has symptoms.
         /// </summary>
         /// <param name="member"></param>
         /// <param name="household"></param>
@@ -279,7 +328,6 @@ namespace Simulation.Runtime
             hospital.MovePersonHere(person);
             person.IsInHospitalization = true;
             person.HasRegularBed = true;
-            //DebugHospitalPatients(hospital);
         }
 
         /// Method which tries to assign an intensive care bed to a person.
@@ -347,7 +395,6 @@ namespace Simulation.Runtime
             person.IsInHospitalization = true;
             person.IsInIntensiveCare = true;
             person.HasRegularBed = false;
-            //  DebugHospitalPatients(hospital);
         }
     }
 }

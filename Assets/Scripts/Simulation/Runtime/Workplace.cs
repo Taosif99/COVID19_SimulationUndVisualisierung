@@ -9,13 +9,14 @@ namespace Simulation.Runtime
         {
             Type = editorEntity.Type;
             WorkerCapacity = editorEntity.WorkerCapacity;
-
+            AmountAssignedWorkers = 0;
             WorkShifts = CreateWorkShifts();
         }
 
         public WorkplaceType Type { get; }
         public int WorkerCapacity { get; }
         public List<WorkShift> WorkShifts { get; }
+        public int AmountAssignedWorkers { get; set; }
 
         private List<WorkShift> CreateWorkShifts()
         {
