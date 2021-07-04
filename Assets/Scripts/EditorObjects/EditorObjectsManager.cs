@@ -223,6 +223,7 @@ namespace EditorObjects
                 {
                     //Destroy the gameObject in the scene
                     GameObject gameObject = editorObject.EditorGameObject;
+                    _gridManager.RemoveCellFromGrid(CurrentSelectedEntity.Position.ToVector2Int());
                     Destroy(gameObject);
                     _editorObjects.Remove(CurrentSelectedEntity.Position);
                     CurrentSelectedEntity = null;
