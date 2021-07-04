@@ -110,9 +110,6 @@ namespace Simulation.Runtime
                         _person.OnStateTransition(InfectionStates.Phase5, _person.InfectionState);
                         _person.InfectionState = InfectionStates.Phase5;
                         _person.InfectionDate= default; 
-
-                        //CONSIDER HERE THE PERSON ALSO RECOVERS !!!
-
                     }
 
                 }

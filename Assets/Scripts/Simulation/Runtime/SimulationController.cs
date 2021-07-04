@@ -110,6 +110,7 @@ namespace Simulation.Runtime
                     if (HandleHospitalLogic(member)) continue;
                     if (MoveInfectiousPersonToHome(member, household)) continue;
                     TryMovePersonToItsActivity(member);
+                    //HERE DO WORK TESTING
                     TryMovePersonBackToHome(member, household);
                 }
             }

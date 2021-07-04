@@ -38,7 +38,7 @@ namespace Simulation.Runtime
 
                     float linearInterpolatedCarefulnessFactor = Mathf.Lerp(1.5f, 0.5f, (p.CarefulnessFactor + i.CarefulnessFactor) / 2);
                    
-                    float infectionProbability = this.InfectionRisk * linearInterpolatedCarefulnessFactor * GeneralInfectionProbabilityFactor;
+                    float infectionProbability = this.InfectionRisk * linearInterpolatedCarefulnessFactor * GeneralInfectionProbabilityFactor * p.InfectionRiskFactor;
                     
                     Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
 

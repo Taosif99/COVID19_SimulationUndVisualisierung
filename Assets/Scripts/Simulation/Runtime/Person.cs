@@ -6,18 +6,16 @@ namespace Simulation.Runtime
     // TODO: Separate statistical fields
     public class Person
     {
-        //private PhysicalCondition _physicalCondition;
-        private float _risk;
         //private int _encounters;
         //private int _amountOfPeopleInfected;
         //private bool _isVaccinated;
         //private int _infectionStateDuration;
         private HealthState _healthState;
 
-        public Person(float carefulnessFactor, float risk, bool isWorker)
+        public Person(float carefulnessFactor, bool isWorker)
         {
             CarefulnessFactor = carefulnessFactor;
-            _risk = risk;
+            InfectionRiskFactor = 1;
             IsWorker = isWorker;
             _healthState = new HealthState(this);
         }
@@ -34,6 +32,7 @@ namespace Simulation.Runtime
         public bool IsInIntensiveCare { get; set; } = false;
         public bool HasRegularBed { get; set; } = false;
         public DateTime InfectionDate { get; set; }
+        public float InfectionRiskFactor { get; set; }
 
         public event Action<StateTransitionEventArgs> OnStateTrasitionHandler;
 
@@ -69,7 +68,7 @@ namespace Simulation.Runtime
 
         public void SetReInfectionRisk()
         {
-            _risk = Simulation.DefaultInfectionParameters.HealthPhaseParameters.InfectionRiskIfRecovered;
+            InfectionRiskFactor = Simulation.DefaultInfectionParameters.HealthPhaseParameters.InfectionRiskIfRecovered;
         }
 
         public bool HasActivityAt(DateTime dateTime) => GetActivityAt(dateTime) != null;
@@ -198,7 +197,7 @@ namespace Simulation.Runtime
                         //Here we may update the infection risk if person recovers
                         InfectionDate = default;//restore undefined infection date
                         SetReInfectionRisk();
-                        _healthState = new HealthState(this);
+                   
                     }
 
                     break;
@@ -220,6 +219,7 @@ namespace Simulation.Runtime
         public void SetInfected(DateTime infectionDate)
         {
             DaysSinceInfection = 0f;
+            _healthState = new HealthState(this);
             InfectionStates previousState = InfectionState;
             InfectionState = InfectionStates.Infected;
             InfectionDate = infectionDate;
