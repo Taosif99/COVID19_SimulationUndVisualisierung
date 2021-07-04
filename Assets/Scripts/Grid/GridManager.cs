@@ -48,16 +48,16 @@ namespace Grid
         // TODO: Move to EditorObjectsManager
         private void Update()
         {
-            //If the simulation is running, skip the code to ensure that GO's are not editable while runtime
-            if (SimulationController.Instance.WasStarted == true)
-            {
-                UIController.Instance.SetEntityPropertiesPanelVisible(false);
-                return; 
-            }
-
             //Check if left mouse button clicked and UI not clicked, rethink prefab.None for UI logic
             if (Input.GetMouseButtonDown(0) && !CameraController.IsMouseOverUi)
             {
+                //If the simulation is running, skip the code to ensure that GO's are not editable while runtime
+                if (SimulationController.Instance.WasStarted == true)
+                {
+                    UIController.Instance.SetEntityPropertiesPanelVisible(false);
+                    return; 
+                }
+                
                 //Raycast into the scene
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 

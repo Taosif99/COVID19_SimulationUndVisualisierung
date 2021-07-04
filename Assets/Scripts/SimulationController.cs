@@ -81,6 +81,7 @@ class SimulationController : MonoBehaviour
             SimulationMaster.Instance.PlayDate = DateTime.Now;
             GlobalSimulationGraph.Instance.AmountHorizontalLineUpdater();
             UIController.Instance.SetEntitiesPanelVisible(false);
+            UIController.Instance.SetEntityPropertiesPanelVisible(false);
 
             _isInitialized = true;
         }
