@@ -15603,7 +15603,6 @@ MonoBehaviour:
   _virusButton: {fileID: 1858235996}
   _playButton: {fileID: 1859516536}
   _pauseButton: {fileID: 1201480443}
-  _stopButton: {fileID: 1859798739}
 --- !u!4 &1190257966
 Transform:
   m_ObjectHideFlags: 0
@@ -28574,7 +28573,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 600, y: -62.5}
+  m_AnchoredPosition: {x: 600, y: -73.75}
   m_SizeDelta: {x: 1000, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &513563931964966167
@@ -28872,7 +28871,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 600, y: -487.5}
+  m_AnchoredPosition: {x: 600, y: -521.25}
   m_SizeDelta: {x: 1000, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &513563932107826948
@@ -33380,8 +33379,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3}
-  m_SizeDelta: {x: 1200, y: 850}
+  m_AnchoredPosition: {x: 0, y: 3}
+  m_SizeDelta: {x: 1200, y: 895}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8855342066124360648
 MonoBehaviour:

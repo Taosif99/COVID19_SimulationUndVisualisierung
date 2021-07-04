@@ -191,7 +191,7 @@ namespace Simulation.Runtime
         {
             //TODO METHOD CAUSES EXCEPTION !!! Day Must be in valid month range !!!
 
-            /*
+            
             if (member.InfectionState.HasFlag(Person.InfectionStates.Recovered))
             {
                 member.IsInQuarantine = false;
@@ -200,11 +200,11 @@ namespace Simulation.Runtime
             }
             else
             {
-                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + 7);
+                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AmountDaysQuarantine);
                 Debug.Log("Extend qu: " + member.EndDateOfQuarantine);
                 return false;
-            }*/
-            return true;
+            }
+           
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace Simulation.Runtime
                 //TODO test probability
                 Debug.Log("Test positiv");
                 member.IsInQuarantine = true;
-                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + _settings.AmountDaysQuarantine);
+                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AmountDaysQuarantine);
                 Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
                 household.MovePersonHere(member);
                 AssignHouseholdToQuarantine(household);
@@ -241,7 +241,7 @@ namespace Simulation.Runtime
                 if (!member.IsInQuarantine)
                 {
                     member.IsInQuarantine = true;
-                    member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + _settings.AmountDaysQuarantine);
+                    member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AmountDaysQuarantine);
                     Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
                     if (!household.HasPersonHere(member))
                     {
