@@ -12,6 +12,9 @@ namespace Simulation.Runtime
         //private int _infectionStateDuration;
         private HealthState _healthState;
 
+        private bool _isInQuarantine = false;
+        private DateTime _endDateOfQuarantine;
+
         public Person(float carefulnessFactor, bool isWorker)
         {
             CarefulnessFactor = carefulnessFactor;
@@ -25,6 +28,7 @@ namespace Simulation.Runtime
         public bool IsWorker { get; }
         public List<Activity> Activities { get; } = new List<Activity>();
         public Venue CurrentLocation { get; set; }
+
         public bool IsDead { get; set; } = false;
         public double DaysSinceInfection { get; set; }
 
@@ -33,6 +37,10 @@ namespace Simulation.Runtime
         public bool HasRegularBed { get; set; } = false;
         public DateTime InfectionDate { get; set; }
         public float InfectionRiskFactor { get; set; }
+
+        public bool IsInQuarantine { get => _isInQuarantine; set => _isInQuarantine = value; }
+
+        public DateTime EndDateOfQuarantine { get => _endDateOfQuarantine; set => _endDateOfQuarantine = value; }
 
         public event Action<StateTransitionEventArgs> OnStateTrasitionHandler;
 
@@ -45,7 +53,7 @@ namespace Simulation.Runtime
         [Flags]
         public enum InfectionStates
         {
-            Uninfected = 0, //susceptible TODO RENAME
+            Uninfected = 0, //susceptible
             Infected = 1,
             Infectious = 2,
             Symptoms = 4,
@@ -91,7 +99,6 @@ namespace Simulation.Runtime
                     }
                 }
             }
-
             return null;
         }
 
@@ -132,7 +139,6 @@ namespace Simulation.Runtime
 
             switch (InfectionState)
             {
-
                 case InfectionStates.Phase1:
                 {
                     if (DaysSinceInfection >= settings.LatencyTime
@@ -154,7 +160,6 @@ namespace Simulation.Runtime
                         didTransitionState = true;
                         InfectionState = InfectionStates.Phase3;
                     }
-                            
                     break;
                 }
                 case InfectionStates.Phase3:
@@ -193,13 +198,10 @@ namespace Simulation.Runtime
                     {
                         didTransitionState = true;
                         InfectionState = InfectionStates.Phase5;
-
                         //Here we may update the infection risk if person recovers
                         InfectionDate = default;//restore undefined infection date
                         SetReInfectionRisk();
-                   
                     }
-
                     break;
                 }
             }
