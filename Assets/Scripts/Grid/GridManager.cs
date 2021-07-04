@@ -129,5 +129,17 @@ namespace Grid
             }
             return false;
         }
+
+        /// <summary>
+        /// Method to remove a placed position from the grid, so 
+        /// that it can be reused.
+        /// </summary>
+        /// <param name="gridCellPosition"></param>
+        public void RemoveCellFromGrid(Vector2Int gridCellPosition)
+        {
+            _placedPositions.Remove(gridCellPosition);
+        
+        }
+
     }
 }
