@@ -16,13 +16,36 @@ namespace FileHandling
         /// With this field the file name of the simulation will be acquired.
         /// </summary>
         [SerializeField] private TMP_InputField _nameInputField;
+        [SerializeField] private TMP_Dropdown _presetsSelection;
+        
+        [Tooltip("Simulation Presets in form of TextAssets which are serialized simulations / simulation files.")]
+        [SerializeField] private TextAsset[] _presets;
 
+        private TextAsset _selectedPrefab;
+        
+        private void Start()
+        {
+            LoadPresets();
+        }
+
+        private void LoadPresets()
+        {
+            foreach (TextAsset preset in _presets)
+            {
+                _presetsSelection.options.Add(new TMP_Dropdown.OptionData(preset.name));
+            }
+            
+            _presetsSelection.RefreshShownValue();
+        }
 
         /// <summary>
         /// Methods which creates the simulation regarding the given input name.
         /// </summary>
         public void CreateSimulation()
         {
+            TextAsset selectedPreset = _presets[_presetsSelection.value];
+            Simulation.Edit.Simulation simulation = FileHandler.LoadDataFromBytes(selectedPreset.bytes);
+            
             if (InputValidator.BasicInputFieldValidation(_nameInputField))
             {
                 _nameInputField.image.color = Color.white;
@@ -35,7 +58,6 @@ namespace FileHandling
                     DialogBox dialogBox = new DialogBox(name, msg);
                     dialogBox.OnConfirmationPressed += () =>
                     {
-                        Simulation.Edit.Simulation simulation = FileHandler.GetDefaultSimulationMock();
                         FileHandler.SaveData(simulation);
                         SceneLoader.Instance.LoadSimulation();
                     };
@@ -45,7 +67,6 @@ namespace FileHandling
                 }
                 else
                 {   //save normally
-                    Simulation.Edit.Simulation simulation = FileHandler.GetDefaultSimulationMock();
                     FileHandler.SaveData(simulation);
                     SceneLoader.Instance.LoadSimulation();
                 }
@@ -59,12 +80,6 @@ namespace FileHandling
                 dialogBox.HasCancelButon = false;
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             }
-        }
-
-        public void CreateSimulationFromPrefab()
-        {
-            //TODO WHEN WE HAVE SOME PREFABS
-
         }
     }
 }

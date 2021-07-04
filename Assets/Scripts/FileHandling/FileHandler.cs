@@ -16,13 +16,11 @@ namespace FileHandling
     /// it gives us platform independency. Screenshots will be saved in 
     /// Application.persistentDataPath + "\" + ScreenshotFolderName
     /// 
-    /// In Windows: %userprofile%\AppData\LocalLow\<companyname>\<productname>
+    /// In Windows: %userprofile%\AppData\LocalLow\&lt;companyname&gt;\&lt;productname&gt;
     /// <see cref="https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html"/> 
     /// </summary>
     public static class FileHandler
     {
-
-
         public static string SelectedFileName = null;
         private const string FileExtension = ".covidSim";
         private const string SaveStateFolderName = "SavedSimulations";
@@ -49,24 +47,36 @@ namespace FileHandling
         }
 
         /// <summary>
-        /// Method to load Simulation Datat.
+        /// Method to load Simulation Data.
         /// </summary>
         /// <returns>The simulation object if operation was successful, else null</returns>
         public static Simulation.Edit.Simulation LoadData()
         {
             string path = GetCurrentSaveStateFilePath();
-            if (File.Exists(path))
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                FileStream stream = new FileStream(path, FileMode.Open);
-                Simulation.Edit.Simulation data = formatter.Deserialize(stream) as Simulation.Edit.Simulation;
-                stream.Close();
-                return data;
-            }
-            else
+            if (!File.Exists(path))
             {
                 return null;
             }
+            
+            return LoadDataFromStream(new FileStream(path, FileMode.Open));
+        }
+
+        /// <summary>
+        /// Load the simulation data from a byte array.
+        /// </summary>
+        /// <param name="bytes">Array of bytes containing serialized simulation data</param>
+        /// <returns>Deserialized simulation object</returns>
+        public static Simulation.Edit.Simulation LoadDataFromBytes(byte[] bytes)
+        {
+            return LoadDataFromStream(new MemoryStream(bytes));
+        }
+
+        private static Simulation.Edit.Simulation LoadDataFromStream(Stream stream)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            Simulation.Edit.Simulation data = formatter.Deserialize(stream) as Simulation.Edit.Simulation;
+            stream.Close();
+            return data;
         }
         #endregion
 
@@ -201,44 +211,5 @@ namespace FileHandling
             string pathAndFileName = pathToFolder + "/"+"DayLog_"+ SelectedFileName+"_"+playDate.ToString("yyyyMMddTHHmmss") +".csv";
             File.WriteAllText(pathAndFileName, dataString);
         }
-
-
-
-
-        #region Debug Mock
-        /// <summary>
-        /// Method to create a simulation Object for testing puropses. TODO REMOVE
-        /// </summary>
-        /// <param name="entities"></param>
-        /// <returns></returns>
-        public static Simulation.Edit.Simulation GetSimulationMock(Entity[] entities = null)
-        {
-            Policies policiesMock = new Policies(MaskType.None);
-            Simulation.Edit.Event[] eventsMock = null;
-            SimulationOptions simulationOptions = new SimulationOptions(policiesMock, eventsMock,null);
-            Simulation.Edit.Simulation simulation = new Simulation.Edit.Simulation(simulationOptions, entities);
-            return simulation;
-        }
-        #endregion
-
-
-        //"Real" mocks
-        public static Simulation.Edit.Simulation GetDefaultSimulationMock(Entity[] entities = null)
-        {
-            Policies policiesMock = new Policies(MaskType.None);
-            Simulation.Edit.Event[] eventsMock = null;
-            SimulationOptions simulationOptions = new SimulationOptions(policiesMock, eventsMock, new Simulation.Edit.AdjustableSimulationSettings());
-            Simulation.Edit.Simulation simulation = new Simulation.Edit.Simulation(simulationOptions, entities);
-            return simulation;
-        }
-
-        public static Simulation.Edit.Simulation GetDefaultSimulationMock(Entity[] entities, Simulation.Edit.AdjustableSimulationSettings adjustableSimulationSettings)
-        {
-
-            return null;
-        
-        }
-
-
     }
 }
