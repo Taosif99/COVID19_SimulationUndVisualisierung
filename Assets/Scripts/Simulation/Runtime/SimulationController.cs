@@ -30,76 +30,56 @@ namespace Simulation.Runtime
             _venues = _entities.OfType<Venue>().ToArray();
             _households = _entities.OfType<Household>().ToArray();
             _hospitals = _entities.OfType<Hospital>().ToArray();
-            /*
+            
             WorkShift[] workShifts = _entities.OfType<Workplace>()
                 .SelectMany(w => w.WorkShifts)
-                .ToArray();*/
+                .ToArray();
 
             int workShiftIndex = 0;
+            bool workplaceCapacityReached = false;
 
             foreach (var household in _households)
             {
-                foreach (Person member in household.Members)
+                if (!workplaceCapacityReached)
                 {
-                    if (!member.IsWorker)
+                    try
                     {
-                        continue;
+                        foreach (Person member in household.Members)
+                        {
+                            if (!member.IsWorker)
+                            {
+                                continue;
+                            }
+
+                            int checkedShifts = 0;
+                            WorkShift shift;
+                            do
+                            {
+                                shift = workShifts[workShiftIndex++ % workShifts.Length];
+                        
+                                if (++checkedShifts > workShifts.Length)
+                                {
+                                    workplaceCapacityReached = true;
+                                    throw new Exception("Not enough work-shift/workplace capacity for all people in the simulation.");
+                                }
+                            }
+                            while (shift.Workplace.AmountAssignedWorkers >= shift.Workplace.WorkerCapacity);
+
+                            member.Activities.Add(new Activity(
+                                shift.Days,
+                                shift.StartTime,
+                                shift.StartTime + shift.Duration,
+                                shift.Workplace,
+                                true
+                            ));
+                            
+                            shift.Workplace.AmountAssignedWorkers++;
+                        }
                     }
-                    /*
-                    WorkShift shift = workShifts[workShiftIndex];
-
-                    member.Activities.Add(new Activity(
-                        shift.Days,
-                        shift.StartTime,
-                        shift.StartTime + shift.Duration,
-                        shift.Workplace
-                    ));
-
-                    workShiftIndex = (workShiftIndex + 1) % workShifts.Length;*/
-
-
-                    /*
-                    Algorithm Description:
-                    - Get each workshifts of workplaces with enough worker capacity
-                    - If, there are workplaces, use a modified round robin to assign a person a shift
-                    - If workplace has full worker capacity, workshifts in the next assignment decreased
-                    - Since it can be that more than one workshift is removed, the next assignment must not start
-                      in the first index of the workshifts array-
-
-                    */
-
-                    //TODO/Consider, see if this costs to much performance, if yes, programm it iteratively instead of using lambda expression
-                    //Workshifts from Workplaces without enough worker capacity can be removed each assignment --> round robin is not guaranteedanymore
-
-                    WorkShift[] workShifts = _entities.OfType<Workplace>()
-                    .SelectMany(w => w.WorkShifts).Where(w => w.Workplace.AmountAssignedWorkers < w.Workplace.WorkerCapacity)
-                    .ToArray();
-
-                    if (workShifts != null && workShifts.Length > 0)
+                    catch (Exception e)
                     {
-                        workShiftIndex = workShiftIndex % workShifts.Length;
-
-                        WorkShift shift = workShifts[workShiftIndex];
-
-                        member.Activities.Add(new Activity(
-                            shift.Days,
-                            shift.StartTime,
-                            shift.StartTime + shift.Duration,
-                            shift.Workplace,
-                            true
-                        ));
-
-
-                        workShiftIndex = (workShiftIndex + 1) % workShifts.Length;
-                        shift.Workplace.AmountAssignedWorkers += 1;
-
-                        workShiftIndex += 1;
+                        Debug.LogWarning(e.Message);
                     }
-                    else
-                    {
-                        break; // No more possible shifts to assign
-                    }
-
                 }
 
                 var editorHousehold = household.GetEditorEntity<Edit.Household>();
