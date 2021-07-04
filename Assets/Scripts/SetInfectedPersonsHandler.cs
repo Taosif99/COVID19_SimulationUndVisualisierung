@@ -52,13 +52,12 @@ public class SetInfectedPersonsHandler : MonoBehaviour
         }
         else
         {
-            //Problem DialogBox is behind SetInfectedPersonsMenu
-            /*Debug.Log("Invalid entry");
+            Debug.Log("Invalid entry");
             string msg = "Please make sure that there is a whole number in the input field.";
             string name = "Invalid entry";
             DialogBox dialogBox = new DialogBox(name, msg);
             dialogBox.HasCancelButton = false;
-            DialogBoxManager.Instance.HandleDialogBox(dialogBox);*/
+            DialogBoxManager.Instance.HandleDialogBox(dialogBox);
         }
     }
 }
