@@ -64,10 +64,12 @@ public class SimulationSettingsHandler : MonoBehaviour
         int daysInIntensiveCare = defaultSettings.DaysInIntensiveCare;
         int durationOfHospitalizationToIntensiveCare = defaultSettings.DurationOfHospitalizationToIntensiveCare;
 
+        int amountDaysQuarantine = defaultSettings.AmountDaysQuarantine;
+
         bool infectionPhaseParametersAreValid = InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms);
         bool healthPhaseParametersAreValid = InputValidator.ValidateHealthPhaseParameters(ref recoveringProbability, ref recoveringInHospitalProbability, ref personSurvivesIntensiveCareProbability, ref daysFromSymptomsBeginToDeath);
         bool hospitalParametersAreValid = InputValidator.ValidateHospitalParameters(ref daysInHospital, ref durationOfSymptomsbeginToHospitalization, ref daysInIntensiveCare, ref durationOfHospitalizationToIntensiveCare);
-        
+
 
         if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid && hospitalParametersAreValid)
         {
@@ -89,12 +91,14 @@ public class SimulationSettingsHandler : MonoBehaviour
             settingsToSet.DaysInIntensiveCare = daysInIntensiveCare;
             settingsToSet.DurationOfHospitalizationToIntensiveCare = durationOfHospitalizationToIntensiveCare;
 
+            settingsToSet.AmountDaysQuarantine = amountDaysQuarantine;
+
             if (settingsToSet.RangesAreValid())
             {
                 simulation.SimulationOptions.AdjustableSimulationPrameters = settingsToSet;
 
             }
-            else if(!_saveLock)
+            else if (!_saveLock)
             {
                 Debug.Log("Wrong ranges!");
                 string msg = "Change not  saved! Please make sure that the ranges are correct (see tooltips)";
@@ -104,7 +108,7 @@ public class SimulationSettingsHandler : MonoBehaviour
                 {
                     DisplaySettings(currentSettings);
                 };
-                dialogBox.HasCancelButon = false;
+                dialogBox.HasCancelButton = false;
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             }
 
@@ -138,6 +142,7 @@ public class SimulationSettingsHandler : MonoBehaviour
         UIController.Instance.DaysSymptomsBeginToHospitalizationInputField.text = settings.DurationOfSymtombeginToHospitalization.ToString();
         UIController.Instance.DaysIntensiveCareInputField.text = settings.DaysInIntensiveCare.ToString();
         UIController.Instance.DaysRegularToIntensiveInputField.text = settings.DurationOfHospitalizationToIntensiveCare.ToString();
-}
+        UIController.Instance.QuarantineDaysInputField.text = settings.AmountDaysQuarantine.ToString();
+    }
 
 }

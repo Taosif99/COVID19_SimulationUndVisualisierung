@@ -70,8 +70,6 @@ namespace Simulation.Runtime
         /// </summary>
         public void UpdateHealthState()
         {
-
-            
             if (_willDie)
             {
                 

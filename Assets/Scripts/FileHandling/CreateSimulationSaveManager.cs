@@ -77,7 +77,7 @@ namespace FileHandling
                 string msg = "Please enter a name!";
                 string name = "No name entered";
                 DialogBox dialogBox = new DialogBox(name, msg);
-                dialogBox.HasCancelButon = false;
+                dialogBox.HasCancelButton = false;
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             }
         }

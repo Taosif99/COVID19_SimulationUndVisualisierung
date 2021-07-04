@@ -6,9 +6,18 @@ namespace Simulation.Edit
     public class Hospital : Workplace
     {
 
-        public Hospital(int amountRegularBeds,int amountIntensiveCareBeds,GridCell position, float infectionRisk, WorkplaceType type, int workerCapacity) : base(position, infectionRisk, type, workerCapacity)
+
+
+        /*
+        public Hospital(GridCell position, float infectionRisk, WorkplaceType type, int workerCapacity, HospitalScale scale, WorkerAvailability workerAvailability) : base(position, infectionRisk, type, workerCapacity)
         {
-            AmountRegularBeds = amountRegularBeds;
+            Scale = scale;
+            WorkerAvailability = workerAvailability;
+        }*/
+
+        public Hospital(int amountBeds,int amountIntensiveCareBeds,GridCell position, float infectionRisk, WorkplaceType type, int workerCapacity) : base(position, infectionRisk, type, workerCapacity)
+        {
+            AmountRegularBeds = amountBeds;
             AmountIntensiveCareBeds = amountIntensiveCareBeds; 
         }
 

@@ -22,6 +22,8 @@ namespace Simulation.Runtime
         private Venue[] _venues;
         private Household[] _households;
         private Hospital[] _hospitals;
+        private List<Person> _persons = new List<Person>();
+        private Simulation.Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
         public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
 
         public void Initialize(Entity[] entities)
@@ -30,7 +32,7 @@ namespace Simulation.Runtime
             _venues = _entities.OfType<Venue>().ToArray();
             _households = _entities.OfType<Household>().ToArray();
             _hospitals = _entities.OfType<Hospital>().ToArray();
-            
+
             WorkShift[] workShifts = _entities.OfType<Workplace>()
                 .SelectMany(w => w.WorkShifts)
                 .ToArray();
@@ -46,6 +48,8 @@ namespace Simulation.Runtime
                     {
                         foreach (Person member in household.Members)
                         {
+                            _persons.Add(member);
+
                             if (!member.IsWorker)
                             {
                                 continue;
@@ -56,7 +60,7 @@ namespace Simulation.Runtime
                             do
                             {
                                 shift = workShifts[workShiftIndex++ % workShifts.Length];
-                        
+
                                 if (++checkedShifts > workShifts.Length)
                                 {
                                     workplaceCapacityReached = true;
@@ -72,7 +76,7 @@ namespace Simulation.Runtime
                                 shift.Workplace,
                                 true
                             ));
-                            
+
                             shift.Workplace.AmountAssignedWorkers++;
                         }
                     }
@@ -106,7 +110,7 @@ namespace Simulation.Runtime
         public void RunUpdate()
         {
             SimulationDate = SimulationDate.AddMinutes(SimulationStepsMinutes);
-            
+
             foreach (Venue venue in _venues)
             {
                 venue.SimulateEncounters(SimulationDate);
@@ -115,7 +119,7 @@ namespace Simulation.Runtime
                 {
                     continue;
                 }
-                
+
                 foreach (Person member in household.Members)
                 {
                     if (member.IsDead)
@@ -125,37 +129,154 @@ namespace Simulation.Runtime
 
                     member.UpdateInfectionState(SimulationDate);
                     member.UpdateHealthState();
-                    
+
                     // TODO: Having this twice is kinda bad, but this is needed as the person might have deceased during this health state update
                     if (member.IsDead)
                     {
                         continue;
                     }
                     if (HandleHospitalLogic(member)) continue;
-                    if (MoveInfectiousPersonToHome(member, household)) continue;
+
+                    if (member.EndDateOfQuarantine.Equals(SimulationDate))
+                    {
+                        if (!CanLeaveQuarantine(member)) continue;
+                    }
+
+                    if (member.IsInQuarantine) continue;
+
+                    if (MoveInfectiousPersonToHome(member, household))
+                    {
+                        AssignHouseholdToQuarantine(household);
+                        continue; //Household quarantine
+                    }
+
                     TryMovePersonToItsActivity(member);
-                    //HERE DO WORK TESTING
+
+                    if (!member.IsInQuarantine && member.TryGetActivityAt(SimulationDate, out Activity activity) && activity.IsWork
+                        && SimulationDate.Equals(new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day, activity.StartTime, 0, 0)))
+                    {
+                        if (activity.Location is Simulation.Runtime.Hospital && SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday))
+                        {
+                            Debug.Log("Hospital");
+                            CoronaTest(member, household);
+                            if (member.IsInQuarantine)
+                                continue;
+                        }
+
+                        if (activity.Location is Simulation.Runtime.Workplace && (SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday)
+                            || SimulationDate.DayOfWeek.Equals(DayOfWeek.Wednesday)))
+                        {
+                            Debug.Log("Workplace");
+                            CoronaTest(member, household);
+                            if (member.IsInQuarantine)
+                                continue;
+                        }
+                    }
                     TryMovePersonBackToHome(member, household);
                 }
             }
         }
 
-        public void InfectRandomPerson()
+        /// <summary>
+        /// Method to check if the person can leave the quarantine.
+        /// </summary>
+        /// <param name="member"></param>
+        /// <returns>true if member can leave quarantine, else false and further logic can be skipped</returns>
+        private bool CanLeaveQuarantine(Person member)
         {
-            Household[] households = _entities.OfType<Household>().ToArray();
-            if (households != null && households.Length > 0)
+            if (member.InfectionState.HasFlag(Person.InfectionStates.Recovered))
             {
-                Household randomHousehold = households[Random.Range(0, households.Length)];
-                Person randomPerson = randomHousehold.Members[Random.Range(0, randomHousehold.Members.Length)];
-                randomPerson.SetInfected(SimulationDate);
+                member.IsInQuarantine = false;
+                Debug.Log("Leave qu: " + member.EndDateOfQuarantine);
+                return true;
             }
             else
             {
-                Debug.Log("No households");
+                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + 7);
+                Debug.Log("Extend qu: " + member.EndDateOfQuarantine);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Method to do a corona test.
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="household"></param>
+        private void CoronaTest(Person member, Household household)
+        {
+            if (member.InfectionState.HasFlag(Person.InfectionStates.Infected))
+            {
+                //TODO test probability
+                Debug.Log("Test positiv");
+                member.IsInQuarantine = true;
+                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + _settings.AmountDaysQuarantine);
+                Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
+                household.MovePersonHere(member);
+                AssignHouseholdToQuarantine(household);
+            }
+            else
+            {
+                Debug.Log("Test negativ");
+            }
+        }
+
+        /// <summary>
+        /// Method to assign a household to quarantine if a member tests positive.
+        /// </summary>
+        /// <param name="household"></param>
+        private void AssignHouseholdToQuarantine(Household household)
+        {
+            foreach (Person member in household.Members)
+            {
+                if (!member.IsInQuarantine)
+                {
+                    member.IsInQuarantine = true;
+                    member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day + _settings.AmountDaysQuarantine);
+                    Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
+                    if (!household.HasPersonHere(member))
+                    {
+                        household.MovePersonHere(member);
+                    }
+                }
+            }
+        }
+
+
+        public void InfectRandomPerson(int personsToBeInfected)
+        {
+            if (_persons.Count > 0)
+            {
+                //All persons get infected
+                if (_persons.Count <= personsToBeInfected)
+                {
+                    foreach (Person member in _persons)
+                    {
+                        member.SetInfected(SimulationDate);
+                    }
+                }
+                else
+                {
+                    int infectedPersons = 0;
+                    do
+                    {
+                        Person randomPerson = _persons[Random.Range(0, _persons.Count)];
+                        if (randomPerson.InfectionState.Equals(Simulation.Runtime.Person.InfectionStates.Uninfected))
+                        {
+                            randomPerson.SetInfected(SimulationDate);
+                            infectedPersons++;
+                        }
+                    } while (infectedPersons < personsToBeInfected);
+                    //Debug.Log(infectedPersons + "   " + personsToBeInfected);
+                }
+            }
+            else
+            {
+                Debug.Log("No persons");
                 string msg = "Atleast one household with one person is requiered to infect one person!";
-                string name = "No households";
+                string name = "No persons";
                 DialogBox dialogBox = new DialogBox(name, msg);
-                dialogBox.HasCancelButon = false;
+                dialogBox.HasCancelButton = false;
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             }
         }
@@ -224,6 +345,7 @@ namespace Simulation.Runtime
         {
             if (member.TryGetActivityAt(SimulationDate, out Activity activity) && !activity.Location.HasPersonHere(member))
             {
+                //Debug.Log(member.TryGetActivityAt(SimulationDate, out activity) + "  " + activity.Location.ToString());
                 activity.Location.MovePersonHere(member);
             }
         }
@@ -276,10 +398,10 @@ namespace Simulation.Runtime
                 }
                 //Handle case if person leaves sensitive bed and gets a normal bed again
                 if (person.IsInIntensiveCare && person.HasRegularBed)
-                {                  
-                        Hospital oldHospital = (Hospital)lastLocation;
-                        oldHospital.PatientsInIntensiveCareBeds.Remove(person);
-                        person.IsInIntensiveCare = false;
+                {
+                    Hospital oldHospital = (Hospital)lastLocation;
+                    oldHospital.PatientsInIntensiveCareBeds.Remove(person);
+                    person.IsInIntensiveCare = false;
                 }
                 _hospitalRegularBedAssignmentsCounter++;
             }
@@ -319,7 +441,7 @@ namespace Simulation.Runtime
             Hospital oldHospital = null;
             if (person.HasRegularBed)
             {
-                    oldHospital = (Hospital) person.CurrentLocation;
+                oldHospital = (Hospital)person.CurrentLocation;
             }
 
             //Assign a free intensive care bed in our simulation world, if this fails we have to assign a regular bed (again)

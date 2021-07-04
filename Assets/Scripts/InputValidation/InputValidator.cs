@@ -51,7 +51,7 @@ namespace InputValidation
 
                         bool amountBedsValid = int.TryParse(UIController.Instance.AmountNormalBedsInputField.text, out amountBeds) && amountBeds >= 0;
                         bool amountIntensiveCareBedsValid = int.TryParse(UIController.Instance.AmountIntensiveCareInputField.text, out amountIntensiveCareBeds) && amountIntensiveCareBeds >= 0;
-                        SetInputFieldColor(UIController.Instance.AmountNormalBedsInputField,amountBedsValid);
+                        SetInputFieldColor(UIController.Instance.AmountNormalBedsInputField, amountBedsValid);
                         SetInputFieldColor(UIController.Instance.AmountIntensiveCareInputField, amountIntensiveCareBedsValid);
                         inputIsValid = inputIsValid && amountBedsValid && amountIntensiveCareBedsValid;
 
@@ -76,7 +76,7 @@ namespace InputValidation
             return inputIsValid;
         }
 
-       
+
 
 
 
@@ -133,7 +133,7 @@ namespace InputValidation
         /// <param name="personSurvivesIntensiveCareProbability"></param>
         /// <param name="daysFromSymptomsBeginToDeath"></param>
         /// <returns>true if all parameters are valid, else false</returns>
-        public static bool ValidateHealthPhaseParameters(ref float recoveringProbability, ref float recoveringInHospitalProbability, ref float personSurvivesIntensiveCareProbability , ref int daysFromSymptomsBeginToDeath)
+        public static bool ValidateHealthPhaseParameters(ref float recoveringProbability, ref float recoveringInHospitalProbability, ref float personSurvivesIntensiveCareProbability, ref int daysFromSymptomsBeginToDeath)
         {
             bool result;
 
@@ -171,7 +171,19 @@ namespace InputValidation
 
 
 
+        /// <summary>
+        /// Method which validates the quarantine parameters.
+        /// </summary>
+        /// <param name="quarantineDays"></param>
+        /// <returns>true if all parameters are valid, else false</returns>
+        public static bool ValidateQuarantineParameters(ref int quarantineDays)
+        {
+            bool result = false;
 
+            bool quarantineDaysInputOk = TryParseIntDayInputField(UIController.Instance.QuarantineDaysInputField, ref quarantineDays);
+            result = quarantineDaysInputOk;
+            return result;
+        }
 
 
         /// <summary>
@@ -249,7 +261,7 @@ namespace InputValidation
         /// </summary>
         /// <param name="inputField"></param>
         /// <param name="contentIsCorrect"></param>
-       public static void SetInputFieldColor(TMP_InputField inputField, bool contentIsCorrect)
+        public static void SetInputFieldColor(TMP_InputField inputField, bool contentIsCorrect)
         {
             if (!contentIsCorrect)
             {

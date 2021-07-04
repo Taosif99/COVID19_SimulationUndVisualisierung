@@ -8,7 +8,7 @@ namespace Simulation
         /// <see cref="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile"/>
         /// <see cref="https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/"/>
         /// <see cref=" https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html"/>
-        /// <see cref="https://academic.oup.com/cid/advance-article/doi/10.1093/cid/ciaa1846/6033728"/>
+        /// <see cref="https://academic.oup.com/cid/advance-article/doi/10.1093/cid/ciaa1846/6033728"/> //Wo benutzen wir das ? 
         /// 
         /// The assumption is made, that EndDaySymptoms is >= endDayInfectious
         /// 
@@ -59,7 +59,18 @@ namespace Simulation
 
         }
 
-  
+        /// <summary>
+        /// This class stores default quarantine values for the simulation.
+        /// <see cref="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html;jsessionid=CE16F99FB237ECBAC11C55AB8020F12F.internet111?nn=13490888#a325"
+        /// </summary>
+        public static class QuarantineParameters
+        {
+            /// <summary>
+            /// Amount days a person must be in quarantine.
+            /// </summary>
+            public const int QuarantineDays = 14;
+        }
+
         public static class HealthPhaseParameters
         {
 
@@ -69,19 +80,19 @@ namespace Simulation
             /// </summary>
             public const float RecoveringProbability = 0.955f;
 
-         
+
             /// <summary>
             /// Probability that a person does recover in hospital,
             /// else person must go to intensive care.
             /// </summary>
             public const float RecoveringInHospitalProbability = 0.75f;
-          
+
 
             /// <summary>
             /// Person dies, if he/she does not survive in the intensive care.
             /// </summary>
             public const float PersonSurvivesIntensiveCareProbability = 0.5f;
-           
+
 
             /// <summary>
             /// The amount days from the beginning of the symptoms
@@ -111,7 +122,7 @@ namespace Simulation
             public const int DaysInHospital = 14;
 
 
-           
+
             /// <summary>
             /// Amount days from symptoms beginn to transferring a person to a hospital
             /// </summary>

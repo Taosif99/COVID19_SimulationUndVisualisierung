@@ -12,6 +12,9 @@ namespace Simulation.Edit
     public class AdjustableSimulationSettings
     {
 
+        //Quarantine parameters
+        public int AmountDaysQuarantine { get; set; }
+
         //Infection phase parameters
         public int LatencyTime { get; set; }
 
@@ -38,7 +41,7 @@ namespace Simulation.Edit
             get; set;
         }
 
-        public int DurationOfSymtombeginToHospitalization {get; set;}
+        public int DurationOfSymtombeginToHospitalization { get; set; }
         public int DayAPersonMustGoToHospital
         {
             get
@@ -55,14 +58,14 @@ namespace Simulation.Edit
 
             }
         }
-        public int DaysInIntensiveCare { get; set;}
+        public int DaysInIntensiveCare { get; set; }
 
-        public int DurationOfHospitalizationToIntensiveCare{ get; set; }
+        public int DurationOfHospitalizationToIntensiveCare { get; set; }
         public int DayAPersonMustGoToIntensiveCare
         {
             get
-            { 
-                return DayAPersonMustGoToHospital + DurationOfHospitalizationToIntensiveCare; 
+            {
+                return DayAPersonMustGoToHospital + DurationOfHospitalizationToIntensiveCare;
             }
         }
         public int DayAPersonCanLeaveIntensiveCare
@@ -93,6 +96,7 @@ namespace Simulation.Edit
             DaysInIntensiveCare = DefaultInfectionParameters.HealthPhaseParameters.DaysInIntensiveCare;
             DurationOfHospitalizationToIntensiveCare = DefaultInfectionParameters.HealthPhaseParameters.DurationOfHospitalizationToIntensiveCare;
 
+            AmountDaysQuarantine = DefaultInfectionParameters.QuarantineParameters.QuarantineDays;
         }
 
         /// <summary>
@@ -111,7 +115,7 @@ namespace Simulation.Edit
                                             && DayAPersonMustGoToHospital >= IncubationTime;
             bool validHealthPhaseHospitalParameters = DayAPersonMustGoToIntensiveCare >= DayAPersonMustGoToHospital
                                                      && DayAPersonCanLeaveIntensiveCare <= DayAPersonCanLeaveTheHospital;
-                                                     
+
 
             return validSimulationPhases && validHealthPhaseParameters && validHealthPhaseHospitalParameters;
         }

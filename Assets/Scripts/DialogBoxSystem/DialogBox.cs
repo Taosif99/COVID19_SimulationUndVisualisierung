@@ -13,7 +13,7 @@ namespace DialogBoxSystem
         public string Title;
         public string Message;
         public bool HasOkButton;
-        public bool HasCancelButon;
+        public bool HasCancelButton;
         public bool HasTextField;
 
 
@@ -26,7 +26,7 @@ namespace DialogBoxSystem
             Title = name;
             Message = message;
             HasOkButton = true;
-            HasCancelButon = true;
+            HasCancelButton = true;
             HasTextField = false;
         }
 

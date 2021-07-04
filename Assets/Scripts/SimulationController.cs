@@ -36,7 +36,7 @@ class SimulationController : MonoBehaviour
     private Simulation.Runtime.SimulationController _controller;
     private float _lastSimulationUpdate;
 
-    private bool IsRunning => _isInitialized && _isPaused == false;
+    public bool IsRunning => _isInitialized && _isPaused == false;
     private int _defaultAmountDaysToForward = 1;
 
     private float _forwardingProgress;
@@ -154,32 +154,27 @@ class SimulationController : MonoBehaviour
             return;
         }
 
-        
+
         _forwardButton.interactable = false;
 
         int amountDaysToForward;
         bool forwardInputOk = int.TryParse(_forwardInputField.text, out amountDaysToForward);
-        if (!forwardInputOk) amountDaysToForward = _defaultAmountDaysToForward;         
-        
-        
+        if (!forwardInputOk) amountDaysToForward = _defaultAmountDaysToForward;
+
+
         if (amountDaysToForward > 0)
         {
             _forwardProgressSliderGameObject.SetActive(true);
         }
-        
+
         StartCoroutine(ForwardSimulationRoutine(amountDaysToForward)); //This is lame
-        
+
         // ForwardSimulationBlocking(amountDaysToForward); //This is blocking which  is worse
     }
 
-    public void InfectRandomPerson()
+    public void InfectRandomPerson(int personsToBeInfected)
     {
-        if (!IsRunning)
-        {
-            return;
-        }
-
-        _controller.InfectRandomPerson();
+        _controller.InfectRandomPerson(personsToBeInfected);
         _virusButton.interactable = false;
     }
 
@@ -197,7 +192,7 @@ class SimulationController : MonoBehaviour
             {
                 _controller.RunUpdate();
             }
-            OnDayChanges();   
+            OnDayChanges();
         }
     }
 
@@ -221,13 +216,13 @@ class SimulationController : MonoBehaviour
             OnDayChanges();
 
 
-            _forwardingProgress = i /(float)amountDaysToForward ;
+            _forwardingProgress = i / (float)amountDaysToForward;
             _forwardProgressSlider.value = _forwardingProgress;
             _forwardProgressText.SetText((_forwardingProgress * 100).ToString("00.00") + "%");
 
             yield return new WaitForEndOfFrame();
         }
-        
+
         SimulationMaster.Instance.IsForwardingSimulation = false;
         _forwardProgressSliderGameObject.SetActive(false);
         Play();

@@ -47,7 +47,7 @@ namespace DialogBoxSystem {
             DialogTitleGB.SetActive(true);
             DialogBoxGB.SetActive(true);
             OkButtonGB.SetActive(dialogBox.HasOkButton);
-            CancelButtonGB.SetActive(dialogBox.HasCancelButon);
+            CancelButtonGB.SetActive(dialogBox.HasCancelButton);
             InputfieldGB.SetActive(dialogBox.HasTextField);
             _dialogTitle.SetText(dialogBox.Title);
             _dialogText.SetText(dialogBox.Message);
