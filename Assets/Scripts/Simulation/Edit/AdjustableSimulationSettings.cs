@@ -4,17 +4,18 @@ using System;
 namespace Simulation.Edit
 {
     /// <summary>
-    /// Class which encapsulates the adjustable simulation settings.
+    /// Class which encapsulates the serialized adjustable simulation settings.
     /// 
     /// CONSIDER: Hospital health parameter are stil dependent on regular health parameters (because of incubation time)
     /// </summary>
     [Serializable]
     public class AdjustableSimulationSettings
     {
+
         //Quarantine parameters
         public int AmountDaysQuarantine { get; set; }
 
-        //Infection states, using floats better ???
+        //Infection phase parameters
         public int LatencyTime { get; set; }
 
         public int AmountDaysInfectious { get; set; }
@@ -32,25 +33,15 @@ namespace Simulation.Edit
         public float PersonSurvivesIntensiveCareProbability { get; set; }
         public int DaysFromSymptomsBeginToDeath { get; set; }
 
+        public int DeathDay { get { return IncubationTime + DaysFromSymptomsBeginToDeath - 1; } }
 
-        //Hospital health parameter
+        //Hospital health parameters
         public int DaysInHospital
         {
-            get
-            {
-                return DefaultInfectionParameters.HealthPhaseParameters.DaysInHospital;
-            }
+            get; set;
         }
 
-        public int DurationOfSymtombeginToHospitalization
-        {
-            get
-            {
-
-                return DefaultInfectionParameters.HealthPhaseParameters.DurationOfSymtombeginToHospitalization;
-            }
-
-        }
+        public int DurationOfSymtombeginToHospitalization { get; set; }
         public int DayAPersonMustGoToHospital
         {
             get
@@ -67,27 +58,14 @@ namespace Simulation.Edit
 
             }
         }
-        public int DaysInIntensiveCare
-        {
-            get
-            {
-                return DefaultInfectionParameters.HealthPhaseParameters.DaysInIntensiveCare;
-            }
-        }
+        public int DaysInIntensiveCare { get; set; }
 
-        public int DurationOfHospitalizationToIntensiveCare
-        {
-            get
-            {
-
-                return DefaultInfectionParameters.HealthPhaseParameters.DurationOfHospitalizationToIntensiveCare;
-            }
-        }
+        public int DurationOfHospitalizationToIntensiveCare { get; set; }
         public int DayAPersonMustGoToIntensiveCare
         {
             get
-            { 
-                return DayAPersonMustGoToHospital + DurationOfHospitalizationToIntensiveCare; 
+            {
+                return DayAPersonMustGoToHospital + DurationOfHospitalizationToIntensiveCare;
             }
         }
         public int DayAPersonCanLeaveIntensiveCare
@@ -103,17 +81,43 @@ namespace Simulation.Edit
         public AdjustableSimulationSettings()
         {
 
-            LatencyTime = DefaultInfectionParameters.InfectionsPhaseParameters.LatencyTime;
-            AmountDaysInfectious = DefaultInfectionParameters.InfectionsPhaseParameters.AmountDaysInfectious;
-            IncubationTime = DefaultInfectionParameters.InfectionsPhaseParameters.IncubationTime;
-            AmountDaysSymptoms = DefaultInfectionParameters.InfectionsPhaseParameters.AmountDaysSymptoms;
+            LatencyTime = DefaultInfectionParameters.InfectionPhaseParameters.LatencyTime;
+            AmountDaysInfectious = DefaultInfectionParameters.InfectionPhaseParameters.AmountDaysInfectious;
+            IncubationTime = DefaultInfectionParameters.InfectionPhaseParameters.IncubationTime;
+            AmountDaysSymptoms = DefaultInfectionParameters.InfectionPhaseParameters.AmountDaysSymptoms;
 
             RecoveringProbability = DefaultInfectionParameters.HealthPhaseParameters.RecoveringProbability;
             RecoveringInHospitalProbability = DefaultInfectionParameters.HealthPhaseParameters.RecoveringInHospitalProbability;
             PersonSurvivesIntensiveCareProbability = DefaultInfectionParameters.HealthPhaseParameters.PersonSurvivesIntensiveCareProbability;
             DaysFromSymptomsBeginToDeath = DefaultInfectionParameters.HealthPhaseParameters.DaysFromSymptomsBeginToDeath;
 
+            DaysInHospital = DefaultInfectionParameters.HealthPhaseParameters.DaysInHospital;
+            DurationOfSymtombeginToHospitalization = DefaultInfectionParameters.HealthPhaseParameters.DurationOfSymtombeginToHospitalization;
+            DaysInIntensiveCare = DefaultInfectionParameters.HealthPhaseParameters.DaysInIntensiveCare;
+            DurationOfHospitalizationToIntensiveCare = DefaultInfectionParameters.HealthPhaseParameters.DurationOfHospitalizationToIntensiveCare;
+
             AmountDaysQuarantine = DefaultInfectionParameters.QuarantineParameters.QuarantineDays;
+        }
+
+        /// <summary>
+        /// Methods which makes sure that: 
+        /// - The adjustesd end day of symptoms is always greater or equal
+        /// the last infectious day.
+        /// - A Person only can go to a hospital if he/she has symptoms
+        /// - That intensive care is a "subset" of hospitalization !
+        /// </summary>
+        /// <returns></returns>
+        public bool RangesAreValid()
+        {
+
+            bool validSimulationPhases = EndDaySymptoms >= EndDayInfectious;
+            bool validHealthPhaseParameters = DayAPersonMustGoToHospital < EndDaySymptoms
+                                            && DayAPersonMustGoToHospital >= IncubationTime;
+            bool validHealthPhaseHospitalParameters = DayAPersonMustGoToIntensiveCare >= DayAPersonMustGoToHospital
+                                                     && DayAPersonCanLeaveIntensiveCare <= DayAPersonCanLeaveTheHospital;
+
+
+            return validSimulationPhases && validHealthPhaseParameters && validHealthPhaseHospitalParameters;
         }
     }
 }

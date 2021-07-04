@@ -75,21 +75,21 @@ public class UIController : MonoBehaviour
     public GameObject HospitalUI;
 
     //Venue elements
-    public TMP_InputField InfectionRiskInputField; 
-                                                 
+    public TMP_InputField InfectionRiskInputField;
+
     //Household elements
     public TMP_InputField NumberOfPeopleInputField;
-    public TMP_InputField PercantageOfWorkersInputField; 
-    public TMP_InputField CarefulnessInputField; 
+    public TMP_InputField PercantageOfWorkersInputField;
+    public TMP_InputField CarefulnessInputField;
     //Workplace elements
     public TMP_Dropdown WorkplaceTypeDropdown;
     public TMP_InputField WorkerCapacityInputField;
     //Hospital elements
     public TMP_InputField AmountNormalBedsInputField;
     public TMP_InputField AmountIntensiveCareInputField;
-    
+
     //inputfields and dropdowns of left image
-    private List<TMP_InputField> _leftInputFields; 
+    private List<TMP_InputField> _leftInputFields;
     private List<TMP_Dropdown> _leftDropDowns;
 
     [Header("Simulation Settings Inputfields")]
@@ -101,6 +101,10 @@ public class UIController : MonoBehaviour
     public TMP_InputField RecoverInHospitalInputField;
     public TMP_InputField SurviveIntensiveCareInputField;
     public TMP_InputField AmountDaysToDeathInputField;
+    public TMP_InputField DaysInHosputalInputField;
+    public TMP_InputField DaysSymptomsBeginToHospitalizationInputField;
+    public TMP_InputField DaysIntensiveCareInputField;
+    public TMP_InputField DaysRegularToIntensiveInputField;
     public TMP_InputField QuarantineDaysInputField;
 
     [Header("References to manager(s)")]
@@ -119,7 +123,7 @@ public class UIController : MonoBehaviour
     {
         _leftInputFields = new List<TMP_InputField> {InfectionRiskInputField,NumberOfPeopleInputField,
           Instance.PercantageOfWorkersInputField,CarefulnessInputField,WorkerCapacityInputField};
-        _leftDropDowns = new List<TMP_Dropdown> {WorkplaceTypeDropdown};
+        _leftDropDowns = new List<TMP_Dropdown> { WorkplaceTypeDropdown };
         //Adding listeners to left UI
         AddOnChangeListenersToLeftUI();
 
@@ -154,7 +158,7 @@ public class UIController : MonoBehaviour
         PlaceGraphButton.onClick.AddListener(() =>
         {
             SetEntityPropertiesPanelVisible(true);
-            
+
             DisableButtonOutlineColors();
             ModifyOutlineColor(PlaceGraphButton);
             //Here a Graph must be activated in the UI...
@@ -293,9 +297,9 @@ public class UIController : MonoBehaviour
     /// <param name="isVisible"></param>
     public void SetEntitiesPanelVisible(bool isVisible)
     {
-        _entitiesPanel.gameObject.SetActive(isVisible);  
+        _entitiesPanel.gameObject.SetActive(isVisible);
     }
- 
+
     public void OnEpidemicInfoToggleChange()
     {
         IncidenceText.text = "";
@@ -305,7 +309,7 @@ public class UIController : MonoBehaviour
         RValue7GameObject.SetActive(EpidemicInfoToggle.isOn);
         IncidenceGameObject.SetActive(EpidemicInfoToggle.isOn);
     }
-    
+
     /// <summary>
     /// Method to add on change listeners for better usability.
     /// </summary>
