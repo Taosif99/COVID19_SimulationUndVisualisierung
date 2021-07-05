@@ -58,7 +58,6 @@ class SimulationController : MonoBehaviour
     [SerializeField]
     private Button _pauseButton;
 
-
     //Singleton
     public static SimulationController Instance { get; private set; }
 
@@ -124,7 +123,6 @@ class SimulationController : MonoBehaviour
         {
             return;
         }
-
         _isPaused = true;
     }
 

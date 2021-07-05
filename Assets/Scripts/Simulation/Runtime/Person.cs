@@ -70,7 +70,6 @@ namespace Simulation.Runtime
 
         public void SetReInfectionRisk()
         {
-            //InfectionRiskFactor = Simulation.DefaultInfectionParameters.HealthPhaseParameters.InfectionRiskIfRecovered;
             InfectionRiskFactor = _settings.InfectionRiskIfRecovered;
         }
 
@@ -199,7 +198,7 @@ namespace Simulation.Runtime
                         //Here we may update the infection risk if person recovers
                         InfectionDate = default;//restore undefined infection date
                         SetReInfectionRisk();
-                   
+                    
                     }
                     break;
                 }
