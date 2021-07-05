@@ -1,7 +1,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 using static Simulation.Runtime.Person;
-using System;
+
 
 namespace Simulation.Runtime
 {
@@ -27,7 +27,7 @@ namespace Simulation.Runtime
         public HealthState(Person person)
         {
             _person = person;
-            Simulation.Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+            Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
 
             
             float probabilityToRecover = Random.Range(0f, 1f);
@@ -81,10 +81,8 @@ namespace Simulation.Runtime
                         hospital.PatientsInIntensiveCareBeds.Remove(_person);
                     }
                     _person.CurrentLocation.RemovePerson(_person);
-                    //TODO REMOVE PERSON FROM MEMBER OF HOUSEHOLD
                     _person.IsDead = true;
                     SimulationMaster.Instance.OnPersonDies();
-                    
                     Debug.Log("Person deceased");
                 }            
             }

@@ -28,8 +28,6 @@ namespace GraphChart
         //In this List we manage all GameObjects of the Graph
         private List<GameObject> _gameObjectList;
 
-        // Values of the this graph
-        //private List<int> _valueList;
 
         //Needed for for dynamic update
         private List<GameObject> _dotsOrBarsList; //Here we handle our dots and bars
@@ -52,7 +50,7 @@ namespace GraphChart
         [SerializeField] private int _amountHorizontalLines = 11;
         [SerializeField] private GraphType _typeOfGraph = GraphType.BarChart;
 
-        //Properties if Graph is modified by other script
+        //Properties which can be used to modify Graph by other script(s)
         public bool StartYScaleAtZero
         {
             get { return _startYScaleAtZero; }
@@ -139,48 +137,6 @@ namespace GraphChart
 
 
         /// <summary>
-        /// Method to update a value at a given index of the valueList. TODO USE
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="value"></param>
-       /*
-        public void UpdateValue(int index, int value)
-        {
-            float yMinBefore, yMaxBefore;
-            CalculateYScale(out yMinBefore, out yMaxBefore);
-            _valueList[index] = value;
-            float yMin, yMax;
-            CalculateYScale(out yMin, out yMax);
-            bool yScaleChanged = yMinBefore != yMin || yMaxBefore != yMax;
-            float xSize = _graphWidth / (_valueList.Count + 1);
-
-            if (!yScaleChanged)
-            {
-                // Y Scale did not change, update only this value
-                float xPosition = xSize + index * xSize;
-                float yPosition = ((value - yMin) / (yMax - yMin)) * _graphHeight;
-                HandleGraphType(index, xPosition, yPosition, xSize);
-            }
-
-            else
-            {
-                // Y scale changed, update whole graph and y axis labels
-                // Cycle through all visible data points
-                for (int i = 0; i < _valueList.Count; i++)
-                {
-                    float xPosition = xSize + i * xSize;
-                    float yPosition = ((_valueList[i] - yMin) / (yMax - yMin)) * _graphHeight;
-                    HandleGraphType(i, xPosition, yPosition, xSize);
-                }
-                for (int i = 0; i < _yLabelList.Count; i++)
-                {
-                    float normalizedValue = i * 1f / (_yLabelList.Count - 1); //It must be the seperator count value!!!
-                    _yLabelList[i].GetComponent<Text>().text = _getAxisLabelY(yMin + (normalizedValue * (yMax - yMin)));
-                }
-            }
-        }*/
-
-        /// <summary>
         /// Method which shows a Graph. The Graph can be a linechart or barchart.
         /// </summary>
         /// <param name="valueList">Graph Values which will be plotted if enabled.</param>
@@ -196,9 +152,6 @@ namespace GraphChart
             {
                 intValueList.Add(graphValue.Value);
             }
-
-            //this._valueList = intValueList;
-
             
             InitializeLabels(getAxisLabelX, getAxisLabelY);
             //Destroying objects of previous graph
@@ -212,8 +165,7 @@ namespace GraphChart
             float yMax, yMin;
             CalculateYScale(out yMin, out yMax, intValueList);
             float xSize = _graphWidth / (intValueList.Count + 1);
-            //Here we can do a if else statement to check for the graph type
-            //I think using an enum makes the code less complicated
+            //Here we can do a if else statement to check for the graph type, the code logic differs from line chart and graph chart
             GameObject lastDotGameObject = null;
 
             int graphValueIndex = 0;
@@ -221,7 +173,6 @@ namespace GraphChart
             {
                 if (valueList[i].IsEnabled)
                 {
-
                     float xPosition = xSize + graphValueIndex * xSize;
                     float yPosition = ((valueList[i].Value - yMin) / (yMax - yMin)) * _graphHeight;
                     if (_typeOfGraph == GraphType.BarChart)
@@ -229,7 +180,6 @@ namespace GraphChart
                         Color barChartColor;
                         if (colors != null) barChartColor = colors[i];
                         else barChartColor = Color.white;
-
                         GameObject barGameObject = CreateBar(new Vector2(xPosition, yPosition), xSize * .9f, barChartColor);
                         _gameObjectList.Add(barGameObject);
                         _dotsOrBarsList.Add(barGameObject);
@@ -251,7 +201,7 @@ namespace GraphChart
         /// Method to shows and (re-)create a multiline graph.
         /// </summary>
         /// <param name="lines">Lines objects of the multiline graph</param>
-        /// <param name="colors">>An list of colors which will be applied "clockwise" on the linegraphs.</param>
+        /// <param name="colors">>An list of colors which will be applied "clockwise" (round robin) on the linegraphs.</param>
         /// <param name="getAxisLabelX">Delegate for the x-axis.</param>
         /// <param name="getAxisLabelY">Delegate for the y-axis.</param>
         public void ShowMultiLineGraph(List<Line> lines, List<Color> colors = null, Func<int, string> getAxisLabelX = null, Func<float, string> getAxisLabelY = null)
@@ -261,8 +211,7 @@ namespace GraphChart
             //Do this only if we have some values in the List<Lines> and not only empty list
             if (lines[0].Values.Count > 0)
             {
-
-                
+               
                 InitializeLabels(getAxisLabelX, getAxisLabelY);
                 //Destroying objects of previous graph
                 foreach (GameObject gameObject in _gameObjectList)
@@ -285,15 +234,11 @@ namespace GraphChart
                     }
                     valuesLists.Add(line.Values);
                 }
-
                 float yMax, yMin;
                 CalculateYScaleMultiline(out yMin, out yMax, valuesLists);
-
-
-
                 float xSize = _graphWidth / (maxCount + 1);
                 int listCounter = 0;
-                //This must be done for each value List
+
                 foreach (Line line in lines)
                 {
                     if (line.IsEnabled)
@@ -348,7 +293,6 @@ namespace GraphChart
                 _gameObjectList.Add(dotConnectionGameObject);
                 _dotsConnectionList.Add(dotConnectionGameObject);
             }
-            //That is why we need ref in this method
             lastDotGameObject = dotGameObject;
         }
 
@@ -449,51 +393,13 @@ namespace GraphChart
             return gameObject;
         }
 
-        /*
-        private void HandleGraphType(int index, float xPosition, float yPosition, float xSize)
-        {
 
-            RectTransform rectTransform = _dotsOrBarsList[index].GetComponent<RectTransform>();
-            if (_typeOfGraph == GraphType.LineGraph)
-            {
-                rectTransform.anchoredPosition = new Vector2(xPosition, yPosition);
-                //Predecessor dot connection
-                if (index > 0)
-                    UpdateDotConnection(_dotsConnectionList[index - 1], _dotsOrBarsList[index - 1], _dotsOrBarsList[index]);
-                //successor dot connection
-                if (index != _valueList.Count - 1)
-                    UpdateDotConnection(_dotsConnectionList[index], _dotsOrBarsList[index + 1], _dotsOrBarsList[index]);
-
-            }
-            else if (_typeOfGraph == GraphType.BarChart)
-            {
-
-                float barWidthMultiplier = .8f;
-                rectTransform.anchoredPosition = new Vector2(xPosition, 0f);
-                rectTransform.sizeDelta = new Vector2(xSize * barWidthMultiplier, yPosition);
-            }
-        }*/
-
-        //TODO REPLACE LATER LINEAR SEARCH WITH BETTER ALGORITHM
+        
         private void CalculateYScale(out float yMin, out float yMax, List<int> valueList)
         {
             CalculateYScaleMultiline(out yMin, out yMax, null, valueList);
         }
 
-
-        private void UpdateDotConnection(GameObject dotConnection, GameObject lastDot, GameObject currentDot)
-        {
-
-            RectTransform dotConnectionRectTransform = dotConnection.GetComponent<RectTransform>();
-            Vector2 posOfLastDot = lastDot.GetComponent<RectTransform>().anchoredPosition;
-            Vector2 posOfCurrentDot = currentDot.GetComponent<RectTransform>().anchoredPosition;
-            Vector2 direction = (posOfLastDot - posOfCurrentDot).normalized;
-            float distance = Vector2.Distance(posOfCurrentDot, posOfLastDot);
-            dotConnectionRectTransform.sizeDelta = new Vector2(distance, 3f);
-            dotConnectionRectTransform.anchoredPosition = posOfCurrentDot + direction * distance * .5f;
-            dotConnectionRectTransform.localEulerAngles = new Vector3(0, 0, GraphHelperMethods.GetAngleFromVector(direction));
-
-        }
 
         private void CalculateYScaleMultiline(out float yMin, out float yMax, List<List<int>> valueLists = null, List<int> singleLinevalues = null)
         {
@@ -515,15 +421,12 @@ namespace GraphChart
             //Scalling the min and maximum value a little bit up / lengthen y axis
             yMax = yMax + (yDifference * 0.2f);
             yMin = yMin - (yDifference * 0.2f);
-
-
            
             // Start the graph always at zero on the y-axis
             if (_startYScaleAtZero)
             {
                 yMin = 0f;
             }
-
             if (_useFixedMaxYValue)
             {
                 yMax = _maxYValue;

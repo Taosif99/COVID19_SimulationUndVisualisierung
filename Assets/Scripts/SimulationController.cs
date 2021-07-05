@@ -9,7 +9,7 @@ using UnityEngine.Assertions;
 using GraphChart;
 using System;
 using UnityEngine.UI;
-using System.Collections.Generic;
+
 
 class SimulationController : MonoBehaviour
 {
@@ -110,17 +110,12 @@ class SimulationController : MonoBehaviour
             _controller.RunUpdate();
             _simulationDateTime.text =
                 $"{_controller.SimulationDate.ToLongDateString()}\n{_controller.SimulationDate.ToShortTimeString()}";
-
-
-
             if (_currentDay != _controller.SimulationDate.Day)
             {
                 OnDayChanges();
             }
-
             _lastSimulationUpdate = Time.time;
         }
-
     }
 
     public void Pause()
@@ -142,9 +137,7 @@ class SimulationController : MonoBehaviour
             _controller = null;
             _simulationDateTime.text = string.Empty;
             _virusButton.interactable = true;
-
             _editorObjectsManager.ReloadEditorObjects();
-
             SimulationMaster.Instance.Reset();
             GlobalSimulationGraph.Instance.Reset();
             UIController.Instance.DisableBedMessages();
@@ -163,26 +156,17 @@ class SimulationController : MonoBehaviour
         {
             return;
         }
-
-
         _forwardButton.interactable = false;
         _playButton.interactable = false;
         _pauseButton.interactable = false;
-
-
         int amountDaysToForward;
         bool forwardInputOk = int.TryParse(_forwardInputField.text, out amountDaysToForward);
         if (!forwardInputOk) amountDaysToForward = _defaultAmountDaysToForward;
-
-
         if (amountDaysToForward > 0)
         {
             _forwardProgressSliderGameObject.SetActive(true);
         }
-
         StartCoroutine(ForwardSimulationRoutine(amountDaysToForward)); 
-
-  
     }
 
     public void InfectRandomPerson(int personsToBeInfected)
@@ -207,15 +191,10 @@ class SimulationController : MonoBehaviour
             {
                 _controller.RunUpdate();
             }
-
-
             OnDayChanges();
-
-
             _forwardingProgress = i / (float)amountDaysToForward;
             _forwardProgressSlider.value = _forwardingProgress;
             _forwardProgressText.SetText((_forwardingProgress * 100).ToString("00.00") + "%");
-
             yield return new WaitForEndOfFrame();
         }
 
@@ -227,13 +206,13 @@ class SimulationController : MonoBehaviour
         _pauseButton.interactable = true;
     }
 
+
     private void OnDayChanges()
     {
         //Debug.Log("Day Changes");
         _currentDay = _controller.SimulationDate.Day;
         _onDayPassed?.Invoke(true);
-        //10 min bias ???
-        //Update statistics each day
+        //Update statistics each day (CONSIDER: 10 Min of bias because of simulation step of 10 minutes )
         SimulationMaster.Instance.OnDayEnds();
         SimulationMaster.Instance.OnDayBegins(_controller.SimulationDate);
     }

@@ -58,9 +58,9 @@ public class SimulationSettingsHandler : MonoBehaviour
         bool infectionPhaseParametersAreValid = InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms);
         bool healthPhaseParametersAreValid = InputValidator.ValidateHealthPhaseParameters(ref recoveringProbability, ref recoveringInHospitalProbability, ref personSurvivesIntensiveCareProbability, ref daysFromSymptomsBeginToDeath);
         bool hospitalParametersAreValid = InputValidator.ValidateHospitalParameters(ref daysInHospital, ref durationOfSymptomsbeginToHospitalization, ref daysInIntensiveCare, ref durationOfHospitalizationToIntensiveCare);
-        bool validQuarentineParameters = InputValidator.ValidateQuarantineParameters(ref amountDaysQuarantine, ref advancedQuarantineDays);
+        bool validQuarantineParameters = InputValidator.ValidateQuarantineParameters(ref amountDaysQuarantine, ref advancedQuarantineDays);
 
-        if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid && hospitalParametersAreValid && validQuarentineParameters)
+        if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid && hospitalParametersAreValid && validQuarantineParameters)
         {
             settingsToSet.LatencyTime = latencyTime;
             settingsToSet.AmountDaysInfectious = amountDaysInfectious;

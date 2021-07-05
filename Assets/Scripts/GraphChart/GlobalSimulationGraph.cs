@@ -37,7 +37,7 @@ namespace GraphChart
         public GameObject BarchartGameObject { get => _barchartGameObject; set => _barchartGameObject = value; }
 
 
-        //TODO OUTSOURCE UI CONTROLLER
+        //Graph Toggles
         public Toggle UninfectedToggle;
         public Toggle InfectedToggle;
         public Toggle InfectiousToggle;
@@ -47,7 +47,6 @@ namespace GraphChart
 
         private void Awake()
         {
-
             if (Instance == null)
             {
                 Instance = this;
@@ -61,7 +60,7 @@ namespace GraphChart
             InitMultiLineGraph();
             InitBarChart();
             _defaultAmountGraphHorizontalLines = _barchartGameObject.GetComponent<GraphChart>().AmountHorizontalLines;
-           
+         
         }
 
         /// <summary>
@@ -142,6 +141,7 @@ namespace GraphChart
                 };
 
 
+            //The phase values are counted and saved, but currently not showed to the use
             List<int> phase1Values = new List<int>();
             List<int> phase2Values = new List<int>();
             List<int> phase3Values = new List<int>();
@@ -208,11 +208,11 @@ namespace GraphChart
         }
 
 
-        //E.g called each day or each state transition
+        
         private void UpdateLineGraphValues()
         {
 
-            //TODO UPDATE EACH MONTH
+            // UPDATE EACH 30 Days
             if (_lines[0].Values.Count < 30)
             {
 
@@ -236,12 +236,6 @@ namespace GraphChart
 
         private void AddValuesToLinesList()
         {
-            /*
-            _lines[0].Add(SimulationMaster.Instance.AmountUninfected);
-            _lines[1].Add(SimulationMaster.Instance.AmountInfected);
-            _lines[2].Add(SimulationMaster.Instance.AmountInfectious);
-            _lines[3].Add(SimulationMaster.Instance.AmountRecovered);
-            */
             _lines[0].Values.Add(SimulationMaster.Instance.AmountUninfected);
             _lines[1].Values.Add(SimulationMaster.Instance.AmountInfected);
             _lines[2].Values.Add(SimulationMaster.Instance.AmountInfectious);
@@ -253,19 +247,6 @@ namespace GraphChart
 
         private void UpdateBarChartValues()
         {
-
-            /*
-             * FIXME UPDATE CAUSES NULL POINTER EXCEPTION
-            Barchart.UpdateValue(0, SimulationMaster.Instance.AmountInfected);
-            Barchart.UpdateValue(1, SimulationMaster.Instance.AmountRecovered);
-            Barchart.UpdateValue(2, SimulationMaster.Instance.AmountUninfected);
-          */
-            /*
-            _barchartValues[0] = SimulationMaster.Instance.AmountUninfected;
-            _barchartValues[1] = SimulationMaster.Instance.AmountInfected;
-            _barchartValues[2] = SimulationMaster.Instance.AmountInfectious;
-            _barchartValues[3] = SimulationMaster.Instance.AmountRecovered;
-            */
             _barchartValues[0].Value = SimulationMaster.Instance.AmountUninfected;
             _barchartValues[1].Value = SimulationMaster.Instance.AmountInfected;
             _barchartValues[2].Value = SimulationMaster.Instance.AmountInfectious;
@@ -275,7 +256,9 @@ namespace GraphChart
 
 
 
-        
+        /// <summary>
+        /// Method which enables/disables the line of the graph depending on the selected toggles.
+        /// </summary>
         public void OnToggleChanged()
         {
             bool uninfectedOn = UninfectedToggle.isOn;
@@ -307,13 +290,10 @@ namespace GraphChart
             int amountPeople = SimulationMaster.Instance.GetAmountAllPeople();
             if (amountPeople < _defaultAmountGraphHorizontalLines)
             {
-
                 _barchartGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople;
                 _multiLineGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople; 
                 _fullScreenGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople;
             }
-
         }
-
     }
 }

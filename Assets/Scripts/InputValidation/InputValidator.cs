@@ -86,27 +86,7 @@ namespace InputValidation
             bool amountDaysInfectiousInputOk = TryParseIntDayInputField(UIController.Instance.AmountDaysInfectiousInputField, ref amountDaysInfectious);
             bool incubationInputOk = TryParseIntDayInputField(UIController.Instance.IncubationTimeInputField, ref incubationTime);
             bool amountDaysSymptomsInputOk = TryParseIntDayInputField(UIController.Instance.AmountDaysSymptomsInputField, ref amountDaysSymptoms);
-
             result = latencyInputOk && amountDaysInfectiousInputOk && incubationInputOk && amountDaysSymptomsInputOk;
-
-            /*
-            if (result == true)
-            {
-                result = incubationTime + amountDaysSymptoms >= latencyTime + amountDaysInfectious;
-
-                if (result == false)
-                {
-                    //All fields are wrong
-                    SetInputFieldColor(UIController.Instance.LatencyInputField, false);
-                    SetInputFieldColor(UIController.Instance.AmountDaysInfectiousInputField, false);
-                    SetInputFieldColor(UIController.Instance.IncubationTimeInputField, false);
-                    SetInputFieldColor(UIController.Instance.AmountDaysSymptomsInputField, false);
-                    //TODO DIALOGBOX WHICH EXPLAINS ERROR
-                }
-
-            }*/
-
-
             return result;
         }
 
@@ -121,12 +101,10 @@ namespace InputValidation
         public static bool ValidateHealthPhaseParameters(ref float recoveringProbability, ref float recoveringInHospitalProbability, ref float personSurvivesIntensiveCareProbability, ref int daysFromSymptomsBeginToDeath)
         {
             bool result;
-
             bool recoveringProbabilityInputOk = TryParseFloatPercentageInputField(UIController.Instance.RecoverInputField, ref recoveringProbability);
             bool recoveringProbabilityInHospitalInputOk = TryParseFloatPercentageInputField(UIController.Instance.RecoverInHospitalInputField, ref recoveringInHospitalProbability);
             bool personSurvivesIntensiveCareInputOk = TryParseFloatPercentageInputField(UIController.Instance.SurviveIntensiveCareInputField, ref personSurvivesIntensiveCareProbability);
             bool daysFromSymptomsBeginToDeathInputOk = TryParseIntDayInputField(UIController.Instance.AmountDaysToDeathInputField, ref daysFromSymptomsBeginToDeath);
-
             result = recoveringProbabilityInputOk && recoveringProbabilityInHospitalInputOk && personSurvivesIntensiveCareInputOk && daysFromSymptomsBeginToDeathInputOk;
             return result;
         }
@@ -146,9 +124,7 @@ namespace InputValidation
             bool durationOfSymptomsbeginToHospitalizationInputOk = TryParseIntDayInputField(UIController.Instance.DaysSymptomsBeginToHospitalizationInputField, ref durationOfSymptomsbeginToHospitalization);
             bool daysInIntensiveCareInputOk = TryParseIntDayInputField(UIController.Instance.DaysIntensiveCareInputField, ref daysInIntensiveCare);
             bool durationOfHospitalizationToIntensiveCareInputOk = TryParseIntDayInputField(UIController.Instance.DaysRegularToIntensiveInputField, ref durationOfHospitalizationToIntensiveCare);
-
             result = daysInHospitalInputOk && durationOfSymptomsbeginToHospitalizationInputOk && daysInIntensiveCareInputOk && durationOfHospitalizationToIntensiveCareInputOk;
-
             return result;
         }
 

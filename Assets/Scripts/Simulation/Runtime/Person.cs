@@ -66,13 +66,6 @@ namespace Simulation.Runtime
             Phase5 = Recovered
         }
 
-        //Remove that ? if not used
-        public enum PhysicalCondition
-        {
-            Healthy,
-            PreIllness
-        }
-
         public void SetReInfectionRisk()
         {
             InfectionRiskFactor = Simulation.DefaultInfectionParameters.HealthPhaseParameters.InfectionRiskIfRecovered;

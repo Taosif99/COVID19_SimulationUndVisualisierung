@@ -36,6 +36,7 @@ namespace Simulation.Runtime
                         continue;
                     }
 
+                    // TODO CONSIDER MASK FACTORS
                     float linearInterpolatedCarefulnessFactor = Mathf.Lerp(1.5f, 0.5f, (p.CarefulnessFactor + i.CarefulnessFactor) / 2);
                    
                     float infectionProbability = this.InfectionRisk * linearInterpolatedCarefulnessFactor * GeneralInfectionProbabilityFactor * p.InfectionRiskFactor;
