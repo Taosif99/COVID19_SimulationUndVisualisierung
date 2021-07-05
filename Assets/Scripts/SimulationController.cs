@@ -168,7 +168,7 @@ class SimulationController : MonoBehaviour
         _forwardButton.interactable = false;
         _playButton.interactable = false;
         _pauseButton.interactable = false;
-       // _stopButton.interactable = false;
+
 
         int amountDaysToForward;
         bool forwardInputOk = int.TryParse(_forwardInputField.text, out amountDaysToForward);
@@ -180,7 +180,7 @@ class SimulationController : MonoBehaviour
             _forwardProgressSliderGameObject.SetActive(true);
         }
 
-        StartCoroutine(ForwardSimulationRoutine(amountDaysToForward)); //This is lame
+        StartCoroutine(ForwardSimulationRoutine(amountDaysToForward)); 
 
   
     }

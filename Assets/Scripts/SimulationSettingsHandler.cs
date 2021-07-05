@@ -65,9 +65,10 @@ public class SimulationSettingsHandler : MonoBehaviour
         bool infectionPhaseParametersAreValid = InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms);
         bool healthPhaseParametersAreValid = InputValidator.ValidateHealthPhaseParameters(ref recoveringProbability, ref recoveringInHospitalProbability, ref personSurvivesIntensiveCareProbability, ref daysFromSymptomsBeginToDeath);
         bool hospitalParametersAreValid = InputValidator.ValidateHospitalParameters(ref daysInHospital, ref durationOfSymptomsbeginToHospitalization, ref daysInIntensiveCare, ref durationOfHospitalizationToIntensiveCare);
+        bool validQuarentineParameters = InputValidator.TryParseIntDayInputField(UIController.Instance.QuarantineDaysInputField, ref amountDaysQuarantine);
 
 
-        if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid && hospitalParametersAreValid)
+        if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid && hospitalParametersAreValid && validQuarentineParameters)
         {
 
             settingsToSet.LatencyTime = latencyTime;
