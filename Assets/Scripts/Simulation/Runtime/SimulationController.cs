@@ -200,7 +200,7 @@ namespace Simulation.Runtime
             }
             else
             {
-                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AmountDaysQuarantine);
+                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(7);
                 Debug.Log("Extend qu: " + member.EndDateOfQuarantine);
                 return false;
             }
