@@ -190,8 +190,6 @@ namespace Simulation.Runtime
         private bool CanLeaveQuarantine(Person member)
         {
             //TODO METHOD CAUSES EXCEPTION !!! Day Must be in valid month range !!!
-
-            
             if (member.InfectionState.HasFlag(Person.InfectionStates.Recovered))
             {
                 member.IsInQuarantine = false;

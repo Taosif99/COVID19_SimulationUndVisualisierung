@@ -293,8 +293,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 606.83, y: 0.000084877014}
-  m_SizeDelta: {x: 23.873, y: 413.95}
+  m_AnchoredPosition: {x: 606.83, y: 0.0007839203}
+  m_SizeDelta: {x: 23.873, y: 477.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &265556633
 MonoBehaviour:
@@ -340,7 +340,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 778560447}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.30937222
+  m_Size: 0.3566505
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1137,8 +1137,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000031007, y: 2.6581}
-  m_SizeDelta: {x: 1250.7994, y: 413.9457}
+  m_AnchoredPosition: {x: 0.000031007, y: -28.9715}
+  m_SizeDelta: {x: 1250.7994, y: 477.2049}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1713929387
 MonoBehaviour:
@@ -1404,7 +1404,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000037749, y: -462.03622}
+  m_AnchoredPosition: {x: 0.000037749, y: -430.4066}
   m_SizeDelta: {x: 1189.7834, y: 1338.0181}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1852758319
@@ -1436,11 +1436,14 @@ MonoBehaviour:
     that you have not to set everything again when you restart the program.\r\nAbove
     each venue there is an indication of how many are healthy (<color=green>green</color>),
     infected (<color=orange>orange</color>) and infectious (<color=red>red</color>).\r\nFor
-    the hospitals, the number of normal beds (<color=green>??</color>) and intensive
-    care beds (<color=green>??</color>) and how many of them are occupied are also
-    displayed.\r\nIn our simulation we try to ensure that a normal patient gets a
-    normal bed and an intensive care patient gets an intensive care bed. If the \u2026\r\n\r\n\r\nThere
-    are two types of workplaces: store and other. \r\n\r\nA store has four work shifts:\r\n1.\tWork
+    the hospitals, the number of normal beds (<color=#6495ED>blue</color>) and intensive
+    care beds (<color=#9FE2BF>mint green</color>) and how many of them are occupied
+    are also displayed.\r\nIn our simulation we try to ensure that a normal patient
+    gets a normal bed and an intensive care patient gets an intensive care bed. If
+    there are no more free beds in one hospital, we try to find free beds in other
+    hospitals. For the patients who need an intensive care bed and there are no free
+    intensive care beds, the person gets a normal bed.\r\n\r\nThere are two types
+    of workplaces: store and other. \r\n\r\nA store has four work shifts:\r\n1.\tWork
     shift: Monday-Saturday from 8 a.m. to 4 p.m.\r\n2.\tWork shift: Monday-Friday
     from 8 a.m. to 4 p.m. \r\n3.\tWork shift: Monday-Saturday from 12 p.m. to 8 p.m.\r\n4.\tWork
     shift: Monday-Friday from 12 p.m. to 8 p.m.\r\n\r\nOther workplaces have one
@@ -1458,7 +1461,7 @@ MonoBehaviour:
     recovered 16 days after infection.\r\n\r\nWe used the following sources for our
     research:\r\nhttps://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html;jsessionid=CE16F99FB237ECBAC11C55AB8020F12F.internet111?nn=13490888#a325
     \r\n\r\nhttps://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile
-    \r\n\r\nhttps://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/\r\n"
+    \r\n\r\nhttps://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/\r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
