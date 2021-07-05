@@ -1930,6 +1930,7 @@ MonoBehaviour:
   _presetsSelection: {fileID: 791943461}
   _presets:
   - {fileID: 4900000, guid: 6c904d418c268f74381d6974611d10ba, type: 3}
+  - {fileID: 4900000, guid: 2de34d8f82db98c4891b420d4b3f64e3, type: 3}
   - {fileID: 4900000, guid: f7d59d6144464c94a98b1fd5e52ee458, type: 3}
   - {fileID: 4900000, guid: 613c09f7c75f7414987aa414caa3dc29, type: 3}
 --- !u!1 &1038322700
