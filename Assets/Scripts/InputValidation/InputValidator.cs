@@ -6,17 +6,12 @@ using System;
 
 namespace InputValidation
 {
-
     /// <summary>
     /// Class which implements methods concerning input validation in our
     /// simulation program.
     /// </summary>
     public static class InputValidator
     {
-
-
-
-
         /// <summary>
         ///  Method which parses al inputfields in the simulation scene and which checks for correct value ranges.
         ///  TODO: This method has way too much parameters !
@@ -56,7 +51,6 @@ namespace InputValidation
                         inputIsValid = inputIsValid && amountBedsValid && amountIntensiveCareBedsValid;
 
                     }
-
                 }
                 else if (currentSelectedEntity is Household)
                 {
@@ -75,10 +69,6 @@ namespace InputValidation
 
             return inputIsValid;
         }
-
-
-
-
 
         /// <summary>
         /// Method which validated the simulation settings parameters.
@@ -120,11 +110,6 @@ namespace InputValidation
             return result;
         }
 
-
-
-
-
-
         /// <summary>
         /// Method which validates the health phase parameters.
         /// </summary>
@@ -145,8 +130,6 @@ namespace InputValidation
             result = recoveringProbabilityInputOk && recoveringProbabilityInHospitalInputOk && personSurvivesIntensiveCareInputOk && daysFromSymptomsBeginToDeathInputOk;
             return result;
         }
-
-
 
         /// <summary>
         /// Method which validates the health phase parameters which define the hospitalizatiom process.
@@ -169,19 +152,20 @@ namespace InputValidation
             return result;
         }
 
-
-
         /// <summary>
         /// Method which validates the quarantine parameters.
         /// </summary>
         /// <param name="quarantineDays"></param>
+        /// <param name="advancedQuarantineDays"></param>
         /// <returns>true if all parameters are valid, else false</returns>
-        public static bool ValidateQuarantineParameters(ref int quarantineDays)
+        public static bool ValidateQuarantineParameters(ref int quarantineDays, ref int advancedQuarantineDays)
         {
             bool result = false;
 
             bool quarantineDaysInputOk = TryParseIntDayInputField(UIController.Instance.QuarantineDaysInputField, ref quarantineDays);
-            result = quarantineDaysInputOk;
+            bool advancedQuarantineDaysInputOk = TryParseIntDayInputField(UIController.Instance.AdvancedQuarantineDaysInputField, ref advancedQuarantineDays);
+
+            result = quarantineDaysInputOk && advancedQuarantineDaysInputOk;
             return result;
         }
 
@@ -200,20 +184,12 @@ namespace InputValidation
             return inputOk;
         }
 
-
-
         public static bool TryParseFloatPercentageInputField(TMP_InputField inputField, ref float value)
         {
             bool validPercentage = float.TryParse(inputField.text, out value) && IsValidPercentage(value);
             SetInputFieldColor(inputField, validPercentage);
             return validPercentage;
         }
-
-
-
-
-
-
 
         /// <summary>
         /// Method to check whethe a string is empty or only consists of whitespaces.
@@ -240,7 +216,6 @@ namespace InputValidation
             return isInputOk;
         }
 
-
         public static void ResetAllLeftInputToWhite()
         {
 
@@ -252,8 +227,6 @@ namespace InputValidation
             UIController.Instance.CarefulnessInputField.image.color = Color.white;
             UIController.Instance.PercantageOfWorkersInputField.image.color = Color.white;
         }
-
-
 
         /// <summary>
         /// Method to set the color of an inputfield depending if its content 
@@ -282,7 +255,5 @@ namespace InputValidation
         {
             return value >= 0f && value <= 1f;
         }
-
-
     }
 }

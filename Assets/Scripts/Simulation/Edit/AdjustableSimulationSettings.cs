@@ -14,6 +14,7 @@ namespace Simulation.Edit
 
         //Quarantine parameters
         public int AmountDaysQuarantine { get; set; }
+        public int AdvancedQuarantineDays { get; set; }
 
         //Infection phase parameters
         public int LatencyTime { get; set; }
@@ -97,6 +98,7 @@ namespace Simulation.Edit
             DurationOfHospitalizationToIntensiveCare = DefaultInfectionParameters.HealthPhaseParameters.DurationOfHospitalizationToIntensiveCare;
 
             AmountDaysQuarantine = DefaultInfectionParameters.QuarantineParameters.QuarantineDays;
+            AdvancedQuarantineDays = DefaultInfectionParameters.QuarantineParameters.AdvancedQuarantineDays;
         }
 
         /// <summary>

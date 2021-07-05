@@ -109,6 +109,7 @@ public class UIController : MonoBehaviour
     public TMP_InputField DaysIntensiveCareInputField;
     public TMP_InputField DaysRegularToIntensiveInputField;
     public TMP_InputField QuarantineDaysInputField;
+    public TMP_InputField AdvancedQuarantineDaysInputField;
 
     [Header("References to manager(s)")]
     //Will be replaced

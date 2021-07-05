@@ -69,6 +69,11 @@ namespace Simulation
             /// Amount days a person must be in quarantine.
             /// </summary>
             public const int QuarantineDays = 14;
+
+            /// <summary>
+            /// Amount extended quarantine days in case the person is still infected after quarantine.
+            /// </summary>
+            public const int AdvancedQuarantineDays = 7;
         }
 
         public static class HealthPhaseParameters

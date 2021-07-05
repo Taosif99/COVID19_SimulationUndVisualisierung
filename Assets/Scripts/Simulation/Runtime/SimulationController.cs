@@ -138,8 +138,6 @@ namespace Simulation.Runtime
                     }
                     if (HandleHospitalLogic(member)) continue;
 
-
-
                     //TODO METHOD HANDLE QUARANTINE Method
                     if (member.EndDateOfQuarantine.Equals(SimulationDate))
                     {
@@ -156,27 +154,10 @@ namespace Simulation.Runtime
 
                     TryMovePersonToItsActivity(member);
 
-                    //TODO METHOD FOR TESTING
-                    if (!member.IsInQuarantine && member.TryGetActivityAt(SimulationDate, out Activity activity) && activity.IsWork
-                        && SimulationDate.Equals(new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day, activity.StartTime, 0, 0)))
-                    {
-                        if (activity.Location is Hospital && SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday))
-                        {
-                            Debug.Log("Hospital");
-                            CoronaTest(member, household);
-                            if (member.IsInQuarantine)
-                                continue;
-                        }
+                    TryToDoCoronaTest(member, household);
 
-                        if (activity.Location is Workplace && (SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday)
-                            || SimulationDate.DayOfWeek.Equals(DayOfWeek.Wednesday)))
-                        {
-                            Debug.Log("Workplace");
-                            CoronaTest(member, household);
-                            if (member.IsInQuarantine)
-                                continue;
-                        }
-                    }
+                    if (member.IsInQuarantine) continue;
+   
                     TryMovePersonBackToHome(member, household);
                 }
             }
@@ -198,11 +179,36 @@ namespace Simulation.Runtime
             }
             else
             {
-                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(7);
+                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AdvancedQuarantineDays);
                 Debug.Log("Extend qu: " + member.EndDateOfQuarantine);
                 return false;
             }
            
+        }
+
+        /// <summary>
+        /// Try to do corona test if the conditions are met.
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="household"></param>
+        private void TryToDoCoronaTest(Person member, Household household)
+        {
+            if (!member.IsInQuarantine && member.TryGetActivityAt(SimulationDate, out Activity activity) && activity.IsWork
+                        && SimulationDate.Equals(new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day, activity.StartTime, 0, 0)))
+            {
+                if (activity.Location is Hospital && SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday))
+                {
+                    Debug.Log("Hospital");
+                    CoronaTest(member, household);
+                }
+
+                if (activity.Location is Workplace && (SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday)
+                    || SimulationDate.DayOfWeek.Equals(DayOfWeek.Wednesday)))
+                {
+                    Debug.Log("Workplace");
+                    CoronaTest(member, household);
+                }
+            }
         }
 
         /// <summary>

@@ -7,11 +7,8 @@ using DialogBoxSystem;
 /// </summary>
 public class SimulationSettingsHandler : MonoBehaviour
 {
-
-
     public GameObject SimulationSettingsGameObject;
     private bool _saveLock = false;
-
 
     public void LoadSettings()
     {
@@ -27,22 +24,16 @@ public class SimulationSettingsHandler : MonoBehaviour
             settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
             Debug.Log("Repair old save");
         }
-
-
         DisplaySettings(settings);
     }
-
 
     public void CloseSettings()
     {
         SimulationSettingsGameObject.SetActive(false);
     }
 
-
     public void SaveSettingsToSimulation()
     {
-
-
         Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation;
         AdjustableSimulationSettings currentSettings = simulation.SimulationOptions.AdjustableSimulationPrameters;
 
@@ -62,15 +53,15 @@ public class SimulationSettingsHandler : MonoBehaviour
         int daysInIntensiveCare = defaultSettings.DaysInIntensiveCare;
         int durationOfHospitalizationToIntensiveCare = defaultSettings.DurationOfHospitalizationToIntensiveCare;
         int amountDaysQuarantine = defaultSettings.AmountDaysQuarantine;
+        int advancedQuarantineDays = defaultSettings.AdvancedQuarantineDays;
+
         bool infectionPhaseParametersAreValid = InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms);
         bool healthPhaseParametersAreValid = InputValidator.ValidateHealthPhaseParameters(ref recoveringProbability, ref recoveringInHospitalProbability, ref personSurvivesIntensiveCareProbability, ref daysFromSymptomsBeginToDeath);
         bool hospitalParametersAreValid = InputValidator.ValidateHospitalParameters(ref daysInHospital, ref durationOfSymptomsbeginToHospitalization, ref daysInIntensiveCare, ref durationOfHospitalizationToIntensiveCare);
-        bool validQuarentineParameters = InputValidator.TryParseIntDayInputField(UIController.Instance.QuarantineDaysInputField, ref amountDaysQuarantine);
-
+        bool validQuarentineParameters = InputValidator.ValidateQuarantineParameters(ref amountDaysQuarantine, ref advancedQuarantineDays);
 
         if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid && hospitalParametersAreValid && validQuarentineParameters)
         {
-
             settingsToSet.LatencyTime = latencyTime;
             settingsToSet.AmountDaysInfectious = amountDaysInfectious;
             settingsToSet.IncubationTime = incubationTime;
@@ -80,15 +71,13 @@ public class SimulationSettingsHandler : MonoBehaviour
             settingsToSet.PersonSurvivesIntensiveCareProbability = personSurvivesIntensiveCareProbability;
             settingsToSet.DaysFromSymptomsBeginToDeath = daysFromSymptomsBeginToDeath;
 
-
-
-
             settingsToSet.DaysInHospital = daysInHospital;
             settingsToSet.DurationOfSymtombeginToHospitalization = durationOfSymptomsbeginToHospitalization;
             settingsToSet.DaysInIntensiveCare = daysInIntensiveCare;
             settingsToSet.DurationOfHospitalizationToIntensiveCare = durationOfHospitalizationToIntensiveCare;
 
             settingsToSet.AmountDaysQuarantine = amountDaysQuarantine;
+            settingsToSet.AdvancedQuarantineDays = advancedQuarantineDays;
 
             if (settingsToSet.RangesAreValid())
             {
@@ -108,8 +97,6 @@ public class SimulationSettingsHandler : MonoBehaviour
                 dialogBox.HasCancelButton = false;
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
             }
-
-
         }
     }
 
@@ -123,7 +110,6 @@ public class SimulationSettingsHandler : MonoBehaviour
         DisplaySettings(settings);
         _saveLock = false;
     }
-
 
     private void DisplaySettings(AdjustableSimulationSettings settings)
     {
@@ -140,6 +126,6 @@ public class SimulationSettingsHandler : MonoBehaviour
         UIController.Instance.DaysIntensiveCareInputField.text = settings.DaysInIntensiveCare.ToString();
         UIController.Instance.DaysRegularToIntensiveInputField.text = settings.DurationOfHospitalizationToIntensiveCare.ToString();
         UIController.Instance.QuarantineDaysInputField.text = settings.AmountDaysQuarantine.ToString();
+        UIController.Instance.AdvancedQuarantineDaysInputField.text = settings.AdvancedQuarantineDays.ToString();;
     }
-
 }
