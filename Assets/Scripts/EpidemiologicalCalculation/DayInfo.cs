@@ -4,9 +4,7 @@ namespace EpidemiologicalCalculation
 
     /// <summary>
     /// Class which encapsulates information which repesent a dataset
-    /// in the calclualtion of the epidemiological R-Value.
-    /// 
-    /// 
+    /// of a saved day information, which include, date, r-values, incidenece, etc...
     /// </summary>
     public class DayInfo
     {
