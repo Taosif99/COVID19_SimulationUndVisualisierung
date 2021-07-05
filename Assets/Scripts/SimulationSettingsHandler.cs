@@ -47,6 +47,7 @@ public class SimulationSettingsHandler : MonoBehaviour
         float recoveringProbability = defaultSettings.RecoveringProbability;
         float recoveringInHospitalProbability = defaultSettings.RecoveringInHospitalProbability;
         float personSurvivesIntensiveCareProbability = defaultSettings.PersonSurvivesIntensiveCareProbability;
+        float infectionRiskIfRecovered = defaultSettings.InfectionRiskIfRecovered;
         int daysFromSymptomsBeginToDeath = defaultSettings.DaysFromSymptomsBeginToDeath;
         int daysInHospital = defaultSettings.DaysInHospital;
         int durationOfSymptomsbeginToHospitalization = defaultSettings.DurationOfSymtombeginToHospitalization;
@@ -54,9 +55,10 @@ public class SimulationSettingsHandler : MonoBehaviour
         int durationOfHospitalizationToIntensiveCare = defaultSettings.DurationOfHospitalizationToIntensiveCare;
         int amountDaysQuarantine = defaultSettings.AmountDaysQuarantine;
         int advancedQuarantineDays = defaultSettings.AdvancedQuarantineDays;
+        
 
         bool infectionPhaseParametersAreValid = InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms);
-        bool healthPhaseParametersAreValid = InputValidator.ValidateHealthPhaseParameters(ref recoveringProbability, ref recoveringInHospitalProbability, ref personSurvivesIntensiveCareProbability, ref daysFromSymptomsBeginToDeath);
+        bool healthPhaseParametersAreValid = InputValidator.ValidateHealthPhaseParameters(ref recoveringProbability, ref recoveringInHospitalProbability, ref personSurvivesIntensiveCareProbability, ref daysFromSymptomsBeginToDeath, ref infectionRiskIfRecovered);
         bool hospitalParametersAreValid = InputValidator.ValidateHospitalParameters(ref daysInHospital, ref durationOfSymptomsbeginToHospitalization, ref daysInIntensiveCare, ref durationOfHospitalizationToIntensiveCare);
         bool validQuarantineParameters = InputValidator.ValidateQuarantineParameters(ref amountDaysQuarantine, ref advancedQuarantineDays);
 
@@ -70,6 +72,7 @@ public class SimulationSettingsHandler : MonoBehaviour
             settingsToSet.RecoveringInHospitalProbability = recoveringInHospitalProbability;
             settingsToSet.PersonSurvivesIntensiveCareProbability = personSurvivesIntensiveCareProbability;
             settingsToSet.DaysFromSymptomsBeginToDeath = daysFromSymptomsBeginToDeath;
+            settingsToSet.InfectionRiskIfRecovered = infectionRiskIfRecovered;
 
             settingsToSet.DaysInHospital = daysInHospital;
             settingsToSet.DurationOfSymtombeginToHospitalization = durationOfSymptomsbeginToHospitalization;
@@ -126,6 +129,7 @@ public class SimulationSettingsHandler : MonoBehaviour
         UIController.Instance.DaysIntensiveCareInputField.text = settings.DaysInIntensiveCare.ToString();
         UIController.Instance.DaysRegularToIntensiveInputField.text = settings.DurationOfHospitalizationToIntensiveCare.ToString();
         UIController.Instance.QuarantineDaysInputField.text = settings.AmountDaysQuarantine.ToString();
-        UIController.Instance.AdvancedQuarantineDaysInputField.text = settings.AdvancedQuarantineDays.ToString();;
+        UIController.Instance.AdvancedQuarantineDaysInputField.text = settings.AdvancedQuarantineDays.ToString();
+        UIController.Instance.InfectionRiskIfRecoveredInputField.text = settings.InfectionRiskIfRecovered.ToString();
     }
 }

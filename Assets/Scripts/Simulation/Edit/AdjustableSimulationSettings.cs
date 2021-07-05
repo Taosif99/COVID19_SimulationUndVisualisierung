@@ -11,7 +11,6 @@ namespace Simulation.Edit
     [Serializable]
     public class AdjustableSimulationSettings
     {
-
         //Quarantine parameters
         public int AmountDaysQuarantine { get; set; }
         public int AdvancedQuarantineDays { get; set; }
@@ -33,6 +32,7 @@ namespace Simulation.Edit
         public float RecoveringInHospitalProbability { get; set; }
         public float PersonSurvivesIntensiveCareProbability { get; set; }
         public int DaysFromSymptomsBeginToDeath { get; set; }
+        public float InfectionRiskIfRecovered { get; set; }
 
         public int DeathDay { get { return IncubationTime + DaysFromSymptomsBeginToDeath - 1; } }
 
@@ -99,6 +99,8 @@ namespace Simulation.Edit
 
             AmountDaysQuarantine = DefaultInfectionParameters.QuarantineParameters.QuarantineDays;
             AdvancedQuarantineDays = DefaultInfectionParameters.QuarantineParameters.AdvancedQuarantineDays;
+
+            InfectionRiskIfRecovered = DefaultInfectionParameters.HealthPhaseParameters.InfectionRiskIfRecovered;
         }
 
         /// <summary>

@@ -97,15 +97,18 @@ namespace InputValidation
         /// <param name="recoveringInHospitalProbability"></param>
         /// <param name="personSurvivesIntensiveCareProbability"></param>
         /// <param name="daysFromSymptomsBeginToDeath"></param>
+        /// <param name="infectionRiskIfRecovered"></param>
         /// <returns>true if all parameters are valid, else false</returns>
-        public static bool ValidateHealthPhaseParameters(ref float recoveringProbability, ref float recoveringInHospitalProbability, ref float personSurvivesIntensiveCareProbability, ref int daysFromSymptomsBeginToDeath)
+        public static bool ValidateHealthPhaseParameters(ref float recoveringProbability, ref float recoveringInHospitalProbability, ref float personSurvivesIntensiveCareProbability, ref int daysFromSymptomsBeginToDeath, ref float infectionRiskIfRecovered)
         {
             bool result;
             bool recoveringProbabilityInputOk = TryParseFloatPercentageInputField(UIController.Instance.RecoverInputField, ref recoveringProbability);
             bool recoveringProbabilityInHospitalInputOk = TryParseFloatPercentageInputField(UIController.Instance.RecoverInHospitalInputField, ref recoveringInHospitalProbability);
             bool personSurvivesIntensiveCareInputOk = TryParseFloatPercentageInputField(UIController.Instance.SurviveIntensiveCareInputField, ref personSurvivesIntensiveCareProbability);
             bool daysFromSymptomsBeginToDeathInputOk = TryParseIntDayInputField(UIController.Instance.AmountDaysToDeathInputField, ref daysFromSymptomsBeginToDeath);
-            result = recoveringProbabilityInputOk && recoveringProbabilityInHospitalInputOk && personSurvivesIntensiveCareInputOk && daysFromSymptomsBeginToDeathInputOk;
+            bool infectionRiskIfRecoveredInputOk = TryParseFloatPercentageInputField(UIController.Instance.InfectionRiskIfRecoveredInputField, ref infectionRiskIfRecovered);
+
+            result = recoveringProbabilityInputOk && recoveringProbabilityInHospitalInputOk && personSurvivesIntensiveCareInputOk && daysFromSymptomsBeginToDeathInputOk && infectionRiskIfRecoveredInputOk;
             return result;
         }
 

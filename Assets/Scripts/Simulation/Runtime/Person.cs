@@ -43,6 +43,8 @@ namespace Simulation.Runtime
 
         public event Action<StateTransitionEventArgs> OnStateTrasitionHandler;
 
+        private Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
+
         public class StateTransitionEventArgs : EventArgs
         {
             public InfectionStates newInfectionState;
@@ -68,7 +70,8 @@ namespace Simulation.Runtime
 
         public void SetReInfectionRisk()
         {
-            InfectionRiskFactor = Simulation.DefaultInfectionParameters.HealthPhaseParameters.InfectionRiskIfRecovered;
+            //InfectionRiskFactor = Simulation.DefaultInfectionParameters.HealthPhaseParameters.InfectionRiskIfRecovered;
+            InfectionRiskFactor = _settings.InfectionRiskIfRecovered;
         }
 
         public bool HasActivityAt(DateTime dateTime) => GetActivityAt(dateTime) != null;
