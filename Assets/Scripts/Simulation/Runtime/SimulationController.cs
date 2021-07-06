@@ -139,13 +139,7 @@ namespace Simulation.Runtime
 
                     if (HandleHospitalLogic(member)) continue;
 
-                    //TODO METHOD HANDLE QUARANTINE Method
-                    if (member.EndDateOfQuarantine.Equals(SimulationDate))
-                    {
-                        if (!CanLeaveQuarantine(member)) continue; 
-                    }
-
-                    if (member.IsInQuarantine) continue;
+                    if (!CanLeaveQuarantine(member, SimulationDate) && member.IsInQuarantine) continue; 
 
                     if (MoveInfectiousPersonToHome(member, household))
                     {
@@ -156,9 +150,7 @@ namespace Simulation.Runtime
 
                     TryMovePersonToItsActivity(member);
 
-                    TryToDoCoronaTest(member, household);
-
-                    if (member.IsInQuarantine) continue;
+                    if(HandleCoronaTestLogic(member, household) && member.IsInQuarantine) continue;
    
                     TryMovePersonBackToHome(member, household);
                 }
@@ -169,36 +161,42 @@ namespace Simulation.Runtime
         /// Method to check if the person can leave the quarantine.
         /// </summary>
         /// <param name="member"></param>
-        /// <returns>true if member can leave quarantine, else false and further logic can be skipped</returns>
-        private bool CanLeaveQuarantine(Person member)
+        /// <param name="simulationDate"></param>
+        /// <returns>true if member can leave quarantine, else false</returns>
+        private bool CanLeaveQuarantine(Person member, DateTime simulationDate)
         {
-            if (member.InfectionState.HasFlag(Person.InfectionStates.Recovered))
+            if (member.EndDateOfQuarantine.Equals(simulationDate))
             {
-                if (IsCoronaQuickTestCorrect(false))
+                if (member.InfectionState.HasFlag(Person.InfectionStates.Recovered))
                 {
-                    LeaveQuaratine(member);
-                    return true;
+                    if (IsCoronaQuickTestCorrect(false))
+                    {
+                        LeaveQuaratine(member);
+                        return true;
+                    }
+                    else
+                    {
+                        ExtendQuarantine(member);
+                        return false;
+                    }
                 }
+
                 else
                 {
-                    ExtendQuarantine(member);
-                    return false;
+                    if (IsCoronaQuickTestCorrect(true))
+                    {
+                        ExtendQuarantine(member);
+                        return false;
+                    }
+                    else
+                    {
+                        LeaveQuaratine(member);
+                        return true;
+                    }
                 }
             }
-
             else
-            {
-                if (IsCoronaQuickTestCorrect(true))
-                {
-                    ExtendQuarantine(member);
-                    return false;
-                }
-                else
-                {
-                    LeaveQuaratine(member);
-                    return true;
-                }
-            }    
+                return false;
         }
 
         private void ExtendQuarantine(Person member)
@@ -214,36 +212,44 @@ namespace Simulation.Runtime
         }
 
         /// <summary>
-        /// Try to do corona test if the conditions are met.
+        /// Method which encapsulates the simulation logic for corona tests.
         /// </summary>
         /// <param name="member"></param>
         /// <param name="household"></param>
-        private void TryToDoCoronaTest(Person member, Household household)
+        /// <returns>true if corona test logic could be applied, else false</returns>
+        private bool HandleCoronaTestLogic(Person member, Household household)
         {
-            if (!member.IsInQuarantine && member.TryGetActivityAt(SimulationDate, out Activity activity) && activity.IsWork
-                        && SimulationDate.Equals(new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day, activity.StartTime, 0, 0)))
+            if((SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday) ||
+                    SimulationDate.DayOfWeek.Equals(DayOfWeek.Wednesday)) || SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday))
             {
-                Workplace workplace = activity.Location as Workplace;
-
-                if(workplace == null || !workplace.CoronaTestsEnabled)
+                if (!member.IsInQuarantine && member.TryGetActivityAt(SimulationDate, out Activity activity) && activity.IsWork
+                        && SimulationDate.Equals(new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day, activity.StartTime, 0, 0)))
                 {
-                    return;
-                }
+                    Workplace workplace = activity.Location as Workplace;
 
-                if (activity.Location is Hospital && SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday))
-                {
-                    Debug.Log("Hospital");
-                    CoronaTest(member, household);
-                }
+                    if (workplace == null || !workplace.CoronaTestsEnabled)
+                    {
+                        return false;
+                    }
 
-                else if (!(activity.Location is Hospital) && 
-                    (SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday) || 
-                    SimulationDate.DayOfWeek.Equals(DayOfWeek.Wednesday)))
-                {
-                    Debug.Log("Workplace");
-                    CoronaTest(member, household);
+                    if (activity.Location is Hospital && SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday))
+                    {
+                        Debug.Log("Hospital");
+                        CoronaTest(member, household);
+                        return true;
+                    }
+
+                    else if (!(activity.Location is Hospital) &&
+                        (SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday) ||
+                        SimulationDate.DayOfWeek.Equals(DayOfWeek.Wednesday)))
+                    {
+                        Debug.Log("Workplace");
+                        CoronaTest(member, household);
+                        return true;
+                    }
                 }
             }
+            return false;
         }
 
         /// <summary>
@@ -257,31 +263,45 @@ namespace Simulation.Runtime
             {
                 if (IsCoronaQuickTestCorrect(true))
                 {
-                    Debug.Log("Test positiv");
-                    member.IsInQuarantine = true;
-                    member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AmountDaysQuarantine);
-                    Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
-                    household.MovePersonHere(member);
+                    AssignPersonToQuarantine(member, household);
                     AssignHouseholdToQuarantine(household);
                 }
                 else
+                {
+                    Debug.Log("Test was not correct");
                     return;
+                }
             }
+
             else
             {
                 if (!IsCoronaQuickTestCorrect(false))
                 {
-                    Debug.Log("Test negativ");
-                    member.IsInQuarantine = true;
-                    member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AmountDaysQuarantine);
-                    Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
-                    household.MovePersonHere(member);
+                    AssignPersonToQuarantine(member, household);
                     AssignHouseholdToQuarantine(household);
                 }
                 else
+                {
+                    Debug.Log("Test correct");
                     return;
+                }
+                    
             }
         }
+
+        /// <summary>
+        /// Method to assign a person to quarantine if the person has a positive corona test.
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="household"></param>
+        private void AssignPersonToQuarantine(Person member, Household household)
+        {
+            member.IsInQuarantine = true;
+            member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AmountDaysQuarantine);
+            Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
+            household.MovePersonHere(member);
+        }
+
         /// <summary>
         /// Method to determine that a corona test is correct.
         /// <see cref="https://www.fuldaerzeitung.de/fulda/corona-schnelltest-ergebnis-positiv-negativ-falsch-pcr-test-rki-christian-drosten-fulda-90661119.html"/>
@@ -298,7 +318,6 @@ namespace Simulation.Runtime
             if (isPersonInfected)
             {
                 testAccuracy = Random.Range(1, 101);
-                Debug.Log(testAccuracy);
                 if (testAccuracy <= 45)
                 {
                     Debug.Log("Test is false negative");
@@ -310,7 +329,6 @@ namespace Simulation.Runtime
             else
             {
                 testAccuracy = Random.Range(1, 10001);
-                Debug.Log(testAccuracy);
                 if (testAccuracy <= 22)
                 {
                     Debug.Log("Test is false positve");
@@ -322,7 +340,7 @@ namespace Simulation.Runtime
         }
 
         /// <summary>
-        /// Method to assign a household to quarantine if a member tests positive.
+        /// Method to assign a household to quarantine if a member has a positive corona test.
         /// </summary>
         /// <param name="household"></param>
         private void AssignHouseholdToQuarantine(Household household)
@@ -380,7 +398,7 @@ namespace Simulation.Runtime
         }
 
         /// <summary>
-        /// Method which encapsulates the simulation logic for hispitalization.
+        /// Method which encapsulates the simulation logic for hospitalization.
         /// </summary>
         /// <param name="member"></param>
         /// <returns>true if member is in Hospital and further logic can be skipped, else false</returns>
