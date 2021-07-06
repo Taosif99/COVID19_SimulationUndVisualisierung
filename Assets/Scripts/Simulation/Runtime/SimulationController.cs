@@ -22,7 +22,6 @@ namespace Simulation.Runtime
         private Venue[] _venues;
         private Household[] _households;
         private Hospital[] _hospitals;
-        private Workplace[] _workplaces;
         private List<Person> _persons = new List<Person>();
         private Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
         public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
@@ -33,7 +32,6 @@ namespace Simulation.Runtime
             _venues = _entities.OfType<Venue>().ToArray();
             _households = _entities.OfType<Household>().ToArray();
             _hospitals = _entities.OfType<Hospital>().ToArray();
-            _workplaces = _entities.OfType<Workplace>().ToArray();
 
             WorkShift[] workShifts = _entities.OfType<Workplace>()
                 .SelectMany(w => w.WorkShifts)
