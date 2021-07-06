@@ -107,6 +107,7 @@ namespace Simulation.Runtime
         ///  - Health/Hospital states of each member of a household
         ///  - What a person does if she/he is infectious
         ///  - Moving persons to diffent locations if they have a activity
+        ///  - Performing corona tests
         /// </summary>
         public void RunUpdate()
         {
@@ -149,7 +150,7 @@ namespace Simulation.Runtime
                     if (MoveInfectiousPersonToHome(member, household))
                     {
                         AssignHouseholdToQuarantine(household);
-                        continue; //Household quarantine
+                        continue;
                     }
 
                     TryMovePersonToItsActivity(member);
@@ -170,20 +171,44 @@ namespace Simulation.Runtime
         /// <returns>true if member can leave quarantine, else false and further logic can be skipped</returns>
         private bool CanLeaveQuarantine(Person member)
         {
-            //TODO METHOD CAUSES EXCEPTION !!! Day Must be in valid month range !!!
             if (member.InfectionState.HasFlag(Person.InfectionStates.Recovered))
             {
-                member.IsInQuarantine = false;
-                Debug.Log("Leave qu: " + member.EndDateOfQuarantine);
-                return true;
+                if (IsCoronaQuickTestCorrect(false))
+                {
+                    LeaveQuaratine(member);
+                    return true;
+                }
+                else
+                {
+                    ExtendQuarantine(member);
+                    return false;
+                }
             }
             else
             {
-                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AdvancedQuarantineDays);
-                Debug.Log("Extend qu: " + member.EndDateOfQuarantine);
-                return false;
-            }
-           
+                if (IsCoronaQuickTestCorrect(true))
+                {
+                    ExtendQuarantine(member);
+                    return false;
+                }
+                else
+                {
+                    LeaveQuaratine(member);
+                    return true;
+                }
+            }    
+        }
+
+        private void ExtendQuarantine(Person member)
+        {
+            member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AdvancedQuarantineDays);
+            Debug.Log("Extend qu: " + member.EndDateOfQuarantine);
+        }
+
+        private void LeaveQuaratine(Person member)
+        {
+            member.IsInQuarantine = false;
+            Debug.Log("Leave qu: " + member.EndDateOfQuarantine);
         }
 
         /// <summary>
@@ -220,17 +245,69 @@ namespace Simulation.Runtime
         {
             if (member.InfectionState.HasFlag(Person.InfectionStates.Infected))
             {
-                //TODO test probability
-                Debug.Log("Test positiv");
-                member.IsInQuarantine = true;
-                member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AmountDaysQuarantine);
-                Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
-                household.MovePersonHere(member);
-                AssignHouseholdToQuarantine(household);
+                if (IsCoronaQuickTestCorrect(true))
+                {
+                    Debug.Log("Test positiv");
+                    member.IsInQuarantine = true;
+                    member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AmountDaysQuarantine);
+                    Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
+                    household.MovePersonHere(member);
+                    AssignHouseholdToQuarantine(household);
+                }
+                else
+                    return;
             }
             else
             {
-                Debug.Log("Test negativ");
+                if (!IsCoronaQuickTestCorrect(false))
+                {
+                    Debug.Log("Test negativ");
+                    member.IsInQuarantine = true;
+                    member.EndDateOfQuarantine = new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day).AddDays(_settings.AmountDaysQuarantine);
+                    Debug.Log("Person must go home (quarantine): " + SimulationDate + "  ende qu: " + member.EndDateOfQuarantine);
+                    household.MovePersonHere(member);
+                    AssignHouseholdToQuarantine(household);
+                }
+                else
+                    return;
+            }
+        }
+        /// <summary>
+        /// Method to determine that a corona test is correct.
+        /// <see cref="https://www.fuldaerzeitung.de/fulda/corona-schnelltest-ergebnis-positiv-negativ-falsch-pcr-test-rki-christian-drosten-fulda-90661119.html"/>
+        /// </summary>
+        /// <param name="isPersonInfected"></param>
+        /// <returns>true if corona test is correct, else false</returns>
+        private bool IsCoronaQuickTestCorrect(bool isPersonInfected)
+        {
+            //float percentageTestIsFalseNegative = 0.45f;
+            //float percentageTestIsFalsePositiv = 0.0022f;
+
+            int testAccuracy;
+
+            if (isPersonInfected)
+            {
+                testAccuracy = Random.Range(1, 101);
+                Debug.Log(testAccuracy);
+                if (testAccuracy <= 45)
+                {
+                    Debug.Log("Test is false negative");
+                    return false;
+                }
+                else
+                    return true;
+            }
+            else
+            {
+                testAccuracy = Random.Range(1, 10001);
+                Debug.Log(testAccuracy);
+                if (testAccuracy <= 22)
+                {
+                    Debug.Log("Test is false positve");
+                    return false;
+                }
+                else
+                    return true;
             }
         }
 
@@ -280,7 +357,6 @@ namespace Simulation.Runtime
                             infectedPersons++;
                         }
                     } while (infectedPersons < personsToBeInfected);
-                    //Debug.Log(infectedPersons + "   " + personsToBeInfected);
                 }
             }
             else
