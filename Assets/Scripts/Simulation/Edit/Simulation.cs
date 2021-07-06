@@ -16,7 +16,5 @@ namespace Simulation.Edit
             _simulationOptions = simulationOptions;
             Entities = entity;
         }
-
-      
     }
 }

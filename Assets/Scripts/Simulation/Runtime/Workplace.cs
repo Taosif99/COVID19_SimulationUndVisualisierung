@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Simulation.Runtime
@@ -30,14 +30,12 @@ namespace Simulation.Runtime
                         new WorkShift(this, WeekDays.WorkDays, 8, 8)
                     };
 
-
                 case WorkplaceType.Store:
                     return new List<WorkShift>
                     {
                         new WorkShift(this, WeekDays.WorkDays | WeekDays.Saturday, 8, 8),
                         new WorkShift(this, WeekDays.WorkDays | WeekDays.Saturday, 12, 8)
                     };
-
 
                  case WorkplaceType.Hospital:
                     return new List<WorkShift>

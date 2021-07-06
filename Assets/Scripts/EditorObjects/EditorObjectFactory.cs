@@ -5,14 +5,12 @@ using Grid;
 
 namespace EditorObjects
 {
-
     /// <summary>
     /// This class implements a Factory for the editor objects
     /// which can be seen in the scene.
     /// </summary>
     public static class EditorObjectFactory
     {
-
         public static IEditorObject Create(Entity entity)
         {
             GameObject prefabToSpawn = ModelSelector.Instance.GetPrefab(entity);
@@ -33,6 +31,7 @@ namespace EditorObjects
                     throw new NotSupportedException($"Unsupported Editor Entity object type: " + entity.GetType());
 
             }
+
             //Setting up the parent of the gameObject 
             editorObject.EditorGameObject.transform.parent = ModelSelector.Instance.ModelParentTransform;
   
@@ -46,7 +45,6 @@ namespace EditorObjects
             gameObject.name = PrefabName.Workplace.ToString();
             WorkplaceEditorObject workplaceEditorObject = new WorkplaceEditorObject(gameObject, workplace);
             return workplaceEditorObject;
-
         }
 
         public static HouseholdEditorObject CreateHouseholdEditorObject(Household household, GameObject prefabToSpawn)
@@ -65,7 +63,6 @@ namespace EditorObjects
             gameObject.name = PrefabName.Hospital.ToString();
             HospitalEditorObject hospitalEditorObject = new HospitalEditorObject(gameObject, hospital);
             return hospitalEditorObject;
-
         }
 
         /// <summary>

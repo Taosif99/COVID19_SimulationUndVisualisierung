@@ -70,13 +70,11 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private RectTransform _entitiesPanel;
 
-
     public GameObject VenueUI;
     public GameObject HouseholdUI;
     public GameObject WorkplaceUI;
     public GameObject HospitalUI;
    
-
     //Venue elements
     public TMP_InputField InfectionRiskInputField;
 
@@ -232,6 +230,7 @@ public class UIController : MonoBehaviour
         {
             SimulationGraphEnabler.DisableGraphSettings();
         }
+
         else
         {
             VenueUI.SetActive(false);

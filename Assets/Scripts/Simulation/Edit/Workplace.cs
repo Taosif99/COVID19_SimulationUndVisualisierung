@@ -1,12 +1,10 @@
-using System;
+﻿using System;
 
 namespace Simulation.Edit
 {
     [Serializable]
    public class Workplace : Venue
     {
-
-
         public WorkplaceType Type { get; set; }
 
         public int WorkerCapacity { get; set; }
