@@ -20,6 +20,7 @@ public class SetInfectedPersonsHandler : MonoBehaviour
     public void LoadSetInfectedPersons()
     {
         simulationController = SimulationControllerGameObject.GetComponent<SimulationController>();
+
         if (!simulationController.IsRunning)
         {
             return;
@@ -53,6 +54,7 @@ public class SetInfectedPersonsHandler : MonoBehaviour
             SetInfectedPersonsGameObject.SetActive(false);
             simulationController.Play();
         }
+
         else
         {
             Debug.Log("Invalid entry");

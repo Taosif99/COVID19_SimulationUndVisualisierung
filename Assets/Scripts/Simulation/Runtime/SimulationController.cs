@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -32,7 +32,6 @@ namespace Simulation.Runtime
             _venues = _entities.OfType<Venue>().ToArray();
             _households = _entities.OfType<Household>().ToArray();
             _hospitals = _entities.OfType<Hospital>().ToArray();
-
 
             WorkShift[] workShifts = _entities.OfType<Workplace>()
                 .SelectMany(w => w.WorkShifts)
@@ -137,6 +136,7 @@ namespace Simulation.Runtime
                     {
                         continue;
                     }
+
                     if (HandleHospitalLogic(member)) continue;
 
                     //TODO METHOD HANDLE QUARANTINE Method
@@ -149,8 +149,9 @@ namespace Simulation.Runtime
 
                     if (MoveInfectiousPersonToHome(member, household))
                     {
-                        AssignHouseholdToQuarantine(household);
-                        continue;
+                        // TODO makes the simulation too radical in terms of quarantine (it works too good)
+                        //AssignHouseholdToQuarantine(household);
+                        continue; 
                     }
 
                     TryMovePersonToItsActivity(member);
@@ -184,6 +185,7 @@ namespace Simulation.Runtime
                     return false;
                 }
             }
+
             else
             {
                 if (IsCoronaQuickTestCorrect(true))
@@ -221,14 +223,22 @@ namespace Simulation.Runtime
             if (!member.IsInQuarantine && member.TryGetActivityAt(SimulationDate, out Activity activity) && activity.IsWork
                         && SimulationDate.Equals(new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day, activity.StartTime, 0, 0)))
             {
+                Workplace workplace = activity.Location as Workplace;
+
+                if(workplace == null || !workplace.CoronaTestsEnabled)
+                {
+                    return;
+                }
+
                 if (activity.Location is Hospital && SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday))
                 {
                     Debug.Log("Hospital");
                     CoronaTest(member, household);
                 }
 
-                if (activity.Location is Workplace && (SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday)
-                    || SimulationDate.DayOfWeek.Equals(DayOfWeek.Wednesday)))
+                else if (!(activity.Location is Hospital) && 
+                    (SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday) || 
+                    SimulationDate.DayOfWeek.Equals(DayOfWeek.Wednesday)))
                 {
                     Debug.Log("Workplace");
                     CoronaTest(member, household);
@@ -332,7 +342,6 @@ namespace Simulation.Runtime
             }
         }
 
-
         public void InfectRandomPerson(int personsToBeInfected)
         {
             if (_persons.Count > 0)
@@ -370,7 +379,6 @@ namespace Simulation.Runtime
             }
         }
 
-
         /// <summary>
         /// Method which encapsulates the simulation logic for hispitalization.
         /// </summary>
@@ -378,7 +386,6 @@ namespace Simulation.Runtime
         /// <returns>true if member is in Hospital and further logic can be skipped, else false</returns>
         private bool HandleHospitalLogic(Person member)
         {
-
             if (member.MustBeTransferredToHospital())
             {
                 TryAssignPersonToRegularBed(member);
@@ -401,7 +408,6 @@ namespace Simulation.Runtime
                 return true;
             }
 
-
             return false;
         }
 
@@ -414,13 +420,13 @@ namespace Simulation.Runtime
         /// <returns>true if further simulation logic can be skipped since person is at home, else false</returns>
         private bool MoveInfectiousPersonToHome(Person member, Household household)
         {
-
             if (member.InfectionState.HasFlag(Person.InfectionStates.Symptoms))
             {
                 if (!household.HasPersonHere(member))
                 {
                     household.MovePersonHere(member);
                 }
+
                 return true;
             }
 
@@ -453,8 +459,6 @@ namespace Simulation.Runtime
             }
         }
 
-
-
         /// <summary>
         /// Method which tries to assign a person to a regular bed.
         /// Firstly round robin is used, if round robin fails a linear search
@@ -464,7 +468,6 @@ namespace Simulation.Runtime
         /// <param name="person"></param>
         private void TryAssignPersonToRegularBed(Person person)
         {
-
             Venue lastLocation = person.CurrentLocation;
             if (_hospitals != null && _hospitals.Length > 0)
             {
@@ -577,6 +580,7 @@ namespace Simulation.Runtime
                 oldHospital.PatientsInRegularBeds.Remove(person);
 
             }
+
             hospital.PatientsInIntensiveCareBeds.Add(person);
             hospital.MovePersonHere(person);
             person.IsInHospitalization = true;

@@ -91,6 +91,7 @@ class SimulationController : MonoBehaviour
 
             _isInitialized = true;
         }
+
         else if (_isPaused == true)
         {
             _isPaused = false;
@@ -154,16 +155,20 @@ class SimulationController : MonoBehaviour
         {
             return;
         }
+
         _forwardButton.interactable = false;
         _playButton.interactable = false;
         _pauseButton.interactable = false;
         int amountDaysToForward;
         bool forwardInputOk = int.TryParse(_forwardInputField.text, out amountDaysToForward);
+
         if (!forwardInputOk) amountDaysToForward = _defaultAmountDaysToForward;
+
         if (amountDaysToForward > 0)
         {
             _forwardProgressSliderGameObject.SetActive(true);
         }
+
         StartCoroutine(ForwardSimulationRoutine(amountDaysToForward)); 
     }
 
@@ -172,7 +177,6 @@ class SimulationController : MonoBehaviour
         _controller.InfectRandomPerson(personsToBeInfected);
         _virusButton.interactable = false;
     }
-
 
     /// <summary>
     /// Using a coroutine to avoiding program lagging if many days are forwarded spammed.
@@ -183,16 +187,19 @@ class SimulationController : MonoBehaviour
         _forwardingProgress = 0f;
         Pause();
         SimulationMaster.Instance.IsForwardingSimulation = true;
+
         for (int i = 1; i <= amountDaysToForward; i++)
         {
             while (_currentDay == _controller.SimulationDate.Day)
             {
                 _controller.RunUpdate();
             }
+
             OnDayChanges();
             _forwardingProgress = i / (float)amountDaysToForward;
             _forwardProgressSlider.value = _forwardingProgress;
             _forwardProgressText.SetText((_forwardingProgress * 100).ToString("00.00") + "%");
+
             yield return new WaitForEndOfFrame();
         }
 
@@ -203,7 +210,6 @@ class SimulationController : MonoBehaviour
         _playButton.interactable = true;
         _pauseButton.interactable = true;
     }
-
 
     private void OnDayChanges()
     {

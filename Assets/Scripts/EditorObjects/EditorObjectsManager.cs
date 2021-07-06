@@ -7,10 +7,8 @@ using System;
 using Simulation;
 using InputValidation;
 
-
 namespace EditorObjects
 {
-
     /// <summary>
     /// This class maintains the editor Objects during the Runtime
     ///
@@ -19,12 +17,10 @@ namespace EditorObjects
     /// </summary>
     public class EditorObjectsManager : MonoBehaviour
     {
-
         [SerializeField] private GridManager _gridManager;
         //We use the unique GridCell Position as Key
         private Dictionary<GridCell, IEditorObject> _editorObjects = new Dictionary<GridCell, IEditorObject>();
         private Entity _currentSelectedEntity;
-
 
         private int _amountPeople = 0;
         /// <summary>
@@ -56,7 +52,7 @@ namespace EditorObjects
             switch (prefabName)
             {
                 case PrefabName.Workplace:
-                    Workplace workplace = new Workplace(gridCell, 0.2f, WorkplaceType.Other, 200);
+                    Workplace workplace = new Workplace(gridCell, 0.2f, WorkplaceType.Other, 200, false);
                     editorObject = EditorObjectFactory.Create(workplace);
                     break;
                 case PrefabName.Hospital:
@@ -71,6 +67,7 @@ namespace EditorObjects
                     Debug.LogError("Unknown prefab name");
                     break;
             }
+
             AddEditorObjectToCollection(gridCell, editorObject);
             LoadEditorObjectUI(gridCellPosition);
             return editorObject.EditorGameObject;
@@ -96,25 +93,29 @@ namespace EditorObjects
             }
 
             CurrentSelectedEntity = editorObject.EditorEntity;
+
             if (!(CurrentSelectedEntity is Venue venue))
             {
                 return;
             }
             
-            UIController.Instance.InfectionRiskInputField.text = venue.InfectionRisk.ToString();            
+            UIController.Instance.InfectionRiskInputField.text = venue.InfectionRisk.ToString();           
+            
             switch (CurrentSelectedEntity)
             {
                 case Workplace workplace:
                 {
                     UIController.Instance.LoadWorkplaceUI();
                     UIController.Instance.WorkerCapacityInputField.text = workplace.WorkerCapacity.ToString();
+                    UIController.Instance.CoronaTestsToggle.isOn = workplace.CoronaTestsEnabled;
+                    
                     if (workplace is Hospital hospital)
                     {
                        UIController.Instance.LoadHospitalUI();   
                        UIController.Instance.AmountNormalBedsInputField.text = hospital.AmountRegularBeds.ToString();
                        UIController.Instance.AmountIntensiveCareInputField.text = hospital.AmountIntensiveCareBeds.ToString();
-
                     }
+
                     else
                     {
                         List<string> availableWorkplaceOptions = UIController.Instance.WorkplaceTypeDropdown.options.Select(option => option.text).ToList();
@@ -130,9 +131,11 @@ namespace EditorObjects
                     UIController.Instance.NumberOfPeopleInputField.text = household.NumberOfPeople.ToString();
                     UIController.Instance.CarefulnessInputField.text = household.CarefulnessTendency.ToString();
                     UIController.Instance.PercantageOfWorkersInputField.text = household.PercentageOfWorkers.ToString();
+
                     break;
                 }
             }
+
             _saveLock = false;
         }
 
@@ -158,7 +161,6 @@ namespace EditorObjects
 
             if (CurrentSelectedEntity != null && !_saveLock)
             {
-
                 bool inputIsOkay = InputValidator.TryParseLeftInputFields(ref infectionRisk,
                 ref capacity,
                 ref numberOfPeople,
@@ -167,35 +169,36 @@ namespace EditorObjects
                 ref amountBeds, 
                 ref amountIntensiveCareBeds,
                 CurrentSelectedEntity);
+
                 if (inputIsOkay)
                 {
-
                     IEditorObject editorObject = _editorObjects[CurrentSelectedEntity.Position];
+
                     if (editorObject != null)
                     {                      
                         if (CurrentSelectedEntity is Venue venue)
                         {
                             venue.InfectionRisk = infectionRisk;
+
                             if (CurrentSelectedEntity is Workplace workplace)
                             {
+                                workplace.WorkerCapacity = capacity;
+                                workplace.CoronaTestsEnabled = UIController.Instance.CoronaTestsToggle.isOn;
+                         
                                 if (!(CurrentSelectedEntity is Hospital))
                                 {
                                     WorkplaceType workplaceType = (WorkplaceType)Enum.Parse(typeof(WorkplaceType), UIController.Instance.WorkplaceTypeDropdown.options[UIController.Instance.WorkplaceTypeDropdown.value].text);
-                                    workplace.WorkerCapacity = capacity;
                                     workplace.Type = workplaceType;
                                 }
 
                                 if (CurrentSelectedEntity is Hospital hospital)
                                 {
                                    hospital.Type = WorkplaceType.Hospital;
-                                   hospital.WorkerCapacity = capacity;
                                    hospital.AmountRegularBeds = amountBeds;
                                    hospital.AmountIntensiveCareBeds = amountIntensiveCareBeds;
-                                    
-                                    
                                 }
-
                             }
+
                             else if (CurrentSelectedEntity is Household household)
                             {
                                 _amountPeople -= household.NumberOfPeople;
@@ -205,7 +208,6 @@ namespace EditorObjects
                                 household.PercentageOfWorkers = percentageOfWorkers;
                             }
                         }
-
                     }
                 }
             }
@@ -268,6 +270,7 @@ namespace EditorObjects
 
                 newEditorObjects[position] = reloadedEditorObject;
             }
+
             UIController.Instance.SetEntityPropertiesPanelVisible(false);
             _editorObjects = newEditorObjects;
         }

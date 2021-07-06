@@ -11,12 +11,14 @@ namespace Simulation.Runtime
             WorkerCapacity = editorEntity.WorkerCapacity;
             AmountAssignedWorkers = 0;
             WorkShifts = CreateWorkShifts();
+            CoronaTestsEnabled = editorEntity.CoronaTestsEnabled;
         }
 
         public WorkplaceType Type { get; }
         public int WorkerCapacity { get; }
         public List<WorkShift> WorkShifts { get; }
         public int AmountAssignedWorkers { get; set; }
+        public bool CoronaTestsEnabled { get; set; }
 
         private List<WorkShift> CreateWorkShifts()
         {
@@ -28,14 +30,12 @@ namespace Simulation.Runtime
                         new WorkShift(this, WeekDays.WorkDays, 8, 8)
                     };
 
-
                 case WorkplaceType.Store:
                     return new List<WorkShift>
                     {
                         new WorkShift(this, WeekDays.WorkDays | WeekDays.Saturday, 8, 8),
                         new WorkShift(this, WeekDays.WorkDays | WeekDays.Saturday, 12, 8)
                     };
-
 
                  case WorkplaceType.Hospital:
                     return new List<WorkShift>

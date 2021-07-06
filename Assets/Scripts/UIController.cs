@@ -70,13 +70,11 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private RectTransform _entitiesPanel;
 
-
     public GameObject VenueUI;
     public GameObject HouseholdUI;
     public GameObject WorkplaceUI;
     public GameObject HospitalUI;
    
-
     //Venue elements
     public TMP_InputField InfectionRiskInputField;
 
@@ -87,6 +85,7 @@ public class UIController : MonoBehaviour
     //Workplace elements
     public TMP_Dropdown WorkplaceTypeDropdown;
     public TMP_InputField WorkerCapacityInputField;
+    public Toggle CoronaTestsToggle;
     //Hospital elements
     public TMP_InputField AmountNormalBedsInputField;
     public TMP_InputField AmountIntensiveCareInputField;
@@ -231,6 +230,7 @@ public class UIController : MonoBehaviour
         {
             SimulationGraphEnabler.DisableGraphSettings();
         }
+
         else
         {
             VenueUI.SetActive(false);
@@ -332,6 +332,8 @@ public class UIController : MonoBehaviour
         {
             dropdown.onValueChanged.AddListener(delegate { editorObjectsManager.SaveToEntity(); });
         }
+
+        CoronaTestsToggle.onValueChanged.AddListener((_) => editorObjectsManager.SaveToEntity());
     }
 
     public void DisableBedMessages()

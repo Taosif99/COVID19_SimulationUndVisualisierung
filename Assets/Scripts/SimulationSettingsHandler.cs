@@ -2,6 +2,7 @@ using UnityEngine;
 using InputValidation;
 using Simulation.Edit;
 using DialogBoxSystem;
+
 /// <summary>
 /// Class which implemenets the functionality to adjust simulation settings
 /// </summary>
@@ -24,6 +25,7 @@ public class SimulationSettingsHandler : MonoBehaviour
             settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
             Debug.Log("Repair old save");
         }
+
         DisplaySettings(settings);
     }
 
@@ -87,6 +89,7 @@ public class SimulationSettingsHandler : MonoBehaviour
                 simulation.SimulationOptions.AdjustableSimulationPrameters = settingsToSet;
 
             }
+
             else if (!_saveLock)
             {
                 Debug.Log("Wrong ranges!");
@@ -102,7 +105,6 @@ public class SimulationSettingsHandler : MonoBehaviour
             }
         }
     }
-
 
     public void ResetDefaultSettings()
     {
