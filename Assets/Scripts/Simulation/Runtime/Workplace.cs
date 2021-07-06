@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Simulation.Runtime
@@ -11,12 +11,14 @@ namespace Simulation.Runtime
             WorkerCapacity = editorEntity.WorkerCapacity;
             AmountAssignedWorkers = 0;
             WorkShifts = CreateWorkShifts();
+            CoronaTestsEnabled = editorEntity.CoronaTestsEnabled;
         }
 
         public WorkplaceType Type { get; }
         public int WorkerCapacity { get; }
         public List<WorkShift> WorkShifts { get; }
         public int AmountAssignedWorkers { get; set; }
+        public bool CoronaTestsEnabled { get; set; }
 
         private List<WorkShift> CreateWorkShifts()
         {

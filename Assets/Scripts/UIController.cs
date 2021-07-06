@@ -87,6 +87,7 @@ public class UIController : MonoBehaviour
     //Workplace elements
     public TMP_Dropdown WorkplaceTypeDropdown;
     public TMP_InputField WorkerCapacityInputField;
+    public Toggle CoronaTestsToggle;
     //Hospital elements
     public TMP_InputField AmountNormalBedsInputField;
     public TMP_InputField AmountIntensiveCareInputField;
@@ -332,6 +333,8 @@ public class UIController : MonoBehaviour
         {
             dropdown.onValueChanged.AddListener(delegate { editorObjectsManager.SaveToEntity(); });
         }
+
+        CoronaTestsToggle.onValueChanged.AddListener((_) => editorObjectsManager.SaveToEntity());
     }
 
     public void DisableBedMessages()

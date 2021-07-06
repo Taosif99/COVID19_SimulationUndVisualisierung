@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -22,6 +22,7 @@ namespace Simulation.Runtime
         private Venue[] _venues;
         private Household[] _households;
         private Hospital[] _hospitals;
+        private Workplace[] _workplaces;
         private List<Person> _persons = new List<Person>();
         private Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
         public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
@@ -32,6 +33,7 @@ namespace Simulation.Runtime
             _venues = _entities.OfType<Venue>().ToArray();
             _households = _entities.OfType<Household>().ToArray();
             _hospitals = _entities.OfType<Hospital>().ToArray();
+            _workplaces = _entities.OfType<Workplace>().ToArray();
 
 
             WorkShift[] workShifts = _entities.OfType<Workplace>()
@@ -148,7 +150,8 @@ namespace Simulation.Runtime
 
                     if (MoveInfectiousPersonToHome(member, household))
                     {
-                        AssignHouseholdToQuarantine(household);
+                        // TODO makes the simulation too radical in terms of quarantine (it works too good)
+                        //AssignHouseholdToQuarantine(household);
                         continue; //Household quarantine
                     }
 
@@ -196,14 +199,22 @@ namespace Simulation.Runtime
             if (!member.IsInQuarantine && member.TryGetActivityAt(SimulationDate, out Activity activity) && activity.IsWork
                         && SimulationDate.Equals(new DateTime(SimulationDate.Year, SimulationDate.Month, SimulationDate.Day, activity.StartTime, 0, 0)))
             {
+                Workplace workplace = activity.Location as Workplace;
+
+                if(workplace == null || !workplace.CoronaTestsEnabled)
+                {
+                    return;
+                }
+
                 if (activity.Location is Hospital && SimulationDate.DayOfWeek.Equals(DayOfWeek.Thursday))
                 {
                     Debug.Log("Hospital");
                     CoronaTest(member, household);
                 }
 
-                if (activity.Location is Workplace && (SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday)
-                    || SimulationDate.DayOfWeek.Equals(DayOfWeek.Wednesday)))
+                else if (!(activity.Location is Hospital) && 
+                    (SimulationDate.DayOfWeek.Equals(DayOfWeek.Monday) || 
+                    SimulationDate.DayOfWeek.Equals(DayOfWeek.Wednesday)))
                 {
                     Debug.Log("Workplace");
                     CoronaTest(member, household);

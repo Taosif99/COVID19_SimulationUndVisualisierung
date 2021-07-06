@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Simulation.Edit
 {
@@ -15,7 +15,7 @@ namespace Simulation.Edit
             WorkerAvailability = workerAvailability;
         }*/
 
-        public Hospital(int amountBeds,int amountIntensiveCareBeds,GridCell position, float infectionRisk, WorkplaceType type, int workerCapacity) : base(position, infectionRisk, type, workerCapacity)
+        public Hospital(int amountBeds,int amountIntensiveCareBeds,GridCell position, float infectionRisk, WorkplaceType type, int workerCapacity) : base(position, infectionRisk, type, workerCapacity, false)
         {
             AmountRegularBeds = amountBeds;
             AmountIntensiveCareBeds = amountIntensiveCareBeds; 

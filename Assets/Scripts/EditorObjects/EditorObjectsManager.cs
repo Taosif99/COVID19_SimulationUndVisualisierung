@@ -56,7 +56,7 @@ namespace EditorObjects
             switch (prefabName)
             {
                 case PrefabName.Workplace:
-                    Workplace workplace = new Workplace(gridCell, 0.2f, WorkplaceType.Other, 200);
+                    Workplace workplace = new Workplace(gridCell, 0.2f, WorkplaceType.Other, 200, false);
                     editorObject = EditorObjectFactory.Create(workplace);
                     break;
                 case PrefabName.Hospital:
@@ -108,6 +108,8 @@ namespace EditorObjects
                 {
                     UIController.Instance.LoadWorkplaceUI();
                     UIController.Instance.WorkerCapacityInputField.text = workplace.WorkerCapacity.ToString();
+                    UIController.Instance.CoronaTestsToggle.isOn = workplace.CoronaTestsEnabled;
+                    
                     if (workplace is Hospital hospital)
                     {
                        UIController.Instance.LoadHospitalUI();   
@@ -178,22 +180,22 @@ namespace EditorObjects
                             venue.InfectionRisk = infectionRisk;
                             if (CurrentSelectedEntity is Workplace workplace)
                             {
+                                workplace.WorkerCapacity = capacity;
+                                workplace.CoronaTestsEnabled = UIController.Instance.CoronaTestsToggle.isOn;
                                 if (!(CurrentSelectedEntity is Hospital))
                                 {
                                     WorkplaceType workplaceType = (WorkplaceType)Enum.Parse(typeof(WorkplaceType), UIController.Instance.WorkplaceTypeDropdown.options[UIController.Instance.WorkplaceTypeDropdown.value].text);
-                                    workplace.WorkerCapacity = capacity;
                                     workplace.Type = workplaceType;
                                 }
 
                                 if (CurrentSelectedEntity is Hospital hospital)
                                 {
                                    hospital.Type = WorkplaceType.Hospital;
-                                   hospital.WorkerCapacity = capacity;
                                    hospital.AmountRegularBeds = amountBeds;
                                    hospital.AmountIntensiveCareBeds = amountIntensiveCareBeds;
-                                    
-                                    
                                 }
+                                    
+                            }
 
                             }
                             else if (CurrentSelectedEntity is Household household)

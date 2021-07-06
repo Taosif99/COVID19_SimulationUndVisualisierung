@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Simulation.Edit
 {
@@ -9,13 +9,15 @@ namespace Simulation.Edit
 
         public WorkplaceType Type { get; set; }
 
-
         public int WorkerCapacity { get; set; }
 
-        public Workplace(GridCell position, float infectionRisk, WorkplaceType type, int workerCapacity) : base(position, infectionRisk)
+        public bool CoronaTestsEnabled { get; set; }
+
+        public Workplace(GridCell position, float infectionRisk, WorkplaceType type, int workerCapacity, bool coronaTestsEnabled) : base(position, infectionRisk)
         {
             Type= type;
             WorkerCapacity = workerCapacity;
+            this.CoronaTestsEnabled = coronaTestsEnabled;
         }
     }
 }
