@@ -16806,8 +16806,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
-  _text: Amount extended quarantine days in case the person is still infected after
-    quarantine.
+  _text: The Probability that a recovered person will be infected again.
 --- !u!114 &1175828915
 MonoBehaviour:
   m_ObjectHideFlags: 0
