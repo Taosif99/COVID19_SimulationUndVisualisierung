@@ -179,5 +179,15 @@ namespace Simulation
             public const float InfectionRiskIfRecovered = 0.0002f;
         }
 
+        /// <summary>
+        /// We use the same assumption, as the el pais article, that the 
+        /// probability of infection at any time is 3.8%.
+        /// 
+        /// 
+        /// 
+        /// <see cref="https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html"/>
+        /// </summary>
+        public const float ProbabilityOfInfection = 0.038f;
+
     }
 }

@@ -13,10 +13,10 @@ namespace Simulation.Runtime
 
         protected Venue(Edit.Venue editorEntity) : base(editorEntity)
         {
-            InfectionRisk = editorEntity.InfectionRisk;
+            InfectionRiskFactor = editorEntity.InfectionRisk;
         }
 
-        public float InfectionRisk { get; }
+        public float InfectionRiskFactor { get; }
         
         public void SimulateEncounters(DateTime simulationDate)
         {
@@ -34,10 +34,20 @@ namespace Simulation.Runtime
                         continue;
                     }
 
+
+                    /*
+                     * At this place the infection of a person is determined. The infection is dependant on average values and
+                     * factors. The lerp is used in order to go above the average.
+                     * 
+                     * The carefulness could have more influence than one thinks.
+                     * 
+                     * Here the infection logic can be improved/edited
+                     */
                     // TODO CONSIDER MASK FACTORS
                     float linearInterpolatedCarefulnessFactor = Mathf.Lerp(1.5f, 0.5f, (p.CarefulnessFactor + i.CarefulnessFactor) / 2);
-                   
-                    float infectionProbability = this.InfectionRisk * linearInterpolatedCarefulnessFactor * GeneralInfectionProbabilityFactor * p.InfectionRiskFactor;
+              
+
+                    float infectionProbability = p.InfectionRisk * this.InfectionRiskFactor * linearInterpolatedCarefulnessFactor * GeneralInfectionProbabilityFactor;
                     
                     //Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
 

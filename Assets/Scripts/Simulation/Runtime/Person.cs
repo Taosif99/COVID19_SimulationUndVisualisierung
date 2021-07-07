@@ -18,7 +18,7 @@ namespace Simulation.Runtime
         public Person(float carefulnessFactor, bool isWorker)
         {
             CarefulnessFactor = carefulnessFactor;
-            InfectionRiskFactor = 1;
+            InfectionRisk = DefaultInfectionParameters.ProbabilityOfInfection;
             IsWorker = isWorker;
             _healthState = new HealthState(this);
         }
@@ -36,7 +36,7 @@ namespace Simulation.Runtime
         public bool IsInIntensiveCare { get; set; } = false;
         public bool HasRegularBed { get; set; } = false;
         public DateTime InfectionDate { get; set; }
-        public float InfectionRiskFactor { get; set; }
+        public float InfectionRisk { get; set; }
 
         public bool IsInQuarantine { get => _isInQuarantine; set => _isInQuarantine = value; }
         public DateTime EndDateOfQuarantine { get => _endDateOfQuarantine; set => _endDateOfQuarantine = value; }
@@ -70,7 +70,7 @@ namespace Simulation.Runtime
 
         public void SetReInfectionRisk()
         {
-            InfectionRiskFactor = _settings.InfectionRiskIfRecovered;
+            InfectionRisk = _settings.InfectionRiskIfRecovered;
         }
 
         public bool HasActivityAt(DateTime dateTime) => GetActivityAt(dateTime) != null;
