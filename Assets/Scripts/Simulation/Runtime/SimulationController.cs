@@ -99,7 +99,7 @@ namespace Simulation.Runtime
             }
         }
 
-        /// <summary> TODO ADD DESCRIPTION FOR TESTING
+        /// <summary>
         /// Method in which our main simulation process logic is implemented.
         /// Here are methods called which deal with:
         ///  - How and how often people encounter
@@ -304,38 +304,48 @@ namespace Simulation.Runtime
 
         /// <summary>
         /// Method to determine that a corona test is correct.
-        /// <see cref="https://www.fuldaerzeitung.de/fulda/corona-schnelltest-ergebnis-positiv-negativ-falsch-pcr-test-rki-christian-drosten-fulda-90661119.html"/>
+        /// Sensitivity > 80%
+        /// Specificity > 97%
+        /// <see cref="https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf?__blob=publicationFile&v=7"/>
         /// </summary>
         /// <param name="isPersonInfected"></param>
         /// <returns>true if corona test is correct, else false</returns>
         private bool IsCoronaQuickTestCorrect(bool isPersonInfected)
         {
-            //float percentageTestIsFalseNegative = 0.45f;
-            //float percentageTestIsFalsePositiv = 0.0022f;
+            //Spezifität > 97%
+            //Sensitivität > 80%
 
             int testAccuracy;
 
             if (isPersonInfected)
             {
                 testAccuracy = Random.Range(1, 101);
-                if (testAccuracy <= 45)
+                if (testAccuracy > 80)
                 {
-                    Debug.Log("Test is false negative");
+                    //Debug.Log("Test is false negative " + testAccuracy);
                     return false;
                 }
                 else
+                {
+                    //Debug.Log("Test is positive " + testAccuracy);
                     return true;
+                }
+                    
             }
             else
             {
-                testAccuracy = Random.Range(1, 10001);
-                if (testAccuracy <= 22)
+                testAccuracy = Random.Range(1, 101);
+                if (testAccuracy > 97)
                 {
-                    Debug.Log("Test is false positve");
+                    Debug.Log("Test is false positve " + testAccuracy);
                     return false;
                 }
                 else
+                {
+                    Debug.Log("Test is negative " + testAccuracy);
                     return true;
+                }
+                    
             }
         }
 
