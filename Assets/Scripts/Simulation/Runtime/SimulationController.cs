@@ -143,6 +143,8 @@ namespace Simulation.Runtime
 
                     if (MoveInfectiousPersonToHome(member, household))
                     {
+                        // TODO makes the simulation too radical in terms of quarantine (it works too good)
+                        //AssignHouseholdToQuarantine(household);
                         continue; 
                     }
 
