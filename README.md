@@ -14,7 +14,7 @@
 * Die Screenshots sind in C:\Users\YourUserName\AppData\LocalLow\DefaultCompany\SimulationUndVisualisierung\Screenshots gespeichert
 * Simulations csv-log-Files sind in C:\Users\YourUserName\AppData\LocalLow\DefaultCompany\SimulationUndVisualisierung\SimulationLogs
 ## Wichtige Verzeichnisse (Allgemein, für alle Betriebssysteme)
-Schaue im persistantDataPath der [UnityAPI](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) deines Betriebssystemes nach, dort sind folgende Ornder vorhanden:
+Schaue im persistantDataPath der [UnityAPI](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) deines Betriebssystemes nach, dort sind folgende Ordner vorhanden:
 * SavedSimualtions in der Simulationskonfigurationen als .covidSim-Binärdateien gespeichert sind
 * Screenshots in der die screenshots gespeichert sind
 * SimulationLogs in der die csv-Log-Files gespeichert sind
