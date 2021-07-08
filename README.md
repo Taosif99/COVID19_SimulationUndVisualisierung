@@ -10,9 +10,9 @@
 * Screenshots werden mit der Space-Taste aufgenommen
 ## Wichtige Verzeichnisse (Windows,einfach)
 * Dateien sind gespeichert in: C:\Users\YourUserName\AppData\LocalLow\DefaultCompany\SimulationUndVisualisierung
-* Die Simulationskonfigurationen sind als .covidSim-Binärdateien in C:\Users\YourUserName\AppData\LocalLow\DefaultCompany\SimulationUndVisualisierung\SavedSimulations
+* Die Simulationskonfigurationen sind als .covidSim-Binärdateien in C:\Users\YourUserName\AppData\LocalLow\DefaultCompany\SimulationUndVisualisierung\SavedSimulations gespeichert
 * Die Screenshots sind in C:\Users\YourUserName\AppData\LocalLow\DefaultCompany\SimulationUndVisualisierung\Screenshots gespeichert
-* Simulations csv-log-Files sind in C:\Users\YourUserName\AppData\LocalLow\DefaultCompany\SimulationUndVisualisierung\SimulationLogs
+* Simulations csv-log-Files sind in C:\Users\YourUserName\AppData\LocalLow\DefaultCompany\SimulationUndVisualisierung\SimulationLogs gespeichert
 ## Wichtige Verzeichnisse (Allgemein, für alle Betriebssysteme)
 Schaue im persistantDataPath der [UnityAPI](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) deines Betriebssystemes nach, dort sind folgende Ordner vorhanden:
 * SavedSimualtions in der Simulationskonfigurationen als .covidSim-Binärdateien gespeichert sind
@@ -23,7 +23,7 @@ Schaue im persistantDataPath der [UnityAPI](https://docs.unity3d.com/ScriptRefer
 * Assets/Scripts/Simulation/Runtime/Person.cs
 * Assets/Scripts/Simulation/Runtime/HealthState.cs
 * Assets/Scripts/Simulation/Runtime/SimulationController.cs
-* Assets/Scripts/Simulation/DefaultInfectionParameters.c
+* Assets/Scripts/Simulation/DefaultInfectionParameters.cs
 
 # EN
 ## Run Program
@@ -47,7 +47,7 @@ Look in the persistantDataPath of the [UnityAPI](https://docs.unity3d.com/Script
 * Assets/Scripts/Simulation/Runtime/Person.cs
 * Assets/Scripts/Simulation/Runtime/HealthState.cs
 * Assets/Scripts/Simulation/Runtime/SimulationController.cs
-* Assets/Scripts/Simulation/DefaultInfectionParameters.c
+* Assets/Scripts/Simulation/DefaultInfectionParameters.cs
 
 
 
