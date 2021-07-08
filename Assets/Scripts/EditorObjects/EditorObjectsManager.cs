@@ -52,7 +52,7 @@ namespace EditorObjects
             switch (prefabName)
             {
                 case PrefabName.Workplace:
-                    Workplace workplace = new Workplace(gridCell, 0.2f, WorkplaceType.Other, 200, false);
+                    Workplace workplace = new Workplace(gridCell, 0.5f, WorkplaceType.Other, 200, false);
                     editorObject = EditorObjectFactory.Create(workplace);
                     break;
                 case PrefabName.Hospital:
