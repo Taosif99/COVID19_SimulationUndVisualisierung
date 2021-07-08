@@ -23,7 +23,7 @@ namespace EpidemiologicalCalculation
         {
             _simulationDays = new List<DayInfo>();
             _csvStringBuilder = new StringBuilder();
-            _csvStringBuilder.AppendLine("Day;AmountNewInfections;R-Value;R-Value7;Incidence");
+            _csvStringBuilder.AppendLine("Day;AmountNewInfections;R-Value;R-Value7;Incidence;AmountUninfected;AmountInfected;AmountInfectious;AmountSymptoms;AmountRecovered;Dead");
         }
 
      
@@ -56,45 +56,42 @@ namespace EpidemiologicalCalculation
         }
 
         /// <summary>
-        /// Method which updates the R-Values and incidence of a day.
+        /// Method which updates the R-Values and incidence at the end of a day.
+        /// This method also assigns other values like amount people uninfected, infectious, infected, symptoms, recovered
+        /// and dead to the ending DayInfo,
         /// </summary>
         /// <param name="currentSimulationDay">The current day since the start of the simulation, day = 1, day2 = 2,...</param>
         /// <param name="rValue"></param>
         /// <param name="rValue7"></param>
         /// <param name="incidence"></param>
         /// <param name="playDate">The real world date the simulation started.</param>
-        public void UpdateRValueAndIncidence(int currentSimulationDay, out float rValue, out float rValue7 ,out float incidence, DateTime playDate)
+        public void DayEnds(int currentSimulationDay, out float rValue, out float rValue7 ,out float incidence, DateTime playDate)
         {
             rValue = EpidemiologicalCalculator.CalculateRValue(currentSimulationDay, _simulationDays);
             rValue7 = EpidemiologicalCalculator.CalculateRValue7(currentSimulationDay, _simulationDays);
             incidence = EpidemiologicalCalculator.CalculateIncidence(currentSimulationDay, _simulationDays);
-            _simulationDays[currentSimulationDay - 1].RValue = rValue;
-            _simulationDays[currentSimulationDay - 1].RValue7 = rValue7;          
-            _simulationDays[currentSimulationDay - 1].Incidence = incidence;
+            DayInfo day = _simulationDays[currentSimulationDay - 1];
+            day.RValue = rValue;
+            day.RValue7 = rValue7;          
+            day.Incidence = incidence;
 
-            //TODO Better write once all dayinfos at the end of the simulation
+            day.AmountUninfected = SimulationMaster.Instance.AmountUninfected;
+            day.AmountInfected = SimulationMaster.Instance.AmountInfected;
+            day.AmountInfectious = SimulationMaster.Instance.AmountInfectious;
+            day.AmountSymptoms = SimulationMaster.Instance.AmountSymptoms; 
+            day.AmountRecovered = SimulationMaster.Instance.AmountRecovered;
+            day.AmountDead = SimulationMaster.Instance.AmountPeopleDead;
+           
+            //Consider: Better to write once all dayinfos at the end of the simulation
             if (UIController.Instance.CsvLogToggle.isOn) 
             {
                 string newDataRow = _simulationDays[currentSimulationDay - 1].ToString();
                 _csvStringBuilder.AppendLine(newDataRow);
-
                 FileHandler.WriteToCsv(_csvStringBuilder.ToString(), playDate);
-
             }
-                
-            
-        
+     
         }
 
-        
 
-        private void DebugViewDataSets() 
-        {
-            Debug.Log(SimulationMaster.Instance.CurrentDayOfSimulation + "#######################################################################") ;
-            for (int i = 0; i < SimulationMaster.Instance.CurrentDayOfSimulation - 1; i++) 
-            {
-                Debug.Log(_simulationDays[i]);
-            }
-        }
     }
 }

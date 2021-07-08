@@ -64,6 +64,15 @@ public class SimulationMaster : MonoBehaviour
         }
     }
 
+
+    public int AmountSymptoms
+    {
+        get
+        {
+            return _infectionStateCounter[Person.InfectionStates.Symptoms];
+        }
+    }
+
     public int CurrentDayOfSimulation { get => _currentDayOfSimulation; private  set => _currentDayOfSimulation = value; }
 
     public Simulation.Edit.AdjustableSimulationSettings AdjustableSettings
@@ -96,14 +105,11 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter.Add(Person.InfectionStates.Phase5, 0); 
         _infectionStateCounter.Add(Person.InfectionStates.Uninfected, 0);
         _infectionStateCounter.Add(Person.InfectionStates.Infectious, 0);
-        _amountPeopleDead = 0;
+        _infectionStateCounter.Add(Person.InfectionStates.Symptoms, 0);
+        _amountPeopleDead = 0; 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-       // DebugPrintOfCounterValues();
-    }
+
 
     /// <summary>
     /// Method which handles the counting of infection states if a state transition happens.
@@ -132,6 +138,7 @@ public class SimulationMaster : MonoBehaviour
             _infectionStateCounter[Person.InfectionStates.Phase3] -= 1;
             _infectionStateCounter[Person.InfectionStates.Phase5] += 1;
             _infectionStateCounter[Person.InfectionStates.Infectious] -= 1;
+            _infectionStateCounter[Person.InfectionStates.Symptoms] -= 1;
             //symptoms-=1
             return;
         }
@@ -153,13 +160,13 @@ public class SimulationMaster : MonoBehaviour
             case Person.InfectionStates.Phase3:
                 _infectionStateCounter[Person.InfectionStates.Phase2] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase3] += 1;
+                _infectionStateCounter[Person.InfectionStates.Symptoms] += 1;
                 //symptoms+=1
                 break;
 
             case Person.InfectionStates.Phase4:
                 _infectionStateCounter[Person.InfectionStates.Phase3] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Infectious] -= 1;
-                //symptoms-=1
                 _infectionStateCounter[Person.InfectionStates.Phase4] += 1;
                 break;
 
@@ -167,6 +174,7 @@ public class SimulationMaster : MonoBehaviour
                 _infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase4] -= 1;
                 _infectionStateCounter[Person.InfectionStates.Phase5] += 1;
+                _infectionStateCounter[Person.InfectionStates.Symptoms] -= 1;
                 break;
         }
     }
@@ -182,6 +190,7 @@ public class SimulationMaster : MonoBehaviour
         _infectionStateCounter[Person.InfectionStates.Phase4] = 0;
         _infectionStateCounter[Person.InfectionStates.Phase5] = 0;
         _infectionStateCounter[Person.InfectionStates.Infectious] = 0;
+        _infectionStateCounter[Person.InfectionStates.Symptoms] = 0;
         _amountPeopleDead = 0;
         _dayInfoHandler = new DayInfoHandler();
         _currentDayOfSimulation = 0;
@@ -198,18 +207,7 @@ public class SimulationMaster : MonoBehaviour
         return editorObjectsManager.AmountPeople;
     }
 
-    private void DebugPrintOfCounterValues()
-    {
-        /*
-        string debugText = $"<color=yellow>Infected/Phase 1: {   _infectionStateCounter[Person.InfectionStates.Phase1] } </color>" +
-            $"<color=red> Infected,Infectious/Phase 2:{   _infectionStateCounter[Person.InfectionStates.Phase2] } </color>" +
-            $"<color=brown> Infected,Infectious,Symptoms/Phase 3:{   _infectionStateCounter[Person.InfectionStates.Phase3] } </color>" +
-            $"<color=LightGreen>Infected,Symptoms,Recovering/Phase 4:{   _infectionStateCounter[Person.InfectionStates.Phase4] } </color>" +
-            $"<color=green>Amount Recovered/Phase 5:{   _infectionStateCounter[Person.InfectionStates.Phase5] }</color>" +
-            $"<color=gray>Amount uninfected:{_infectionStateCounter[Person.InfectionStates.Uninfected] }</color>";
-        Debug.Log(debugText);
-    */
-    }
+
 
     //wrapping also DayInfoHandler
     public void OnDayBegins(DateTime date)
@@ -223,7 +221,7 @@ public class SimulationMaster : MonoBehaviour
         float rValue;
         float rValue7;
         float incidence;
-       _dayInfoHandler.UpdateRValueAndIncidence(_currentDayOfSimulation,out rValue,out rValue7,out incidence,PlayDate);
+       _dayInfoHandler.DayEnds(_currentDayOfSimulation,out rValue,out rValue7,out incidence,PlayDate);
 
         if (UIController.Instance.EpidemicInfoToggle.isOn)
         {
@@ -262,7 +260,7 @@ public class SimulationMaster : MonoBehaviour
     public void OnPersonDies()
     {
         _amountPeopleDead++;
-        //Since the last infection phase of a dead Person is currently phase3 (TODO IMPROVE)
+        //Since the last infection phase of a dead Person is currently phase3 
         _infectionStateCounter[Person.InfectionStates.Phase1] -= 1;
         _infectionStateCounter[Person.InfectionStates.Phase3] -= 1;
         _infectionStateCounter[Person.InfectionStates.Infectious] -= 1;

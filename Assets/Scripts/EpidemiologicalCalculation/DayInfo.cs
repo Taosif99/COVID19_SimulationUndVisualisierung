@@ -15,6 +15,12 @@ namespace EpidemiologicalCalculation
         private float _rValue7;
         private float _incidence;
 
+        private int _amountUninfected;
+        private int _amountInfected;
+        private int _amountInfectious;
+        private int _amountSymptoms;
+        private int _amountRecovered;
+        private int _amountDead;
         public DayInfo(DateTime date)
         {
             _date = date;
@@ -29,9 +35,17 @@ namespace EpidemiologicalCalculation
         public float Incidence { get => _incidence; set => _incidence = value; }
         public float RValue7 { get => _rValue7; set => _rValue7 = value; }
 
+        public int AmountUninfected { get => _amountUninfected; set => _amountUninfected = value; }
+        public int AmountInfected { get => _amountInfected; set => _amountInfected = value; }
+        public int AmountInfectious { get => _amountInfectious; set => _amountInfectious = value; }
+        public int AmountSymptoms { get => _amountSymptoms; set => _amountSymptoms = value; }
+        public int AmountRecovered { get => _amountRecovered; set => _amountRecovered = value; }
+        public int AmountDead { get => _amountDead; set => _amountDead = value; }
+
         public override string ToString()
         {
-            return Date.ToString() + ";" + AmountNewInfections + ";" + RValue + ";" +RValue7 +";" + Incidence;
+            return Date.ToString("dd/MM/yyyy") + ";" + AmountNewInfections + ";" + RValue + ";" + RValue7 + ";" + Incidence + ";"
+                + AmountUninfected + ";" + AmountInfected + ";" + AmountInfectious + ";" + AmountSymptoms + ";" + AmountRecovered +";" + AmountDead ;
         }
         
 
