@@ -18,6 +18,12 @@ Schaue im persistantDataPath der [UnityAPI](https://docs.unity3d.com/ScriptRefer
 * SavedSimualtions in der Simulationskonfigurationen als .covidSim-Binärdateien gespeichert sind
 * Screenshots in der die screenshots gespeichert sind
 * SimulationLogs in der die csv-Log-Files gespeichert sind
+## Wo die Simualtionslogik hauptsächlich implementiert ist/für Interessierte
+* Assets/Scripts/Simulation/Runtime/Venue.cs
+* Assets/Scripts/Simulation/Runtime/Person.cs
+* Assets/Scripts/Simulation/Runtime/HealthState.cs
+* Assets/Scripts/Simulation/Runtime/SimulationController.cs
+* Assets/Scripts/Simulation/DefaultInfectionParameters.c
 
 # EN
 ## Run Program
@@ -36,7 +42,12 @@ Look in the persistantDataPath of the [UnityAPI](https://docs.unity3d.com/Script
 * SavedSimualtions where simulation configurations are stored as .covidSim binaries
 * Screenshots where the screenshots are stored
 * SimulationLogs where the csv log files are stored.
-
+## Where mainly the simulation logic is implemented/most important files for interested people
+* Assets/Scripts/Simulation/Runtime/Venue.cs
+* Assets/Scripts/Simulation/Runtime/Person.cs
+* Assets/Scripts/Simulation/Runtime/HealthState.cs
+* Assets/Scripts/Simulation/Runtime/SimulationController.cs
+* Assets/Scripts/Simulation/DefaultInfectionParameters.c
 
 
 
