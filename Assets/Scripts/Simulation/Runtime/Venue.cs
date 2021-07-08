@@ -44,10 +44,13 @@ namespace Simulation.Runtime
                      * Here the infection logic can be improved/edited
                      */
                     // TODO CONSIDER MASK FACTORS
-                    float linearInterpolatedCarefulnessFactor = Mathf.Lerp(1.5f, 0.5f, (p.CarefulnessFactor + i.CarefulnessFactor) / 2);
-              
-
-                    float infectionProbability = p.InfectionRisk * this.InfectionRiskFactor * linearInterpolatedCarefulnessFactor * GeneralInfectionProbabilityFactor;
+                    float carefulnessInfectionRiskFactor = MathC.MapLinearToFactor(2f, (p.CarefulnessFactor + i.CarefulnessFactor) / 2);
+                    float venueInfectionRiskFactor = MathC.MapLinearToFactor(2f, this.InfectionRiskFactor);
+                    
+                    float infectionProbability = p.InfectionRisk *
+                                                 venueInfectionRiskFactor *
+                                                 carefulnessInfectionRiskFactor *
+                                                 GeneralInfectionProbabilityFactor;
                     
                     //Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
 
