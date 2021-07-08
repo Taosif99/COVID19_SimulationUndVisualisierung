@@ -7,6 +7,9 @@ namespace Simulation.Runtime
 {
     public abstract class Venue : Entity
     {
+       
+        
+        
         private const float GeneralInfectionProbabilityFactor = 0.1f;
         
         private HashSet<Person> _currentPeopleAtVenue = new HashSet<Person>();
@@ -44,6 +47,8 @@ namespace Simulation.Runtime
                      * Here the infection logic can be improved/edited
                      */
                     // TODO CONSIDER MASK FACTORS
+                    
+                    /*
                     float carefulnessInfectionRiskFactor = MathC.MapLinearToFactor(2f, (p.CarefulnessFactor + i.CarefulnessFactor) / 2);
                     float venueInfectionRiskFactor = MathC.MapLinearToFactor(2f, this.InfectionRiskFactor);
                     
@@ -51,8 +56,17 @@ namespace Simulation.Runtime
                                                  venueInfectionRiskFactor *
                                                  carefulnessInfectionRiskFactor *
                                                  GeneralInfectionProbabilityFactor;
+                    */
                     
-                    //Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
+                    
+                    float avg = (1 - (p.CarefulnessFactor + i.CarefulnessFactor) / 2) * this.InfectionRiskFactor;
+                    float mu = p.InfectionRisk;
+                    float n = 100000;
+                    float sigma = Mathf.Sqrt((mu * (1 - mu)) / n);
+                    float infectionProbability = MathC.QNorm(avg, mu, sigma, true, false);
+                    
+
+                    Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
 
                     if (Random.Range(0f, 1f) <= infectionProbability)
                     {
