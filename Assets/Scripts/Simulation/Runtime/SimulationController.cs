@@ -312,15 +312,12 @@ namespace Simulation.Runtime
         /// <returns>true if corona test is correct, else false</returns>
         private bool IsCoronaQuickTestCorrect(bool isPersonInfected)
         {
-            //Spezifität > 97%
-            //Sensitivität > 80%
-
             int testAccuracy;
 
             if (isPersonInfected)
             {
-                testAccuracy = Random.Range(1, 101);
-                if (testAccuracy > 80)
+                testAccuracy = Random.Range(0, 100);
+                if (testAccuracy <= 20)
                 {
                     //Debug.Log("Test is false negative " + testAccuracy);
                     return false;
@@ -334,8 +331,8 @@ namespace Simulation.Runtime
             }
             else
             {
-                testAccuracy = Random.Range(1, 101);
-                if (testAccuracy > 97)
+                testAccuracy = Random.Range(0, 100);
+                if (testAccuracy <= 3)
                 {
                     Debug.Log("Test is false positve " + testAccuracy);
                     return false;
@@ -344,8 +341,7 @@ namespace Simulation.Runtime
                 {
                     Debug.Log("Test is negative " + testAccuracy);
                     return true;
-                }
-                    
+                }  
             }
         }
 
