@@ -4,7 +4,7 @@ namespace Simulation.Runtime
 {
     static class DayOfWeekExtensions
     {
-        public static WeekDays AsDayOfWeek(this DayOfWeek dayOfWeek)
+        public static WeekDays AsWeekDay(this DayOfWeek dayOfWeek)
         {
             switch (dayOfWeek)
             {

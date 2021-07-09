@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Random = UnityEngine.Random;
 using DialogBoxSystem;
 using Debug = UnityEngine.Debug;
 
 namespace Simulation.Runtime
 {
+    // TODO: Remove any dependencies on unity code (perhaps other than general utilities such as Mathf and Random)
     class SimulationController
     {
         /// <summary>
@@ -24,8 +26,9 @@ namespace Simulation.Runtime
         private Hospital[] _hospitals;
         private List<Person> _persons = new List<Person>();
         private Edit.AdjustableSimulationSettings _settings = SimulationMaster.Instance.AdjustableSettings;
+        
         public DateTime SimulationDate { get; private set; } = new DateTime(2020, 1, 1);
-
+        
         public void Initialize(Entity[] entities)
         {
             _entities = entities;
@@ -36,12 +39,22 @@ namespace Simulation.Runtime
             WorkShift[] workShifts = _entities.OfType<Workplace>()
                 .SelectMany(w => w.WorkShifts)
                 .ToArray();
+            
+            Workplace[] stores = _entities.OfType<Workplace>()
+                .Where(w => w.Type == WorkplaceType.Store)
+                .ToArray();
+
+            if (stores.Length == 0)
+            {
+                Debug.LogWarning("No stores available");
+            }
 
             int workShiftIndex = 0;
             bool workplaceCapacityReached = false;
 
             foreach (var household in _households)
             {
+                // Assign workplaces
                 if (!workplaceCapacityReached)
                 {
                     try
@@ -86,15 +99,68 @@ namespace Simulation.Runtime
                     }
                 }
 
+                // Schedule shopping runs
+                if (stores.Length == 0)
+                {
+                    continue;
+                }
+
                 var editorHousehold = household.GetEditorEntity<Edit.Household>();
+                int retries = 0;
                 for (int i = 0; i < editorHousehold.NumberOfShoppingRuns; i++)
                 {
-                    int numberOfShoppers = Random.Range(1, editorHousehold.NumberOfShoppers + 1);
+                    Person shopper = household.Members[Random.Range(0, editorHousehold.NumberOfPeople)];
+                    
+                    // Select a random day
+                    Array days = Enum.GetValues(typeof(DayOfWeek));
+                    var dayOfWeek = (DayOfWeek) days.GetValue(Random.Range(0, days.Length));
 
-                    do
+                    // TODO: Get these values from the store workshifts
+                    const int earliest = 8;
+                    const int latest = 20;
+
+                    Dictionary<int, int> availableTimeSlots = shopper.DetermineAvailableTimeSlots(dayOfWeek, earliest, latest);
+
+                    if (availableTimeSlots.Count == 0)
                     {
-                        // TODO: Use ActivityScheduler to schedule shopping runs
-                    } while (false);
+                        // If no time slots were found for the selected person and day,
+                        // we retry (max 3x) to find a different combination with available time slots
+                        if (retries < 3)
+                        {
+                            retries++;
+                            i--;
+                            continue;
+                        }
+
+                        retries = 0; // Reset retries for the next shopping run
+                        Debug.LogWarning("Could not find a free time slot for shopping");
+                        continue;
+                    }
+
+                    // Select a random time slot
+                    int[] timeSlotBeginnings = availableTimeSlots.Keys.ToArray();
+                    int timeSlotBeginning = timeSlotBeginnings[Random.Range(0, timeSlotBeginnings.Length)];
+
+                    // TODO: Don't hardcode
+                    const int shoppingDuration = 1;
+
+                    // Determine random start time in the available time slot
+                    int selectedStartTime = Random.Range(timeSlotBeginning, availableTimeSlots[timeSlotBeginning] - shoppingDuration + 1);
+                    Workplace selectedStore = stores[Random.Range(0, stores.Length)];
+
+                    Activity shoppingRun = new Activity(
+                        dayOfWeek.AsWeekDay(),
+                        selectedStartTime,
+                        selectedStartTime + shoppingDuration,
+                        selectedStore,
+                        false
+                    );
+                    
+                    shopper.Activities.Add(shoppingRun);
+                    
+                    // Debug.Log($"Scheduled shopping run: {dayOfWeek}, {selectedStartTime} - {selectedStartTime + shoppingDuration}");
+                    
+                    retries = 0; // Reset retries for the next shopping run
                 }
             }
         }

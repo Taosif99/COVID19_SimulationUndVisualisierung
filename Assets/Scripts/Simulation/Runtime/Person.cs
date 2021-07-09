@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Simulation.Runtime
 {
@@ -84,7 +85,7 @@ namespace Simulation.Runtime
         {
             foreach (Activity activity in Activities)
             {
-                if (activity.Days.HasFlag(dateTime.DayOfWeek.AsDayOfWeek()))
+                if (activity.Days.HasFlag(dateTime.DayOfWeek.AsWeekDay()))
                 {
                     float timeInHours = dateTime.Hour + (float)dateTime.Minute / 60;
                     if (activity.StartTime <= timeInHours && activity.EndTime > timeInHours)
@@ -94,6 +95,60 @@ namespace Simulation.Runtime
                 }
             }
             return null;
+        }
+        
+        /// <summary>
+        /// Determine available time slots on the given <paramref name="dayOfWeek"/>,
+        /// between the <paramref name="earliest"/> and <paramref name="latest"/> hour,
+        /// based on the person's scheduled activities.
+        /// </summary>
+        /// 
+        /// <param name="dayOfWeek">The day of the week for which available time slots should be determined</param>
+        /// <param name="earliest">The earliest possible hour to be considered</param>
+        /// <param name="latest">The latest hour which the time slots should not extend past</param>
+        /// 
+        /// <returns>
+        /// A dictionary with the keys describing the start of the available time slot,
+        /// and the values describing the length/duration of the time slot
+        /// </returns>
+        public Dictionary<int, int> DetermineAvailableTimeSlots(DayOfWeek dayOfWeek, int earliest, int latest)
+        {
+            // Key: time in hour, Value: duration/length in hours
+            var availableTimeSlots = new Dictionary<int, int>();
+
+            var activities = Activities
+                .Where(a => a.Days.HasFlag(dayOfWeek.AsWeekDay()))
+                .OrderBy(a => a.StartTime)
+                .ToArray();
+            
+            // Determine free time slots before, after, or between activities
+            for (var a = 0; a < activities.Length; a++)
+            {
+                Activity activity = activities[a];
+                Activity followingActivity = activities.Length > a + 1
+                    ? activities[a + 1]
+                    : null;
+
+                // This is the first activity of the day, and there is time before it begins
+                if (a == 0 && activity.StartTime - earliest >= 1)
+                {
+                    availableTimeSlots.Add(earliest, activity.StartTime - earliest);
+                }
+
+                // This is the last activity of the day, and there is time after it ends
+                if (followingActivity == null && latest - activity.EndTime >= 1)
+                {
+                    availableTimeSlots.Add(activity.EndTime, latest - activity.EndTime);
+                }
+
+                // There is an activity following this one, however there is time in-between
+                if (followingActivity != null && followingActivity.StartTime - activity.EndTime >= 1)
+                {
+                    availableTimeSlots.Add(activity.EndTime, followingActivity.StartTime - activity.EndTime);
+                }
+            }
+
+            return availableTimeSlots;
         }
 
         /// <summary>
