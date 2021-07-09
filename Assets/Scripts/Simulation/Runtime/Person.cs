@@ -120,6 +120,12 @@ namespace Simulation.Runtime
                 .Where(a => a.Days.HasFlag(dayOfWeek.AsWeekDay()))
                 .OrderBy(a => a.StartTime)
                 .ToArray();
+
+            if (activities.Length == 0)
+            {
+                availableTimeSlots.Add(earliest, latest - earliest);
+                return availableTimeSlots;
+            }
             
             // Determine free time slots before, after, or between activities
             for (var a = 0; a < activities.Length; a++)
