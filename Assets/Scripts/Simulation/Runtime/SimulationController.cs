@@ -145,7 +145,7 @@ namespace Simulation.Runtime
                     const int shoppingDuration = 1;
 
                     // Determine random start time in the available time slot
-                    int selectedStartTime = Random.Range(timeSlotBeginning, availableTimeSlots[timeSlotBeginning] - shoppingDuration + 1);
+                    int selectedStartTime = Random.Range(timeSlotBeginning, timeSlotBeginning + availableTimeSlots[timeSlotBeginning] - shoppingDuration + 1);
                     Workplace selectedStore = stores[Random.Range(0, stores.Length)];
 
                     Activity shoppingRun = new Activity(
