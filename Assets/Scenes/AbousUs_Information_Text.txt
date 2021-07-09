@@ -1,0 +1,54 @@
+We are a group of students from the Frankfurt University of Applied Sciences who implemented a simple CoViD19 simulation as part of an university project. Our goal is to offer an intuitive CoViD19 simulation which does not requiere deep scientific knowledge to use and to understand.
+
+In the simulation it is possible to place and remove households, workplaces and hospitals. Each type of venue has attributes which can be defined. It is possoble to save the simulation configuration which inculdes the attributes of the venues and epidemiological parameters.
+Above each venue there is a counter, which indicates the amount of uninfected people (<color=green>green</color>), infected people(<color=orange>orange</color>) and infectious people(<color=red>red</color>).
+The hospital counter also shows how many normal beds are occupied (<color=#6495ED>blue</color>) and how many intensive beds are occupied (<color=#9FE2BF>mint green</color>).
+
+If there are enough regular and intensive beds in the simulation, then the following is ensured:
+* Each person who needs a regular bed gets one
+* Each person who needs an intensive care bed gets one
+* If a person must be transferred from a regular bed to an intensive bed (or vice versa) the hospital of the person may change
+
+If the number of beds is not enough, the following is ensured:
+* Persons who must be in intensive care get/stay atleast in a regular bed.
+* If a person does not get a bed at all, then it stays in phase 3 at home until the person dies or recovers.
+
+
+There are two types of configurable workplaces: store and other. 
+
+Workers in a store work in the following shifts:
+1.	Work shift: Monday-Saturday from 8 a.m. to 4 p.m.
+2.	Work shift: Monday-Saturday from 12 p.m. to 8 p.m.
+
+
+Workers in other workplaces work in the following shifts:
+1.	Work shift: Monday-Friday from 8 a.m. to 4 p.m.
+
+Since a hospital is also a workplace, workers have in this case the following shifts:
+1.	Work shift: Monday-Sunday 0 a.m. to 8 a.m.
+2.	Work shift: Monday-Sunday 8 a.m. to 4 p.m.
+3.	Work shift: Monday-Sunday 4 p.m. to 0 a.m. 
+
+When a person becomes infected with CoViD19, the person goes through the following phases of infection.
+
+Phase 1: The person is infected
+Phase 2: The person is infected and infectious
+Phase 3: The person is infected, infectious and has symptoms
+Phase 4: The person is infected, has symptoms and is starting with the recovery process
+Phase 5: The person recovered
+
+We mainly used average values as default paramters from the <i>Robert Koch-Institut</i> in order to to determine the time periods of the phases of infection.][TODO REFERENCE TO https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile]
+The probability of the infection factor is 3.8%[TODO REFERENCE TO https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html] and the probability of reinfection factor is 0.02%[TODO REFERENCE TO https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html]
+
+TODO DESCRIBE TESTING HERE
+
+
+
+
+We used the following sources for our research: TODO ENUMERATE [1],[2],...
+https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html;jsessionid=CE16F99FB237ECBAC11C55AB8020F12F.internet111?nn=13490888#a325 
+
+https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile 
+
+https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/
+
