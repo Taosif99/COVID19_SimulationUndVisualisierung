@@ -21,11 +21,12 @@ namespace InputValidation
         /// <param name="numberOfPeople"></param>
         /// <param name="carefulness"></param>
         /// <param name="percentageOfWorkers"></param>
+        /// <param name="shoppingRuns"></param>
         /// <param name="amountBeds"></param>
         /// <param name="amountIntensiveCareBeds"></param>
         /// <param name="currentSelectedEntity"></param>
         /// <returns>true if all requiered inputfields can be parsed to correct values, else false</returns>
-        public static bool TryParseLeftInputFields(ref float infectionRisk, ref int capacity, ref byte numberOfPeople, ref float carefulness, ref float percentageOfWorkers, ref int amountBeds,
+        public static bool TryParseLeftInputFields(ref float infectionRisk, ref int capacity, ref byte numberOfPeople, ref float carefulness, ref float percentageOfWorkers, ref int shoppingRuns, ref int amountBeds,
                 ref int amountIntensiveCareBeds, Entity currentSelectedEntity)
         {
             bool inputIsValid = true;
@@ -57,13 +58,15 @@ namespace InputValidation
                     bool numberOfPeopleIsValid = byte.TryParse(UIController.Instance.NumberOfPeopleInputField.text, out numberOfPeople);
                     bool carefulnessIsValid = float.TryParse(UIController.Instance.CarefulnessInputField.text, out carefulness) && IsValidPercentage(carefulness);
                     bool percantageOfWorkersIsValid = float.TryParse(UIController.Instance.PercantageOfWorkersInputField.text, out percentageOfWorkers) && IsValidPercentage(percentageOfWorkers);
+                    bool shoppingRunsIsValid = int.TryParse(UIController.Instance.ShoppingRunsInputField.text, out shoppingRuns);
                     SetInputFieldColor(UIController.Instance.NumberOfPeopleInputField, numberOfPeopleIsValid);
                     SetInputFieldColor(UIController.Instance.CarefulnessInputField, carefulnessIsValid);
                     SetInputFieldColor(UIController.Instance.PercantageOfWorkersInputField, percantageOfWorkersIsValid);
+                    SetInputFieldColor(UIController.Instance.ShoppingRunsInputField, shoppingRunsIsValid);
                     inputIsValid = inputIsValid && numberOfPeopleIsValid;
                     inputIsValid = inputIsValid && carefulnessIsValid;
                     inputIsValid = inputIsValid && percantageOfWorkersIsValid;
-
+                    inputIsValid = inputIsValid && shoppingRunsIsValid;
                 }
             }
 

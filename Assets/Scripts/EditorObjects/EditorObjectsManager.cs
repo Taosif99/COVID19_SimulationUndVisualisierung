@@ -60,7 +60,7 @@ namespace EditorObjects
                     editorObject = EditorObjectFactory.Create(hospital);
                     break;
                 case PrefabName.Household:
-                    Household household = new Household(gridCell, 0.6f, 12, 0.7f, 0.5f, 0.3f, 2, 5);
+                    Household household = new Household(gridCell, 0.6f, 12, 0.7f, 0.5f, 2);
                     editorObject = EditorObjectFactory.Create(household);
                     break;
                 default:
@@ -131,7 +131,8 @@ namespace EditorObjects
                     UIController.Instance.NumberOfPeopleInputField.text = household.NumberOfPeople.ToString();
                     UIController.Instance.CarefulnessInputField.text = household.CarefulnessTendency.ToString();
                     UIController.Instance.PercantageOfWorkersInputField.text = household.PercentageOfWorkers.ToString();
-
+                    UIController.Instance.ShoppingRunsInputField.text = household.NumberOfShoppingRuns.ToString();
+                    
                     break;
                 }
             }
@@ -156,6 +157,7 @@ namespace EditorObjects
             byte numberOfPeople = 0;
             float carefulness = 0f;
             float percentageOfWorkers = 0f;
+            int shoppingRuns = 0;
             int amountBeds = 0;
             int amountIntensiveCareBeds = 0;
 
@@ -165,7 +167,8 @@ namespace EditorObjects
                 ref capacity,
                 ref numberOfPeople,
                 ref carefulness,
-                ref percentageOfWorkers, 
+                ref percentageOfWorkers,
+                ref shoppingRuns,
                 ref amountBeds, 
                 ref amountIntensiveCareBeds,
                 CurrentSelectedEntity);
@@ -206,6 +209,7 @@ namespace EditorObjects
                                 household.NumberOfPeople = numberOfPeople;
                                 household.CarefulnessTendency = carefulness;
                                 household.PercentageOfWorkers = percentageOfWorkers;
+                                household.NumberOfShoppingRuns = shoppingRuns;
                             }
                         }
                     }

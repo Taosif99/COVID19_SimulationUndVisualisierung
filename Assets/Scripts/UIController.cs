@@ -82,6 +82,7 @@ public class UIController : MonoBehaviour
     public TMP_InputField NumberOfPeopleInputField;
     public TMP_InputField PercantageOfWorkersInputField;
     public TMP_InputField CarefulnessInputField;
+    public TMP_InputField ShoppingRunsInputField;
     //Workplace elements
     public TMP_Dropdown WorkplaceTypeDropdown;
     public TMP_InputField WorkerCapacityInputField;
@@ -125,8 +126,16 @@ public class UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _leftInputFields = new List<TMP_InputField> {InfectionRiskInputField,NumberOfPeopleInputField,
-          Instance.PercantageOfWorkersInputField,CarefulnessInputField,WorkerCapacityInputField};
+        _leftInputFields = new List<TMP_InputField>
+        {
+            InfectionRiskInputField,
+            NumberOfPeopleInputField,
+            PercantageOfWorkersInputField,
+            CarefulnessInputField,
+            ShoppingRunsInputField,
+            WorkerCapacityInputField
+        };
+        
         _leftDropDowns = new List<TMP_Dropdown> { WorkplaceTypeDropdown };
         //Adding listeners to left UI
         AddOnChangeListenersToLeftUI();
