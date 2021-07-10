@@ -42,6 +42,11 @@ Since a hospital is also a workplace, workers have in this case the following sh
 2.	Work shift: Monday-Sunday 8 a.m. to 4 p.m.
 3.	Work shift: Monday-Sunday 4 p.m. to 0 a.m. 
 
+The other type of activity the people in the simulation have is grocery shopping / shopping runs.
+The number of times people go out to shop each week can be configured per household.
+These shopping runs always last 1 hour and are scheduled automatically when the simulation begins, choosing a random person, a random day, and a random available time slot in their day. 
+Selecting the store the person goes to is also done at random when the simulation begins. 
+
 We used the following sources for our research: TODO ENUMERATE [1],[2],...
 https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html;jsessionid=CE16F99FB237ECBAC11C55AB8020F12F.internet111?nn=13490888#a325 
 
