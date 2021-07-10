@@ -26,6 +26,7 @@ The probability of the infection factor is 3.8%[TODO REFERENCE TO https://englis
 
 In our simulation there is a possibility to carry out corona tests for employees at the beginning of the shift. 
 The frequency of the test depends on the workplace. In hospitals, every Thursday is tested and in other workplaces every Monday and Wednesday.
+Statistics from the Paul-Ehrlich-Institut were used for the test probabilities. //TODO add Link by Emin
 
 There are two types of configurable workplaces: store and other. 
 
