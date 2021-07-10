@@ -4,6 +4,14 @@ In the simulation it is possible to place and remove households, workplaces and 
 Above each venue there is a counter, which indicates the amount of uninfected people (<color=green>green</color>), infected people(<color=orange>orange</color>) and infectious people(<color=red>red</color>).
 The hospital counter also shows how many normal beds are occupied (<color=#6495ED>blue</color>) and how many intensive beds are occupied (<color=#b900b9>Magenta</color>).
 
+When a person becomes infected with COVID-19, the person goes through the following phases of infection.
+
+Phase 1: The person is infected
+Phase 2: The person is infected and infectious
+Phase 3: The person is infected, infectious and has symptoms
+Phase 4: The person is infected, has symptoms and is starting with the recovery process
+Phase 5: The person recovered
+
 If there are enough regular and intensive beds in the simulation, then the following is ensured:
 * Each person who needs a regular bed gets one
 * Each person who needs an intensive care bed gets one
@@ -12,14 +20,6 @@ If there are enough regular and intensive beds in the simulation, then the follo
 If the number of beds is not enough, the following is ensured:
 * Persons who must be in intensive care get/stay at least in a regular bed.
 * If a person does not get a bed at all, then it stays in phase 3 at home until the person dies or recovers.
-
-When a person becomes infected with COVID-19, the person goes through the following phases of infection.
-
-Phase 1: The person is infected
-Phase 2: The person is infected and infectious
-Phase 3: The person is infected, infectious and has symptoms
-Phase 4: The person is infected, has symptoms and is starting with the recovery process
-Phase 5: The person recovered
 
 We mainly used average values as default parameters from the <i>Robert Koch-Institut</i> in order to determine the time periods of the phases of infection.][TODO REFERENCE TO https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile]
 The probability of the infection factor is 3.8%[TODO REFERENCE TO https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html] and the probability of reinfection factor is 0.02%[TODO REFERENCE TO https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html]
