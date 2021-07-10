@@ -1,4 +1,16 @@
+<style="InfoH">About Us</style>
+
 We are a group of students from the Frankfurt University of Applied Sciences who implemented a simple COVID-19 simulation as a part of a university project. Our goal is to offer an intuitive COVID-19 simulation which does not require deep scientific knowledge to use and to understand.
+
+
+<style="InfoH">Objects & Counters</style>
+
+In the simulation it is possible to place and remove households, workplaces and hospitals. Each type of venue has attributes which can be defined. It is possible to save the simulation configuration, which includes the attributes of the venues and epidemiological parameters.
+Above each venue there is a counter, which indicates the amount of uninfected people (<color=green>green</color>), infected people(<color=orange>orange</color>) and infectious people(<color=red>red</color>).
+The hospital counter also shows how many normal beds are occupied (<color=#6495ED>blue</color>) and how many intensive beds are occupied (<color=#b900b9>Magenta</color>).
+
+
+<style="InfoH">Phases of Infection</style>
 
 In the simulation it is possible to place and remove households, workplaces and hospitals. Each type of venue has attributes which can be defined. It is possible to save the simulation configuration, which includes the attributes of the venues and epidemiological parameters.
 Above each venue there is a counter, which indicates the amount of uninfected people (<color=green>green</color>), infected people(<color=orange>orange</color>) and infectious people(<color=red>red</color>).
@@ -13,6 +25,9 @@ Phase 3: The person is infected, infectious and has symptoms
 Phase 4: The person is infected, has symptoms and is starting with the recovery process
 Phase 5: The person recovered
 
+
+<style="InfoH">Hospitalization</style>
+
 If there are enough regular and intensive beds in the simulation, then the following is ensured:
 * Each person who needs a regular bed gets one
 * Each person who needs an intensive care bed gets one
@@ -25,9 +40,15 @@ If the number of beds is not enough, the following is ensured:
 As default parameters average values from the <i>Robert Koch-Institut</i> in order to determine the time periods of the phases of infection [3].
 The probability of the infection factor is 3.8% and the probability of reinfection factor is 0.02% [4][5].
 
+
+<style="InfoH">Tests at Workplaces</style>
+
 In the simulation there is a possibility to carry out corona tests for employees at the beginning of the shift. 
 The frequency of the test depends on the workplace. In hospitals, every Thursday is tested and in other workplaces every Monday and Wednesday.
 Statistics from the Paul-Ehrlich-Institut were used for the test probabilities [6].
+
+
+<style="InfoH">Workplaces & Work shifts</style>
 
 There are two types of configurable workplaces: store and other. 
 
@@ -43,13 +64,16 @@ Since a hospital is also a workplace, workers have in this case the following sh
 2.	Work shift: Monday-Sunday 8 a.m. to 4 p.m.
 3.	Work shift: Monday-Sunday 4 p.m. to 0 a.m. 
 
+
+<style="InfoH">Shopping</style>
+
 The other type of activity the people in the simulation have is grocery shopping / shopping runs.
 The number of times people go out to shop each week can be configured per household.
 These shopping runs always last 1 hour and are scheduled automatically when the simulation begins, choosing a random person, a random day, and a random available time slot in their day. 
 Selecting the store the person goes to is also done at random when the simulation begins. 
 
-We used the following sources for our research: TODO ENUMERATE [1],[2],...
-https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html;jsessionid=CE16F99FB237ECBAC11C55AB8020F12F.internet111?nn=13490888#a325 
+
+<style="InfoH">Primary References</style>
 
 All references were last viewed on the 10. July 2021.
 
