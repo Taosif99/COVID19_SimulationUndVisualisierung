@@ -13,22 +13,6 @@ If the number of beds is not enough, the following is ensured:
 * Persons who must be in intensive care get/stay at least in a regular bed.
 * If a person does not get a bed at all, then it stays in phase 3 at home until the person dies or recovers.
 
-
-There are two types of configurable workplaces: store and other. 
-
-Workers in a store work in the following shifts:
-1.	Work shift: Monday-Saturday from 8 a.m. to 4 p.m.
-2.	Work shift: Monday-Saturday from 12 p.m. to 8 p.m.
-
-
-Workers in other workplaces work in the following shifts:
-1.	Work shift: Monday-Friday from 8 a.m. to 4 p.m. 
-
-Since a hospital is also a workplace, workers have in this case the following shifts:
-1.	Work shift: Monday-Sunday 0 a.m. to 8 a.m.
-2.	Work shift: Monday-Sunday 8 a.m. to 4 p.m.
-3.	Work shift: Monday-Sunday 4 p.m. to 0 a.m. 
-
 When a person becomes infected with COVID-19, the person goes through the following phases of infection.
 
 Phase 1: The person is infected
@@ -42,8 +26,19 @@ The probability of the infection factor is 3.8%[TODO REFERENCE TO https://englis
 
 TODO DESCRIBE TESTING HERE
 
+There are two types of configurable workplaces: store and other. 
 
+Workers in a store work in the following shifts:
+1.	Work shift: Monday-Saturday from 8 a.m. to 4 p.m.
+2.	Work shift: Monday-Saturday from 12 p.m. to 8 p.m.
 
+Workers in other workplaces work in the following shifts:
+1.	Work shift: Monday-Friday from 8 a.m. to 4 p.m. 
+
+Since a hospital is also a workplace, workers have in this case the following shifts:
+1.	Work shift: Monday-Sunday 0 a.m. to 8 a.m.
+2.	Work shift: Monday-Sunday 8 a.m. to 4 p.m.
+3.	Work shift: Monday-Sunday 4 p.m. to 0 a.m. 
 
 We used the following sources for our research: TODO ENUMERATE [1],[2],...
 https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html;jsessionid=CE16F99FB237ECBAC11C55AB8020F12F.internet111?nn=13490888#a325 
