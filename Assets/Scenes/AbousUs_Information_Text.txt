@@ -18,8 +18,8 @@ If there are enough regular and intensive beds in the simulation, then the follo
 * If a person must be transferred from a regular bed to an intensive bed (or vice versa) the hospital of the person may change
 
 If the number of beds is not enough, the following is ensured:
-* Persons who must be in intensive care get/stay at least in a regular bed.
-* If a person does not get a bed at all, then it stays in phase 3 at home until the person dies or recovers.
+* Persons who must be in intensive care get/stay at least in a regular bed
+* If a person does not get a bed at all, then it stays in phase 3 at home until the person dies or recovers
 
 As default parameters average values from the <i>Robert Koch-Institut</i> in order to determine the time periods of the phases of infection.][TODO REFERENCE TO https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile]
 The probability of the infection factor is 3.8%[TODO REFERENCE TO https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html] and the probability of reinfection factor is 0.02%[TODO REFERENCE TO https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html]
