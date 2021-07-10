@@ -21,6 +21,12 @@ Phase 4: The person is infected, has symptoms and is starting with the recovery 
 Phase 5: The person recovered
 
 
+<style="InfoH">Masks</style>
+
+There are 3 types of masks in our simulation. Fabric masks with 75% protection against infections, medical masks with 90% protection and the FFP2 masks with 94% [7].
+The masks are worn everywhere except in the household.
+
+
 <style="InfoH">Hospitalization</style>
 
 If there are enough regular and intensive beds in the simulation, then the following is ensured:
