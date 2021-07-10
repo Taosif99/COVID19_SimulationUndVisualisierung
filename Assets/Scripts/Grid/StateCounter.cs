@@ -69,7 +69,7 @@ namespace Grid
 
                 if (hospital.AmountPeopleInRegularBeds > 0 && hospital.AmountPeopleInIntensiveBeds > 0)
                 {
-                    textToShow = $"<color=#6495ED>{hospital.AmountPeopleInRegularBeds}/{hospital.AmountRegularBeds}</color> / <#9FE2BF>{hospital.AmountPeopleInIntensiveBeds}/{hospital.AmountIntensiveCareBeds}</color>";
+                    textToShow = $"<color=#6495ED>{hospital.AmountPeopleInRegularBeds}/{hospital.AmountRegularBeds}</color> / <#b900b9>{hospital.AmountPeopleInIntensiveBeds}/{hospital.AmountIntensiveCareBeds}</color>";
                 }
 
                 else if (hospital.AmountPeopleInRegularBeds > 0)
@@ -78,7 +78,7 @@ namespace Grid
                 }
                 else if (hospital.AmountPeopleInIntensiveBeds > 0)
                 {
-                    textToShow = $"<#9FE2BF>{hospital.AmountPeopleInIntensiveBeds}/{hospital.AmountIntensiveCareBeds}</color>";
+                    textToShow = $"<#b900b9>{hospital.AmountPeopleInIntensiveBeds}/{hospital.AmountIntensiveCareBeds}</color>";
 
                 }
                 _hospitalCounterText.SetText(textToShow);

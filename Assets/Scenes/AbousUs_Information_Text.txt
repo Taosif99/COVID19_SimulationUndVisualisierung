@@ -2,7 +2,7 @@ We are a group of students from the Frankfurt University of Applied Sciences who
 
 In the simulation it is possible to place and remove households, workplaces and hospitals. Each type of venue has attributes which can be defined. It is possible to save the simulation configuration, which includes the attributes of the venues and epidemiological parameters.
 Above each venue there is a counter, which indicates the amount of uninfected people (<color=green>green</color>), infected people(<color=orange>orange</color>) and infectious people(<color=red>red</color>).
-The hospital counter also shows how many normal beds are occupied (<color=#6495ED>blue</color>) and how many intensive beds are occupied (<color=#9FE2BF>mint green</color>).
+The hospital counter also shows how many normal beds are occupied (<color=#6495ED>blue</color>) and how many intensive beds are occupied (<color=#b900b9>Magenta</color>).
 
 If there are enough regular and intensive beds in the simulation, then the following is ensured:
 * Each person who needs a regular bed gets one
