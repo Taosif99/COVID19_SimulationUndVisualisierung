@@ -5,6 +5,7 @@ Above each venue there is a counter, which indicates the amount of uninfected pe
 The hospital counter also shows how many normal beds are occupied (<color=#6495ED>blue</color>) and how many intensive beds are occupied (<color=#b900b9>Magenta</color>).
 
 When a person becomes infected with COVID-19, the person goes through the following phases of infection.
+When a person becomes infected with COVID-19, the person goes through the following phases of infection [1][2][3].
 
 Phase 1: The person is infected
 Phase 2: The person is infected and infectious
@@ -21,12 +22,12 @@ If the number of beds is not enough, the following is ensured:
 * Persons who must be in intensive care get/stay at least in a regular bed
 * If a person does not get a bed at all, then it stays in phase 3 at home until the person dies or recovers
 
-As default parameters average values from the <i>Robert Koch-Institut</i> in order to determine the time periods of the phases of infection.][TODO REFERENCE TO https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile]
-The probability of the infection factor is 3.8%[TODO REFERENCE TO https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html] and the probability of reinfection factor is 0.02%[TODO REFERENCE TO https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html]
+As default parameters average values from the <i>Robert Koch-Institut</i> in order to determine the time periods of the phases of infection [3].
+The probability of the infection factor is 3.8% and the probability of reinfection factor is 0.02% [4][5].
 
 In the simulation there is a possibility to carry out corona tests for employees at the beginning of the shift. 
 The frequency of the test depends on the workplace. In hospitals, every Thursday is tested and in other workplaces every Monday and Wednesday.
-Statistics from the Paul-Ehrlich-Institut were used for the test probabilities. //TODO add Link by Emin
+Statistics from the Paul-Ehrlich-Institut were used for the test probabilities [6].
 
 There are two types of configurable workplaces: store and other. 
 
@@ -50,7 +51,13 @@ Selecting the store the person goes to is also done at random when the simulatio
 We used the following sources for our research: TODO ENUMERATE [1],[2],...
 https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html;jsessionid=CE16F99FB237ECBAC11C55AB8020F12F.internet111?nn=13490888#a325 
 
-https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile 
+All references were last viewed on the 10. July 2021.
 
-https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/
+- [1] https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html
+- [2] https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/
+- [3] https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf
+- [4] https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html
+- [5] https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html
+- [6] https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf
+- [7] https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7
 
