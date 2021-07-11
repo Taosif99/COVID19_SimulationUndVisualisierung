@@ -182,7 +182,9 @@ namespace Simulation
 
         /// <summary>
         /// 
-        /// We use 1-ProtectionValue, as Factor for our infection calculation
+        /// We use a arbitrary protectionValue, as Factor for our infection calculation
+        /// 
+        /// Values are on the basis of: (but not taken 1:1)
         /// 
         /// <see cref="https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7"/>
         /// </summary>
