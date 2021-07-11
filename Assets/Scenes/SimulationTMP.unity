@@ -9570,7 +9570,7 @@ MonoBehaviour:
   _startYScaleAtZero: 1
   _useFixedMaxYValue: 0
   _maxYValue: 100
-  _amountHorizontalLines: 11
+  _amountHorizontalLines: 2
   _typeOfGraph: 0
 --- !u!114 &798117541
 MonoBehaviour:
@@ -17747,7 +17747,7 @@ MonoBehaviour:
   _startYScaleAtZero: 1
   _useFixedMaxYValue: 0
   _maxYValue: 100
-  _amountHorizontalLines: 11
+  _amountHorizontalLines: 2
   _typeOfGraph: 0
 --- !u!114 &1574761059
 MonoBehaviour:
@@ -25903,7 +25903,7 @@ MonoBehaviour:
   _startYScaleAtZero: 1
   _useFixedMaxYValue: 0
   _maxYValue: 100
-  _amountHorizontalLines: 11
+  _amountHorizontalLines: 2
   _typeOfGraph: 1
 --- !u!114 &6710811103308160236
 MonoBehaviour:

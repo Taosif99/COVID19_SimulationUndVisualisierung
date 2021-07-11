@@ -24,14 +24,10 @@ namespace GraphChart
         //Barchart
         private List<GraphValue> _barchartValues;
         private Func<int, string> _xLabelBarChart;
-        //To use the more performant update value of a barchart
-        private bool _barChartCreated = false;
         private int _defaultAmountGraphHorizontalLines = 11;
-
 
         public static GlobalSimulationGraph Instance;
 
-        public bool BarChartCreated { get => _barChartCreated; set => _barChartCreated = value; }
         public GameObject MultiLineGraphGameObject { get => _multiLineGraphGameObject; set => _multiLineGraphGameObject = value; }
         public GameObject BarchartGameObject { get => _barchartGameObject; set => _barchartGameObject = value; }
 
@@ -289,8 +285,15 @@ namespace GraphChart
             if (amountPeople > _defaultAmountGraphHorizontalLines)
             {
                 _barchartGameObject.GetComponent<GraphChart>().AmountHorizontalLines = _defaultAmountGraphHorizontalLines;
-                _multiLineGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = _defaultAmountGraphHorizontalLines; 
+                _multiLineGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = _defaultAmountGraphHorizontalLines;
                 _fullScreenGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = _defaultAmountGraphHorizontalLines;
+            }
+            else
+            {
+                _barchartGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople;
+                _multiLineGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople;
+                _fullScreenGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople;
+
             }
         }
     }
