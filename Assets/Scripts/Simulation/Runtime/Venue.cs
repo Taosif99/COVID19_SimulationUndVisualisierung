@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Simulation.Edit;
 
 namespace Simulation.Runtime
 {
@@ -18,8 +19,10 @@ namespace Simulation.Runtime
 
         public float InfectionRiskFactor { get; }
         
-        public void SimulateEncounters(DateTime simulationDate)
+        public void SimulateEncounters(DateTime simulationDate, float maskFactor)
         {
+            Debug.Log("Used Mask Factor: " + maskFactor);
+
             foreach (Person p in _currentPeopleAtVenue)
             {
                 if (p.InfectionState.HasFlag(Person.InfectionStates.Infected))
@@ -43,14 +46,16 @@ namespace Simulation.Runtime
                      * 
                      * Here the infection logic can be improved/edited
                      */
-                    // TODO CONSIDER MASK FACTORS
+                   
                     float carefulnessInfectionRiskFactor = MathC.MapLinearToFactor(2f, (p.CarefulnessFactor + i.CarefulnessFactor) / 2);
                     float venueInfectionRiskFactor = MathC.MapLinearToFactor(2f, this.InfectionRiskFactor);
-                    
+                 
+
                     float infectionProbability = p.InfectionRisk *
                                                  venueInfectionRiskFactor *
                                                  carefulnessInfectionRiskFactor *
-                                                 GeneralInfectionProbabilityFactor;
+                                                 GeneralInfectionProbabilityFactor *
+                                                 maskFactor;
                     
                     //Debug.Log($"Potential infection at {this} with probability {infectionProbability}");
 

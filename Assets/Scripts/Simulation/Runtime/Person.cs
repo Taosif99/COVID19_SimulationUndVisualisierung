@@ -7,10 +7,10 @@ namespace Simulation.Runtime
     // TODO: Separate statistical fields
     public class Person
     {
+        
         //private int _encounters;
         //private int _amountOfPeopleInfected;
         //private bool _isVaccinated;
-        //private int _infectionStateDuration;
         private HealthState _healthState;
 
         private bool _isInQuarantine = false;

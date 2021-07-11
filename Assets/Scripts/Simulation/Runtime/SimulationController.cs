@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using Random = UnityEngine.Random;
 using DialogBoxSystem;
 using Debug = UnityEngine.Debug;
+using Simulation.Edit;
 
 namespace Simulation.Runtime
 {
@@ -168,7 +169,7 @@ namespace Simulation.Runtime
         /// <summary>
         /// Method in which our main simulation process logic is implemented.
         /// Here are methods called which deal with:
-        ///  - How and how often people encounter
+        ///  - How and how often people encounter / determining the used masktype
         ///  - Health/Hospital states of each member of a household
         ///  - What a person does if she/he is infectious
         ///  - Moving persons to diffent locations if they have a activity
@@ -180,7 +181,33 @@ namespace Simulation.Runtime
 
             foreach (Venue venue in _venues)
             {
-                venue.SimulateEncounters(SimulationDate);
+
+                //CONSIDER: If simulation settings cannot be modified during runtime, then this just has to be done once
+                Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation;
+                Edit.MaskType currentMaskType = simulation.SimulationOptions.Policies.RequiredMaskType;
+                float maskFactor;
+                switch (currentMaskType)
+                {
+                    case MaskType.FabricMask:
+                        maskFactor = DefaultInfectionParameters.MaskFactors.FaricMaskProtectionFactor;
+                        break;
+                    case MaskType.MedicalMask:
+                        maskFactor = DefaultInfectionParameters.MaskFactors.MedicalMaskProtectionFactor;
+                        break;
+                    case MaskType.FFP2:
+                        maskFactor = DefaultInfectionParameters.MaskFactors.FFP2MedicalProtectionFactor;
+                        break;
+                    default:
+                        maskFactor = 1f;
+                        break;
+                }
+
+                
+
+                if(venue is Household)
+                venue.SimulateEncounters(SimulationDate,1);
+                else
+                venue.SimulateEncounters(SimulationDate, maskFactor);
 
                 if (!(venue is Household household))
                 {

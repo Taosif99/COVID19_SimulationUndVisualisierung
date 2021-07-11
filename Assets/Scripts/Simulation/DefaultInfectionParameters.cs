@@ -179,6 +179,22 @@ namespace Simulation
             public const float InfectionRiskIfRecovered = 0.0002f;
         }
 
+
+        /// <summary>
+        /// 
+        /// We use 1-ProtectionValue, as Factor for our infection calculation
+        /// 
+        /// <see cref="https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7"/>
+        /// </summary>
+        public static class MaskFactors 
+        {
+            public const float FaricMaskProtectionFactor = 0.25f;
+            public const float MedicalMaskProtectionFactor = 0.1f;
+            public const float FFP2MedicalProtectionFactor = 0.06f;
+        }
+
+
+
         /// <summary>
         /// We use the same assumption, as the el pais article, that the 
         /// probability of infection at any time is 3.8%.
