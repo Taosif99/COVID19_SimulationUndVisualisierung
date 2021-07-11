@@ -21,7 +21,7 @@ namespace Simulation.Runtime
         
         public void SimulateEncounters(DateTime simulationDate, float maskFactor)
         {
-            Debug.Log("Used Mask Factor: " + maskFactor);
+            //Debug.Log("Used Mask Factor: " + maskFactor);
 
             foreach (Person p in _currentPeopleAtVenue)
             {
