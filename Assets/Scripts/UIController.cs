@@ -111,6 +111,7 @@ public class UIController : MonoBehaviour
     public TMP_InputField QuarantineDaysInputField;
     public TMP_InputField AdvancedQuarantineDaysInputField;
     public TMP_InputField InfectionRiskIfRecoveredInputField;
+    public TMP_InputField GeneralInfectionRiskInputField;
     public TMP_Dropdown MaskTypeDropdown;
 
     [Header("References to manager(s)")]

@@ -18,8 +18,10 @@ namespace Simulation.Runtime
 
         public Person(float carefulnessFactor, bool isWorker)
         {
+            Edit.AdjustableSimulationSettings settings = SimulationMaster.Instance.AdjustableSettings;
+
             CarefulnessFactor = carefulnessFactor;
-            InfectionRisk = DefaultInfectionParameters.ProbabilityOfInfection;
+            InfectionRisk = settings.InfectionRisk;
             IsWorker = isWorker;
             _healthState = new HealthState(this);
         }

@@ -34,6 +34,8 @@ namespace Simulation.Edit
         public int DaysFromSymptomsBeginToDeath { get; set; }
         public float InfectionRiskIfRecovered { get; set; }
 
+        public float InfectionRisk { get; set; }
+
         public int DeathDay { get { return IncubationTime + DaysFromSymptomsBeginToDeath - 1; } }
 
         //Hospital health parameters
@@ -101,6 +103,7 @@ namespace Simulation.Edit
             AdvancedQuarantineDays = DefaultInfectionParameters.QuarantineParameters.AdvancedQuarantineDays;
 
             InfectionRiskIfRecovered = DefaultInfectionParameters.HealthPhaseParameters.InfectionRiskIfRecovered;
+            InfectionRisk = DefaultInfectionParameters.ProbabilityOfInfection;
         }
 
         /// <summary>

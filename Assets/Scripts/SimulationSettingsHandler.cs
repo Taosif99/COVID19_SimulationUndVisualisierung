@@ -48,6 +48,7 @@ public class SimulationSettingsHandler : MonoBehaviour
         float recoveringInHospitalProbability = defaultSettings.RecoveringInHospitalProbability;
         float personSurvivesIntensiveCareProbability = defaultSettings.PersonSurvivesIntensiveCareProbability;
         float infectionRiskIfRecovered = defaultSettings.InfectionRiskIfRecovered;
+        float infectionRisk = defaultSettings.InfectionRisk;
         int daysFromSymptomsBeginToDeath = defaultSettings.DaysFromSymptomsBeginToDeath;
         int daysInHospital = defaultSettings.DaysInHospital;
         int durationOfSymptomsbeginToHospitalization = defaultSettings.DurationOfSymtombeginToHospitalization;
@@ -57,12 +58,13 @@ public class SimulationSettingsHandler : MonoBehaviour
         int advancedQuarantineDays = defaultSettings.AdvancedQuarantineDays;
         
 
+
         bool infectionPhaseParametersAreValid = InputValidator.ValidateSimulationParameters(ref latencyTime, ref amountDaysInfectious, ref incubationTime, ref amountDaysSymptoms);
         bool healthPhaseParametersAreValid = InputValidator.ValidateHealthPhaseParameters(ref recoveringProbability, ref recoveringInHospitalProbability, ref personSurvivesIntensiveCareProbability, ref daysFromSymptomsBeginToDeath, ref infectionRiskIfRecovered);
         bool hospitalParametersAreValid = InputValidator.ValidateHospitalParameters(ref daysInHospital, ref durationOfSymptomsbeginToHospitalization, ref daysInIntensiveCare, ref durationOfHospitalizationToIntensiveCare);
         bool validQuarantineParameters = InputValidator.ValidateQuarantineParameters(ref amountDaysQuarantine, ref advancedQuarantineDays);
-
-        if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid && hospitalParametersAreValid && validQuarantineParameters)
+        bool generalInfectionRiskIsValid = InputValidator.TryParseFloatPercentageInputField(UIController.Instance.GeneralInfectionRiskInputField, ref infectionRisk);
+        if (infectionPhaseParametersAreValid && healthPhaseParametersAreValid && hospitalParametersAreValid && validQuarantineParameters && generalInfectionRiskIsValid)
         {
             settingsToSet.LatencyTime = latencyTime;
             settingsToSet.AmountDaysInfectious = amountDaysInfectious;
@@ -81,7 +83,7 @@ public class SimulationSettingsHandler : MonoBehaviour
 
             settingsToSet.AmountDaysQuarantine = amountDaysQuarantine;
             settingsToSet.AdvancedQuarantineDays = advancedQuarantineDays;
-
+            settingsToSet.InfectionRisk = infectionRisk;
             if (settingsToSet.RangesAreValid())
             {
                 simulation.SimulationOptions.AdjustableSimulationPrameters = settingsToSet;
@@ -134,5 +136,6 @@ public class SimulationSettingsHandler : MonoBehaviour
         UIController.Instance.QuarantineDaysInputField.text = internalParameters.AmountDaysQuarantine.ToString();
         UIController.Instance.AdvancedQuarantineDaysInputField.text = internalParameters.AdvancedQuarantineDays.ToString();
         UIController.Instance.InfectionRiskIfRecoveredInputField.text = internalParameters.InfectionRiskIfRecovered.ToString();
+        UIController.Instance.GeneralInfectionRiskInputField.text = internalParameters.InfectionRisk.ToString();
     }
 }
