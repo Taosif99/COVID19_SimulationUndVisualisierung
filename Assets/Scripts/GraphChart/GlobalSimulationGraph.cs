@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Collections;
 using UnityEngine.UI;
 
 namespace GraphChart
@@ -27,7 +26,7 @@ namespace GraphChart
         private Func<int, string> _xLabelBarChart;
         //To use the more performant update value of a barchart
         private bool _barChartCreated = false;
-        private int _defaultAmountGraphHorizontalLines;
+        private int _defaultAmountGraphHorizontalLines = 11;
 
 
         public static GlobalSimulationGraph Instance;
@@ -59,7 +58,6 @@ namespace GraphChart
             InitColorList();
             InitMultiLineGraph();
             InitBarChart();
-            _defaultAmountGraphHorizontalLines = _barchartGameObject.GetComponent<GraphChart>().AmountHorizontalLines;
          
         }
 
@@ -283,16 +281,16 @@ namespace GraphChart
         }
 
         /// <summary>
-        /// Method which sets the amount of horizontal lines depending on the population size.
+        /// Method which sets the default amount of horizontal lines depending on the population size.
         /// </summary>
         public void AmountHorizontalLineUpdater()
         {
             int amountPeople = SimulationMaster.Instance.GetAmountAllPeople();
-            if (amountPeople < _defaultAmountGraphHorizontalLines)
+            if (amountPeople > _defaultAmountGraphHorizontalLines)
             {
-                _barchartGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople;
-                _multiLineGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople; 
-                _fullScreenGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = amountPeople;
+                _barchartGameObject.GetComponent<GraphChart>().AmountHorizontalLines = _defaultAmountGraphHorizontalLines;
+                _multiLineGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = _defaultAmountGraphHorizontalLines; 
+                _fullScreenGraphGameObject.GetComponent<GraphChart>().AmountHorizontalLines = _defaultAmountGraphHorizontalLines;
             }
         }
     }
