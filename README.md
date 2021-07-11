@@ -24,7 +24,7 @@ Schaue im persistantDataPath der [UnityAPI](https://docs.unity3d.com/ScriptRefer
 * ...\Assets\Scripts\Simulation\Runtime\HealthState.cs
 * ...\Assets\Scripts\Simulation\Runtime\SimulationController.cs
 * ...\Assets\Scripts\Simulation\Runtime\DefaultInfectionParameters.cs
-* ...\Assets\Scripts\EpidemiologicalCalculation/EpidemiologicalCalculator.cs
+* ...\Assets\Scripts\EpidemiologicalCalculation\EpidemiologicalCalculator.cs
 
 # EN
 ## Run Program
@@ -49,7 +49,7 @@ Look in the persistantDataPath of the [UnityAPI](https://docs.unity3d.com/Script
 * ...\Assets\Scripts\Simulation\Runtime\HealthState.cs
 * ...\Assets\Scripts\Simulation\Runtime\SimulationController.cs
 * ...\Assets\Scripts\Simulation\Runtime\DefaultInfectionParameters.cs
-* ...\Assets\Scripts\EpidemiologicalCalculation/EpidemiologicalCalculator.cs
+* ...\Assets\Scripts\EpidemiologicalCalculation\EpidemiologicalCalculator.cs
 
 
 
