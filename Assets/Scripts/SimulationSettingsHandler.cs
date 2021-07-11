@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 using InputValidation;
 using Simulation.Edit;
 using DialogBoxSystem;
+using Event = Simulation.Edit.Event;
 
 /// <summary>
 /// Class which implemenets the functionality to adjust simulation settings
@@ -19,14 +21,10 @@ public class SimulationSettingsHandler : MonoBehaviour
         AdjustableSimulationSettings settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
 
         //Case to fix old broken saves, TODO REMOVE IN NEWER VERSIONS
-        if (settings == null)
-        {
-            simulation.SimulationOptions.AdjustableSimulationPrameters = new AdjustableSimulationSettings();
-            settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
-            Debug.Log("Repair old save");
-        }
+        simulation.SimulationOptions.AdjustableSimulationPrameters ??= new AdjustableSimulationSettings();
+        simulation.SimulationOptions.Policies ??= new Policies(MaskType.None);
 
-        DisplaySettings(settings);
+        DisplaySettings(simulation.SimulationOptions);
     }
 
     public void CloseSettings()
@@ -37,7 +35,7 @@ public class SimulationSettingsHandler : MonoBehaviour
     public void SaveSettingsToSimulation()
     {
         Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation;
-        AdjustableSimulationSettings currentSettings = simulation.SimulationOptions.AdjustableSimulationPrameters;
+        SimulationOptions currentOptions = simulation.SimulationOptions;
 
         AdjustableSimulationSettings defaultSettings = new AdjustableSimulationSettings();
         AdjustableSimulationSettings settingsToSet = new AdjustableSimulationSettings();
@@ -87,7 +85,7 @@ public class SimulationSettingsHandler : MonoBehaviour
             if (settingsToSet.RangesAreValid())
             {
                 simulation.SimulationOptions.AdjustableSimulationPrameters = settingsToSet;
-
+                simulation.SimulationOptions.Policies.RequiredMaskType = (MaskType) UIController.Instance.MaskTypeDropdown.value;
             }
 
             else if (!_saveLock)
@@ -98,7 +96,7 @@ public class SimulationSettingsHandler : MonoBehaviour
                 DialogBox dialogBox = new DialogBox(name, msg);
                 dialogBox.OnConfirmationPressed += () =>
                 {
-                    DisplaySettings(currentSettings);
+                    DisplaySettings(currentOptions);
                 };
                 dialogBox.HasCancelButton = false;
                 DialogBoxManager.Instance.HandleDialogBox(dialogBox);
@@ -109,29 +107,32 @@ public class SimulationSettingsHandler : MonoBehaviour
     public void ResetDefaultSettings()
     {
         _saveLock = true;
-        Simulation.Edit.Simulation simulation = SimulationMaster.Instance.CurrentSimulation;
-        AdjustableSimulationSettings settings = simulation.SimulationOptions.AdjustableSimulationPrameters;
-        settings = new AdjustableSimulationSettings();
-        DisplaySettings(settings);
+        SimulationOptions defaultOptions = new SimulationOptions(new Policies(MaskType.None), Array.Empty<Event>(), new AdjustableSimulationSettings());
+        DisplaySettings(defaultOptions);
         _saveLock = false;
     }
 
-    private void DisplaySettings(AdjustableSimulationSettings settings)
+    private void DisplaySettings(SimulationOptions options)
     {
-        UIController.Instance.LatencyInputField.text = settings.LatencyTime.ToString();
-        UIController.Instance.AmountDaysInfectiousInputField.text = settings.AmountDaysInfectious.ToString();
-        UIController.Instance.IncubationTimeInputField.text = settings.IncubationTime.ToString();
-        UIController.Instance.AmountDaysSymptomsInputField.text = settings.AmountDaysSymptoms.ToString();
-        UIController.Instance.RecoverInputField.text = settings.RecoveringProbability.ToString();
-        UIController.Instance.RecoverInHospitalInputField.text = settings.RecoveringInHospitalProbability.ToString();
-        UIController.Instance.SurviveIntensiveCareInputField.text = settings.PersonSurvivesIntensiveCareProbability.ToString();
-        UIController.Instance.AmountDaysToDeathInputField.text = settings.DaysFromSymptomsBeginToDeath.ToString();
-        UIController.Instance.DaysInHosputalInputField.text = settings.DaysInHospital.ToString();
-        UIController.Instance.DaysSymptomsBeginToHospitalizationInputField.text = settings.DurationOfSymtombeginToHospitalization.ToString();
-        UIController.Instance.DaysIntensiveCareInputField.text = settings.DaysInIntensiveCare.ToString();
-        UIController.Instance.DaysRegularToIntensiveInputField.text = settings.DurationOfHospitalizationToIntensiveCare.ToString();
-        UIController.Instance.QuarantineDaysInputField.text = settings.AmountDaysQuarantine.ToString();
-        UIController.Instance.AdvancedQuarantineDaysInputField.text = settings.AdvancedQuarantineDays.ToString();
-        UIController.Instance.InfectionRiskIfRecoveredInputField.text = settings.InfectionRiskIfRecovered.ToString();
+        UIController.Instance.MaskTypeDropdown.value = (int) options.Policies.RequiredMaskType;
+        UIController.Instance.MaskTypeDropdown.RefreshShownValue();
+        
+        AdjustableSimulationSettings internalParameters = options.AdjustableSimulationPrameters;
+        
+        UIController.Instance.LatencyInputField.text = internalParameters.LatencyTime.ToString();
+        UIController.Instance.AmountDaysInfectiousInputField.text = internalParameters.AmountDaysInfectious.ToString();
+        UIController.Instance.IncubationTimeInputField.text = internalParameters.IncubationTime.ToString();
+        UIController.Instance.AmountDaysSymptomsInputField.text = internalParameters.AmountDaysSymptoms.ToString();
+        UIController.Instance.RecoverInputField.text = internalParameters.RecoveringProbability.ToString();
+        UIController.Instance.RecoverInHospitalInputField.text = internalParameters.RecoveringInHospitalProbability.ToString();
+        UIController.Instance.SurviveIntensiveCareInputField.text = internalParameters.PersonSurvivesIntensiveCareProbability.ToString();
+        UIController.Instance.AmountDaysToDeathInputField.text = internalParameters.DaysFromSymptomsBeginToDeath.ToString();
+        UIController.Instance.DaysInHosputalInputField.text = internalParameters.DaysInHospital.ToString();
+        UIController.Instance.DaysSymptomsBeginToHospitalizationInputField.text = internalParameters.DurationOfSymtombeginToHospitalization.ToString();
+        UIController.Instance.DaysIntensiveCareInputField.text = internalParameters.DaysInIntensiveCare.ToString();
+        UIController.Instance.DaysRegularToIntensiveInputField.text = internalParameters.DurationOfHospitalizationToIntensiveCare.ToString();
+        UIController.Instance.QuarantineDaysInputField.text = internalParameters.AmountDaysQuarantine.ToString();
+        UIController.Instance.AdvancedQuarantineDaysInputField.text = internalParameters.AdvancedQuarantineDays.ToString();
+        UIController.Instance.InfectionRiskIfRecoveredInputField.text = internalParameters.InfectionRiskIfRecovered.ToString();
     }
 }

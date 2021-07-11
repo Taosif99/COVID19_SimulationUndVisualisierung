@@ -5,10 +5,11 @@ namespace Simulation.Edit
     [Serializable]
     public class Policies
     {
-        private MaskType _requiredMaskType;
+        public MaskType RequiredMaskType { get; set; }
+
         public Policies(MaskType requiredMaskType)
         {
-            _requiredMaskType = requiredMaskType;
+            RequiredMaskType = requiredMaskType;
         }
     }
 }
