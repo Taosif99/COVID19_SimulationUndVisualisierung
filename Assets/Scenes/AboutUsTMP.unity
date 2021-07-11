@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -340,7 +340,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 778560447}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.3264278
+  m_Size: 0.16401102
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1428,41 +1428,66 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "We are a group of students from Frankfurt University of Applied Sciences
-    who designed a simple CoViD19 simulation as part of a university project. Our
-    goal is to offer users a way to start a CoViD19 simulation without having a lot
-    of specialist knowledge.\r\n\r\nIn the simulation it is possible to place and
-    remove hospitals, workplaces, and households. Each type of venue has its own
-    attributes which you can define yourself. You can also save the simulation so
-    that you have not to set everything again when you restart the program.\r\nAbove
-    each venue there is an indication of how many are healthy (<color=green>green</color>),
-    infected (<color=orange>orange</color>) and infectious (<color=red>red</color>).\r\nFor
-    the hospitals, the number of normal beds (<color=#6495ED>blue</color>) and intensive
-    care beds (<color=#9FE2BF>mint green</color>) and how many of them are occupied
-    are also displayed.\r\nIn our simulation we try to ensure that a normal patient
-    gets a normal bed and an intensive care patient gets an intensive care bed. If
-    there are no more free beds in one hospital, we try to find free beds in other
-    hospitals. For the patients who need an intensive care bed and there are no free
-    intensive care beds, the person gets a normal bed.\r\n\r\nThere are two types
-    of workplaces: store and other. \r\n\r\nA store has four work shifts:\r\n1.\tWork
-    shift: Monday-Saturday from 8 a.m. to 4 p.m.\r\n2.\tWork shift: Monday-Friday
-    from 8 a.m. to 4 p.m. \r\n3.\tWork shift: Monday-Saturday from 12 p.m. to 8 p.m.\r\n4.\tWork
-    shift: Monday-Friday from 12 p.m. to 8 p.m.\r\n\r\nOther workplaces have one
-    work shift:\r\n1.\tWork shift: Monday-Friday from 8 a.m. to 4 p.m.\r\n\r\nA hospital
-    does not belong to the category workplaces, but trivially it still has work shifts:\r\n1.\tWork
-    shift: Monday-Sunday 12 a.m. to 8 a.m.\r\n2.\tWork shift: Monday-Sunday 8 a.m.
-    to 4 p.m.\r\n3.\tWork shift: Monday-Sunday 4 p.m. to 12 a.m. \r\n\r\nWhen a person
-    becomes infected with CoViD19, the person goes through the following stages if
-    the person does not die.\r\n\r\nPhase 1: The person is infected.\r\nPhase 2:
-    The person is infected and infectious. This phase begins three days after the
-    infection.\r\nPhase 3: The person is infected, infectious and has symptoms. This
-    phase begins five days after infection and the Phase 2 ends.\r\nPhase 4: The
-    person is infected, has symptoms and is starting with recovery. This phase begins
-    13 days after infection and the Phase 3 ends.\r\nPhase 5: The person is considered
-    recovered 16 days after infection.\r\n\r\nWe used the following sources for our
-    research:\r\nhttps://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html;jsessionid=CE16F99FB237ECBAC11C55AB8020F12F.internet111?nn=13490888#a325
-    \r\n\r\nhttps://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf;jsessionid=6BEA5234400C372CBCA61A2F969FA97D.internet062?__blob=publicationFile
-    \r\n\r\nhttps://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/\r\n\nhttps://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html"
+  m_text: "<style=\"InfoH\">About Us</style>\r\n\r\nWe are a group of students from
+    the Frankfurt University of Applied Sciences who implemented a simple COVID-19
+    simulation as a part of a university project. Our goal is to offer an intuitive
+    COVID-19 simulation which does not require deep scientific knowledge to use and
+    to understand.\r\n\r\n\r\n<style=\"InfoH\">Objects & Counters</style>\r\n\r\nIn
+    the simulation it is possible to place and remove households, workplaces and
+    hospitals. Each type of venue has attributes which can be defined. It is possible
+    to save the simulation configuration, which includes the attributes of the venues
+    and epidemiological parameters.\r\nAbove each venue there is a counter, which
+    indicates the amount of uninfected people (<color=green>green</color>), infected
+    people(<color=orange>orange</color>) and infectious people(<color=red>red</color>).\r\nThe
+    hospital counter also shows how many normal beds are occupied (<color=#6495ED>blue</color>)
+    and how many intensive beds are occupied (<color=#b900b9>Magenta</color>).\r\n\r\n\r\n<style=\"InfoH\">Phases
+    of Infection</style>\r\n\r\nWhen a person becomes infected with COVID-19, the
+    person goes through the following phases of infection [1][2][3].\r\n\r\nPhase
+    1: The person is infected\r\nPhase 2: The person is infected and infectious\r\nPhase
+    3: The person is infected, infectious and has symptoms\r\nPhase 4: The person
+    is infected, has symptoms and is starting with the recovery process\r\nPhase
+    5: The person recovered\r\n\r\n\r\n<style=\"InfoH\">Masks</style>\r\n\r\nThere
+    are 3 types of masks in our simulation. Fabric masks with 75% protection against
+    infections, medical masks with 90% protection and the FFP2 masks with 94% [7].\r\nThe
+    masks are worn everywhere except in the household.\r\n\r\n\r\n<style=\"InfoH\">Hospitalization</style>\r\n\r\nIf
+    there are enough regular and intensive beds in the simulation, then the following
+    is ensured:\r\n* Each person who needs a regular bed gets one\r\n* Each person
+    who needs an intensive care bed gets one\r\n* If a person must be transferred
+    from a regular bed to an intensive bed (or vice versa) the hospital of the person
+    may change\r\n\r\nIf the number of beds is not enough, the following is ensured:\r\n*
+    Persons who must be in intensive care get/stay at least in a regular bed\r\n*
+    If a person does not get a bed at all, then it stays in phase 3 at home until
+    the person dies or recovers\r\n\r\nAs default parameters average values from
+    the <i>Robert Koch-Institut</i> in order to determine the time periods of the
+    phases of infection [3].\r\nThe probability of the infection factor is 3.8% and
+    the probability of reinfection factor is 0.02% [4][5].\r\n\r\n\r\n<style=\"InfoH\">Tests
+    at Workplaces</style>\r\n\r\nIn the simulation there is a possibility to carry
+    out corona tests for employees at the beginning of the shift. \r\nThe frequency
+    of the test depends on the workplace. In hospitals, every Thursday is tested
+    and in other workplaces every Monday and Wednesday.\r\nStatistics from the Paul-Ehrlich-Institut
+    were used for the test probabilities [6].\r\n\r\n\r\n<style=\"InfoH\">Workplaces
+    & Work shifts</style>\r\n\r\nThere are two types of configurable workplaces:
+    store and other. \r\n\r\nWorkers in a store work in the following shifts:\r\n1.\tWork
+    shift: Monday-Saturday from 8 a.m. to 4 p.m.\r\n2.\tWork shift: Monday-Saturday
+    from 12 p.m. to 8 p.m.\r\n\r\nWorkers in other workplaces work in the following
+    shifts:\r\n1.\tWork shift: Monday-Friday from 8 a.m. to 4 p.m. \r\n\r\nSince
+    a hospital is also a workplace, workers have in this case the following shifts:\r\n1.\tWork
+    shift: Monday-Sunday 0 a.m. to 8 a.m.\r\n2.\tWork shift: Monday-Sunday 8 a.m.
+    to 4 p.m.\r\n3.\tWork shift: Monday-Sunday 4 p.m. to 0 a.m. \r\n\r\n\r\n<style=\"InfoH\">Shopping</style>\r\n\r\nThe
+    other type of activity the people in the simulation have is grocery shopping
+    / shopping runs.\r\nThe number of times people go out to shop each week can be
+    configured per household.\r\nThese shopping runs always last 1 hour and are scheduled
+    automatically when the simulation begins, choosing a random person, a random
+    day, and a random available time slot in their day. \r\nSelecting the store the
+    person goes to is also done at random when the simulation begins. \r\n\r\n\r\n<style=\"InfoH\">Primary
+    References</style>\r\n\r\nAll references were last viewed on the 10. July 2021.\r\n\r\n-
+    [1] https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html\r\n-
+    [2] https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/\r\n-
+    [3] https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf\r\n-
+    [4] https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html\r\n-
+    [5] https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html\r\n-
+    [6] https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf\r\n-
+    [7] https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7\r\n\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
