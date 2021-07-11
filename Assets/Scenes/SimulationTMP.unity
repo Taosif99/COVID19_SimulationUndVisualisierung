@@ -1795,8 +1795,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
-  _text: Enter a number between 0 and 1 with "," as a decimal separator. For example
-    0,2
+  _text: Enter a number between 0 and 1. Use the decimal seperator of your system
+    region.
 --- !u!1 &185445863
 GameObject:
   m_ObjectHideFlags: 0
@@ -2896,8 +2896,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
-  _text: 'The percantage of people who can be assigned to a workplace. For example
-    0,2 '
+  _text: The percantage of people who can be assigned to a workplace. Use the decimal
+    seperator of your system region.
 --- !u!1 &270469932
 GameObject:
   m_ObjectHideFlags: 0
@@ -8088,8 +8088,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
-  _text: Enter a number between 0 and 1 with "," as a decimal separator. For example
-    0,2
+  _text: Enter a number between 0 and 1. Use the decimal seperator of your system
+    region.
 --- !u!1 &703249835
 GameObject:
   m_ObjectHideFlags: 0
