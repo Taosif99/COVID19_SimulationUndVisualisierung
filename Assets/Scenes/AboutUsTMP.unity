@@ -340,7 +340,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 778560447}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.164011
+  m_Size: 0.16881451
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1443,13 +1443,13 @@ MonoBehaviour:
     hospital counter also shows how many normal beds are occupied (<color=#6495ED>blue</color>)
     and how many intensive beds are occupied (<color=#b900b9>Magenta</color>).\r\n\r\n\r\n<style=\"InfoH\">Phases
     of Infection</style>\r\n\r\nWhen a person becomes infected with COVID-19, the
-    person goes through the following phases of infection [1][2][3].\r\n\r\nPhase
-    1: The person is infected\r\nPhase 2: The person is infected and infectious\r\nPhase
+    person goes through the following phases of infection [1][2].\r\n\r\nPhase 1:
+    The person is infected\r\nPhase 2: The person is infected and infectious\r\nPhase
     3: The person is infected, infectious and has symptoms\r\nPhase 4: The person
     is infected, has symptoms and is starting with the recovery process\r\nPhase
     5: The person recovered\r\n\r\n\r\n<style=\"InfoH\">Masks</style>\r\n\r\nThere
     are 3 types of masks in our simulation. Fabric masks with 75% protection against
-    infections, medical masks with 90% protection and the FFP2 masks with 94% [7].\r\nThe
+    infections, medical masks with 90% protection and the FFP2 masks with 94% [6].\r\nThe
     masks are worn everywhere except in the household.\r\n\r\n\r\n<style=\"InfoH\">Hospitalization</style>\r\n\r\nIf
     there are enough regular and intensive beds in the simulation, then the following
     is ensured:\r\n* Each person who needs a regular bed gets one\r\n* Each person
@@ -1460,13 +1460,13 @@ MonoBehaviour:
     If a person does not get a bed at all, then it stays in phase 3 at home until
     the person dies or recovers\r\n\r\nAs default parameters average values from
     the <i>Robert Koch-Institut</i> in order to determine the time periods of the
-    phases of infection [3].\r\nThe probability of the infection factor is 3.8% and
-    the probability of reinfection factor is 0.02% [4][5].\r\n\r\n\r\n<style=\"InfoH\">Tests
+    phases of infection [2].\r\nThe probability of the infection factor is 3.8% and
+    the probability of reinfection factor is 0.02% [3][4].\r\n\r\n\r\n<style=\"InfoH\">Tests
     at Workplaces</style>\r\n\r\nIn the simulation there is a possibility to carry
     out corona tests for employees at the beginning of the shift. \r\nThe frequency
     of the test depends on the workplace. In hospitals, every Thursday is tested
     and in other workplaces every Monday and Wednesday.\r\nStatistics from the Paul-Ehrlich-Institut
-    were used for the test probabilities [6].\r\n\r\n\r\n<style=\"InfoH\">Workplaces
+    were used for the test probabilities [5].\r\n\r\n\r\n<style=\"InfoH\">Workplaces
     & Work shifts</style>\r\n\r\nThere are two types of configurable workplaces:
     store and other. \r\n\r\nWorkers in a store work in the following shifts:\r\n1.\tWork
     shift: Monday-Saturday from 8 a.m. to 4 p.m.\r\n2.\tWork shift: Monday-Saturday
@@ -1483,12 +1483,11 @@ MonoBehaviour:
     person goes to is also done at random when the simulation begins. \r\n\r\n\r\n<style=\"InfoH\">Primary
     References</style>\r\n\r\nAll references were last viewed on the 10. July 2021.\r\n\r\n-
     [1] <link=\"https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html\">https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html</link>\r\n-
-    [2] <link=\"https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/\">https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/</link>\r\n-
-    [3] <link=\"https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf\">https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf</link>\r\n-
-    [4] <link=\"https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html\">https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html</link>\r\n-
-    [5] <link=\"https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html\">https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html</link>\r\n-
-    [6] <link=\"https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf\">https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf</link>\r\n-
-    [7] <link=\"https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7\">https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7</link>\r\n"
+    [2] <link=\"https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf\">https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf</link>\r\n-
+    [3] <link=\"https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html\">https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html</link>\r\n-
+    [4] <link=\"https://academic.oup.com/cid/advance-article/doi/10.1093/cid/ciaa1846/6033728\">https://academic.oup.com/cid/advance-article/doi/10.1093/cid/ciaa1846/6033728</link>\r\n-
+    [5] <link=\"https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf\">https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf</link>\r\n-
+    [6] <link=\"https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7\">https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7</link>\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

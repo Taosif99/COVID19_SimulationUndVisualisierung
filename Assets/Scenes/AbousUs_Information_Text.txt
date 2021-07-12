@@ -12,7 +12,7 @@ The hospital counter also shows how many normal beds are occupied (<color=#6495E
 
 <style="InfoH">Phases of Infection</style>
 
-When a person becomes infected with COVID-19, the person goes through the following phases of infection [1][2][3].
+When a person becomes infected with COVID-19, the person goes through the following phases of infection [1][2].
 
 Phase 1: The person is infected
 Phase 2: The person is infected and infectious
@@ -23,7 +23,7 @@ Phase 5: The person recovered
 
 <style="InfoH">Masks</style>
 
-There are 3 types of masks in our simulation. Fabric masks with 75% protection against infections, medical masks with 90% protection and the FFP2 masks with 94% [7].
+There are 3 types of masks in our simulation. Fabric masks with 75% protection against infections, medical masks with 90% protection and the FFP2 masks with 94% [6].
 The masks are worn everywhere except in the household.
 
 
@@ -38,15 +38,15 @@ If the number of beds is not enough, the following is ensured:
 * Persons who must be in intensive care get/stay at least in a regular bed
 * If a person does not get a bed at all, then it stays in phase 3 at home until the person dies or recovers
 
-As default parameters average values from the <i>Robert Koch-Institut</i> in order to determine the time periods of the phases of infection [3].
-The probability of the infection factor is 3.8% and the probability of reinfection factor is 0.02% [4][5].
+As default parameters average values from the <i>Robert Koch-Institut</i> in order to determine the time periods of the phases of infection [2].
+The probability of the infection factor is 3.8% and the probability of reinfection factor is 0.02% [3][4].
 
 
 <style="InfoH">Tests at Workplaces</style>
 
 In the simulation there is a possibility to carry out corona tests for employees at the beginning of the shift. 
 The frequency of the test depends on the workplace. In hospitals, every Thursday is tested and in other workplaces every Monday and Wednesday.
-Statistics from the Paul-Ehrlich-Institut were used for the test probabilities [6].
+Statistics from the Paul-Ehrlich-Institut were used for the test probabilities [5].
 
 
 <style="InfoH">Workplaces & Work shifts</style>
@@ -79,10 +79,8 @@ Selecting the store the person goes to is also done at random when the simulatio
 All references were last viewed on the 10. July 2021.
 
 - [1] <link="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html">https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html</link>
-- [2] <link="https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/">https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/</link>
-- [3] <link="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf">https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf</link>
-- [4] <link="https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html">https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html</link>
-- [5] <link="https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html">https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html</link>
-- [6] <link="https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf">https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf</link>
-- [7] <link="https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7">https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7</link>
-
+- [2] <link="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf">https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf</link>
+- [3] <link="https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html">https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html</link>
+- [4] <link="https://academic.oup.com/cid/advance-article/doi/10.1093/cid/ciaa1846/6033728">https://academic.oup.com/cid/advance-article/doi/10.1093/cid/ciaa1846/6033728</link>
+- [5] <link="https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf">https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf</link>
+- [6] <link="https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7">https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7</link>
