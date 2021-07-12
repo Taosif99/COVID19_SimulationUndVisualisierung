@@ -78,11 +78,11 @@ Selecting the store the person goes to is also done at random when the simulatio
 
 All references were last viewed on the 10. July 2021.
 
-- [1] https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html
-- [2] https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/
-- [3] https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf
-- [4] https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html
-- [5] https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html
-- [6] https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf
-- [7] https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7
+- [1] <link="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html">https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Kontaktperson/Management.html</link>
+- [2] <link="https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/">https://www.sciencemediacenter.de/alle-angebote/fact-sheet/details/news/verlauf-von-covid-19-und-kritische-abschnitte-der-infektion/</link>
+- [3] <link="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf">https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Modellierung_Deutschland.pdf</link>
+- [4] <link="https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html">https://english.elpais.com/usa/2021-04-21/covid-19-vaccines-what-are-the-risks-and-benefits-for-each-age-group.html</link>
+- [5] <link="https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html">https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html</link>
+- [6] <link="https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf">https://www.pei.de/SharedDocs/Downloads/DE/newsroom/dossiers/mindestkriterien-sars-cov-2-antigentests-01-12-2020.pdf</link>
+- [7] <link="https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7">https://www.br.de/nachrichten/wissen/masken-gegen-corona-welche-am-besten-schuetzen-kunststoff-stoff,S7XsGu7</link>
 
