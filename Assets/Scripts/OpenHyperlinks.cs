@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-
+/// <summary>
+/// Script to realize the opnening of pages enclosed in "<link> </link>" -Tags.
+/// </summary>
 public class OpenHyperlinks : MonoBehaviour, IPointerClickHandler
 {
     
