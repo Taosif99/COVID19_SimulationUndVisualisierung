@@ -2,7 +2,6 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using System.Linq;
-using Simulation.Edit;
 using System.Collections.Generic;
 using System;
 
@@ -27,7 +26,7 @@ namespace FileHandling
         private const string ScreenshotFolderName = "Screenshots";
         private const string DayLogFolderName = "SimulationLogs";
         
-        //TODO CATCH  UnauthorizedAccessException
+        //CONSIDER:  UnauthorizedAccessException can be thrown e.g. when a file is only readable
 
         #region serialization
         /// <summary>
