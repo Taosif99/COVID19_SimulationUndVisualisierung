@@ -4,7 +4,7 @@
 ## Installation & Start
 
 **Windows:**
-- Die Anwendung als .zip von [hier](TODO) herunterladen
+- Die Anwendung als .zip von [hier](https://github.com/TheBlur98/SimulationUndVisualisierung/releases/latest/download/COVID-19.Sim.zip) herunterladen
 - Die .zip Datei entpacken
 - SimulationUndVisualisierung.exe ausführen
 
@@ -47,7 +47,7 @@ COVID-19 Simulation Project
 ## Installation & Start
 
 **Windows:**
-- Download the application .zip file from [here](TODO)
+- Download the application .zip file from [here](https://github.com/TheBlur98/SimulationUndVisualisierung/releases/latest/download/COVID-19.Sim.zip)
 - Unpack the .zip file
 - Run SimulationUndVisualisierung.exe
 
