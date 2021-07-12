@@ -173,7 +173,7 @@ namespace Simulation
             /// 
             /// "Basierend auf ihren Daten schaetzten die Autorinnen und Autoren das Risiko, 
             /// sich nach einer ersten Infektion erneut anzustecken, auf 0,02 Prozent." (Study which has been made in Qatar)
-            /// <see cref="https://www.mdr.de/wissen/mensch-alltag/corona-zweite-infektion-risiko100.html"/>
+            /// <see cref="https://academic.oup.com/cid/advance-article/doi/10.1093/cid/ciaa1846/6033728"/>
             /// 
             /// </summary>
             public const float InfectionRiskIfRecovered = 0.0002f;
