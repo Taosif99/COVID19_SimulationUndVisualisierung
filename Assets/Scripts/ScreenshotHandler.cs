@@ -17,7 +17,6 @@ public class ScreenshotHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) 
         {
-            //TODO INFO DIALOGBOX ?
             string pathToFolder = FileHandler.GetScreenshotFilePath();     
             DateTime date = DateTime.Now;
             //appending date in seconds in ISO 8601 format 
