@@ -21,7 +21,7 @@ allerdings kann der Source Code mit Unity geöffnet werden um diese gegebenenfal
 ## Wichtige Verzeichnisse
 Alle Daten der Anwendung sind unter folgendem Dateipfad zu finden:
 
-- Windows: `%USERPROFILE%/AppData/LocalLow/DefaultCompany/SimulationUndVisualisierung` (Im Explorer oder über `Windows-Taste + R` eingeben)
+- Windows: `%USERPROFILE%/AppData/LocalLow/FraUAS InfProj Gruppe A/COVID-19 Simulation & Visualization` (Im Explorer oder über `Windows-Taste + R` eingeben)
 - Für andere Betriebsysteme, siehe [persistantDataPath der UnityAPI](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html)
 
 In diesem Verzeichnis befinden sich folgende Unterverzeichnisse:
@@ -62,8 +62,7 @@ Unfortunately we do not offer versions for other operating systems at the moment
 
 ## Important directories
 All application data can be found under the following file path:
-
-- Windows: `%USERPROFILE%/AppData/LocalLow/DefaultCompany/SimulationUndVisualisierung` (Enter in Explorer or via `Windows-Key + R`)
+- Windows: `%USERPROFILE%/AppData/LocalLow/FraUAS InfProj Gruppe A/COVID-19 Simulation & Visualization` (Enter in Explorer or via `Windows-Key + R`)
 - For other operating systems, see [persistantDataPath der UnityAPI](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html)
 
 In this directory you can find the following subdirectories:
