@@ -2003,7 +2003,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
-  _text: The  probability that a arbitrary uninfected person will be infected.
+  _text: The  probability that a arbitrary uninfected person will be infected. Use
+    the decimal seperator of your system region.
 --- !u!114 &200489806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27316,7 +27317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
   _text: Person dies, if he/she does not survive in the intensive care. Enter a number
-    between 0 and 1 with "," as a decimal separator. For example 0,2
+    between 0 and 1. Use the decimal seperator of your system region.
 --- !u!222 &7595096615246111582
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -30238,8 +30239,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
   _text: Probability that a person does recover in hospital. (Person goes to intensive
-    care if not recovered) Enter a number between 0 and 1 with "," as a decimal separator.
-    For example 0,2
+    care if not recovered) Enter a number between 0 and 1. Use the decimal seperator
+    of your system region.
 --- !u!114 &7595096615893593364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32799,7 +32800,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
-  _text: The probability that a recovered person will be infected again.
+  _text: The probability that a recovered person will be infected again. Use the
+    decimal seperator of your system region.
 --- !u!114 &7595096616859144169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37597,8 +37599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tooltipPrefab: {fileID: 1768705283695076344, guid: a9e6086e4fd66544b88edfe8c255bb88, type: 3}
   _text: Probability that an infected person will recover without having to go to
-    the hospital. Enter a number between 0 and 1 with "," as a decimal separator.
-    For example 0,2
+    the hospital. Use the decimal seperator of your system region.
 --- !u!222 &7946530681428458121
 CanvasRenderer:
   m_ObjectHideFlags: 0
